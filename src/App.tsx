@@ -1,34 +1,100 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import PropTypes from "prop-types";
+import Header from "./components/Header";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./routes/Home";
+import SabbathSchool from "./routes/SabbathSchool";
+import Devotion from "./routes/Devotion";
+import AboutUs from "./routes/AboutUs";
+import ContactUs from "./routes/ContactUs";
+import NotMatch from "./routes/NotMatch";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { useAuthContext } from "./hooks/useAuthContext";
+import Footer from "./components/Footer";
+import AdminDashboard from "./routes/AdminDashboard";
+import CoursesAvailable from "./features/CourseComponents/CoursesAvailable";
+import ChaptersDisplay from "./features/CourseComponents/ChaptersDisplay";
+import SlidesDisplay from "./features/CourseComponents/SlidesDisplay";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { user, isAuthReady } = useAuthContext();
+
+  if (!isAuthReady) {
+    return <div>Loading...</div>; // Or a  loading spinner
+  }
+
+  // Private Route for Admin
+  const PrivateAdminRoute = ({ children }) => {
+    if (user && user.role === "Admin") {
+      return children;
+    } else {
+      return <Navigate to="/" replace={true} />;
+    }
+  };
+
+  PrivateAdminRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
+  // Public Route (redirect if logged in)
+  const PublicRoute = ({ children }) => {
+    return !user ? children : <Navigate to="/" replace={true} />;
+  };
+
+  PublicRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="courses/get/:courseId" element={<ChaptersDisplay />} />
+        <Route
+          path="courses/get/:courseId/chapter/:chapterId"
+          element={<SlidesDisplay />}
+        />
+        <Route path="/sabbathSchool" element={<SabbathSchool />} />
+        <Route path="/devotion" element={<Devotion />} />
+        <Route path="/aboutUs" element={<AboutUs />} />
+        <Route path="/contactUs" element={<ContactUs />} />
+        <Route path="/courses" element={<CoursesAvailable />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/admin/*"
+          element={
+            <PrivateAdminRoute>
+              <AdminDashboard />
+            </PrivateAdminRoute>
+          }
+        />
+
+        {/* Public Routes (Redirect if logged in) */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
+          }
+        />
+
+        {/* Not Found Route */}
+        <Route path="*" element={<NotMatch />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
