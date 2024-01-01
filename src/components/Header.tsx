@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { FaRegUserCircle, FaBars, FaTimes } from "react-icons/fa";
-import { useOnClickOutside } from "./useOnClickOutside";
+import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { Button } from "./ui/button";
 import bgImage from "../assets/header-img.svg";
 
