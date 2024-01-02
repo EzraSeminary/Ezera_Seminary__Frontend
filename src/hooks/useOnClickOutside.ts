@@ -1,16 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, RefObject } from "react";
 
-// A custom Hook that we can reuse.
-export const useOnClickOutside = (ref, currentState, handleAccountClick) => {
+type HandleAccountClick = () => void;
+
+export const useOnClickOutside = (
+  ref: RefObject<HTMLElement>,
+  currentState: boolean,
+  handleAccountClick: HandleAccountClick
+): void => {
   useEffect(() => {
-    const handler = (event) => {
-      if (currentState && ref.current && !ref.current.contains(event.target)) {
+    const handler = (event: MouseEvent) => {
+      if (currentState && ref.current && !ref.current.contains(event.target as Node)) {
         handleAccountClick();
       }
     };
+
     document.addEventListener("mousedown", handler);
+
     return () => {
-      // Cleanup the event listener
       document.removeEventListener("mousedown", handler);
     };
   }, [ref, currentState, handleAccountClick]);
