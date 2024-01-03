@@ -1,32 +1,37 @@
+import React from "react";
 import PropTypes from "prop-types";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./routes/Home";
-import SabbathSchool from "./routes/SabbathSchool";
-import Devotion from "./routes/Devotion";
-import AboutUs from "./routes/AboutUs";
-import ContactUs from "./routes/ContactUs";
-import NotMatch from "./routes/NotMatch";
+import Home from "./pages/Home";
+import SabbathSchool from "./pages/SabbathSchool";
+import Devotion from "./pages/Devotion";
+import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
+import NotMatch from "./pages/NotMatch";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Footer from "./components/Footer";
-import AdminDashboard from "./routes/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import CoursesAvailable from "./features/CourseComponents/CoursesAvailable";
 import ChaptersDisplay from "./features/CourseComponents/ChaptersDisplay";
 import SlidesDisplay from "./features/CourseComponents/SlidesDisplay";
 
-function App() {
+const App: React.FC = () => {
   const { user, isAuthReady } = useAuthContext();
 
   if (!isAuthReady) {
-    return <div>Loading...</div>; // Or a  loading spinner
+    return <div>Loading...</div>; // Or a loading spinner
+  }
+
+  interface PrivateRouteProps {
+    children: React.ReactNode;
   }
 
   // Private Route for Admin
-  const PrivateAdminRoute = ({ children }) => {
+  const PrivateAdminRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     if (user && user.role === "Admin") {
-      return children;
+      return <>{children}</>;
     } else {
       return <Navigate to="/" replace={true} />;
     }
@@ -36,9 +41,13 @@ function App() {
     children: PropTypes.node.isRequired,
   };
 
+  interface PublicRouteProps {
+    children: React.ReactNode;
+  }
+
   // Public Route (redirect if logged in)
-  const PublicRoute = ({ children }) => {
-    return !user ? children : <Navigate to="/" replace={true} />;
+  const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
+    return !user ? <>{children}</> : <Navigate to="/" replace={true} />;
   };
 
   PublicRoute.propTypes = {
@@ -96,6 +105,6 @@ function App() {
       <Footer />
     </BrowserRouter>
   );
-}
+};
 
 export default App;
