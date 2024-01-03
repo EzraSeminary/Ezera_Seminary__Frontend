@@ -1,8 +1,8 @@
-import Hero from "../../features/Home/Hero";
-import Intro from "../../features/Home/Intro";
-import Contents from "../../features/Home/Contents";
-import PopularCourses from "../../features/Home/PopularCourses";
-import Testimonials from "../../features/Home/Testimonials";
+import Hero from "../../features/home/Hero";
+import Intro from "../../features/home/Intro";
+import Contents from "../../features/home/Contents";
+import PopularCourses from "../../features/home/PopularCourses";
+import Testimonials from "../../features/home/Testimonials";
 
 const Home = () => {
   return (
