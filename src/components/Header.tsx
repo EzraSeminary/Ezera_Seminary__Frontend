@@ -7,10 +7,10 @@ import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { Button } from "./ui/button";
 import bgImage from "../assets/header-img.svg";
 
-const Header = () => {
+const Header: React.FC = () => {
   const { user } = useAuthContext();
-  const [showAccountModal, setShowAccountModal] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const handleAccountClick = () => {
     setShowAccountModal((prev) => !prev);
@@ -24,7 +24,7 @@ const Header = () => {
     setShowMenu(false);
   };
 
-  const ref = useRef();
+  const ref = useRef<HTMLLIElement>(null);
   useOnClickOutside(ref, showAccountModal, () => setShowAccountModal(false));
 
   return (

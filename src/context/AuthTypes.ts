@@ -3,6 +3,7 @@
 export interface User {
     role?: string;
     firstName?: string;
+    email?: string;
     // include other user related properties here
   }
   
