@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/user/Home";
-import SabbathSchool from "./pages/user/SabbathSchool";
-import Devotion from "./pages/user/Devotion";
-import AboutUs from "./pages/user/AboutUs";
-import ContactUs from "./pages/user/ContactUs";
-import NotMatch from "./pages/user/NotMatch";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+// import SabbathSchool from "./pages/user/SabbathSchool";
+// import Devotion from "./pages/user/Devotion";
+// import AboutUs from "./pages/user/AboutUs";
+// import ContactUs from "./pages/user/ContactUs";
+// import NotMatch from "./pages/user/NotMatch";
+// import Login from "./pages/Login";
+// import Signup from "./pages/Signup";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Footer from "./components/Footer";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import CoursesAvailable from "./features/course/CoursesAvailable";
-import ChaptersDisplay from "./features/course/ChaptersDisplay";
-import SlidesDisplay from "./features/course/SlidesDisplay";
+// import AdminDashboard from "./pages/admin/AdminDashboard";
+// import CoursesAvailable from "./features/course/CoursesAvailable";
+// import ChaptersDisplay from "./features/course/ChaptersDisplay";
+// import SlidesDisplay from "./features/course/SlidesDisplay";
 
 const App: React.FC = () => {
   const { user, isAuthReady } = useAuthContext();
@@ -60,7 +60,7 @@ const App: React.FC = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="courses/get/:courseId" element={<ChaptersDisplay />} />
+        {/* <Route path="courses/get/:courseId" element={<ChaptersDisplay />} />
         <Route
           path="courses/get/:courseId/chapter/:chapterId"
           element={<SlidesDisplay />}
@@ -69,20 +69,20 @@ const App: React.FC = () => {
         <Route path="/devotion" element={<Devotion />} />
         <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/courses" element={<CoursesAvailable />} />
+        <Route path="/courses" element={<CoursesAvailable />} /> */}
 
         {/* Protected Routes */}
-        <Route
+        {/* <Route
           path="/admin/*"
           element={
             <PrivateAdminRoute>
               <AdminDashboard />
             </PrivateAdminRoute>
           }
-        />
+        /> */}
 
         {/* Public Routes (Redirect if logged in) */}
-        <Route
+        {/* <Route
           path="/login"
           element={
             <PublicRoute>
@@ -97,10 +97,10 @@ const App: React.FC = () => {
               <Signup />
             </PublicRoute>
           }
-        />
+        /> */}
 
         {/* Not Found Route */}
-        <Route path="*" element={<NotMatch />} />
+        {/* <Route path="*" element={<NotMatch />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
