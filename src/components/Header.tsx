@@ -5,7 +5,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { FaRegUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { Button } from "./ui/button";
-import bgImage from "../assets/header-img.svg";
+import bgImage from "../assets/header-img.webp";
 
 const Header: React.FC = () => {
   const { user } = useAuthContext();
