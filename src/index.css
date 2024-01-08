@@ -77,32 +77,32 @@
 
 @font-face {
   font-family: "Nokia Pure Headline Bold";
-  src: url(../public/fonts/NOKIAPUREHEADLINE_BD.TTF) format("truetype");
+  src: url(/fonts/NOKIAPUREHEADLINE_BD.TTF) format("truetype");
 }
 
 @font-face {
   font-family: "Nokia Pure Headline Light";
-  src: url(../public/fonts/NokiaPureHeadline_ULt.ttf) format("truetype");
+  src: url(/fonts/NokiaPureHeadline_ULt.ttf) format("truetype");
 }
 @font-face {
   font-family: "Lato-Black";
-  src: url(../public/fonts/Lato-Black.ttf) format("truetype");
+  src: url(/fonts/Lato-Black.ttf) format("truetype");
 }
 @font-face {
   font-family: "Lato-Bold";
-  src: url(../public/fonts/Lato-Bold.ttf) format("truetype");
+  src: url(/fonts/Lato-Bold.ttf) format("truetype");
 }
 @font-face {
   font-family: "Lato-Light";
-  src: url(../public/fonts/Lato-Light.ttf) format("truetype");
+  src: url(/fonts/Lato-Light.ttf) format("truetype");
 }
 @font-face {
   font-family: "Lato-Regular";
-  src: url(../public/fonts/Lato-Regular.ttf) format("truetype");
+  src: url(/fonts/Lato-Regular.ttf) format("truetype");
 }
 @font-face {
   font-family: "Lato-Thin";
-  src: url(../public/fonts/Lato-Thin.ttf) format("truetype");
+  src: url(/fonts/Lato-Thin.ttf) format("truetype");
 }
 .home-page-img {
   background-image: url("./assets/home-page-img.webp");
