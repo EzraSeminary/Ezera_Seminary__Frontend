@@ -1,3 +1,7 @@
+import melak from "../../assets/melak.svg";
+import janet from "../../assets/janet.svg";
+import dawit from "../../assets/dawit.webp";
+
 const Testimonials = () => {
   return (
     <div className="flex flex-col items-center justify-center space-y-4 w-[80%] mx-auto">
@@ -8,7 +12,7 @@ const Testimonials = () => {
       <div className="flex flex-col w-[100%] justify-center items-center  mx-auto space-y-6 md:flex-row md:space-x-4 md:space-y-0 ">
         <div className="flex  flex-col w-[33.%] md:w-[33.3%] mt-6">
           <div className="mx-auto w-[33.%]">
-            <img className="rounded-full" src="../assets/melak.svg" alt="" />
+            <img className="rounded-full" src={melak} alt="melak" />
           </div>
           <div className="text-center py-4 font-nokia-bold">
             <h2 className="text-accent-5 text-2xl pb-2">
@@ -22,7 +26,7 @@ const Testimonials = () => {
         </div>
         <div className="flex  flex-col w-[33.%] md:w-[33.3%]">
           <div className="mx-auto w-[33.%]">
-            <img className="rounded-full" src="../assets/janet.svg" alt="" />
+            <img className="rounded-full" src={janet} alt="janet" />
           </div>
           <div className="text-center py-4 font-nokia-bold">
             <h2 className="text-accent-5 text-2xl pb-2">ውብገነት ቦጋለ (ጃኔት)</h2>
@@ -34,7 +38,7 @@ const Testimonials = () => {
         </div>
         <div className="flex  flex-col w-[33.%] md:w-[33.3%]">
           <div className="mx-auto w-[33.%]">
-            <img className="rounded-full" src="../assets/dawit.svg" alt="" />
+            <img className="rounded-full" src={dawit} alt="dawit" />
           </div>
           <div className="text-center py-4 font-nokia-bold">
             <h2 className="text-accent-5 text-2xl pb-2">ዳዊት መሃሪ</h2>
