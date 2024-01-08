@@ -1,3 +1,5 @@
+import introVideo from "../../assets/Intro-Video.svg";
+
 const Intro = () => {
   return (
     <div className="md:flex md:flex-col w-[80%] mx-auto md:justify-center md:items-center">
@@ -18,11 +20,7 @@ const Intro = () => {
           </p>
         </div>
         <div className="mx-auto w-[100%] cursor-pointer mt-12  md:w-[50%]">
-          <img
-            className="w-full"
-            src="../assets/Intro-Video.svg"
-            alt="Introduction Video"
-          />
+          <img className="w-full" src={introVideo} alt="Introduction Video" />
         </div>
       </div>
       <div className="hidden md:flex text-center mt-12 ">

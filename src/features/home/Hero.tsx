@@ -1,3 +1,6 @@
+import googlePlay from "../../assets/google-play.svg";
+import appLogo from "../../assets/app-logo.svg";
+
 const Hero = () => {
   return (
     <div className=" mx-auto home-page-img ">
@@ -31,14 +34,14 @@ const Hero = () => {
               <a href="#">
                 <img
                   className="h-6 md:h-12"
-                  src="../assets/google-play.svg"
+                  src={googlePlay}
                   alt="Google Play Logo"
                 />
               </a>
               <a href="#">
                 <img
                   className="h-6 md:h-12"
-                  src="../assets/app-logo.svg"
+                  src={appLogo}
                   alt="App Store Logo"
                 />
               </a>

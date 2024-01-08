@@ -105,10 +105,8 @@
   src: url(../public/fonts/Lato-Thin.ttf) format("truetype");
 }
 .home-page-img {
-  background-image: url("../assets/home-page-img.webp");
+  background-image: url("./assets/home-page-img.webp");
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-
-  /* Add any additional styles you need */
 }
