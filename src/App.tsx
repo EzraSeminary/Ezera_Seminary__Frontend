@@ -13,7 +13,7 @@ import Home from "./pages/user/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Footer from "./components/Footer";
 // import AdminDashboard from "./pages/admin/AdminDashboard";
-// import CoursesAvailable from "./features/course/CoursesAvailable";
+import Courses from "./pages/user/Courses";
 // import ChaptersDisplay from "./features/course/ChaptersDisplay";
 // import SlidesDisplay from "./features/course/SlidesDisplay";
 
@@ -68,8 +68,8 @@ const App: React.FC = () => {
         <Route path="/sabbathSchool" element={<SabbathSchool />} />
         <Route path="/devotion" element={<Devotion />} />
         <Route path="/aboutUs" element={<AboutUs />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/courses" element={<CoursesAvailable />} /> */}
+        <Route path="/contactUs" element={<ContactUs />} /> */}
+        <Route path="/courses" element={<Courses />} />
 
         {/* Protected Routes */}
         {/* <Route
