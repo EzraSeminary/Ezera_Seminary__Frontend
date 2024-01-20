@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import category1 from "../../../assets/Category-img-1.svg";
+import category2 from "../../../assets/Category-img-2.svg";
+import category3 from "../../../assets/Category-img-3.svg";
 
 interface CategoriesProps {
   title: string;
@@ -19,11 +22,7 @@ const Categories: React.FC<CategoriesProps> = ({ title }) => {
       <div className="flex flex-col w-[100%] justify-center items-center  mx-auto space-y-6 md:flex-row md:space-x-3 md:space-y-0">
         <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
           <div className="mx-auto w-[100%] ">
-            <img
-              className="w-full object-cover"
-              src="../assets/Category-img-1.svg"
-              alt=""
-            />
+            <img className="w-full object-cover" src={category1} alt="" />
           </div>
           <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
             <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
@@ -46,11 +45,7 @@ const Categories: React.FC<CategoriesProps> = ({ title }) => {
         </div>
         <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
           <div className="mx-auto w-[100%] ">
-            <img
-              className="w-full object-cover"
-              src="../assets/Category-img-2.svg"
-              alt=""
-            />
+            <img className="w-full object-cover" src={category2} alt="" />
           </div>
           <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
             <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
@@ -75,11 +70,7 @@ const Categories: React.FC<CategoriesProps> = ({ title }) => {
         </div>
         <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
           <div className="mx-auto w-[100%] ">
-            <img
-              className="w-full object-cover"
-              src="../assets/Category-img-3.svg"
-              alt=""
-            />
+            <img className="w-full object-cover" src={category3} alt="" />
           </div>
           <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
             <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
