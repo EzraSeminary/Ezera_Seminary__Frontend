@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/coursesApi";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -11,7 +11,7 @@ interface Course {
 }
 
 function CoursesAvailable() {
-  const { data: courses, error, isLoading } = useGetCoursesQuery();
+  const { data: courses, error, isLoading } = useGetCoursesQuery({});
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,19 @@ function CoursesAvailable() {
         />
       </div>
     );
-  if (error) return <div>Error: {error.message}</div>;
+
+  if (error) {
+    let errorMessage = "An unknown error occurred";
+    // Check if the error is a `FetchBaseQueryError`
+    if ("status" in error) {
+      // Error originated from fetchBaseQuery
+      errorMessage = `Error: ${error.status}`;
+    } else if ("error" in error) {
+      // Error is a `SerializedError`
+      errorMessage = `Error: ${error.error}`;
+    }
+    return <div>{errorMessage}</div>;
+  }
 
   return (
     <div className="space-y-3">
