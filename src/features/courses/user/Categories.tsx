@@ -1,6 +1,10 @@
 import PropTypes from "prop-types";
 
-const Categories = ({ title }) => {
+interface CategoriesProps {
+  title: string;
+}
+
+const Categories: React.FC<CategoriesProps> = ({ title }) => {
   return (
     <div className="space-y-3">
       <div>
