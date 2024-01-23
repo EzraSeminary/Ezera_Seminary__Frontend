@@ -203,34 +203,38 @@ function SlidesDisplay() {
                           return (
                             <img
                               key={element._id}
-                              // src={`https://ezra-seminary-api.onrender.comimages/${element.value}`}
                               src={`https://ezra-seminary-api.onrender.com-api.onrender.com//images/${element.value}`}
-                              alt={element.id}
+                              alt={element._id}
                               className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
                             />
                           );
                         } else if (element.type === "list") {
-                          const listItemsComponent = element.value.map(
-                            (listItem, index) => (
-                              <li
-                                key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-lg"
-                              >
-                                {listItem}
-                              </li>
-                            )
-                          );
+                          if (Array.isArray(element.value)) {
+                            const listItemsComponent = element.value.map(
+                              (listItem, index) => (
+                                <li
+                                  key={index}
+                                  className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-lg"
+                                >
+                                  {listItem}
+                                </li>
+                              )
+                            );
 
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col ml-8"
-                            >
-                              <ul className="list-disc mt-2">
-                                {listItemsComponent}
-                              </ul>
-                            </div>
-                          );
+                            return (
+                              <div
+                                key={element._id}
+                                className="flex flex-col ml-8"
+                              >
+                                <ul className="list-disc mt-2">
+                                  {listItemsComponent}
+                                </ul>
+                              </div>
+                            );
+                          } else {
+                            // Handle the case where element.value is not an array
+                            return null;
+                          }
                         } else if (element.type === "slide") {
                           const listItemsComponent = element.value.map(
                             (listItem, index) => (
