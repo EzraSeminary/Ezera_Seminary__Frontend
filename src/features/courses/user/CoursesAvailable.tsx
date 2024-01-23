@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
-import { useGetCoursesQuery } from "../../../services/coursesApi";
+import { useGetCoursesQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
 interface Course {
