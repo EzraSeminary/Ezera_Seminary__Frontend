@@ -11,7 +11,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 interface Element {
   _id: string;
   type: string;
-  value: string | string[] | Element[];
+  value: any;
 }
 
 interface Slide {
@@ -25,9 +25,9 @@ interface Chapter {
   slides: Slide[];
 }
 
-interface CourseData {
-  chapters: Chapter[];
-}
+// interface CourseData {
+//   chapters: Chapter[];
+// }
 
 function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -236,32 +236,37 @@ function SlidesDisplay() {
                             return null;
                           }
                         } else if (element.type === "slide") {
-                          const listItemsComponent = element.value.map(
-                            (listItem, index) => (
-                              <SplideSlide
-                                key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-lg px-8"
-                              >
-                                {listItem}
-                              </SplideSlide>
-                            )
-                          );
+                          if (Array.isArray(element.value)) {
+                            const listItemsComponent = element.value.map(
+                              (listItem, index) => (
+                                <SplideSlide
+                                  key={index}
+                                  className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-lg px-8"
+                                >
+                                  {listItem}
+                                </SplideSlide>
+                              )
+                            );
 
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col ml-8"
-                            >
-                              <Splide
-                                options={{
-                                  gap: "1rem",
-                                }}
-                                className="bg-accent-6 p-8 rounded-md list-disc mt-2"
+                            return (
+                              <div
+                                key={element._id}
+                                className="flex flex-col ml-8"
                               >
-                                {listItemsComponent}
-                              </Splide>
-                            </div>
-                          );
+                                <Splide
+                                  options={{
+                                    gap: "1rem",
+                                  }}
+                                  className="bg-accent-6 p-8 rounded-md list-disc mt-2"
+                                >
+                                  {listItemsComponent}
+                                </Splide>
+                              </div>
+                            );
+                          } else {
+                            // Handle the case where element.value is not an array
+                            return null;
+                          }
                         } else {
                           return null;
                         }
