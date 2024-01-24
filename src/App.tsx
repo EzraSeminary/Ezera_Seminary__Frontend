@@ -1,8 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Home from "./pages/user/Home";
+import Courses from "./pages/user/Courses";
+import ChaptersDisplay from "./features/courses/user/ChaptersDisplay";
+import SlidesDisplay from "./features/courses/user/SlidesDisplay";
 // import SabbathSchool from "./pages/user/SabbathSchool";
 // import Devotion from "./pages/user/Devotion";
 // import AboutUs from "./pages/user/AboutUs";
@@ -10,12 +15,7 @@ import Home from "./pages/user/Home";
 // import NotMatch from "./pages/user/NotMatch";
 // import Login from "./pages/Login";
 // import Signup from "./pages/Signup";
-import { useAuthContext } from "./hooks/useAuthContext";
-import Footer from "./components/Footer";
 // import AdminDashboard from "./pages/admin/AdminDashboard";
-import Courses from "./pages/user/Courses";
-// import ChaptersDisplay from "./features/course/ChaptersDisplay";
-// import SlidesDisplay from "./features/course/SlidesDisplay";
 
 const App: React.FC = () => {
   const { user, isAuthReady } = useAuthContext();
@@ -60,16 +60,16 @@ const App: React.FC = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
-        {/* <Route path="courses/get/:courseId" element={<ChaptersDisplay />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="courses/get/:courseId" element={<ChaptersDisplay />} />
         <Route
           path="courses/get/:courseId/chapter/:chapterId"
           element={<SlidesDisplay />}
         />
-        <Route path="/sabbathSchool" element={<SabbathSchool />} />
+        {/* <Route path="/sabbathSchool" element={<SabbathSchool />} />
         <Route path="/devotion" element={<Devotion />} />
         <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} /> */}
-        <Route path="/courses" element={<Courses />} />
 
         {/* Protected Routes */}
         {/* <Route

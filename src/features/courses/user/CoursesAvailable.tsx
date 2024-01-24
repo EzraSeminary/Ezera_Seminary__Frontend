@@ -99,7 +99,7 @@ function CoursesAvailable() {
                     `https://ezra-seminary-api.onrender.com/images/` +
                     course.image
                   }
-                  className="w-full max-h-[40vh] min-h-[40vh]  md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"
+                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"
                   alt=""
                 />
               </div>
@@ -108,7 +108,7 @@ function CoursesAvailable() {
                   {course.title}
                 </h2>
                 <hr className="border-accent-5 border-1 w-[100%] " />
-                <p className="text-secondary-5 text-xs font-nokia-bold   w-[100%]  line-clamp-3  text-justify">
+                <p className="text-secondary-5 text-xs font-nokia-bold w-[100%] line-clamp-3 text-justify">
                   {course.description}
                 </p>
                 <Link

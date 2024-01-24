@@ -110,3 +110,9 @@
   background-repeat: no-repeat;
   width: 100%;
 }
+.chapter-img-1 {
+  background-image: url("./assets/chapter-img-1.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
