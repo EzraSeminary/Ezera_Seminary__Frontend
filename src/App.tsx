@@ -15,7 +15,7 @@ import SlidesDisplay from "./features/courses/user/SlidesDisplay";
 // import NotMatch from "./pages/user/NotMatch";
 // import Login from "./pages/Login";
 // import Signup from "./pages/Signup";
-// import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const App: React.FC = () => {
   const { user, isAuthReady } = useAuthContext();
@@ -72,14 +72,14 @@ const App: React.FC = () => {
         <Route path="/contactUs" element={<ContactUs />} /> */}
 
         {/* Protected Routes */}
-        {/* <Route
+        <Route
           path="/admin/*"
           element={
             <PrivateAdminRoute>
               <AdminDashboard />
             </PrivateAdminRoute>
           }
-        /> */}
+        />
 
         {/* Public Routes (Redirect if logged in) */}
         {/* <Route
