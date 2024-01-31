@@ -4,7 +4,7 @@ import content3 from "../../assets/content-3.svg";
 
 const Contents = () => {
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 w-[80%] mx-auto">
+    <div className="pt-80 border-2 border-green-500 flex flex-col items-center justify-center space-y-4 w-[80%] mx-auto">
       <h1 className="text-3xl font-nokia-bold  text-secondary-6">
         Our Contents
       </h1>

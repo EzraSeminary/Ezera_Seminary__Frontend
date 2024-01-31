@@ -10,9 +10,9 @@ export default {
   ],
   theme: {
     screens: {
-      sm: "480px",
+      sm: "425px",
       md: "768px",
-      lg: "976px",
+      lg: "1024px",
       xl: "1440px",
     },
     container: {
@@ -56,6 +56,7 @@ export default {
 
       backgroundImage: {
         "header-img": "url('./assets/header-img.svg')",
+        "hero-img": "url('./assets/home-page-img.webp')",
         "coming-soon": "url('./assets/coming-soon.png')",
         "chapter-img-1": "url('./assets/chapter-img-1.svg')",
         // 'footer-texture': "url('/img/footer-texture.png')",

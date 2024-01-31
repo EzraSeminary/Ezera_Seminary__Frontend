@@ -5,7 +5,7 @@ import course4 from "../../assets/course-4.svg";
 
 const PopularCourses = () => {
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 w-[80%] mx-auto">
+    <div className="  border-2 border-blue-500 flex flex-col items-center justify-center space-y-4 w-[80%] mx-auto">
       <h1 className="text-3xl font-nokia-bold  text-secondary-6">
         Popular Courses
       </h1>

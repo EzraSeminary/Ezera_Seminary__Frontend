@@ -2,8 +2,8 @@ import introVideo from "../../assets/Intro-Video.svg";
 
 const Intro = () => {
   return (
-    <div className="md:flex md:flex-col w-[80%] mx-auto md:justify-center md:items-center">
-      <div className="flex flex-col md:flex-row-reverse">
+    <div className="relative top-[350px] lg:top-[500px] border-2 border-red-500 md:flex md:flex-col  md:justify-center md:items-center">
+      <div className="flex flex-col w-[80%] mx-auto md:flex-row-reverse">
         <div className="flex flex-col space-y-6 text-secondary-6 justify-center items-center mx-auto text-center md:w-[50%]">
           <h2 className="text-2xl md:text-4xl font-nokia-bold w-[40%] md:w-[65%]">
             የእግዚአብሔር ቃል <span className="text-accent-5">የሕይወት እንጀራ</span> ነው!

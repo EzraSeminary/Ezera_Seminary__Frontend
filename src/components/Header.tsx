@@ -28,7 +28,7 @@ const Header: React.FC = () => {
   useOnClickOutside(ref, showAccountModal, () => setShowAccountModal(false));
 
   return (
-    <header className="relative max-w-screen">
+    <header className="relative max-w-screen h-32">
       <div className="absolute top-0 z-0 w-full h-full">
         {/* Background Image */}
         <img
@@ -37,38 +37,38 @@ const Header: React.FC = () => {
           alt="Background"
         />
       </div>
-      <div className="relative z-10">
+      <div className="relative z-10 py-6">
         {/* Navigation and Logo */}
-        <div className="flex justify-between py-6 items-center text-white font-nokia-bold w-[90%] md:w-[80%] mx-auto">
-          <div className="flex justify-center items-center space-x-3 cursor-pointer ">
-            <img src="src/assets/ezra-logo.svg" alt="" />
+        <div className="flex justify-between py-3 items-center text-white font-nokia-bold w-[90%]  lg:w-[80%] mx-auto">
+          <div className="flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+            <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7 " alt="" />
             <NavLink to="/" onClick={closeMenu}>
-              <h3>
-                <strong className="text-2xl">Ezra</strong> Seminary
+              <h3 className="text-xs md:text-sm lg:text-lg xl:text-xl">
+                <strong >Ezra</strong> Seminary
               </h3>
             </NavLink>
           </div>
           <nav>
-            <div className="md:hidden">
+            <div className="md:hidden  ">
               <button
                 onClick={handleMenuClick}
                 className="text-white focus:outline-none "
               >
                 {showMenu ? (
                   <FaTimes
-                    size={24}
-                    className="z-20 fixed top-[4%] left-[91%]"
+                    size={20}
+                    className="z-20 fixed top-[6%] left-[90%]"
                   />
                 ) : (
-                  <FaBars size={24} className=" fixed top-[4%] left-[91%]" />
+                  <FaBars size={20} className=" fixed top-[6%] left-[90%]" />
                 )}
               </button>
             </div>
             <ul
-              className={`font-Lato-Regular justify-center items-end tracking-wide space-x-4 cursor-pointer  md:flex ${
+              className={`font-Lato-Regular justify-center items-end   h-auto tracking-wide space-x-4 cursor-pointer  md:flex md:items-center md:justify-between md:text-xs md:space-x-3  md:space-y-0 xl:text-lg xl:space-x-4  ${
                 showMenu
-                  ? "flex flex-col text-2xl font-nokia-bold h-screen bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-3 md:flex fixed"
-                  : "hidden text-sm md:flex justify-center items-center"
+                  ? "flex flex-col text-2xl font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-3 md:flex fixed"
+                  : "hidden"
               }`}
             >
               <li className="hover:text-accent-6">
@@ -104,13 +104,13 @@ const Header: React.FC = () => {
               {user ? (
                 <li ref={ref} className="relative">
                   <div
-                    className="flex items-center space-x-2 bg-accent-6 rounded-full p-3 hover:bg-accent-7 cursor-pointer"
+                    className="flex items-center space-x-2 bg-accent-6 rounded-full py-1 px-2 lg:px-3 xl:px-4 xl:py-2 hover:bg-accent-7 cursor-pointer"
                     onClick={handleAccountClick}
                   >
                     <FaRegUserCircle />
-                    <div className="text-sm font-medium text-white">
+                    <div className="text-xs  xl:text-lg font-medium text-white">
                       {user.firstName}
-                      <div className="text-xs text-white-400">{user.role}</div>
+                      <div className="text-xs  xl:text-lg text-white-400">{user.role}</div>
                     </div>
                   </div>
                   {showAccountModal && (
