@@ -51,13 +51,13 @@ const Sidebar = () => {
             <ul className="pl-4 mt-2 py-2">
               <li
                 className="cursor-pointer hover:text-gray-300"
-                onClick={() => handleSubItemClick("/admin/courses/create/add")}
+                onClick={() => handleSubItemClick("/admin/courses/create")}
               >
                 Create Course
               </li>
               <li
                 className="cursor-pointer hover:text-gray-300"
-                onClick={() => handleSubItemClick("/admin/course")}
+                onClick={() => handleSubItemClick("/admin/course/edit")}
               >
                 Manage Courses
               </li>

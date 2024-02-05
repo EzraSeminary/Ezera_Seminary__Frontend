@@ -17,8 +17,8 @@ const AdminDashboard = () => {
       <div className="col-span-4">
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
-          <Route path="course" element={<ManageCourse />} />
-          {/* <Route path="courses/create/add" element={<CreateCourse />} />
+          <Route path="course/edit" element={<ManageCourse />} />
+          {/* <Route path="courses/create" element={<CreateCourse />} />
           <Route path="sabbathSchool" element={<SabbathSchool />} />
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
