@@ -9,7 +9,7 @@ import Courses from "./pages/user/Courses";
 import ChaptersDisplay from "./features/courses/user/ChaptersDisplay";
 import SlidesDisplay from "./features/courses/user/SlidesDisplay";
 // import SabbathSchool from "./pages/user/SabbathSchool";
-// import Devotion from "./pages/user/Devotion";
+import Devotion from "./pages/user/Devotion";
 // import AboutUs from "./pages/user/AboutUs";
 // import ContactUs from "./pages/user/ContactUs";
 // import NotMatch from "./pages/user/NotMatch";
@@ -66,9 +66,9 @@ const App: React.FC = () => {
           path="courses/get/:courseId/chapter/:chapterId"
           element={<SlidesDisplay />}
         />
-        {/* <Route path="/sabbathSchool" element={<SabbathSchool />} />
+        {/* <Route path="/sabbathSchool" element={<SabbathSchool />} /> */}
         <Route path="/devotion" element={<Devotion />} />
-        <Route path="/aboutUs" element={<AboutUs />} />
+        {/* <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} /> */}
 
         {/* Protected Routes */}
