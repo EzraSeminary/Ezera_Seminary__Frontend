@@ -74,7 +74,7 @@ export const courseSlice = createSlice({
         elements: [],
       });
     },
-    deleteElement(state, action) {
+    deleteElement(state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string }>) {
       const { chapterIndex, slideIndex, elementId } = action.payload;
       const chapter = state.chapters[chapterIndex];
       if (chapter) {
@@ -90,7 +90,7 @@ export const courseSlice = createSlice({
       const { chapterIndex, slideIndex, value } = action.payload;
       state.chapters[chapterIndex].slides[slideIndex].slide = value;
     },
-    addElementToSlide: (state, action) => {
+    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value: string }>) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
 
       if (state.chapters[chapterIndex] == null) {
@@ -136,7 +136,7 @@ export const courseSlice = createSlice({
 
       slides[slideIndex].elements.push(newElement);
     },
-    updateElement: (state, action) => {
+    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: string }>) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);
@@ -145,25 +145,25 @@ export const courseSlice = createSlice({
       }
     },
 
-    setCurrentChapter: (state, action) => {
+    setCurrentChapter: (state, action: PayloadAction<number>) => {
       state.currentChapterIndex = action.payload;
     },
-    setCurrentSlide: (state, action) => {
+    setCurrentSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number }>) => {
       const { chapterIndex, slideIndex } = action.payload;
       state.currentChapterIndex = chapterIndex;
       state.currentSlideIndex = slideIndex;
     },
     selectCurrentChapter: (state) => {
-      return state.chapters[state.currentChapterIndex] || {};
+      return state.chapters[state.currentChapterIndex || 0] || {};
     },
     selectCurrentSlide: (state) => {
-      const chapter = state.chapters[state.currentChapterIndex];
+      const chapter = state.chapters[state.currentChapterIndex || 0];
       if (chapter) {
-        return chapter.slides[state.currentSlideIndex] || {};
+        return chapter.slides[state.currentSlideIndex || 0] || {};
       }
       return {};
     },
-    deleteChapter: (state, action) => {
+    deleteChapter: (state, action: PayloadAction<{ chapterIndex: number }>) => {
       const { chapterIndex } = action.payload;
       state.chapters.splice(chapterIndex, 1);
     },
