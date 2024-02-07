@@ -28,28 +28,32 @@ interface Element {
   value: string | string[];
 }
 
+// Define the initial state using `CourseState`
+const initialState: CourseState = {
+  title: '',
+  description: '',
+  image: '',
+  chapters: [],
+};
+
 export const courseSlice = createSlice({
   name: "course",
-  initialState: {
-    title: "",
-    description: "",
-    image: "",
-    chapters: [],
-  },
+  initialState,
   reducers: {
-    setCourse: (state, action) => {
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    setCourse: (state, action: PayloadAction<CourseState>) => {
       return {
         ...state,
         ...action.payload,
       };
     },
-    setTitle: (state, action) => {
+    setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    setDescription: (state, action) => {
+    setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setImage: (state, action) => {
+    setImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
     },
     addChapter: (state) => {
@@ -58,12 +62,12 @@ export const courseSlice = createSlice({
         slides: [],
       });
     },
-    updateChapter: (state, action) => {
+    updateChapter: (state, action: PayloadAction<{ chapterIndex: number; value: string }>) => {
       const { chapterIndex, value } = action.payload;
       state.chapters[chapterIndex].chapter = value;
     },
 
-    addSlide: (state, action) => {
+    addSlide: (state, action: PayloadAction<{ chapterIndex: number }>) => {
       const { chapterIndex } = action.payload;
       state.chapters[chapterIndex].slides.push({
         slide: "",
@@ -82,7 +86,7 @@ export const courseSlice = createSlice({
         }
       }
     },
-    updateSlide: (state, action) => {
+    updateSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; value: string }>) => {
       const { chapterIndex, slideIndex, value } = action.payload;
       state.chapters[chapterIndex].slides[slideIndex].slide = value;
     },
@@ -195,13 +199,13 @@ export const {
 
 export default courseSlice.reducer;
 
-export const selectCourse = (state) => state.course;
-export const selectChapters = (state) => state.course.chapters;
-export const selectSlides = (state, chapterIndex) => {
+export const selectCourse = (state: { course: CourseState }) => state.course;
+export const selectChapters = (state: { course: CourseState }) => state.course.chapters;
+export const selectSlides = (state: { course: CourseState }, chapterIndex) => {
   return state.course.chapters[chapterIndex]?.slides;
 };
 
-export const selectElements = (state, chapterIndex, slideIndex) => {
+export const selectElements = (state: { course: CourseState }, chapterIndex, slideIndex) => {
   const { chapters } = state.course;
   return chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 };
