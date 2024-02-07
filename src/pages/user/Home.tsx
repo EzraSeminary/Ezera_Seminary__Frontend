@@ -1,7 +1,7 @@
 import Hero from "../../features/home/Hero";
 import Intro from "../../features/home/Intro";
 import Contents from "../../features/home/Contents";
-import PopularCourses from "../../features/home/PopularCourses";
+import LatestCourses from "../../features/home/LatestCourses";
 import Testimonials from "../../features/home/Testimonials";
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
       <Hero />
       <Intro />
       <Contents />
-      <PopularCourses />
+      <LatestCourses />
       <Testimonials />
     </div>
   );
