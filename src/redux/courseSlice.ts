@@ -1,4 +1,32 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
+
+// Define a type for the slice state
+interface CourseState {
+  title: string;
+  description: string;
+  image: string;
+  chapters: Chapter[];
+  currentChapterIndex?: number;
+  currentSlideIndex?: number;
+}
+
+// Define a type for the Chapter
+interface Chapter {
+  chapter: string;
+  slides: Slide[];
+}
+
+// Define a type for each of the Slide and Element properties
+interface Slide {
+  slide: string;
+  elements: Element[];
+}
+
+interface Element {
+  type: string;
+  id: string;
+  value: string | string[];
+}
 
 export const courseSlice = createSlice({
   name: "course",
