@@ -51,7 +51,34 @@ const LatestCourses = () => {
       </h1>
       <hr className="border-accent-5 border-1 w-[90%] pb-3" />
 
-
+      {/* Latest Courses */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]">
+        {courses?.slice(0, 4).map((course: LatestCourse, index: number) => {
+          return (
+            <div
+              key={index}
+              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold"
+            >
+              <img
+                src={`https://ezra-seminary-api.onrender.com/images/${course.image}`}
+                className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
+                alt=""
+              />
+              <h2 className="text-[#fff] font-nokia-bold text-sm xl:text-lg  mt-4 mx-auto md:mx-6 mb-2 ">
+                {course.title}
+              </h2>
+              <Link
+                to={`/courses/get/${course._id}`}
+                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
+              >
+                <button type="button">
+                  ኮርሱን ክፈት
+                </button>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
