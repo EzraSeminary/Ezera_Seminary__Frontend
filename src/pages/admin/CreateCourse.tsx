@@ -11,7 +11,9 @@ import { Button } from "../../components/ui/button";
 
 function CreateCourse() {
   const dispatch = useDispatch();
-  const { title, description } = useSelector((state) => state.course);
+  const { title, description } = useSelector(
+    (state: { course: CourseState }) => state.course
+  );
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
