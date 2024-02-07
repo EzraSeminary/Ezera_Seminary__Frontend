@@ -153,22 +153,13 @@ export const courseSlice = createSlice({
       state.currentChapterIndex = chapterIndex;
       state.currentSlideIndex = slideIndex;
     },
-    selectCurrentChapter: (state) => {
-      return state.chapters[state.currentChapterIndex || 0] || {};
-    },
-    selectCurrentSlide: (state) => {
-      const chapter = state.chapters[state.currentChapterIndex || 0];
-      if (chapter) {
-        return chapter.slides[state.currentSlideIndex || 0] || {};
-      }
-      return {};
-    },
+
     deleteChapter: (state, action: PayloadAction<{ chapterIndex: number }>) => {
       const { chapterIndex } = action.payload;
       state.chapters.splice(chapterIndex, 1);
     },
 
-    deleteSlide: (state, action) => {
+    deleteSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number }>) => {
       const { chapterIndex, slideIndex } = action.payload;
       state.chapters[chapterIndex].slides.splice(slideIndex, 1);
     },
@@ -193,19 +184,17 @@ export const {
 
   setCurrentChapter,
   setCurrentSlide,
-  selectCurrentChapter,
-  selectCurrentSlide,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
 
 export const selectCourse = (state: { course: CourseState }) => state.course;
 export const selectChapters = (state: { course: CourseState }) => state.course.chapters;
-export const selectSlides = (state: { course: CourseState }, chapterIndex) => {
-  return state.course.chapters[chapterIndex]?.slides;
+export const selectSlides = (state: { course: CourseState }, chapterIndex: number) => {
+  return state.course.chapters[chapterIndex]?.slides || [];
 };
 
-export const selectElements = (state: { course: CourseState }, chapterIndex, slideIndex) => {
+export const selectElements = (state: { course: CourseState }, chapterIndex: number, slideIndex: number) => {
   const { chapters } = state.course;
   return chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 };
