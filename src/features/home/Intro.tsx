@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // import YouTube from 'react-youtube';
-import introVideo from "../../assets/Tsegaw-Melak-1.mp4";
+import introVideo from "../../videos/Tsegaw-Melak-1.mp4";
 import introVideoTumb from "../../assets/Tsegaw-Melak-2.png";
 import { PlayCircle } from "@phosphor-icons/react";
 
