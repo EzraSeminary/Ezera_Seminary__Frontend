@@ -1,6 +1,27 @@
-
+import { useNavigate } from 'react-router-dom';
+import content1 from "../../assets/content-1.svg";
+import content2 from "../../assets/content-2.svg";
+import content3 from "../../assets/content-3.svg";
 
 const Contents = () => {
+
+  const navigate = useNavigate();
+
+  {/* Navigate to the course page */ }
+  const handleCourseClick = () => {
+    navigate('/courses');
+  };
+
+  {/* Navigate to the sabbath school page */ }
+  const handleSabathSchoolClick = () => {
+    navigate('/sabbathSchool');
+  };
+
+  {/* Navigate to the devotion page */ }
+  const handleDevotionClick = () => {
+    navigate('/devotion');
+  };
+
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
