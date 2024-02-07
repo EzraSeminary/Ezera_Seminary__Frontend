@@ -27,7 +27,7 @@ const Hero = () => {
               መጽሃፍ ቅዱስ ጥናት በስልክዎት
             </p>
             <h1 className="font-Lato-Black text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">
-              Study The <br  className="hidden md:block" /> Bible On <br />
+              Study The <br className="hidden md:block" /> Bible On <br />
               <span className="text-accent-5 text-highlight">Your Phone</span>
             </h1>
             <div className="flex justify-center sm:justify-end items-center pt-2 gap-2 md:gap-3">
