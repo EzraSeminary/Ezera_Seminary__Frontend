@@ -7,7 +7,16 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 
-function SlideDataDisplay({ selectedSlideIndex }) {
+interface SlideDataDisplayProps {
+  selectedSlideIndex: {
+    chapter: number | null;
+    slide: number | null;
+  };
+}
+
+const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
+  selectedSlideIndex,
+}) => {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
@@ -217,7 +226,7 @@ function SlideDataDisplay({ selectedSlideIndex }) {
       </div>
     </div>
   );
-}
+};
 
 SlideDataDisplay.propTypes = {
   selectedSlideIndex: PropTypes.shape({
