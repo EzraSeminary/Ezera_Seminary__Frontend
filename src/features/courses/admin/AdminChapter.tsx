@@ -2,14 +2,14 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ChaptersAdd from "./ChaptersAdd";
-import { selectCourse } from "../../redux/courseSlice";
+import { selectCourse } from "../../../redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 
 function AdminChapter() {
   const navigate = useNavigate();
   const course = useSelector(selectCourse);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { title, description, image, chapters } = course;
 
