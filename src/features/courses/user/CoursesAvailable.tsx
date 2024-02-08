@@ -49,8 +49,11 @@ function CoursesAvailable() {
   }
 
   return (
+    // Courses Available Section
     <div className="space-y-3">
+      {/* Container of title and seacrch bar*/}
       <div className="flex justify-between items-end">
+        {/* Title of the page */}
         <div>
           <h1 className="text-accent-6 text-2xl font-nokia-bold md:text-4xl tracking-wide">
             Courses Available
@@ -62,6 +65,7 @@ function CoursesAvailable() {
             Our Most Popular Classes
           </h2>
         </div>
+        {/* Search bar */}
         <div className="flex justify-end">
           <input
             type="text"
@@ -86,34 +90,37 @@ function CoursesAvailable() {
       </div>
       <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
-      <div className="flex flex-col justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-6 w-[90%] md:gap-4 mx-auto">
         {filteredData.map((course: Course, index: number) => {
           return (
             <div
               key={index}
-              className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] md:w-[23.7%] shadow-xl rounded-3xl md:rounded-xl h-auto pb-6"
+              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border-2 text-center pb-4 font-nokia-bold"
             >
-              <div className="w-full p-2">
+              {/* Image of the course */}
+              <div className="w-full p-2 h-full">
                 <img
                   src={
                     `https://ezra-seminary-api.onrender.com/images/` +
                     course.image
                   }
-                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"
+                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                   alt=""
                 />
               </div>
-              <div className="space-y-2 w-[95%] md:w-[90%] mx-auto">
-                <h2 className="text-secondary-6 text-xl font-nokia-bold w-[90%] truncate">
+
+              {/* Title, Description and button */}
+              <div className=" w-[95%] md:w-[90%] mx-auto h-full">
+                <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg  mt-2 mx-auto md:mx-6 mb-2 truncate">
                   {course.title}
                 </h2>
                 <hr className="border-accent-5 border-1 w-[100%] " />
-                <p className="text-secondary-5 text-xs font-nokia-bold w-[100%] line-clamp-3 text-justify">
+                <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-4 line-clamp-3 text-justify  w-[95%] mx-auto">
                   {course.description}
                 </p>
                 <Link
                   to={`/courses/get/` + course._id}
-                  className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7"
+                  className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 "
                 >
                   <button className="mt-2" type="button">
                     ኮርሱን ክፈት
