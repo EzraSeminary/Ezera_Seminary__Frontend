@@ -8,6 +8,7 @@ import {
   selectCourse,
 } from "../../redux/courseSlice";
 import { Button } from "../../components/ui/button";
+import { CourseState } from "../../redux/courseSlice";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -18,13 +19,13 @@ function CreateCourse() {
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent) => {
     const file = e.target.files[[0]];
     if (file) {
       dispatch(setImage(file)); // Dispatch the File object to the store
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
-        setImagePreviewUrl(fileReader.result);
+        setImagePreviewUrl(fileReader.result as string);
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
     }

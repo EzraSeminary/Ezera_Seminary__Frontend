@@ -1,8 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
-import { useGetCoursesQuery } from "../../../services/api";
+import { useGetCoursesQuery } from "../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-import useAxiosInstance from "../../../api/axiosInstance";
+import useAxiosInstance from "../../api/axiosInstance";
 
 interface Course {
   _id: string;
