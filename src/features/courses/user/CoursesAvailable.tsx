@@ -2,6 +2,7 @@ import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 interface Course {
   _id: string;
@@ -13,15 +14,28 @@ interface Course {
 function CoursesAvailable() {
   const { data: courses, error, isLoading } = useGetCoursesQuery({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [showInput, setShowInput] = useState(false);
 
+
+  {/* function to handle search input */ }
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
+  {/* function to handle search icon click */ }
+  const handleSearchIconClick = () => {
+    setShowInput(!showInput);
+  };
+
+  {/* Check if the screen is small */ }
+  const isSmallScreen = window.matchMedia('(max-width: 426px)').matches;
+
+  {/* Filter the data based on the search term */ }
   const filteredData = courses?.filter((course: Course) => {
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  {/* Loading spinner */ }
   if (isLoading)
     return (
       <div className="h-screen flex justify-center items-center">
@@ -48,54 +62,66 @@ function CoursesAvailable() {
     return <div>{errorMessage}</div>;
   }
 
+
   return (
     // Courses Available Section
-    <div className="space-y-3">
+    <div className="space-y-3 mt-8 ">
       {/* Container of title and seacrch bar*/}
       <div className="flex justify-between items-end">
         {/* Title of the page */}
-        <div>
-          <h1 className="text-accent-6 text-2xl font-nokia-bold md:text-4xl tracking-wide">
+        <div className="w-full tracking-wide">
+          <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
             Courses Available
           </h1>
-          <h3 className="text-accent-6 text-xs font-Lato-Regular md:text-sm tracking-wide">
+          <h3 className="text-accent-6 text-xs font-Lato-Regular md:text-sm ">
             Explore Programs and Courses
           </h3>
-          <h2 className="text-secondary-6 text-lg font-Lato-Regular md:text-sm tracking-wide">
+          <h2 className="hidden md:block text-secondary-6 text-sm font-Lato-Regular md:text-sm ">
             Our Most Popular Classes
           </h2>
         </div>
         {/* Search bar */}
-        <div className="flex justify-end">
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearch}
-            className="  md:inline-block  md:border-2  border-accent-6  w-[80%] outline-1 outline-accent-5 rounded-l px-4"
-          />
-          <span>
-            <img
-              src="../assets/Search-1.svg"
-              alt=""
-              className="hidden md:inline-block cursor-pointer"
-            />
-            <img
-              src="../assets/Search.svg"
-              alt=""
-              className="md:hidden cursor-pointer"
-            />
-          </span>
+        <div className="flex justify-between items-center">
+          {isSmallScreen ? (
+            <div className="flex items-center justify-end" >
+              {showInput && (
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="text-xs text-secondary-6 border border-accent-6 w-[50%] outline-1 outline-accent-5 rounded-l-lg  px-2 py-1"
+                />
+
+              )}
+              <span className="cursor-pointer border  rounded-r-lg px-1 py-[0.4rem] -ml-1 bg-accent-5 text-white block" onClick={handleSearchIconClick}>
+                <MagnifyingGlass size={20} />
+              </span>
+            </div>
+          ) : (
+            <div className="flex  ">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="text-xs text-secondary-6 border border-accent-6 w-auto outline-1 outline-accent-5 rounded-l-lg  px-2 py-1"
+              />
+              <span className=" self-center cursor-pointer border  rounded-r-lg px-1 py-[0.54rem] -ml-1 bg-accent-5 text-white" onClick={handleSearchIconClick}>
+                <MagnifyingGlass size={20} />
+              </span>
+            </div>
+          )}
         </div>
       </div>
       <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-6 w-[90%] md:gap-4 mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto">
         {filteredData.map((course: Course, index: number) => {
           return (
             <div
               key={index}
-              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border-2 text-center pb-4 font-nokia-bold"
+              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
             >
               {/* Image of the course */}
               <div className="w-full p-2 h-full">
@@ -104,23 +130,23 @@ function CoursesAvailable() {
                     `https://ezra-seminary-api.onrender.com/images/` +
                     course.image
                   }
-                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
+                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
                   alt=""
                 />
               </div>
 
               {/* Title, Description and button */}
               <div className=" w-[95%] md:w-[90%] mx-auto h-full">
-                <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg  mt-2 mx-auto md:mx-6 mb-2 truncate">
+                <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
                   {course.title}
                 </h2>
-                <hr className="border-accent-5 border-1 w-[100%] " />
-                <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-4 line-clamp-3 text-justify  w-[95%] mx-auto">
+                <hr className="border-accent-5 border w-[100%] " />
+                <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
                   {course.description}
                 </p>
                 <Link
                   to={`/courses/get/` + course._id}
-                  className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 "
+                  className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 trnsition-all"
                 >
                   <button className="mt-2" type="button">
                     ኮርሱን ክፈት
