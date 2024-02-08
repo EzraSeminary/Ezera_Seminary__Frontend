@@ -105,7 +105,7 @@ function CoursesAvailable() {
                 />
 
               )}
-              <span className="cursor-pointer border  rounded-r-lg px-1 py-[0.4rem] -ml-1 bg-accent-5 text-white block" onClick={handleSearchIconClick}>
+              <span className="cursor-pointer border  rounded-r-lg px-1 py-[0.4rem] -ml-1 bg-accent-6 text-white block" onClick={handleSearchIconClick}>
                 <MagnifyingGlass size={20} />
               </span>
             </div>
@@ -118,7 +118,7 @@ function CoursesAvailable() {
                 onChange={handleSearch}
                 className="text-xs text-secondary-6 border border-accent-6 w-auto outline-1 outline-accent-5 rounded-l-lg  px-2 py-1"
               />
-              <span className=" self-center cursor-pointer border  rounded-r-lg px-1 py-[0.54rem] -ml-1 bg-accent-5 text-white" onClick={handleSearchIconClick}>
+              <span className=" self-center cursor-pointer border  rounded-r-lg px-1 py-[0.54rem] -ml-1 bg-accent-6 text-white" onClick={handleSearchIconClick}>
                 <MagnifyingGlass size={20} />
               </span>
             </div>
