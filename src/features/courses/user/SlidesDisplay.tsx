@@ -135,9 +135,8 @@ function SlidesDisplay() {
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${
-                      unlocked ? "text-black" : "text-gray-500"
-                    }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
+                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${unlocked ? "text-black" : "text-gray-500"
+                      }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
                     `}
                     onClick={() => {
                       updateIndex(index);
@@ -169,7 +168,7 @@ function SlidesDisplay() {
           </div>
         </div>
         {/* slides */}
-        <div className=" md:w-[70%] justify-start items-center mx-auto h-[80%] bg-chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+        <div className=" md:w-[70%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
           <div className="flex flex-col justify-between h-full">
             <div>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
@@ -347,9 +346,8 @@ function SlidesDisplay() {
             <div className="mb-4">
               <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
               <button
-                className={`text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl mx-auto text-2xl transition-all ${
-                  activeIndex === data.length - 1 ? "hidden" : "block"
-                }`} // hidding the next button for the last slide
+                className={`text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl mx-auto text-2xl transition-all ${activeIndex === data.length - 1 ? "hidden" : "block"
+                  }`} // hidding the next button for the last slide
                 onClick={() => {
                   updateIndex(activeIndex + 1);
                 }}
