@@ -261,14 +261,14 @@ function CoursesAvailable() {
       {
         showAllCourses ? (
           <div className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 " onClick={handleViewAllCoursesClick}>
-            <ArrowLeft size={22} className="text-white bg-accent-5 border p-1 rounded-lg" />
-            <button className="text-accent-5 text-xs font-nokia-bold">ተመለስ</button>
+            <ArrowLeft size={22} className="text-white bg-accent-6 border p-1 rounded-lg" />
+            <button className="text-accent-6 text-xs font-nokia-bold">ተመለስ</button>
 
           </div>
         ) : (
           <div className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 " onClick={handleViewAllCoursesClick}>
-            <button className="text-accent-5 text-xs font-nokia-bold">ሙሉ ተመልከት</button>
-            <ArrowRight size={25} className="text-white bg-accent-5 border p-1 rounded-lg" />
+            <button className="text-accent-6 text-xs font-nokia-bold">ሙሉ ተመልከት</button>
+            <ArrowRight size={25} className="text-white bg-accent-6 border p-1 rounded-lg" />
           </div>
         )
       }
