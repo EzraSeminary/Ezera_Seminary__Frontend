@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export interface ApiState {
+  id: number;
+}
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -7,10 +11,10 @@ export const api = createApi({
     baseUrl: "https://ezra-seminary-api.onrender.com/",
   }),
   endpoints: (builder) => ({
-    getCourses: builder.query({
+    getCourses: builder.query<ApiState[], void>({
       query: () => "course/getall",
     }),
-    getCourseById: builder.query({
+    getCourseById: builder.query<ApiState, number>({
       query: (id) => `course/get/${id}`,
     }),
   }),

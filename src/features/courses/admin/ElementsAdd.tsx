@@ -5,7 +5,7 @@ import {
   addElementToSlide,
   updateElement,
   deleteElement,
-} from "../../redux/courseSlice";
+} from "../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
 function ElementsAdd({ chapterIndex, slideIndex }) {

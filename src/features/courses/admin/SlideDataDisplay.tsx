@@ -1,24 +1,11 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectSlides, Slide, Element } from "../../../redux/courseSlice";
+import { selectSlides, Slide } from "../../../redux/courseSlice";
+import { RootState } from "../../../redux/store";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
-
-interface Choice {
-  text: string;
-}
-
-interface QuizElement {
-  type: "quiz";
-  value: {
-    question: string;
-    choices: Choice[];
-    correctAnswer: string;
-  };
-}
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
@@ -26,6 +13,29 @@ interface SlideDataDisplayProps {
     slide: number | null;
   };
 }
+
+interface QuizElement {
+  type: "quiz";
+  value: {
+    question: string;
+    choices: Array<{
+      text: string;
+    }>;
+    correctAnswer: string;
+  };
+}
+
+interface ImageElement {
+  type: "img";
+  value: File | string; // Assuming that value could be a File object or a URL
+}
+
+interface TextElement {
+  type: "title" | "sub" | "text" | "list" | "slide";
+  value: string | string[];
+}
+
+type Element = QuizElement | ImageElement | TextElement;
 
 const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   selectedSlideIndex,
@@ -40,11 +50,13 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (
-      selectedSlide?.elements?.some((el: QuizElement) => el.type === "quiz")
+      selectedSlide?.elements?.some(
+        (element: Element) => element.type === "quiz"
+      )
     ) {
       const quizElement = selectedSlide.elements.find(
-        (el: QuizElement) => el.type === "quiz"
-      ) as Element;
+        (element: Element) => element.type === "quiz"
+      ) as QuizElement;
       const isCorrect = choiceValue === quizElement.value.correctAnswer;
       setIsAnswerCorrect(isCorrect);
     }
@@ -61,15 +73,17 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     }
   };
 
-  const slides = useSelector((state) =>
+  const slides: Slide[] = useSelector((state: RootState) =>
     selectSlides(state, selectedSlideIndex.chapter)
-  ) as Slide[];
+  );
   const selectedSlide = slides[selectedSlideIndex.slide];
 
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   useEffect(() => {
     if (selectedSlide && selectedSlide.elements) {
-      const imgElement = selectedSlide.elements.find((e) => e.type === "img");
+      const imgElement = selectedSlide.elements.find(
+        (element) => element.type === "img"
+      ) as ImageElement;
       if (imgElement && imgElement.value instanceof File) {
         const objectUrl = URL.createObjectURL(imgElement.value);
         setImagePreviewUrl(objectUrl);
@@ -241,13 +255,6 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
       </div>
     </div>
   );
-};
-
-SlideDataDisplay.propTypes = {
-  selectedSlideIndex: PropTypes.shape({
-    chapter: PropTypes.number.isRequired,
-    slide: PropTypes.number.isRequired,
-  }).isRequired,
 };
 
 export default SlideDataDisplay;
