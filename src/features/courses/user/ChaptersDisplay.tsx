@@ -102,7 +102,6 @@ function ChaptersDisplay() {
           {/* Bible image container*/}
           <div className=" ">
             <img src={bibleImage} alt="Bible image" className="w-full" />
-
           </div>
 
           {/* Short information*/}
@@ -113,11 +112,13 @@ function ChaptersDisplay() {
             <p className="font-nokia-bold text-secondary-6 text-xs leading-none">Pass 100% of your lessons to complete this course</p>
           </div>
 
+          {/* Course title and description*/}
           <div className=" mx-auto w-[90%]">
-            <h1 className="font-nokia-bold text-secondary-6 text-2xl mt-2">
+            <h1 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg  text-center  my-2 ">
               {courseData?.title}
             </h1>
-            <p className="font-nokia-bold text-secondary-6 text-justify text-lg leading-tight my-3">
+            <hr className="border-accent-5 border w-[100%] " />
+            <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
               {courseData?.description}
             </p>
             {/* </div> */}
