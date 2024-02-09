@@ -16,8 +16,8 @@ import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
 
 interface EditingSlideIndex {
-  chapter: number | null;
-  slide: number | null;
+  chapter: number;
+  slide: number;
 }
 
 function ChaptersAdd() {
@@ -26,12 +26,8 @@ function ChaptersAdd() {
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
-  const [editingSlideIndex, setEditingSlideIndex] = useState<EditingSlideIndex>(
-    {
-      chapter: null,
-      slide: null,
-    }
-  );
+  const [editingSlideIndex, setEditingSlideIndex] =
+    useState<EditingSlideIndex | null>(null);
   const [selectedChapterIndex, setSelectedChapterIndex] = useState<
     number | null
   >(null);
