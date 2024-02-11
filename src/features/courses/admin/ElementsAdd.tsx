@@ -23,10 +23,10 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
 
   const [currentElement, setCurrentElement] = useState("");
 
-  const [listItems, setListItems] = useState([]);
-  const [currentListItem, setCurrentListItem] = useState("");
-  const [slidesDetails, setSlidesDetails] = useState([]);
-  const [currentSlideDetails, setCurrentSlideDetails] = useState("");
+  const [listItems, setListItems] = useState<string[]>([]);
+  const [currentListItem, setCurrentListItem] = useState<string>("");
+  const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
+  const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
 
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
@@ -62,7 +62,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     }
   };
 
-  const handleDeleteSlideItem = (indexToDelete) => {
+  const handleDeleteSlideItem = (indexToDelete: number) => {
     const updatedSlides = slidesDetails.filter(
       (_, index) => index !== indexToDelete
     );
@@ -81,7 +81,10 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setSlidesDetails([]); // Clear slides details after adding
   };
 
-  const handleFileInputChange = (e, id) => {
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
     const file = e.target.files[0]; // Get the first file from the input
     if (file) {
       dispatch(
@@ -94,7 +97,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       );
     }
   };
-  const handleDeleteListItem = (indexToDelete) => {
+  const handleDeleteListItem = (indexToDelete: number) => {
     const updatedList = listItems.filter((_, index) => index !== indexToDelete);
     setListItems(updatedList);
   };
@@ -143,7 +146,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     <div className="mt-4">
       <div className="flex flex-row items-center w-[100%] gap-1">
         <textarea
-          type="text"
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
@@ -180,7 +182,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     </div>
   );
 
-  const handleDropdownChange = (e) => {
+  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCurrentElement(e.target.value);
   };
 
@@ -213,7 +215,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     }
   };
 
-  const handleInputChange = (id, value) => {
+  const handleInputChange = (id: string, value: string) => {
     dispatch(
       updateElement({
         chapterIndex,
@@ -224,7 +226,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     );
   };
 
-  const handleDeleteButtonClick = (elementId) => {
+  const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
       deleteElement({
         chapterIndex,
@@ -235,15 +237,15 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   // Quiz-related state and functions
-  const [quizQuestion, setQuizQuestion] = useState("");
-  const [quizChoices, setQuizChoices] = useState([]);
-  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [quizQuestion, setQuizQuestion] = useState<string>("");
+  const [quizChoices, setQuizChoices] = useState<string[]>([]);
+  const [correctAnswer, setCorrectAnswer] = useState<string>("");
 
-  const handleQuizQuestionChange = (event) => {
+  const handleQuizQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuizQuestion(event.target.value);
   };
 
-  const handleQuizChoiceChange = (index, text) => {
+  const handleQuizChoiceChange = (index: number, text: string) => {
     setQuizChoices(
       quizChoices.map((choice, i) => (i === index ? text : choice))
     );
@@ -253,7 +255,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setQuizChoices([...quizChoices, ""]); // Adds a new empty choice
   };
 
-  const handleCorrectAnswerChange = (value) => {
+  const handleCorrectAnswerChange = (value: string) => {
     setCorrectAnswer(value);
   };
 
