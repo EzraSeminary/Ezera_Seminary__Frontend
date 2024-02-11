@@ -1,17 +1,24 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useState, ChangeEvent, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
+  CourseState,
 } from "../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
-function ElementsAdd({ chapterIndex, slideIndex }) {
+interface ElementsAddProps {
+  chapterIndex: number;
+  slideIndex: number;
+}
+
+const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const dispatch = useDispatch();
 
-  const chapters = useSelector((state) => state.course.chapters);
+  const chapters = useSelector(
+    (state: { course: CourseState }) => state.course.chapters
+  );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 
   const [currentElement, setCurrentElement] = useState("");
@@ -21,7 +28,7 @@ function ElementsAdd({ chapterIndex, slideIndex }) {
   const [slidesDetails, setSlidesDetails] = useState([]);
   const [currentSlideDetails, setCurrentSlideDetails] = useState("");
 
-  const handleListInputChange = (event) => {
+  const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
 
@@ -406,11 +413,6 @@ function ElementsAdd({ chapterIndex, slideIndex }) {
       ))}
     </div>
   );
-}
-
-ElementsAdd.propTypes = {
-  chapterIndex: PropTypes.number.isRequired,
-  slideIndex: PropTypes.number.isRequired,
 };
 
 export default ElementsAdd;
