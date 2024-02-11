@@ -9,8 +9,8 @@ import "@splidejs/react-splide/css/core";
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
-    chapter: number | null;
-    slide: number | null;
+    chapter: number;
+    slide: number;
   };
 }
 
@@ -49,16 +49,14 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
-    if (
-      selectedSlide?.elements?.some(
-        (element: Element) => element.type === "quiz"
-      )
-    ) {
+    if (selectedSlide?.elements?.some((element) => element.type === "quiz")) {
       const quizElement = selectedSlide.elements.find(
-        (element: Element) => element.type === "quiz"
-      ) as QuizElement;
-      const isCorrect = choiceValue === quizElement.value.correctAnswer;
-      setIsAnswerCorrect(isCorrect);
+        (element) => element.type === "quiz"
+      );
+      if (quizElement) {
+        const isCorrect = choiceValue === quizElement.value.correctAnswer;
+        setIsAnswerCorrect(isCorrect);
+      }
     }
   };
 
@@ -83,7 +81,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     if (selectedSlide && selectedSlide.elements) {
       const imgElement = selectedSlide.elements.find(
         (element) => element.type === "img"
-      ) as ImageElement;
+      );
       if (imgElement && imgElement.value instanceof File) {
         const objectUrl = URL.createObjectURL(imgElement.value);
         setImagePreviewUrl(objectUrl);

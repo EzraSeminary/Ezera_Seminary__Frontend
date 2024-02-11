@@ -90,7 +90,7 @@ export const courseSlice = createSlice({
       const { chapterIndex, slideIndex, value } = action.payload;
       state.chapters[chapterIndex].slides[slideIndex].slide = value;
     },
-    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value: any }>) => {
+    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value?: string | string[] | { question: string; choices: { text: string }[]; correctAnswer: string } | File | null }>) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
 
       if (state.chapters[chapterIndex] == null) {
@@ -136,7 +136,7 @@ export const courseSlice = createSlice({
 
       slides[slideIndex].elements.push(newElement);
     },
-    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: any }>) => {
+    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value?: string | string[] | { question: string; choices: { text: string }[]; correctAnswer: string } | File | null }>) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);
