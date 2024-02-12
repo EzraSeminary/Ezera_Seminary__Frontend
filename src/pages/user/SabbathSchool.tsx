@@ -1,13 +1,13 @@
-import { useState } from "react";
-import SSLHome from "@/features/SabbathSchoolComponent/SSLHome";
-import CurrentSSL from "@/features/SabbathSchoolComponent/CurrentSSL";
+import { SetStateAction, useState } from "react";
+import SSLHome from "@/features/sabbathSchool/SSLHome";
+import CurrentSSL from "@/features/sabbathSchool/CurrentSSL";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 
 const SabbathSchool = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
     setSearchTerm(e.target.value);
   };
 

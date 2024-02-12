@@ -1,3 +1,4 @@
+// To be fixed ❗❗❗❗
 import { useParams, Link } from "react-router-dom";
 import { useGetSSLOfQuarterQuery } from "./../../services/SabbathSchoolApi";
 import DateConverter from "./DateConverter";
@@ -10,7 +11,7 @@ function SSLQuarter() {
     isLoading,
   } = useGetSSLOfQuarterQuery(quarter);
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error && 'message' in error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="container mx-auto px-4 w-[90%] md:w-[80%] py-12 font-nokia-bold text-secondary-6">

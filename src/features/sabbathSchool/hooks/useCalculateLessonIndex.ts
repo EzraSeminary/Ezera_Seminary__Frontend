@@ -1,6 +1,6 @@
 // hooks/useCalculateLessonIndex.js
 
-function useCalculateLessonIndex(currentDate) {
+function useCalculateLessonIndex(currentDate: string | number | Date) {
   function calculateLessonIndex() {
     const currentDateObj = new Date(currentDate);
     const month = currentDateObj.getMonth() + 1; // Month is zero-based, so we add 1
@@ -21,7 +21,7 @@ function useCalculateLessonIndex(currentDate) {
     // Calculate the week within the quarter
     const startQuarter = new Date(year, Math.floor((month - 1) / 3) * 3, 1);
     const diffDays = Math.floor(
-      (currentDateObj - startQuarter) / (1000 * 60 * 60 * 24)
+      (Number(currentDateObj) - Number(startQuarter)) / (1000 * 60 * 60 * 24)
     );
     const week = Math.floor(diffDays / 7) + 1;
 

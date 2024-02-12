@@ -1,6 +1,5 @@
-import React from "react";
 
-const VersePopup = ({ isOpen, onClose, content }) => {
+const VersePopup = ({ isOpen, onClose, content }: { isOpen: boolean, onClose: () => void, content: string }) => {
   if (!isOpen) return null;
 
   return (

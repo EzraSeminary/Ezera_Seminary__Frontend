@@ -1,29 +1,35 @@
-// DisplaySSLLesson.jsx
+// DisplaySSLLesson.tsx
 import "./SSLStyles.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   useGetSSLOfDayLessonQuery,
   useGetSSLOfDayQuery,
-} from "./../../services/SabbathSchoolApi";
+} from "../../services/SabbathSchoolApi";
 import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 
 function DisplaySSLLesson() {
-  const { quarter, id, day, selectedDayId } = useParams();
-  const [backgroundImage, setBackgroundImage] = useState("");
+  interface Params {
+    quarter: string;
+    id: string;
+    day: string;
+    [key: string]: string;
+  }
+
+  const { quarter, id, day } = useParams<Params>();
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
   const daysOfWeek = ["ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "አርብ"];
   const {
     data: lessonDetails,
-    error,
+    error: lessonError,
     isLoading,
   } = useGetSSLOfDayLessonQuery({ path: quarter, id: id, day: day });
 
   const {
     data: dayDetails,
-    dayError,
-    dayIsLoading,
+    error: dayError,
   } = useGetSSLOfDayQuery({ path: quarter, id: id });
 
   useEffect(() => {
@@ -33,8 +39,8 @@ function DisplaySSLLesson() {
   }, [dayDetails]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (dayError) return <div>Error: {dayError.message}</div>;
+  if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
+  if (dayError && 'message' in dayError) return <div>Error: {dayError.message}</div>;
   const html = parse(lessonDetails.content);
 
   return (
@@ -53,7 +59,7 @@ function DisplaySSLLesson() {
         </div>
         <div className="flex flex-col">
           <p className="flex flex-row text-primary-5 text-lg">
-            {daysOfWeek[(day % 7) - 1]}፣&nbsp;&nbsp;
+            {daysOfWeek[((Number(day) ?? 0) % 7) - 1]}፣&nbsp;&nbsp;
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />

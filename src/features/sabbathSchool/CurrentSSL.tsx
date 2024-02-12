@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   useGetSSLOfDayQuery,
   useGetSSLOfQuarterQuery,
-} from "./../../services/SabbathSchoolApi";
+} from "@/services/SabbathSchoolApi";
 import DateConverter from "./DateConverter";
 import { YoutubeLogo } from "@phosphor-icons/react";
 function CurrentSSL() {
@@ -30,8 +30,8 @@ function CurrentSSL() {
   }, [lessonDetails]);
 
   if (lessonIsLoading || quarterIsLoading) return <div>Loading...</div>;
-  if (lessonError) return <div>Error: {lessonError.message}</div>;
-  if (quarterError) return <div>Error: {quarterError.message}</div>;
+  if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
+  if (quarterError && 'message' in quarterError) return <div>Error: {quarterError.message}</div>;
   if (!quarterDetails || !lessonDetails) return <div>Missing data...</div>;
 
   return (
@@ -80,7 +80,7 @@ function CurrentSSL() {
                     quarterlyTitle: quarterDetails.quarterly.title,
                     quarterlyCover: quarterDetails.quarterly.cover,
                   },
-                }}
+                } as { pathname: string, state: { quarterlyTitle: string, quarterlyCover: string } } }
               >
                 ትምህርቱን ክፈት
               </Link>

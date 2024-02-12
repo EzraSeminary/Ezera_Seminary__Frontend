@@ -1,5 +1,6 @@
+// Not finished Debugging ❗❗❗❗
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction, useEffect, useState } from "react";
 import {
   useGetSSLOfDayQuery,
   useGetSSLOfQuarterQuery,
@@ -18,7 +19,7 @@ function SSLDay() {
     isLoading: quarterIsLoading,
   } = useGetSSLOfQuarterQuery(quarter);
   const daysOfWeek = ["ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "አርብ"];
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const [selectedDayId, setSelectedDayId] = useState(null);
 
@@ -34,8 +35,8 @@ function SSLDay() {
   }, [lessonDetails, quarter, id, selectedDayId, navigate]);
 
   if (lessonIsLoading || quarterIsLoading) return <div>Loading...</div>;
-  if (lessonError) return <div>Error: {lessonError.message}</div>;
-  if (quarterError) return <div>Error: {quarterError.message}</div>;
+  if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
+  if (quarterError && 'message' in quarterError) return <div>Error: {quarterError.message}</div>;
 
   if (!quarterDetails || !lessonDetails) return <div>Missing data...</div>;
 
@@ -68,7 +69,7 @@ function SSLDay() {
             {quarterDetails.quarterly.title}
           </button>
           <div className="flex flex-col gap-2">
-            {lessonDetails.days.map((item, index) => (
+            {lessonDetails.days.map((item: { id: SetStateAction<null>; date: string; title: string | number | boolean | ReactElement<unknown, string | JSXElementConstructor<unknown>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, index: Key | null | undefined) => (
               <Link
                 key={index}
                 className={`flex flex-col text-right px-2 border border-secondary-3 rounded-md ${
@@ -78,7 +79,7 @@ function SSLDay() {
                 onClick={() => setSelectedDayId(item.id)}
               >
                 <p className="flex flex-row text-secondary-3 text-xs justify-end">
-                  {daysOfWeek[index % 7]}፣&nbsp;&nbsp;
+                  {daysOfWeek[(index as number) % 7]}፣&nbsp;&nbsp;
                   <DateConverter gregorianDate={item.date} />
                 </p>
 
