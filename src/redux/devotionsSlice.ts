@@ -1,25 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import createAxiosInstance from "@/api/axiosInstance";
-
-interface Devotion {
-  month: string;
-  day: string;
-  title: string;
-  chapter: string;
-  verse: string;
-  paragraphs: string[];
-  prayer: string;
-  subTitles: string[];
-  photo: string | null;
-  _id?: string;
-}
-
-interface DevotionState {
-  form: Devotion;
-  devotions: Devotion[];
-  selectedDevotion: Devotion | null;
-  isEditing: boolean;
-}
 
 // Async thunk for fetching devotions
 export const fetchDevotions = createAsyncThunk(
@@ -88,7 +68,7 @@ export const deleteDevotion = createAsyncThunk(
   }
 );
 
-const initialState: DevotionState = {
+const initialState = {
   form: {
     month: "",
     day: "",
@@ -109,16 +89,16 @@ const devotionsSlice = createSlice({
   name: "devotions",
   initialState,
   reducers: {
-    selectDevotion: (state, action: PayloadAction<Devotion>) => {
+    selectDevotion: (state, action) => {
       state.selectedDevotion = action.payload;
     },
-    startEditing: (state, action: PayloadAction<Devotion>) => {
+    startEditing: (state, action) => {
       state.form = action.payload;
     },
-    setIsEditing: (state, action: PayloadAction<boolean>) => {
+    setIsEditing: (state, action) => {
       state.isEditing = action.payload;
     },
-    updateForm: (state, action: PayloadAction<Partial<Devotion>>) => {
+    updateForm: (state, action) => {
       state.form = { ...state.form, ...action.payload };
     },
     resetForm: (state) => {

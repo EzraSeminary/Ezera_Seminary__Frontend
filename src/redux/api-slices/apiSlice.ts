@@ -35,6 +35,16 @@ export const apiSlice = createApi({
         body: JSON.stringify({ firstName, lastName, email, password }),
       }),
     }),
+    updateUser: builder.mutation({
+      query: ({ firstName, lastName, email, password }) => ({
+        url: `/users/profile`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      }),
+    }),
     getCourses: builder.query({
       query: () => "course/getall",
     }),
@@ -90,6 +100,7 @@ export const apiSlice = createApi({
 export const {
   useSignupMutation,
   useLoginMutation,
+  useUpdateUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,

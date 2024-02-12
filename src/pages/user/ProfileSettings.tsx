@@ -1,15 +1,15 @@
-// Not fixed ❗❗❗❗❗❗
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { RootState } from "@/redux/store";
 
 const ProfileSettings = () => {
   const dispatch = useDispatch();
   // Fetch the current user details (assuming the useGetUserQuery hook is available)
-  const currentUser = useSelector((state) => state.auth.user);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   // Local state for form fields initialized with current user details
   const [firstName, setFirstName] = useState("");
@@ -34,22 +34,25 @@ const ProfileSettings = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
-    // Check if there's any change in the form fields
-    if (
-      firstName !== currentUser.firstName ||
-      lastName !== currentUser.lastName ||
-      email !== currentUser.email ||
-      password !== currentUser.password
-    ) {
-      updateUserMutation({ firstName, lastName, email, password })
-        .unwrap()
-        .then((updatedUser) => {
-          // Dispatch an action to update the user in the store, if necessary
-          dispatch(updateUser(updatedUser));
-        });
+    // Add a type guard to ensure currentUser is not undefined
+    if (currentUser) {
+      // Check if there's any change in the form fields
+      if (
+        firstName !== currentUser.firstName ||
+        lastName !== currentUser.lastName ||
+        email !== currentUser.email ||
+        password !== currentUser.password
+      ) {
+        updateUserMutation({ firstName, lastName, email, password })
+          .unwrap()
+          .then((updatedUser) => {
+            // Dispatch an action to update the user in the store, if necessary
+            dispatch(updateUser(updatedUser));
+          });
+      }
     }
   };
 

@@ -1,11 +1,17 @@
 // authSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface User {
+  role: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null; // Add this line
+  password: string | null; // Add this line
+  token: string | null;
+}
 
 const initialState = {
-  user: null,
-  role: null,
-  firstName: null,
-  token: null,
+  user: null as User | null,
   isAuthReady: false,
 };
 
@@ -13,37 +19,31 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action) => {
+    login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      state.role = action.payload.role;
-      state.firstName = action.payload.firstName;
-      state.token = action.payload.token;
 
       // Store the token in localStorage
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("token", action.payload.token || "");
     },
-    signup: (state, action) => {
-      // Add this reducer
+    signup: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      state.role = action.payload.role;
-      state.firstName = action.payload.firstName;
-      state.token = action.payload.token;
+    },
+    updateUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
     },
     logout: (state) => {
       state.user = null;
-      state.role = null;
-      state.firstName = null;
-      state.token = null;
 
       // Remove the token from localStorage
       localStorage.removeItem("token");
     },
-    setAuthReady: (state, action) => {
+    setAuthReady: (state, action: PayloadAction<boolean>) => {
       state.isAuthReady = action.payload;
     },
   },
 });
 
-export const { login, signup, logout, setAuthReady } = authSlice.actions; // Export the signup action
+export const { login, signup, updateUser, logout, setAuthReady } =
+  authSlice.actions;
 
 export default authSlice.reducer;

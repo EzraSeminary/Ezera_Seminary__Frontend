@@ -1,25 +1,22 @@
-// store.js
 import { configureStore } from "@reduxjs/toolkit";
 import courseReducer from "./courseSlice";
 import devotionsReducer from "./devotionsSlice";
-import authReducer from "./authSlice"; // import the auth reducer
-import { apiSlice } from "./api-slices/apiSlice"; // import the api reducer
-
+import authReducer from "./authSlice";
+import { apiSlice } from "./api-slices/apiSlice";
+import { SSLapi } from "./../services/SabbathSchoolApi";
 
 const store = configureStore({
   reducer: {
     course: courseReducer,
     devotions: devotionsReducer,
-    auth: authReducer, // include the auth reducer
-    [apiSlice.reducerPath]: apiSlice.reducer, // include the api reducer
+    auth: authReducer,
+    [SSLapi.reducerPath]: SSLapi.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
-  // Adding the api middleware enables caching, invalidation, polling and other features of `rtk-query`
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(SSLapi.middleware, apiSlice.middleware),
 });
 
-console.log(store.getState());
-
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 
 export default store;
