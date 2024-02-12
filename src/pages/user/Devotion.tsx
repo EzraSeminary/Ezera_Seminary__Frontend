@@ -1,3 +1,4 @@
+// Not fixed ❗❗❗❗❗❗
 import { useState } from "react";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice"; // import the hook from your apiSlice

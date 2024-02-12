@@ -1,5 +1,5 @@
-import DevotionForm from "../features/DevotionComponents/DevotionForm";
-import DevotionDisplay from "../features/DevotionComponents/DevotionDisplay";
+import DevotionForm from "@/features/devotions/DevotionForm";
+import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 
 const ManageDevotion = () => {
   return (

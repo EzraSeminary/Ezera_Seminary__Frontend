@@ -1,5 +1,5 @@
-import DevotionForm from "../features/DevotionComponents/DevotionForm";
-import DevotionPreview from "@/features/DevotionComponents/DevotionPreview";
+import DevotionForm from "@/features/devotions/DevotionForm";
+import DevotionPreview from "@/features/devotions/DevotionPreview";
 
 const CreateDevotion = () => {
   return (
