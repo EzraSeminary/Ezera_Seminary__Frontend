@@ -10,84 +10,111 @@ interface CategoriesProps {
 const Categories: React.FC<CategoriesProps> = ({ title }) => {
   return (
     <div className="space-y-3">
+
+      {/* Container for Title of the page */}
       <div>
+
+        <h2 className="text-3xl font-nokia-bold text-secondary-6 ">
+          {title}
+        </h2>
         <h3 className="text-xs md:text-sm font-Lato-bold  text-accent-5">
           Explore different topics
         </h3>
-        <h2 className="text-xl md:text-2xl font-Lato-bold  text-secondary-6">
-          {title}
-        </h2>
       </div>
-      <hr className="border-accent-5 border-1 w-[100%] pb-3" />
-      <div className="flex flex-col w-[100%] justify-center items-center  mx-auto space-y-6 md:flex-row md:space-x-3 md:space-y-0">
-        <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
-          <div className="mx-auto w-[100%] ">
-            <img className="w-full object-cover" src={category1} alt="" />
+      <hr className="border-accent-5 border-1 w-[10 0%] md:w-[30%] pb-3" />
+
+      {/* Container for Categories */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+
+        {/* Category 1 */}
+        <div className="bg-secondary-6  space-y-3  font-nokia-bold rounded-xl shadow-2xl h-auto w-full border-accent-5 border-2">
+
+          {/* Image */}
+          <div className="mx-auto w-full ">
+            <img className="w-full " src={category1} alt="" />
           </div>
-          <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
-            <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
-              <div className="flex flex-col justify-center items-start">
-                <h2 className=" text-[#fff] text-lg md:text-2xl ">ርዕሳዊ ጥናት</h2>
-                <p className="text-accent-11 font-nokia-light text-xs md:text-lg mb-4 md:w-[80%]">
-                  የተለየ ርዕስን መሰረት ያደረጉ ጥናቶች
-                </p>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  className="bg-accent-6 text-primary-6 px-5 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7"
-                >
-                  ክፈት
-                </button>
-              </div>
+
+          {/* Container for Title, Description and button */}
+          <div className="flex justify-between items-center w-[90%] md:w-[100%]  font-nokia-bold mx-auto pb-3 pl-2 md:pl-5">
+
+            {/* Title and Description */}
+            <div className="flex flex-col justify-center items-start">
+              <h2 className=" text-[#fff]  text-lg lg:text-xl xl:text-2xl">ርዕሳዊ ጥናት</h2>
+              <p className="text-accent-11 font-nokia-light  text-sm xl:text-lg ">
+                የተለየ ርዕስን መሰረት ያደረጉ ጥናቶች
+              </p>
+            </div>
+
+            {/* Button */}
+            <div>
+              <button
+                type="button"
+                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-4 md:px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
+              >
+                ክፈት
+              </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
-          <div className="mx-auto w-[100%] ">
-            <img className="w-full object-cover" src={category2} alt="" />
+
+        {/* Category 2 */}
+        <div className="bg-secondary-6  space-y-3  font-nokia-bold rounded-xl shadow-2xl h-auto w-full border-accent-5 border-2">
+
+          {/* Image */}
+          <div className="mx-auto w-full ">
+            <img className="w-full " src={category2} alt="" />
           </div>
-          <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
-            <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
-              <div className="flex flex-col justify-center items-start">
-                <h2 className=" text-[#fff] text-lg md:text-2xl ">
-                  የባለታሪክ ጥናት
-                </h2>
-                <p className="text-accent-11 font-nokia-light text-xs md:text-lg mb-4 md:w-[80%]">
-                  የሰዎችን ታሪክ መሰረት ያደረጉ ጥናቶች
-                </p>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  className="bg-accent-6 text-primary-6 px-5 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7"
-                >
-                  ክፈት
-                </button>
-              </div>
+
+          {/* Container for Title, Description and button */}
+          <div className="flex justify-between items-center w-[90%] md:w-[100%]  font-nokia-bold mx-auto pb-3 pl-2 md:pl-5">
+
+            {/* Title and Description */}
+            <div className="flex flex-col justify-center items-start">
+              <h2 className=" text-[#fff]  text-lg lg:text-xl xl:text-2xl">የባለታሪክ ጥናት</h2>
+              <p className="text-accent-11 font-nokia-light  text-sm xl:text-lg ">
+                የሰዎችን ታሪክ መሰረት ያደረጉ ጥናቶች
+              </p>
+            </div>
+
+            {/* Button */}
+            <div>
+              <button
+                type="button"
+                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-4 md:px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
+              >
+                ክፈት
+              </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-[90%] md:w-[33.3%] border-accent-5 border-2  shadow-2xl rounded-t-3xl md:rounded-xl">
-          <div className="mx-auto w-[100%] ">
-            <img className="w-full object-cover" src={category3} alt="" />
+
+        {/* Category 3 */}
+        <div className="bg-secondary-6  space-y-3  font-nokia-bold rounded-xl shadow-2xl h-auto w-full border-accent-5 border-2">
+
+          {/* Image */}
+          <div className="mx-auto w-full ">
+            <img className="w-full " src={category3} alt="" />
           </div>
-          <div className="bg-secondary-6 bg-opacity-90 w-[100%]">
-            <div className="flex justify-between items-center w-[90%] text-center py-4 font-nokia-bold mx-auto">
-              <div className="flex flex-col justify-center items-start">
-                <h2 className=" text-[#fff] text-lg md:text-2xl ">የመጽሃፍ ጥናት</h2>
-                <p className="text-accent-11 font-nokia-light text-xs md:text-lg mb-4 md:w-[90%]">
-                  የተለየ መጽሃፍን መሰረት ያደርጉ ጥናቶች
-                </p>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  className="bg-accent-6 text-primary-6 px-5 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7"
-                >
-                  ክፈት
-                </button>
-              </div>
+
+          {/* Container for Title, Description and button */}
+          <div className="flex justify-between items-center w-[90%] md:w-[100%]  font-nokia-bold mx-auto pb-3 pl-2 md:pl-5">
+
+            {/* Title and Description */}
+            <div className="flex flex-col justify-center items-start">
+              <h2 className=" text-[#fff]  text-lg lg:text-xl xl:text-2xl">የመጽሃፍ ጥናት</h2>
+              <p className="text-accent-11 font-nokia-light  text-sm xl:text-lg ">
+                የተለየ መጽሃፍን መሰረት ያደርጉ ጥናቶች
+              </p>
+            </div>
+
+            {/* Button */}
+            <div>
+              <button
+                type="button"
+                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-4 md:px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
+              >
+                ክፈት
+              </button>
             </div>
           </div>
         </div>

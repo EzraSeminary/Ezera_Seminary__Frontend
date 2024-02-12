@@ -116,3 +116,15 @@
   background-repeat: no-repeat;
   width: 100%;
 }
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px; /* width of the vertical scrollbar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(250, 156, 16, 0.5); /* color of the scrollbar itself */
+  border-radius: 20px; /* roundness of the scrollbar corners */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* color of the scrollbar track */
+}
