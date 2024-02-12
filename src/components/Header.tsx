@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
-import { useAuthContext } from "../hooks/useAuthContext";
 import { FaRegUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { Button } from "./ui/button";
 import bgImage from "../assets/header-img.webp";
+import { RootState } from "@/redux/store";
 
 const Header: React.FC = () => {
-  const { user } = useAuthContext();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   {/* State to control account modal  */ }
   const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
   {/* State to control mobile menu bar  */ }
@@ -77,9 +79,11 @@ const Header: React.FC = () => {
 
                 <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
                   <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7  xl:w-12 xl:h-9 z-30" alt="" />
+                  <NavLink to="/" onClick={closeMenu}>
                   <h3 className="text-white font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl ">
                     <strong>Ezra</strong> Seminary
                   </h3>
+                  </NavLink>
                 </div>
                 {/* MenuBar */}
                 <div className="md:hidden  flex">
@@ -143,7 +147,6 @@ const Header: React.FC = () => {
                         <FaRegUserCircle />
                         <div className="text-xs  xl:text-lg font-medium text-white">
                           {user.firstName}
-                          <div className="text-xs  xl:text-lg text-white-400">{user.role}</div>
                         </div>
                       </div>
                       {showAccountModal && (
@@ -264,7 +267,6 @@ const Header: React.FC = () => {
                       <FaRegUserCircle />
                       <div className="text-xs  xl:text-lg font-medium text-white">
                         {user.firstName}
-                        <div className="text-xs  xl:text-lg text-white-400">{user.role}</div>
                       </div>
                     </div>
                     {showAccountModal && (
