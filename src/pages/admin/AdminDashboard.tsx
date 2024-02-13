@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import ManageCourse from "./ManageCourse";
 import CreateCourse from "./CreateCourse";
-import AdminChapter from "../../features/courses/admin/AdminChapter";
+import AdminChapter from "../../features/courses/admin/create-course/AdminChapter";
 // import SabbathSchool from "../routes/SabbathSchool";
 // import CreateDevotion from "./CreateDevotion";
 // import ManageDevotion from "./ManageDevotion";

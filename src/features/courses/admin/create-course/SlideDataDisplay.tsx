@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectSlides, Slide } from "../../../redux/courseSlice";
-import { RootState } from "../../../redux/store";
+import { selectSlides, Slide } from "../../../../redux/courseSlice";
+import { RootState } from "../../../../redux/store";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";

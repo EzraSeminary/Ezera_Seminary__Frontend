@@ -5,7 +5,7 @@ import {
   updateElement,
   deleteElement,
   CourseState,
-} from "../../../redux/courseSlice";
+} from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
 interface ElementsAddProps {

@@ -11,7 +11,7 @@ import {
   updateSlide,
   deleteChapter,
   deleteSlide,
-} from "../../../redux/courseSlice";
+} from "../../../../redux/courseSlice";
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
 
