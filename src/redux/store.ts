@@ -1,24 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
 import courseReducer from "./courseSlice";
-import { api } from "../services/api";
+import devotionsReducer from "./devotionsSlice";
+import authReducer, { AuthState } from "./authSlice";
+import { apiSlice } from "./api-slices/apiSlice";
+import { SSLapi } from "./../services/SabbathSchoolApi";
 import { CourseState } from "./courseSlice";
 import { ApiState } from "../services/api";
 
 export interface RootState {
   course: CourseState;
-  [api.reducerPath]: ApiState;
+  api: ApiState;
+  auth: AuthState;
   // Define other state fields if you have more reducers
 }
 
 const store = configureStore({
   reducer: {
     course: courseReducer,
-    [api.reducerPath]: api.reducer,
+    devotions: devotionsReducer,
+    auth: authReducer,
+    [SSLapi.reducerPath]: SSLapi.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(SSLapi.middleware, apiSlice.middleware),
 });
 
-console.log(store.getState());
 
 export default store;
