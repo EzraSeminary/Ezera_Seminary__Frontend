@@ -1,31 +1,31 @@
 import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
-interface CourseState {
+export interface CourseState {
   title: string;
   description: string;
-  image: string;
+  image: string | File;
   chapters: Chapter[];
   currentChapterIndex?: number;
   currentSlideIndex?: number;
 }
 
 // Define a type for the Chapter
-interface Chapter {
+export interface Chapter {
   chapter: string;
   slides: Slide[];
 }
 
 // Define a type for each of the Slide and Element properties
-interface Slide {
+export interface Slide {
   slide: string;
   elements: Element[];
 }
 
-interface Element {
+export interface Element {
   type: string;
   id: string;
-  value: string | string[];
+  value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
 }
 
 // Define the initial state using `CourseState`
@@ -90,7 +90,7 @@ export const courseSlice = createSlice({
       const { chapterIndex, slideIndex, value } = action.payload;
       state.chapters[chapterIndex].slides[slideIndex].slide = value;
     },
-    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value: string }>) => {
+    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value?: string | string[] | { question: string; choices: { text: string }[]; correctAnswer: string } | File | null }>) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
 
       if (state.chapters[chapterIndex] == null) {
@@ -120,7 +120,7 @@ export const courseSlice = createSlice({
       const newElement = {
         type: elementType,
         id: `${elementType}${Math.random().toString(36).substr(2, 9)}`, // Unique ID generation
-        value: elementType === "list" || elementType === "slide" ? value : "",
+        value: elementType === "list" || elementType === "slide" || elementType === "quiz" ? value : "",
       };
 
       // Handle other element types and set their values accordingly
@@ -128,15 +128,14 @@ export const courseSlice = createSlice({
         elementType === "title" ||
         elementType === "sub" ||
         elementType === "text" ||
-        elementType === "img" ||
-        elementType === "quiz"
+        elementType === "img"
       ) {
         newElement.value = ""; // For other types, initialize the value as an empty string
       }
 
       slides[slideIndex].elements.push(newElement);
     },
-    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: string }>) => {
+    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value?: string | string[] | { question: string; choices: { text: string }[]; correctAnswer: string } | File | null }>) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);

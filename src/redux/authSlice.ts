@@ -10,6 +10,11 @@ interface User {
   token: string | null;
 }
 
+export interface AuthState {
+  user: User | null;
+  isAuthReady: boolean;
+}
+
 const initialState = {
   user: null as User | null,
   isAuthReady: false,

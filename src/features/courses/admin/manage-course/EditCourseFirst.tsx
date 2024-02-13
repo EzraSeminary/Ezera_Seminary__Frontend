@@ -1,31 +1,35 @@
-import { useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTitle,
   setDescription,
   setImage,
   selectCourse,
-} from "../../redux/courseSlice";
-import { Button } from "../../components/ui/button";
-import { CourseState } from "../../redux/courseSlice";
+} from "@/redux/courseSlice";
+import { Button } from "@/components/ui/button";
 
-function CreateCourse() {
+type EditCourseFirstProps = {
+  setShowComponent: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
+  setShowComponent,
+}) => {
   const dispatch = useDispatch();
-  const { title, description } = useSelector(
-    (state: { course: CourseState }) => state.course
-  );
+  const { title, description } = useSelector(selectCourse);
   const course = useSelector(selectCourse);
 
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
-  const handleImageChange = (e: ChangeEvent) => {
-    const file = e.target.files[[0]];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+
     if (file) {
-      dispatch(setImage(file)); // Dispatch the File object to the store
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
-        setImagePreviewUrl(fileReader.result as string);
+        const imageString = fileReader.result as string;
+        dispatch(setImage(imageString)); // Dispatch the string representation of the File object to the store
+        setImagePreviewUrl(imageString);
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
     }
@@ -33,12 +37,17 @@ function CreateCourse() {
 
   console.log(course);
 
+  // navigate back to the previous route
+  const handleGoBack = () => {
+    setShowComponent(false);
+  };
+
   return (
     <div className="w-[80%] mx-auto pt-9 font-nokia-bold">
       <h2 className="text-accent-6 text-2xl border-b border-primary-8 pb-1">
-        Create Course
+        Edit Course
       </h2>
-      <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
+      <div className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
         <div className="relative col-span-12 mx-auto h-72 w-[100%]">
           {imagePreviewUrl && (
             <img
@@ -61,7 +70,6 @@ function CreateCourse() {
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
             onChange={handleImageChange}
-            required
           />
           <div className="absolute inset-0 rounded-md bg-accent-8 opacity-60"></div>
         </div>
@@ -75,7 +83,6 @@ function CreateCourse() {
             autoComplete="off"
             value={title}
             onChange={(e) => dispatch(setTitle(e.target.value))}
-            required
           />
         </div>
         <div className="col-span-12">
@@ -88,17 +95,14 @@ function CreateCourse() {
             autoComplete="off"
             value={description}
             onChange={(e) => dispatch(setDescription(e.target.value))}
-            required
           />
         </div>
         <div className="col-span-12">
-          <Button>
-            <Link to="/admin/courses/create/chapters">Create</Link>
-          </Button>
+          <Button onClick={handleGoBack}>OK</Button>
         </div>
-      </form>
+      </div>
     </div>
   );
-}
+};
 
-export default CreateCourse;
+export default EditCourseFirst;

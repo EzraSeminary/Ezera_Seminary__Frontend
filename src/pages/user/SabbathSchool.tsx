@@ -16,7 +16,7 @@ const SabbathSchool = () => {
   };
   const isSmallScreen = window.matchMedia("(max-width: 426px)").matches;
   return (
-    <div className="container mx-auto px-4 w-[90%] md:w-[80%] py-12 font-nokia-bold text-secondary-6">
+    <div className="container mt-12 mx-auto px-4 w-[90%] md:w-[80%] py-12 font-nokia-bold text-secondary-6">
       <CurrentSSL />
       <div className="my-8">
         <div className="flex justify-between">
