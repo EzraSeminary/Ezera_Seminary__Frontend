@@ -1,4 +1,3 @@
-// Not finished Debugging ❗❗❗❗
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction, useEffect, useState } from "react";
 import {
@@ -89,7 +88,7 @@ function SSLDay() {
           </div>
         </div>
         <div className="w-4/5 ml-8">
-          <Outlet selectedDayId={selectedDayId} />
+          <Outlet context={{ selectedDayId }} />
         </div>
       </div>
     </div>

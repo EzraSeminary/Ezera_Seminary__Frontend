@@ -20,7 +20,7 @@ function DisplaySSLLesson() {
 
   const { quarter, id, day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
-  const daysOfWeek = ["ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "አርብ"];
+  const daysOfWeek = ["አርብ","ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
   const {
     data: lessonDetails,
     error: lessonError,
@@ -59,7 +59,7 @@ function DisplaySSLLesson() {
         </div>
         <div className="flex flex-col">
           <p className="flex flex-row text-primary-5 text-lg">
-            {daysOfWeek[((Number(day) ?? 0) % 7) - 1]}፣&nbsp;&nbsp;
+            {daysOfWeek[((Number(day) ?? 0) % 7)]}፣&nbsp;&nbsp;
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />

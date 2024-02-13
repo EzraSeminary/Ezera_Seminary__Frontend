@@ -10,7 +10,7 @@ const SSLHome = () => {
   return (
     <div className="">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {ssl ?? [].map((item, index) => (
+        {(ssl ?? []).map((item, index) => (
           <Link
             key={index}
             className="flex bg-white shadow-md rounded-md border border-accent-6 p-1 gap-2"
