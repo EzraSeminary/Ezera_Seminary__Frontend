@@ -25,7 +25,7 @@ export interface Slide {
 export interface Element {
   type: string;
   id: string;
-  value: string | string[];
+  value: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
 }
 
 // Define the initial state using `CourseState`
