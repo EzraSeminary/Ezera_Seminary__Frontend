@@ -1,7 +1,7 @@
 import useAxiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { selectCourse, setCourse } from "@/redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
@@ -38,7 +38,7 @@ function EditCourse() {
     }
   }, [id, dispatch]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     // console.log("Chapters data:", chapters);

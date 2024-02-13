@@ -4,7 +4,7 @@ import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 export interface CourseState {
   title: string;
   description: string;
-  image: string;
+  image: string | File;
   chapters: Chapter[];
   currentChapterIndex?: number;
   currentSlideIndex?: number;
