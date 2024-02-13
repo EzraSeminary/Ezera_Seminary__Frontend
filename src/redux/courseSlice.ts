@@ -25,7 +25,7 @@ export interface Slide {
 export interface Element {
   type: string;
   id: string;
-  value: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
+  value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
 }
 
 // Define the initial state using `CourseState`
@@ -120,7 +120,7 @@ export const courseSlice = createSlice({
       const newElement = {
         type: elementType,
         id: `${elementType}${Math.random().toString(36).substr(2, 9)}`, // Unique ID generation
-        value: elementType === "list" || elementType === "slide" ? value : "",
+        value: elementType === "list" || elementType === "slide" || elementType === "quiz" ? value : "",
       };
 
       // Handle other element types and set their values accordingly
@@ -128,8 +128,7 @@ export const courseSlice = createSlice({
         elementType === "title" ||
         elementType === "sub" ||
         elementType === "text" ||
-        elementType === "img" ||
-        elementType === "quiz"
+        elementType === "img"
       ) {
         newElement.value = ""; // For other types, initialize the value as an empty string
       }

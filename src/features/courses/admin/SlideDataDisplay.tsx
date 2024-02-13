@@ -54,7 +54,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
         (element) => element.type === "quiz"
       );
       if (quizElement) {
-        const isCorrect = choiceValue === quizElement.value.correctAnswer;
+        const isCorrect = choiceValue === quizElement.value?.correctAnswer;
         setIsAnswerCorrect(isCorrect);
       }
     }

@@ -403,7 +403,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
                 placeholder={`Enter ${element.type}`}
                 value={
                   element.type === "quiz"
-                    ? element.value.question
+                    ? element.value?.question
                     : element.value
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
