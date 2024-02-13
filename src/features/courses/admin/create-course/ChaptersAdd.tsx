@@ -15,7 +15,7 @@ import {
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
 
-interface EditingSlideIndex {
+export interface EditingSlideIndex {
   chapter: number;
   slide: number;
 }

@@ -10,37 +10,43 @@ import {
   updateSlide,
   deleteChapter,
   deleteSlide,
+  Chapter,
+  CourseState,
 } from "@/redux/courseSlice";
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import EditElements from "./EditElements";
 import AdminCourseDisplay from "./AdminCourseDisplay";
+import { EditingSlideIndex } from "../create-course/ChaptersAdd";
 
 function EditChapters() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
-  const chapters = useSelector(selectChapters) || [];
+  const course = useSelector(selectCourse) as CourseState;
+  const chapters = useSelector(selectChapters) as Chapter[];
   const allSlides = useSelector(selectAllSlides);
 
-  const [editingSlideIndex, setEditingSlideIndex] = useState(null);
-  const [selectedChapterIndex, setSelectedChapterIndex] = useState(null);
+  const [editingSlideIndex, setEditingSlideIndex] =
+    useState<EditingSlideIndex | null>(null);
+  const [selectedChapterIndex, setSelectedChapterIndex] = useState<
+    number | null
+  >(null);
 
   const addChapterHandler = () => {
     dispatch(addChapter());
   };
 
-  const updateChapterHandler = (index, value) => {
+  const updateChapterHandler = (index: number, value: string) => {
     dispatch(updateChapter({ chapterIndex: index, value }));
   };
 
-  const deleteChapterHandler = (chapterIndex) => {
+  const deleteChapterHandler = (chapterIndex: number) => {
     dispatch(deleteChapter({ chapterIndex }));
   };
 
-  const deleteSlideHandler = (chapterIndex, slideIndex) => {
+  const deleteSlideHandler = (chapterIndex: number, slideIndex: number) => {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
   };
 
-  const addSlideHandler = (chapterIndex) => {
+  const addSlideHandler = (chapterIndex: number) => {
     dispatch(addSlide({ chapterIndex }));
     setEditingSlideIndex({
       chapter: chapterIndex,
@@ -48,11 +54,15 @@ function EditChapters() {
     });
   };
 
-  const updateSlideHandler = (chapterIndex, slideIndex, value) => {
+  const updateSlideHandler = (
+    chapterIndex: number,
+    slideIndex: number,
+    value: string
+  ) => {
     dispatch(updateSlide({ chapterIndex, slideIndex, value }));
   };
 
-  const handleChapterClick = (chapterIndex) => {
+  const handleChapterClick = (chapterIndex: number) => {
     if (selectedChapterIndex === chapterIndex) {
       setSelectedChapterIndex(null); // Hide slides if clicked again
     } else {
