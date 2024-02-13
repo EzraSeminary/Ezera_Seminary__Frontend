@@ -2,6 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface ApiState {
   id: number;
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
 }
 
 export const api = createApi({
