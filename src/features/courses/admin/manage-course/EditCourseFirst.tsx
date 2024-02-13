@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTitle,
@@ -6,23 +6,29 @@ import {
   setImage,
   selectCourse,
 } from "@/redux/courseSlice";
-import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 
-function EditCourseFirst({ setShowComponent }) {
+type EditCourseFirstProps = {
+  setShowComponent: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
+  setShowComponent,
+}) => {
   const dispatch = useDispatch();
-  const { title, description } = useSelector((state) => state.course);
+  const { title, description } = useSelector(selectCourse);
   const course = useSelector(selectCourse);
 
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[[0]];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[[0]] : null;
+
     if (file) {
       dispatch(setImage(file)); // Dispatch the File object to the store
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
-        setImagePreviewUrl(fileReader.result);
+        setImagePreviewUrl(fileReader.result as string);
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
     }
@@ -96,10 +102,6 @@ function EditCourseFirst({ setShowComponent }) {
       </div>
     </div>
   );
-}
-
-EditCourseFirst.propTypes = {
-  setShowComponent: PropTypes.func,
 };
 
 export default EditCourseFirst;
