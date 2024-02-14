@@ -87,7 +87,7 @@ const Sidebar: React.FC = () => {
   const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active, children, onClick }) => {
     return (
       <div
-        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 ${
+        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center ${
           active ? "bg-accent-6" : ""
         }`}
         onClick={onClick}
@@ -190,17 +190,19 @@ const Sidebar: React.FC = () => {
               }
             }}
           >
+            <div className='mt-2'>
             {!isCollapsed &&
               activeMenu === item.label &&
               item.subItems.map((subItem) => (
                 <div
-                  key={subItem.path}
-                  className="pl-8 menu-item py-1 hover:bg-accent-8 rounded-lg transition-all"
+                key={subItem.path}
+                className="pl-8 menu-item py-1 hover:bg-accent-8 rounded-lg transition-all"
                   onClick={(e) => handleSubItemClick(subItem.path, e)}
-                >
+                  >
                   {subItem.label}
                 </div>
               ))}
+              </div>
           </SidebarItem>
         ))}
       </div>
