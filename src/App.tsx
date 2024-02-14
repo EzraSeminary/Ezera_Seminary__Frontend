@@ -70,6 +70,9 @@ function App() {
 
   // Public Route (redirect if logged in)
   const PublicRoute = ({ children }) => {
+    if (user && user.role === "Admin") {
+      return <Navigate to="/admin" replace={true} />;
+    }
     return !user ? children : <Navigate to="/" replace={true} />;
   };
 
@@ -77,9 +80,11 @@ function App() {
     children: PropTypes.node.isRequired,
   };
 
+  const isAdmin = user && user.role === "Admin";
+
   return (
     <BrowserRouter>
-      <Header />
+     {!isAdmin && <Header />}
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -145,7 +150,7 @@ function App() {
         {/* Not Found Route */}
         <Route path="*" element={<NotMatch />} />
       </Routes>
-      <Footer />
+     { !isAdmin && <Footer />}
     </BrowserRouter>
   );
 }
