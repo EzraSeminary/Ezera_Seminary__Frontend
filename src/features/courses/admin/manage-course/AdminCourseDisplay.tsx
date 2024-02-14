@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectSlides, Slide, Element } from "@/redux/courseSlice";
+import { selectSlides, Slide, Element, CourseState } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
@@ -46,7 +46,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
     }
   };
 
-  const slides = useSelector((state) =>
+  const slides = useSelector((state: { course: CourseState }) =>
     selectSlides(state, selectedSlideIndex.chapter)
   ) as Slide[];
   const selectedSlide = slides[selectedSlideIndex.slide];
