@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectSlides } from "@/redux/courseSlice";
+import { selectSlides, Slide, Element } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 
-function AdminCourseDisplay({ selectedSlideIndex }) {
+interface SelectedSlideIndex {
+  chapter: number;
+  slide: number;
+}
+
+interface AdminCourseDisplayProps {
+  selectedSlideIndex: SelectedSlideIndex;
+}
+
+function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
   //radio input switch
-  const [selectedChoice, setSelectedChoice] = useState(null);
-  const handleRadioChange = (choiceIndex, choiceValue) => {
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+  const handleRadioChange = (choiceIndex: number, choiceValue) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide.elements.some((el) => el.type === "quiz")) {
-      const quizElement = selectedSlide.elements.find(
+      const quizElement = selectedSlide?.elements?.find(
         (el) => el.type === "quiz"
-      );
+      ) as Element[];
       const isCorrect = choiceValue === quizElement.value.correctAnswer;
       setIsAnswerCorrect(isCorrect);
     }
@@ -39,16 +48,18 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
 
   const slides = useSelector((state) =>
     selectSlides(state, selectedSlideIndex.chapter)
-  );
+  ) as Slide[];
   const selectedSlide = slides[selectedSlideIndex.slide];
 
   //Display image from state
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   useEffect(() => {
-    if (selectedSlide && selectedSlide.elements) {
-      const imgElement = selectedSlide.elements.find((e) => e.type === "img");
+    if (selectedSlide && selectedSlide?.elements) {
+      const imgElement = selectedSlide.elements.find(
+        (e) => e.type === "img"
+      ) as Element[];
       if (imgElement && imgElement.value instanceof File) {
-        const objectUrl = URL.createObjectURL(imgElement.value);
+        const objectUrl = URL.createObjectURL(imgElement.value as File);
         setImagePreviewUrl(objectUrl);
 
         // Clean up the URL when the component unmounts
