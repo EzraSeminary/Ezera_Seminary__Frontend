@@ -11,6 +11,7 @@ import CreateDevotion from "@/pages/admin/CreateDevotion";
 import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
 import Analytics from "@/features/courses/admin/analytics/Analytics";
+import AdminHeader from "./AdminHeader";
 const AdminDashboard = () => {
   return (
     <div className="grid grid-cols-admin-dashboard">
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
         <Sidebar />
       </div>
       <div className="col-span-4 ml-64 px-12">
+        <AdminHeader />
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
           <Route path="analytics/usage" element={<Analytics />} />
