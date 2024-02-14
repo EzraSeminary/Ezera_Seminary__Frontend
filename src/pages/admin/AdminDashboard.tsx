@@ -10,15 +10,17 @@ import SabbathSchool from "@/pages/user/SabbathSchool";
 import CreateDevotion from "@/pages/admin/CreateDevotion";
 import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
+import Analytics from "@/features/courses/admin/analytics/Analytics";
 const AdminDashboard = () => {
   return (
     <div className="grid grid-cols-admin-dashboard">
       <div className="fixed top-0 left-0 z-10 h-screen ">
         <Sidebar />
       </div>
-      <div className="col-span-4 ml-64">
+      <div className="col-span-4 ml-64 px-12">
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
+          <Route path="analytics/usage" element={<Analytics />} />
           <Route path="course/edit" element={<ManageCourse />} />
           <Route path="courses/create" element={<CreateCourse />} />
           <Route path="courses/create/chapters" element={<AdminChapter />} />
