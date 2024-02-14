@@ -5,7 +5,7 @@ import "./index.css";
 import axios from "axios";
 import { AuthContextProvider } from "./context/AuthContext";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store from "./redux/store.js";
 
 axios.defaults.baseURL = "https://ezra-seminary-api.onrender.com";
 // axios.defaults.baseURL = "http://localhost:5100";

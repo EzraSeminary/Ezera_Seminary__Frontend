@@ -1,3 +1,4 @@
+// AdminDashboard.jsx
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import ManageCourse from "./ManageCourse";
@@ -5,16 +6,17 @@ import CreateCourse from "./CreateCourse";
 import AdminChapter from "../../features/courses/admin/create-course/AdminChapter";
 import EditCourse from "@/features/courses/admin/manage-course/EditCourse";
 import EditCourseFirst from "@/features/courses/admin/manage-course/EditCourseFirst";
-// import SabbathSchool from "../routes/SabbathSchool";
-// import CreateDevotion from "./CreateDevotion";
-// import ManageDevotion from "./ManageDevotion";
-// import Devotion from "../routes/Devotion";
-
+import SabbathSchool from "@/pages/user/SabbathSchool";
+import CreateDevotion from "@/pages/admin/CreateDevotion";
+import ManageDevotion from "@/pages/admin/ManageDevotion";
+import Devotion from "@/pages/user/Devotion";
 const AdminDashboard = () => {
   return (
-    <div className="grid grid-cols-5">
-      <Sidebar />
-      <div className="col-span-4">
+    <div className="grid grid-cols-admin-dashboard">
+      <div className="fixed top-0 left-0 z-10 h-screen ">
+        <Sidebar />
+      </div>
+      <div className="col-span-4 ml-64">
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
           <Route path="course/edit" element={<ManageCourse />} />
@@ -22,10 +24,10 @@ const AdminDashboard = () => {
           <Route path="courses/create/chapters" element={<AdminChapter />} />
           <Route path="edit/course/:id" element={<EditCourseFirst />} />
           <Route path="edit/course/:id/chapters" element={<EditCourse />} />
-          {/* <Route path="sabbathSchool" element={<SabbathSchool />} />
+          <Route path="sabbathSchool" element={<SabbathSchool />} />
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
-          <Route path="devotion/manage" element={<ManageDevotion />} /> */}
+          <Route path="devotion/manage" element={<ManageDevotion />} />
         </Routes>
       </div>
     </div>
