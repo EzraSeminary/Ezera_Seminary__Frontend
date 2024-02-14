@@ -12,9 +12,11 @@ import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
 const AdminDashboard = () => {
   return (
-    <div className="grid grid-cols-5">
-      <Sidebar />
-      <div className="col-span-4">
+    <div className="grid grid-cols-admin-dashboard">
+      <div className="fixed top-0 left-0 z-10 h-screen ">
+        <Sidebar />
+      </div>
+      <div className="col-span-4 ml-64">
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
           <Route path="course/edit" element={<ManageCourse />} />
