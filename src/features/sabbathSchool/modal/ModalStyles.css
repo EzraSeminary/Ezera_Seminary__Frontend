@@ -13,21 +13,4 @@
   width: 100%; /* Responsive width */
 }
 
-.close {
-  top: -10px; /* Adjust as needed */
-  right: -10px; /* Adjust as needed */
-  background: #ffffff; /* Match modal background */
-  border-radius: 50%; /* Circle shape */
-  padding: 0.5rem; /* Padding around the 'x' */
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.05); /* Shadow for the button */
-  line-height: 1; /* Control the line height */
-}
-
-/* Small breakpoints adjustments for full width */
-@media (max-width: 640px) {
-  .modal-content {
-    width: 90%;
-    margin: 0 5%;
-  }
-}
 
