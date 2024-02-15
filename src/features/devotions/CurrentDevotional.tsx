@@ -7,9 +7,7 @@ import {
   setIsEditing,
 } from "../../redux/devotionsSlice";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { RootState } from '@/redux/types';
-
-
+import { RootState } from "@/redux/types";
 
 interface Devotion {
   _id: string;
@@ -20,6 +18,7 @@ interface Devotion {
   verse: string;
   body: string[];
   prayer: string;
+  subTitles: string[];
   image: string;
   previewUrl: string;
   // add other properties of a devotion object
@@ -30,9 +29,12 @@ interface CurrentDevotionalProps {
   showControls: boolean;
 }
 
-const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({ devotionToDisplay, showControls }) => {
-  const { refetch } = useGetDevotionsQuery({});
-  const role = useSelector((state: RootState) => state.auth.role);// get the authentication token
+const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
+  devotionToDisplay,
+  showControls,
+}) => {
+  const { refetch } = useGetDevotionsQuery({}); // get the authentication token
+  const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
   const dispatch = useDispatch();
 
   const handleDelete = async (id: string) => {

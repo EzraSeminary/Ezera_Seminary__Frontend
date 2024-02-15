@@ -15,5 +15,6 @@ export interface AuthState {
 
 export interface RootState {
   auth: AuthState;
+  user: User;
   // other slices of state
 }

@@ -15,8 +15,15 @@ interface DevotionDisplayProps {
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
-  const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(null);
-  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery({});
+  const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
+    null
+  );
+  const {
+    data: devotions,
+    error,
+    isLoading,
+    refetch,
+  } = useGetDevotionsQuery({});
 
   useEffect(() => {
     if (devotions && devotions.length > 0) {

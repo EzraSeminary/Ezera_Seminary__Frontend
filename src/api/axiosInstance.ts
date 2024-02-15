@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function createAxiosInstance(token: undefined) {
+function createAxiosInstance(token: string) {
   const instance = axios.create({
     // baseURL: "http://localhost:5100",
     baseURL: "https://ezra-seminary-api.onrender.com",

@@ -15,17 +15,18 @@ import {
 import AddParagraph from "./AddParagraph";
 import PhotoUploader from "./PhotoUploader";
 import { CircleNotch } from "@phosphor-icons/react";
+import { RootState } from "@/redux/store";
 
 const DevotionForm = () => {
-  const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state: RootState) => state.auth.user?.token);
   const dispatch = useDispatch();
   const form = useSelector(selectForm); // select the form from the Redux store
   const paragraphs = useSelector(selectParagraphs); // select the paragraphs from the Redux store
   const [file, setFile] = useState(null);
   const [localParagraphs, setLocalParagraphs] = useState([]);
-  const isEditing = useSelector((state) => state.devotions.isEditing);
+  const isEditing = useSelector((state: RootState) => state.devotions.isEditing);
   const selectedDevotion = useSelector(
-    (state) => state.devotions.selectedDevotion
+    (state: RootState) => state.devotions.selectedDevotion
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
