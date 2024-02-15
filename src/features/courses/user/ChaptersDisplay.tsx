@@ -93,9 +93,9 @@ function ChaptersDisplay() {
           style={{ transition: "width 0.3s" }}>
 
           {open ? (
-            <ArrowLeft onClick={() => setOpen(!open)} className="text-white text-3xl bg-accent-6 border p-1 rounded-full absolute -right-3 top-14 cursor-pointer" />
+            <ArrowLeft onClick={() => setOpen(!open)} className="text-white text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer" />
           ) : (
-            <ArrowRight onClick={() => setOpen(!open)} className="text-white text-3xl bg-accent-6 border p-1 rounded-full absolute -right-4 md:-right-5 top-14 cursor-pointer" />
+            <ArrowRight onClick={() => setOpen(!open)} className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -right-3 xl:-right-4 top-14 cursor-pointer" />
 
           )}
 
