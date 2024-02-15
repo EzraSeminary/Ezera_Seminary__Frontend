@@ -82,16 +82,6 @@ function DisplaySSLLesson() {
       replace: (domNode) => {
         if (domNode.type === 'tag' && domNode.name === 'a' && domNode.attribs && domNode.attribs.class === 'verse') {
           const verseKey = domNode.attribs.verse;
-          const verses = lessonDetails.bible[0]?.verses as VerseMap;
-          const verseHtml = verses[verseKey];
-          let linkText;
-          try {
-            const parsedVerse = parse(verseHtml);
-            linkText = findTextContent(parsedVerse);
-          } catch (error) {
-            console.error('Error parsing verse HTML:', error);
-            linkText = "";
-          }
           return (
             <a
               href="#"
@@ -101,7 +91,7 @@ function DisplaySSLLesson() {
               }}
               className="verse"
             >
-              {linkText}
+              {verseKey}
             </a>
           );
         }
@@ -143,10 +133,10 @@ function DisplaySSLLesson() {
         </div>
       </div>
       {isModalOpen && 
-        <Modal showModal={isModalOpen} toggleModal={toggleModal}>
-          {parse(selectedVerse, { trim: true })}
-        </Modal>
-      }
+  <Modal key={selectedVerse} showModal={isModalOpen} toggleModal={toggleModal}>
+    {parse(selectedVerse, { trim: true })}
+  </Modal>
+}
       <div className="text-secondary-6 text-justify wrapper my-4">{modifyContentForDisplay(lessonDetails.content)}</div>
     </div>
   );
