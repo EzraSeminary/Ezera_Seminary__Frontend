@@ -2,7 +2,8 @@ import { useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-import { ArrowLeft } from "@phosphor-icons/react";
+import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-icons/react";
+import logo from "../../../assets/ezra-logo.svg";
 import bibleImage from "../../../assets/bible2.jpeg";
 
 interface Chapter {
@@ -15,6 +16,8 @@ interface CourseData {
 }
 
 function ChaptersDisplay() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [open, setOpen] = useState<boolean>(true);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
 
@@ -69,24 +72,13 @@ function ChaptersDisplay() {
     );
 
   if (error) return <div>Something went wrong.</div>;
-
   return (
     // Chapters Section
     <>
-      {/* <NavLink
-        to={"/courses"}
-        className="font-Lato-Black border-4 border-accent-5 rounded-lg p-1.5 ml-2 hover:bg-[#FAE5C7]"
-      >
-        Back
-      </NavLink> */}
-
-
-      {/* <div className=" w-[80%] mx-auto"> */}
-
-      {/* Container */}
-      <div className="flex flex-col mt-12 md:flex-row w-[80%] mx-auto justify-center items-center h-screen ">
+      {/* Chapters container */}
+      <div className="grid grid-cols-1  mt-16  w-[80%] mx-auto justify-center items-center h-screen relative">
         {/* Back button */}
-        <div className="flex justify-start w-full mb-2">
+        <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <NavLink
             to={"/courses"}
             className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
@@ -97,15 +89,23 @@ function ChaptersDisplay() {
         </div>
 
         {/* Chapters side bar*/}
-        <div className="flex flex-col justify-start items-center md:w-[30%] h-[80%] overflow-y-auto shadow-2xl rounded-lg border-2 border-accent-5 pb-6">
+        <div className={`absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center ${open ? "w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]" : "w-0 h-0"}`}
+          style={{ transition: "width 0.3s" }}>
+
+          {open ? (
+            <ArrowLeft onClick={() => setOpen(!open)} className="text-white text-3xl bg-accent-6 border p-1 rounded-full absolute -right-3 top-14 cursor-pointer" />
+          ) : (
+            <ArrowRight onClick={() => setOpen(!open)} className="text-white text-3xl bg-accent-6 border p-1 rounded-full absolute -right-4 md:-right-5 top-14 cursor-pointer" />
+
+          )}
 
           {/* Bible image container*/}
-          <div className=" ">
-            <img src={bibleImage} alt="Bible image" className="w-full" />
+          <div className="w-[100%]">
+            <img src={bibleImage} alt="Bible image" className="w-full rounded-t-lg" />
           </div>
 
           {/* Short information*/}
-          <div className="flex  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center">
+          <div className={`  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center ${open ? "flex" : "hidden"}`}>
             <div className="p-1 bg-accent-6 rounded">
               <p className="font-nokia-bold text-primary-1 text-xs">10%</p>
             </div>
@@ -113,48 +113,51 @@ function ChaptersDisplay() {
           </div>
 
           {/* Course title and description*/}
-          <div className=" mx-auto w-[90%]">
-            <h1 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg  text-center  my-2 ">
+          <div className="w-[100%] overflow-y-auto bg-white opacity-85 pb-3 rounded-b-lg h-full ">
+            <h1 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg  text-center mt-3 mb-2 ">
               {courseData?.title}
             </h1>
-            <hr className="border-accent-5 border w-[100%] " />
+            <hr className="border-accent-5 border w-[90%] mx-auto" />
             <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
               {courseData?.description}
             </p>
-            {/* </div> */}
 
-            {/* Chapters container */}
-            {/* <div className="w-[90%] mx-auto"> */}
             {/* Header */}
-            <div className="flex flex-col mt-6 border-accent-5 border-1">
-              <h1 className="font-Lato-Black pb-1">
-                CHAPTER {currentDataNumber}/{totalDataNumber}
+            <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
+              <h1 className="font-nokia-bold text-secondary-6 pb-1">
+                ትምህርቶች {currentDataNumber}/{totalDataNumber}
               </h1>
-              <hr className="border-accent-5 border w-[100%] mx-auto" />
+              <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
+
             {/* Chapters */}
-            <div className="flex flex-col mt-[20px]">
+            <div className="flex flex-col px-2">
               {data.map((chapter, index) => {
                 const unlocked = isSlideUnlocked(index);
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${unlocked ? "text-black" : "text-gray-500"
+                    className={`flex justify-between items-center text-sm font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 ${unlocked ? "text-black" : "text-gray-500"
                       }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
                     }}
                   >
-                    <span>{chapter.chapter}</span>
+                    <div className="flex flex-col items-start justify-center">
+                      <h2
+                        className="font-nokia-bold text-secondary-6 text-xs">
+                        {chapter.chapter}
+                        {/* <Text>ID</Text> {courseId} */}
+                      </h2>
+                      <p className="font-nokia-bold text-accent-6 text-xs">
+                        15/15 Slides
+                      </p>
+                    </div>
                     {unlocked ? (
-                      <span className="material-symbols-outlined text-accent-6 pl-4 text-xl">
-                        check_circle
-                      </span>
+                      <CheckCircle size={20} weight="fill" color={'#EA9215'} />
                     ) : (
-                      <span className="material-symbols-outlined text-accent-6 pl-4 text-lg">
-                        radio_button_unchecked
-                      </span>
+                      <Circle size={20} color={'#EA9215'} />
                     )}
                   </button>
                 );
@@ -164,7 +167,7 @@ function ChaptersDisplay() {
         </div>
 
         {/* Chapter display window*/}
-        <div className="hidden md:w-[70%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg ">
+        <div className=" lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg ">
 
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
@@ -172,14 +175,20 @@ function ChaptersDisplay() {
             {/* Header */}
             <div>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <h1 className="text-[#fff] text-sm font-Lato-Black">
-                  EZRA seminary
-                </h1>
-                <img
-                  src="../../assets/close-icon.svg"
-                  className="w-[3%] z-40 cursor-pointer"
-                  alt=""
-                />
+                <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+
+                  <img src={logo} className="w-8 h-5 md:w-10 md:h-6  z-30" alt="" />
+
+                  <h3 className="text-white font-nokia-bold text-xs md:text-sm ">
+                    <strong>Ezra</strong> Seminary
+                  </h3>
+                </div>
+                {/* <NavLink
+                  to={"/courses"}
+                  className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
+                > */}
+                <XCircle size={24} color={'#EA9215'} className="z-20 cursor-pointer" />
+                {/* </NavLink> */}
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
             </div>
@@ -192,10 +201,10 @@ function ChaptersDisplay() {
                     key={index}
                     className="flex flex-col justify-center h-52 flex-grow"
                   >
-                    <h1 className="text-3xl text-[#fff] text-center font-nokia-bold">
+                    <h1 className="text-xl text-[#fff] text-center font-nokia-bold">
                       {chapter.chapter}
                     </h1>
-                    <button className="text-white text-center font-nokia-bold mt-2 py-2 px-4 bg-accent-6 hover:bg-accent-7 w-[20%] rounded-3xl mx-auto text-2xl ">
+                    <button className="text-white text-center font-nokia-bold mt-2 py-2 px-4 bg-accent-6 hover:bg-accent-7 w-[20%] rounded-3xl mx-auto text-sm ">
                       <NavLink
                         to={`/courses/get/${courseId}/chapter/${chapter._id}`}
                       >
@@ -215,8 +224,7 @@ function ChaptersDisplay() {
             </div>
           </div>
         </div>
-      </div>
-      {/* </div> */}
+      </div >
     </>
   );
 }
