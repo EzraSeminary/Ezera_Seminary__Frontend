@@ -22,13 +22,13 @@ export interface Slide {
   elements: CustomElement[];
 }
 
+export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | SlideElement | QuizElement;
+
 // export interface Element {
 //   type: string;
 //   id: string;
 //   value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
 // }
-
-export type QuizElementValue = { question: string; choices: { text: string }[]; correctAnswer: string };
 
 export interface TitleElement extends Omit<Element, 'value'> {
   type: 'title';
@@ -57,6 +57,7 @@ export interface ListElement extends Omit<Element, 'value'> {
 
 export interface SlideElement extends Omit<Element, 'value'> {
   type: 'slide';
+  _id: string;
   value: string[];
 }
 
@@ -65,7 +66,7 @@ export interface QuizElement extends Omit<Element, 'value'> {
   value: QuizElementValue
 }
 
-export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | SlideElement | QuizElement;
+export type QuizElementValue = { question: string; choices: { text: string }[]; correctAnswer: string };
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {

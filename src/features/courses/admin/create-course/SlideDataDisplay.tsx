@@ -233,11 +233,15 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                     </div>
                   );
                 } else if (element.type === "img") {
+                  const altText =
+                    element.value instanceof File
+                      ? element.value.name
+                      : "image";
                   elementComponent = (
                     <img
                       key={element.type}
                       src={imagePreviewUrl}
-                      alt={element.value.name}
+                      alt={altText}
                       className="w-[40%] mx-auto"
                     />
                   );
