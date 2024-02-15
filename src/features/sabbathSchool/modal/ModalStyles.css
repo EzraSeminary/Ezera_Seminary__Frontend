@@ -13,4 +13,11 @@
   width: 100%; /* Responsive width */
 }
 
+.modal-content h2 {
+  font-size: 1.5em;
+  color: #EA9215;
+  border-bottom: 1px solid #EA9215;
+  padding-bottom: 2px;
+  margin-bottom: 4px;
+}
 
