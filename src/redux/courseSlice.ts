@@ -55,12 +55,17 @@ export interface ListElement extends Omit<Element, 'value'> {
   value: string[];
 }
 
+export interface SlideElement extends Omit<Element, 'value'> {
+  type: 'slide';
+  value: string[];
+}
+
 export interface QuizElement extends Omit<Element, 'value'> {
   type: 'quiz';
   value: QuizElementValue
 }
 
-export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | QuizElement;
+export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | SlideElement | QuizElement;
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {

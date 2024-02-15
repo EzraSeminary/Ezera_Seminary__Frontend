@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import {
   selectSlides,
   Slide,
-  Element,
   CourseState,
   CustomElement,
 } from "@/redux/courseSlice";
@@ -28,13 +27,13 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const handleRadioChange = (choiceIndex: number, choiceValue) => {
+  const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide.elements.some((el) => el.type === "quiz")) {
       const quizElement = selectedSlide?.elements?.find(
         (el) => el.type === "quiz"
-      ) as Element[];
+      );
       const isCorrect = choiceValue === quizElement.value.correctAnswer;
       setIsAnswerCorrect(isCorrect);
     }
@@ -60,9 +59,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   useEffect(() => {
     if (selectedSlide && selectedSlide?.elements) {
-      const imgElement = selectedSlide.elements.find(
-        (e) => e.type === "img"
-      ) as Element[];
+      const imgElement = selectedSlide.elements.find((e) => e.type === "img");
       if (imgElement && imgElement.value instanceof File) {
         const objectUrl = URL.createObjectURL(imgElement.value as File);
         setImagePreviewUrl(objectUrl);
@@ -222,15 +219,6 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                 return elementComponent;
               })}
             </ul>
-            <button
-              className="absolute bottom-20 p-1 bg-black opacity-60 rounded-full text-white text-3xl"
-              onClick={() => {
-                const container = document.querySelector(".overflow-y-auto");
-                container.scrollTop += 50; // Adjust the scroll amount as needed
-              }}
-            >
-              ▼
-            </button>
           </div>
         )}
         <div className="mb-4 w-[100%] flex flex-col items-center justify-center">
