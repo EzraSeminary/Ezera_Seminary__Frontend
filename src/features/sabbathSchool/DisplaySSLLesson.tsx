@@ -82,6 +82,7 @@ function DisplaySSLLesson() {
       replace: (domNode) => {
         if (domNode.type === 'tag' && domNode.name === 'a' && domNode.attribs && domNode.attribs.class === 'verse') {
           const verseKey = domNode.attribs.verse;
+          const verseContent = domNode.children.map(childNode => childNode.type === 'text' ? childNode.data : '').join('');
           return (
             <a
               href="#"
@@ -91,7 +92,7 @@ function DisplaySSLLesson() {
               }}
               className="verse"
             >
-              {verseKey}
+              {verseContent}
             </a>
           );
         }
