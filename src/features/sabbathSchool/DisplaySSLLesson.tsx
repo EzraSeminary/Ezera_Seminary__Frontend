@@ -1,4 +1,3 @@
-// DisplaySSLLesson.tsx
 import "./SSLStyles.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -9,12 +8,17 @@ import {
 import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
+import Modal from "./modal/Modal";
+import React from "react";
 
 function DisplaySSLLesson() {
   interface Params {
     quarter: string;
     id: string;
     day: string;
+    [key: string]: string;
+  }
+  interface VerseMap {
     [key: string]: string;
   }
 
@@ -31,17 +35,89 @@ function DisplaySSLLesson() {
     data: dayDetails,
     error: dayError,
   } = useGetSSLOfDayQuery({ path: quarter, id: id });
+  const [selectedVerse, setSelectedVerse] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleVerseClick = (verseKey: string) => {
+    if (lessonDetails?.bible && lessonDetails.bible.length >= 1 && lessonDetails.bible[0].verses) {
+      const verses = lessonDetails.bible[0].verses as VerseMap;
+      const verseText: string | undefined = verses[verseKey];
+  
+      if (verseText) {
+        setSelectedVerse(verseText);
+        setIsModalOpen(true);
+      } else {
+        console.error(`Verse key "${verseKey}" not found`);
+      }
+    } else {
+      console.error("Bible data is not available or not in the expected format.");
+    }
+  };
+
+  const findTextContent = (element: React.ReactNode): string => {
+    if (typeof element === 'string' || typeof element === 'number') {
+      return element.toString();
+    }
+    if (React.isValidElement(element)) {
+      let text = '';
+      React.Children.forEach(element.props.children, (child) => {
+        text += findTextContent(child);
+      });
+      return text;
+    }
+    if (Array.isArray(element)) {
+      return element.map(findTextContent).join('');
+    }
+    return '';
+  };
+  
+  const modifyContentForDisplay = (content: string) => {
+    if (!lessonDetails) return null;
+  
+    return parse(content, {
+      replace: (domNode) => {
+        if (domNode.type === 'tag' && domNode.name === 'a' && domNode.attribs && domNode.attribs.class === 'verse') {
+          const verseKey = domNode.attribs.verse;
+          const verses = lessonDetails.bible[0]?.verses as VerseMap;
+          const verseHtml = verses[verseKey];
+          let linkText;
+          try {
+            const parsedVerse = parse(verseHtml);
+            linkText = findTextContent(parsedVerse);
+          } catch (error) {
+            console.error('Error parsing verse HTML:', error);
+            linkText = "";
+          }
+          return (
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handleVerseClick(verseKey);
+              }}
+              className="verse"
+            >
+              {linkText}
+            </a>
+          );
+        }
+      },
+    });
+  };
+  
   useEffect(() => {
     if (dayDetails) {
       setBackgroundImage(dayDetails.lesson.cover);
     }
-  }, [dayDetails]);
+  }, [lessonDetails, backgroundImage, dayDetails]);
 
   if (isLoading) return <div>Loading...</div>;
   if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
-  if (dayError && 'message' in dayError) return <div>Error: {dayError.message}</div>;
-  const html = parse(lessonDetails.content);
+  if (!lessonDetails) return null;
 
   return (
     <div>
@@ -66,8 +142,12 @@ function DisplaySSLLesson() {
           <div className="text-3xl text-primary-0">{lessonDetails.title}</div>
         </div>
       </div>
-
-      <div className="text-secondary-6 text-justify wrapper my-4">{html}</div>
+      {isModalOpen && 
+        <Modal showModal={isModalOpen} toggleModal={toggleModal}>
+          {parse(selectedVerse, { trim: true })}
+        </Modal>
+      }
+      <div className="text-secondary-6 text-justify wrapper my-4">{modifyContentForDisplay(lessonDetails.content)}</div>
     </div>
   );
 }
