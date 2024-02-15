@@ -58,23 +58,7 @@ function DisplaySSLLesson() {
     }
   };
 
-  const findTextContent = (element: React.ReactNode): string => {
-    if (typeof element === 'string' || typeof element === 'number') {
-      return element.toString();
-    }
-    if (React.isValidElement(element)) {
-      let text = '';
-      React.Children.forEach(element.props.children, (child) => {
-        text += findTextContent(child);
-      });
-      return text;
-    }
-    if (Array.isArray(element)) {
-      return element.map(findTextContent).join('');
-    }
-    return '';
-  };
-  
+
   const modifyContentForDisplay = (content: string) => {
     if (!lessonDetails) return null;
   
