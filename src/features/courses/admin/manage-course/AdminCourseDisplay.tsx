@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectSlides, Slide, Element, CourseState } from "@/redux/courseSlice";
+import {
+  selectSlides,
+  Slide,
+  Element,
+  CourseState,
+  CustomElement,
+} from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
@@ -90,7 +95,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
               {selectedSlide.slide}
             </h1>
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
-              {selectedSlide.elements.map((element, index) => {
+              {selectedSlide.elements.map((element: CustomElement, index) => {
                 let elementComponent = null;
                 const uniqueKey = `${element.type}-${index}`;
                 if (element.type === "title") {
@@ -238,12 +243,5 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
     </div>
   );
 }
-
-AdminCourseDisplay.propTypes = {
-  selectedSlideIndex: PropTypes.shape({
-    chapter: PropTypes.number.isRequired,
-    slide: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
 export default AdminCourseDisplay;

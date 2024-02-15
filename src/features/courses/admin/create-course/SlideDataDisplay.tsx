@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectSlides, Slide } from "../../../../redux/courseSlice";
+import {
+  CustomElement,
+  selectSlides,
+  Slide,
+} from "../../../../redux/courseSlice";
 import { RootState } from "../../../../redux/store";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -14,28 +18,28 @@ interface SlideDataDisplayProps {
   };
 }
 
-interface QuizElement {
-  type: "quiz";
-  value: {
-    question: string;
-    choices: Array<{
-      text: string;
-    }>;
-    correctAnswer: string;
-  };
-}
+// interface QuizElement {
+//   type: "quiz";
+//   value: {
+//     question: string;
+//     choices: Array<{
+//       text: string;
+//     }>;
+//     correctAnswer: string;
+//   };
+// }
 
-interface ImageElement {
-  type: "img";
-  value: File | string; // Assuming that value could be a File object or a URL
-}
+// interface ImageElement {
+//   type: "img";
+//   value: File | string; // Assuming that value could be a File object or a URL
+// }
 
-interface TextElement {
-  type: "title" | "sub" | "text" | "list" | "slide";
-  value: string | string[];
-}
+// interface TextElement {
+//   type: "title" | "sub" | "text" | "list" | "slide";
+//   value: string | string[];
+// }
 
-type Element = QuizElement | ImageElement | TextElement;
+// type Element = QuizElement | ImageElement | TextElement;
 
 const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   selectedSlideIndex,
@@ -114,7 +118,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
               {selectedSlide.slide}
             </h1>
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
-              {selectedSlide.elements.map((element, index) => {
+              {selectedSlide.elements.map((element: CustomElement, index) => {
                 let elementComponent = null;
                 const uniqueKey = `${element.type}-${index}`;
 

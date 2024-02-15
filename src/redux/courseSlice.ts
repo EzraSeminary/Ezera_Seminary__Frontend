@@ -19,14 +19,48 @@ export interface Chapter {
 // Define a type for each of the Slide and Element properties
 export interface Slide {
   slide: string;
-  elements: Element[];
+  elements: CustomElement[];
 }
 
-export interface Element {
-  type: string;
-  id: string;
-  value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
+// export interface Element {
+//   type: string;
+//   id: string;
+//   value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
+// }
+
+export type QuizElementValue = { question: string; choices: { text: string }[]; correctAnswer: string };
+
+export interface TitleElement extends Omit<Element, 'value'> {
+  type: 'title';
+  value: string;
 }
+
+export interface SubElement extends Omit<Element, 'value'> {
+  type: 'sub';
+  value: string;
+}
+
+export interface TextElement extends Omit<Element, 'value'> {
+  type: 'text';
+  value: string;
+}
+
+export interface ImgElement extends Omit<Element, 'value'> {
+  type: 'img';
+  value: File | string; // File if it's to be uploaded or string if it's a URL
+}
+
+export interface ListElement extends Omit<Element, 'value'> {
+  type: 'list';
+  value: string[];
+}
+
+export interface QuizElement extends Omit<Element, 'value'> {
+  type: 'quiz';
+  value: QuizElementValue
+}
+
+export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | QuizElement;
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
