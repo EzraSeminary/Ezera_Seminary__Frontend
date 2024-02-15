@@ -157,23 +157,40 @@ export const courseSlice = createSlice({
         return;
       }
 
-      const newElement = {
-        type: elementType,
+      const newElement: CustomElement = {
         id: `${elementType}${Math.random().toString(36).substr(2, 9)}`, // Unique ID generation
-        value: elementType === "list" || elementType === "slide" || elementType === "quiz" ? value : "",
-      };
-
-      // Handle other element types and set their values accordingly
-      if (
-        elementType === "title" ||
-        elementType === "sub" ||
-        elementType === "text" ||
-        elementType === "img"
-      ) {
-        newElement.value = ""; // For other types, initialize the value as an empty string
-      }
-
-      slides[slideIndex].elements.push(newElement);
+    } as CustomElement;
+    
+    // Determine the type of the element and set additional properties as needed
+    switch (elementType) {
+        case 'title':
+        case 'sub':
+        case 'text':
+            newElement.type = elementType;
+            newElement.value = value as string; // Cast value to string for these element types for now
+            break;
+        case 'img':
+            newElement.type = elementType;
+            newElement.value = value as string | File; // Cast value to string or File for image element
+            break;
+        case 'list':
+            newElement.type = elementType;
+            newElement.value = value as string[]; // Cast value to string array for list element
+            break;
+        case 'slide': // Assuming this type is similar to list
+            newElement.type = elementType;
+            newElement.value = value as string[]; // Cast value to string array for slide element
+            break;
+        case 'quiz':
+            newElement.type = elementType;
+            newElement.value = value as QuizElementValue; // Cast value to QuizElementValue for quiz element
+            break;
+        default:
+            // Handle unknown element type or throw error
+            throw new Error(`Unknown element type: ${elementType}`);
+    }
+    
+    slides[slideIndex].elements.push(newElement);
     },
     updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: string | string[] | File | QuizElementValue | null }>) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
