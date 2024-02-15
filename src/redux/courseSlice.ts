@@ -57,7 +57,7 @@ export interface ListElement extends Omit<Element, 'value'> {
 
 export interface SlideElement extends Omit<Element, 'value'> {
   type: 'slide';
-  _id: string;
+  _id?: string;
   value: string[];
 }
 

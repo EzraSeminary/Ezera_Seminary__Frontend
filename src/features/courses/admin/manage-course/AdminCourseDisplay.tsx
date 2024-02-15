@@ -5,6 +5,7 @@ import {
   Slide,
   CourseState,
   CustomElement,
+  QuizElement,
 } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -31,11 +32,13 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide.elements.some((el) => el.type === "quiz")) {
-      const quizElement = selectedSlide?.elements?.find(
-        (el) => el.type === "quiz"
+      const quizElement = selectedSlide.elements.find(
+        (el): el is QuizElement => el.type === "quiz"
       );
-      const isCorrect = choiceValue === quizElement.value.correctAnswer;
-      setIsAnswerCorrect(isCorrect);
+      if (quizElement) {
+        const isCorrect = choiceValue === quizElement.value.correctAnswer;
+        setIsAnswerCorrect(isCorrect);
+      }
     }
   };
 

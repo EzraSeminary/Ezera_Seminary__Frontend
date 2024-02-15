@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   CustomElement,
+  QuizElement,
   selectSlides,
   Slide,
 } from "../../../../redux/courseSlice";
@@ -55,10 +56,10 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     //logic to determine whether the selected answer is correct.
     if (selectedSlide?.elements?.some((element) => element.type === "quiz")) {
       const quizElement = selectedSlide.elements.find(
-        (element) => element.type === "quiz"
+        (element): element is QuizElement => element.type === "quiz"
       );
       if (quizElement) {
-        const isCorrect = choiceValue === quizElement.value?.correctAnswer;
+        const isCorrect = choiceValue === quizElement.value.correctAnswer;
         setIsAnswerCorrect(isCorrect);
       }
     }
