@@ -6,6 +6,12 @@ export interface ApiState {
   title: string;
   description: string;
   image: string;
+  chapters: Chapter[];
+}
+
+export interface Chapter {
+  chapter: string;
+  slides: Slide[];
 }
 
 export const api = createApi({

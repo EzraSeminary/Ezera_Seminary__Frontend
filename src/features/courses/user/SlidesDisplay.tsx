@@ -7,23 +7,7 @@ import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-
-interface Element {
-  _id: string;
-  type: string;
-  value: any;
-}
-
-interface Slide {
-  _id: string;
-  slide: string;
-  elements: Element[];
-}
-
-interface Chapter {
-  _id: string;
-  slides: Slide[];
-}
+import { Chapter, Slide } from "@/redux/courseSlice";
 
 function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState(0);
