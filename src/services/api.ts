@@ -5,7 +5,7 @@ export interface ApiState {
   _id: string;
   title: string;
   description: string;
-  image: string;
+  image: string | File;
   chapters: Chapter[];
 }
 
