@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 
-const PreviousDevotionals = ({ previousDevotions, setSelectedDevotion }) => {
+import { Devotion } from "@/redux/types"; // Import the Devotion type
+
+const PreviousDevotionals = ({ previousDevotions, setSelectedDevotion }: { previousDevotions: Devotion[], setSelectedDevotion: (devotion: Devotion) => void }) => {
   return (
     <div className="flex flex-col h-auto space-y-6 w-[100%] mx-auto ">
       <div className="w-[100%] flex justify-between items-center">
