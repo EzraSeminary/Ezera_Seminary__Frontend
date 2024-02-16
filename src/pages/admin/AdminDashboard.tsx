@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import ManageCourse from "./ManageCourse";
@@ -11,6 +12,8 @@ import EditCourseFirst from "@/features/courses/admin/manage-course/EditCourseFi
 // import Devotion from "../routes/Devotion";
 
 const AdminDashboard = () => {
+  const [showComponent, setShowComponent] = useState(false);
+
   return (
     <div className="grid grid-cols-5">
       <Sidebar />
@@ -20,7 +23,10 @@ const AdminDashboard = () => {
           <Route path="course/edit" element={<ManageCourse />} />
           <Route path="courses/create" element={<CreateCourse />} />
           <Route path="courses/create/chapters" element={<AdminChapter />} />
-          <Route path="edit/course/:id" element={<EditCourseFirst />} />
+          <Route
+            path="edit/course/:id"
+            element={<EditCourseFirst setShowComponent={setShowComponent} />}
+          />
           <Route path="edit/course/:id/chapters" element={<EditCourse />} />
           {/* <Route path="sabbathSchool" element={<SabbathSchool />} />
           <Route path="devotion" element={<Devotion />} />
