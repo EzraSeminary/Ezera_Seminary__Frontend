@@ -17,6 +17,10 @@ function SlidesDisplay() {
     chapterId: string;
   }>(); // Note the two separate parameters
 
+  if (!courseId) {
+    return <div>Course ID loading...</div>;
+  }
+
   //get single course
   const {
     data: courseData,

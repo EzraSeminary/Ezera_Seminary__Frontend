@@ -3,22 +3,15 @@ import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
-
 function CoursesAvailable() {
-  const { data: courses, error, isLoading } = useGetCoursesQuery({});
+  const { data: courses, error, isLoading } = useGetCoursesQuery();
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = courses?.filter((course: Course) => {
+  const filteredData = courses?.filter((course) => {
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -87,7 +80,7 @@ function CoursesAvailable() {
       <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
       <div className="flex flex-col justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
-        {filteredData.map((course: Course, index: number) => {
+        {filteredData?.map((course, index: number) => {
           return (
             <div
               key={index}
