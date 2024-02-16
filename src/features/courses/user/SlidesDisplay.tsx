@@ -7,7 +7,6 @@ import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-import { Chapter, Slide } from "@/redux/courseSlice";
 
 function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,15 +25,13 @@ function SlidesDisplay() {
   } = useGetCourseByIdQuery(courseId);
 
   // Extracting chapter data from the fetched course data
-  const chapter = courseData?.chapters.find(
-    (chap: Chapter) => chap._id === chapterId
-  );
+  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
   }
   // Setting the data to slides if the chapter is found
-  const data: Slide[] = chapter.slides;
+  const data = chapter.slides;
   // console.log(data);
 
   const updateIndex = (newIndex: number) => {
