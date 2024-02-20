@@ -93,7 +93,7 @@ export const courseSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setImage: (state, action: PayloadAction<string>) => {
+    setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
     },
     addChapter: (state) => {
