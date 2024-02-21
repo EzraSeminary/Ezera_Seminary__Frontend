@@ -7,22 +7,7 @@ import {
   setIsEditing,
 } from "../../redux/devotionsSlice";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { RootState } from "@/redux/types";
-
-interface Devotion {
-  _id: string;
-  month: string;
-  day: string;
-  title: string;
-  chapter: string;
-  verse: string;
-  body: string[];
-  prayer: string;
-  subTitles: string[];
-  image: string;
-  previewUrl: string;
-  // add other properties of a devotion object
-}
+import { RootState, Devotion } from "@/redux/types";
 
 interface CurrentDevotionalProps {
   devotionToDisplay: Devotion;

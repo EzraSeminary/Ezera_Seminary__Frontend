@@ -24,7 +24,9 @@ const DevotionForm = () => {
   const paragraphs = useSelector(selectParagraphs); // select the paragraphs from the Redux store
   const [file, setFile] = useState(null);
   const [localParagraphs, setLocalParagraphs] = useState([]);
-  const isEditing = useSelector((state: RootState) => state.devotions.isEditing);
+  const isEditing = useSelector(
+    (state: RootState) => state.devotions.isEditing
+  );
   const selectedDevotion = useSelector(
     (state: RootState) => state.devotions.selectedDevotion
   );

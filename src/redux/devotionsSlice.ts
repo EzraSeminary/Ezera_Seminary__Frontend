@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import createAxiosInstance from "@/api/axiosInstance";
 import { RootState } from "./store";
+import { FormState } from "./types";
 
 // Define a type for the slice state
 interface Devotion {
@@ -14,18 +15,6 @@ interface Devotion {
   subTitles: string[];
   photo: File | string | null; // Assuming 'photo' can be a File object or a string URL to the photo
   _id?: string;
-}
-
-interface FormState {
-  month: string;
-  day: string;
-  title: string;
-  chapter: string;
-  verse: string;
-  paragraphs: string[];
-  prayer: string;
-  subTitles: string[];
-  photo: File | string | null;
 }
 
 interface DevotionsState {
@@ -52,8 +41,6 @@ const initialState: DevotionsState = {
   isEditing: false,
 };
 
-// Async thunk definitions...
-// Note: You will need to add proper types for the authentication state and possibly for errors
 // Async thunk for fetching devotions
 export const fetchDevotions = createAsyncThunk(
   "devotions/fetchDevotions",
@@ -68,18 +55,26 @@ export const fetchDevotions = createAsyncThunk(
 // Async thunk for creating a devotion
 export const createDevotion = createAsyncThunk(
   "devotions/createDevotion",
-  async ({ token, devotion }, { getState }) => {
+  async function ({ token, devotion }: { token: string; devotion: Devotion }) {
     const axiosInstance = createAxiosInstance(token);
-    let transformedDevotion = { ...devotion };
+    const transformedDevotion: {
+      [key: string]: string | File | null | string[];
+    } = { ...devotion };
     devotion.paragraphs.forEach((paragraph, index) => {
       transformedDevotion[`paragraph${index + 1}`] = paragraph;
     });
     delete transformedDevotion.paragraphs;
     transformedDevotion.image = transformedDevotion.photo;
     delete transformedDevotion.photo;
-    let formData = new FormData();
+    const formData = new FormData();
     Object.entries(transformedDevotion).forEach(([key, value]) => {
-      formData.append(key, value);
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          formData.append(key, item);
+        });
+      } else {
+        formData.append(key, value || "");
+      }
     });
     const response = await axiosInstance.post("/devotion/create", formData);
     return response.data;
@@ -89,18 +84,28 @@ export const createDevotion = createAsyncThunk(
 // Async thunk for updating a devotion
 export const updateDevotion = createAsyncThunk(
   "devotions/updateDevotion",
-  async ({ token, devotion }, { getState }) => {
+  async ({ token, devotion }: { token: string; devotion: Devotion }) => {
     const axiosInstance = createAxiosInstance(token);
-    let transformedDevotion = { ...devotion };
+    const transformedDevotion: {
+      [key: string]: string | File | null | string[];
+    } = { ...devotion };
     devotion.paragraphs.forEach((paragraph, index) => {
-      transformedDevotion[`paragraph${index + 1}`] = paragraph;
+      transformedDevotion[
+        `paragraph${index + 1}` as keyof typeof transformedDevotion
+      ] = paragraph;
     });
     delete transformedDevotion.paragraphs;
     transformedDevotion.image = transformedDevotion.photo;
     delete transformedDevotion.photo;
-    let formData = new FormData();
+    const formData = new FormData();
     Object.entries(transformedDevotion).forEach(([key, value]) => {
-      formData.append(key, value);
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          formData.append(key, item);
+        });
+      } else if (value !== null) {
+        formData.append(key, value);
+      }
     });
     const response = await axiosInstance.put(
       `/devotion/${devotion._id}`,
@@ -198,14 +203,18 @@ const devotionsSlice = createSlice({
 });
 
 // ... export actions and the reducer
-export const selectForm = (state) => state.devotions.form;
+export const selectForm = (state: { devotions: { form: FormState } }) =>
+  state.devotions.form;
 
-export const selectParagraphs = (state) => state.devotions.form.paragraphs;
+export const selectParagraphs = (state: { devotions: { form: FormState } }) =>
+  state.devotions.form.paragraphs;
 
-export const selectPreviewUrl = (state) => state.devotions.form.photo;
+export const selectPreviewUrl = (state: { devotions: { form: FormState } }) =>
+  state.devotions.form.photo;
 
-export const selectDevotionToDisplay = (state) =>
-  state.devotions.devotionToDisplay;
+export const selectDevotionToDisplay = (state: {
+  devotions: { devotionToDisplay: Devotion };
+}) => state.devotions.devotionToDisplay;
 
 export const {
   selectDevotion,

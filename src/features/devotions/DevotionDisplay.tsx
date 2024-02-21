@@ -3,12 +3,9 @@ import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { Devotion } from "@/redux/types";
 
 // Define the type for a devotion object
-interface Devotion {
-  _id: string;
-  // add other properties of a devotion object
-}
 
 interface DevotionDisplayProps {
   showControls: boolean;
@@ -56,7 +53,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
       />
       <PreviousDevotionals
         previousDevotions={previousDevotions}
-        setSelectedDevotion={setSelectedDevotion}
+        setSelectedDevotion={(devotion: Devotion) => setSelectedDevotion(devotion)}
       />
       <Categories title="Lessons Available" />
     </div>

@@ -13,12 +13,6 @@ export interface AuthState {
   isAuthReady: boolean;
 }
 
-export interface RootState {
-  auth: AuthState;
-  user: User;
-  // other slices of state
-}
-
 export interface Devotion {
   image: Devotion;
   previewUrl: Devotion;
@@ -33,4 +27,30 @@ export interface Devotion {
   subTitles: string[];
   photo: File | string | null; // Assuming 'photo' can be a File object or a string URL to the photo
   _id?: string;
+}
+
+export interface FormState {
+  month: string;
+  day: string;
+  title: string;
+  chapter: string;
+  verse: string;
+  paragraphs: string[];
+  prayer: string;
+  subTitles: string[];
+  photo: File | string | null;
+}
+
+export interface DevotionsState {
+  form: FormState;
+  devotions: Devotion[];
+  selectedDevotion: Devotion | null;
+  isEditing: boolean;
+}
+
+export interface RootState {
+  auth: AuthState;
+  user: User;
+  devotions: DevotionsState;
+  // other slices of state
 }
