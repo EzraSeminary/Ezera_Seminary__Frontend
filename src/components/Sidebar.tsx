@@ -224,7 +224,7 @@ const Sidebar: React.FC = () => {
       >
         <div className="flex items-center gap-2">
           <UserCircle size={28} className="text-primary-1 cursor-pointer " />
-          {user && user.role}
+          {user && user.firstName}
         </div>
       </div>
     </div>
