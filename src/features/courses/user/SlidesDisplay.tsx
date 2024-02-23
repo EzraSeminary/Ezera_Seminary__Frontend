@@ -8,23 +8,6 @@ import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
-interface Element {
-  _id: string;
-  type: string;
-  value: any;
-}
-
-interface Slide {
-  _id: string;
-  slide: string;
-  elements: Element[];
-}
-
-interface Chapter {
-  _id: string;
-  slides: Slide[];
-}
-
 function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
@@ -34,6 +17,10 @@ function SlidesDisplay() {
     chapterId: string;
   }>(); // Note the two separate parameters
 
+  if (!courseId) {
+    return <div>Course ID loading...</div>;
+  }
+
   //get single course
   const {
     data: courseData,
@@ -42,15 +29,13 @@ function SlidesDisplay() {
   } = useGetCourseByIdQuery(courseId);
 
   // Extracting chapter data from the fetched course data
-  const chapter = courseData?.chapters.find(
-    (chap: Chapter) => chap._id === chapterId
-  );
+  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
   }
   // Setting the data to slides if the chapter is found
-  const data: Slide[] = chapter.slides;
+  const data = chapter.slides;
   // console.log(data);
 
   const updateIndex = (newIndex: number) => {
@@ -135,8 +120,9 @@ function SlidesDisplay() {
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${unlocked ? "text-black" : "text-gray-500"
-                      }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
+                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${
+                      unlocked ? "text-black" : "text-gray-500"
+                    }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
                     `}
                     onClick={() => {
                       updateIndex(index);
@@ -346,8 +332,9 @@ function SlidesDisplay() {
             <div className="mb-4">
               <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
               <button
-                className={`text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl mx-auto text-2xl transition-all ${activeIndex === data.length - 1 ? "hidden" : "block"
-                  }`} // hidding the next button for the last slide
+                className={`text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl mx-auto text-2xl transition-all ${
+                  activeIndex === data.length - 1 ? "hidden" : "block"
+                }`} // hidding the next button for the last slide
                 onClick={() => {
                   updateIndex(activeIndex + 1);
                 }}

@@ -111,6 +111,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           chapterIndex,
           slideIndex,
           elementType: currentElement,
+          value: "",
         })
       );
       setCurrentElement("");

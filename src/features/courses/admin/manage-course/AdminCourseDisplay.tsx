@@ -74,7 +74,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
   }, [selectedSlide]);
 
   return (
-    <div className="mr-16 h-[80%] bg-chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+    <div className="mr-16 h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
       <div className="flex flex-col justify-between w-full h-full">
         <div>
           <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
