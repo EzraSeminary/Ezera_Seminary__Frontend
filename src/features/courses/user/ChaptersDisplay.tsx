@@ -9,18 +9,12 @@ function ChaptersDisplay() {
 
   const { courseId } = useParams<{ courseId: string }>();
 
-  if (!courseId) {
-    return <div>Course ID loading...</div>;
-  }
-
   //get single course
   const {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId, {
-    skip: !courseId, // Skip the query if courseId is not available yet
-  });
+  } = useGetCourseByIdQuery(courseId);
 
   const { chapters } = courseData || {};
   const data = chapters || [];
