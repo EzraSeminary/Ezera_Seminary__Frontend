@@ -30,7 +30,7 @@ function SlidesDisplay() {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId);
+  } = useGetCourseByIdQuery(courseId as string);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);

@@ -14,7 +14,7 @@ function ChaptersDisplay() {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId);
+  } = useGetCourseByIdQuery(courseId as string);
 
   const { chapters } = courseData || {};
   const data = chapters || [];
