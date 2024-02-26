@@ -23,14 +23,15 @@ import SlidesDisplay from "@/features/courses/user/SlidesDisplay";
 import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
 import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
+import { RootState } from "@/redux/store";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const isAuthReady = useSelector((state) => state.auth.isAuthReady);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAuthReady = useSelector((state: RootState) => state.auth.isAuthReady);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user") as string); // Add type assertion to treat the value as a string
 
     if (user) {
       dispatch(login(user)); // Dispatch the login action
@@ -44,7 +45,7 @@ function App() {
   }
 
   // Private Route for Admin
-  const PrivateAdminRoute = ({ children }) => {
+  const PrivateAdminRoute = ({ children }: { children: React.ReactNode }) => {
     if (user && user.role === "Admin") {
       return children;
     } else {
@@ -56,7 +57,7 @@ function App() {
     children: PropTypes.node.isRequired,
   };
 
-  const PrivateUserRoute = ({ children }) => {
+  const PrivateUserRoute = ({ children }: { children: React.ReactNode }) => {
     if (user) {
       return children;
     } else {
@@ -69,7 +70,7 @@ function App() {
   };
 
   // Public Route (redirect if logged in)
-  const PublicRoute = ({ children }) => {
+  const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     if (user && user.role === "Admin") {
       return <Navigate to="/admin" replace={true} />;
     }
@@ -84,7 +85,7 @@ function App() {
 
   return (
     <BrowserRouter>
-     {!isAdmin && <Header />}
+      {!isAdmin && <Header />}
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -150,7 +151,7 @@ function App() {
         {/* Not Found Route */}
         <Route path="*" element={<NotMatch />} />
       </Routes>
-     { !isAdmin && <Footer />}
+      {!isAdmin && <Footer />}
     </BrowserRouter>
   );
 }

@@ -6,6 +6,7 @@ import { selectCourse, setCourse } from "@/redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
+import BeatLoader from "react-spinners/BeatLoader";
 
 function EditCourse() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ function EditCourse() {
   const instance = useAxiosInstance();
   const dispatch = useDispatch();
   const course = useSelector(selectCourse);
+
+  const [loading, setLoading] = useState(true);
 
   //get a single course
   useEffect(() => {
@@ -32,7 +35,10 @@ function EditCourse() {
           );
           console.log(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       console.log("Course ID is undefined");
     }
@@ -96,6 +102,19 @@ function EditCourse() {
   const handleButtonClick = () => {
     setShowComponent(true);
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <BeatLoader
+          color={"#707070"}
+          loading
+          size={15}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
 
   return (
     <div className="w-full">

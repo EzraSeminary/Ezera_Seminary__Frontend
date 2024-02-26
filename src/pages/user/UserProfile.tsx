@@ -1,9 +1,10 @@
 // Yet to be fixed ❗❗❗
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/redux/authSlice";
+import { RootState } from "@/redux/store";
 
 const UserProfile = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -24,7 +25,7 @@ const UserProfile = () => {
         {/* User Avatar and Email */}
         <div className="flex flex-col items-center mb-4">
           <img
-            src="/assets/avatar.JPG" // Will be Replaced with the actual avatar URL from the backend later
+            src="@/assets/ezra-logo.svg" // Will be Replaced with the actual avatar URL from the backend later
             alt="User Avatar"
             className="rounded-full w-24 h-24"
           />

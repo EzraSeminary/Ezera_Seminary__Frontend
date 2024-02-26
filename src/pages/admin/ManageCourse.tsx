@@ -4,13 +4,6 @@ import { useGetCoursesQuery } from "../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import useAxiosInstance from "../../api/axiosInstance";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
-
 function ManageCourse() {
   const { data: courses, error, isLoading } = useGetCoursesQuery();
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +12,7 @@ function ManageCourse() {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = courses?.filter((course: Course) => {
+  const filteredData = courses?.filter((course) => {
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -84,7 +77,7 @@ function ManageCourse() {
         <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
         <div className="flex flex-col justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
-          {filteredData?.map((course: Course, index: number) => {
+          {filteredData?.map((course, index: number) => {
             return (
               <div
                 key={index}
@@ -93,8 +86,7 @@ function ManageCourse() {
                 <div className="w-full p-2">
                   <img
                     src={
-                      `https://ezra-seminary-api.onrender.com/images/` +
-                      course.image
+                      `https://ezra-seminary.mybese.tech/images/` + course.image
                     }
                     // src={`http://localhost:5100/images/` + course.image}
                     className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"

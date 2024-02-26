@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { RootState } from '@/redux/store'; // Adjust this import according to your file structure
+import React, { useState } from "react";
+<<<<<<< HEAD
+import { useSelector } from "react-redux";
+=======
+import { useDispatch, useSelector } from "react-redux";
+>>>>>>> main
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { RootState } from "@/redux/store"; // Adjust this import according to your file structure
 import {
   ArrowLeft,
   ArrowRight,
@@ -12,8 +16,12 @@ import {
   UserCircle,
   Graph,
   IconProps,
-} from '@phosphor-icons/react';
-import LogoutButton from './LogoutButton';
+} from "@phosphor-icons/react";
+import LogoutButton from "./LogoutButton";
+<<<<<<< HEAD
+=======
+import { resetCourse } from "@/redux/courseSlice";
+>>>>>>> main
 
 // Define a type for your menu items
 interface MenuItemType {
@@ -30,7 +38,11 @@ const Sidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeMenu, setActiveMenu] = useState('');
+<<<<<<< HEAD
+=======
+  const dispatch = useDispatch();
+>>>>>>> main
+  const [activeMenu, setActiveMenu] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -84,7 +96,13 @@ const Sidebar: React.FC = () => {
       subItems: [{ label: "Feedback", path: "/admin/feedback" }],
     },
   ];
-  const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active, children, onClick }) => {
+  const SidebarItem: React.FC<SidebarItemProps> = ({
+    icon: Icon,
+    label,
+    active,
+    children,
+    onClick,
+  }) => {
     return (
       <div
         className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center ${
@@ -109,7 +127,6 @@ const Sidebar: React.FC = () => {
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   };
 
-
   const ProfileModal = () => {
     return (
       <div className="fixed bottom-24 left-2 flex justify-center items-center z-50">
@@ -130,18 +147,25 @@ const Sidebar: React.FC = () => {
     );
   };
 
-  const handleItemClick = (item: MenuItemType, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+  const handleItemClick = (
+    item: MenuItemType,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
     if (item.subItems.length === 1) {
       navigate(item.subItems[0].path);
     } else {
-      setActiveMenu(activeMenu !== item.label ? item.label : '');
+      setActiveMenu(activeMenu !== item.label ? item.label : "");
       event.stopPropagation(); // Stop click from propagating to other elements
     }
   };
 
-  const handleSubItemClick = (path: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+  const handleSubItemClick = (
+    path: string,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
     event.stopPropagation(); // Stop click from propagating to other elements
     navigate(path);
+    dispatch(resetCourse()); //reset the state to the initial values
   };
 
   return (
@@ -183,26 +207,26 @@ const Sidebar: React.FC = () => {
             onClick={(event) => {
               if (isCollapsed) {
                 // When collapsed, navigate to the path of the first subitem
-                navigate(item.subItems[[0]].path);
+                navigate(item.subItems[0].path);
               } else {
                 // When not collapsed, handle the item click normally
                 handleItemClick(item, event);
               }
             }}
           >
-            <div className='mt-2'>
-            {!isCollapsed &&
-              activeMenu === item.label &&
-              item.subItems.map((subItem) => (
-                <div
-                key={subItem.path}
-                className="pl-8 menu-item py-1 hover:bg-accent-8 rounded-lg transition-all"
-                  onClick={(e) => handleSubItemClick(subItem.path, e)}
+            <div className="mt-2">
+              {!isCollapsed &&
+                activeMenu === item.label &&
+                item.subItems.map((subItem) => (
+                  <div
+                    key={subItem.path}
+                    className="pl-8 menu-item py-1 hover:bg-accent-8 rounded-lg transition-all"
+                    onClick={(e) => handleSubItemClick(subItem.path, e)}
                   >
-                  {subItem.label}
-                </div>
-              ))}
-              </div>
+                    {subItem.label}
+                  </div>
+                ))}
+            </div>
           </SidebarItem>
         ))}
       </div>
@@ -213,7 +237,7 @@ const Sidebar: React.FC = () => {
       >
         <div className="flex items-center gap-2">
           <UserCircle size={28} className="text-primary-1 cursor-pointer " />
-          {user.role}
+          {user && user.firstName}
         </div>
       </div>
     </div>

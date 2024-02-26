@@ -1,25 +1,32 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
+  selectChapters,
+  Chapter,
 } from "@/redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
-function EditElements({ chapterIndex, slideIndex }) {
+interface EditElementsProps {
+  chapterIndex: number;
+  slideIndex: number;
+}
+
+function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const dispatch = useDispatch();
 
-  const chapters = useSelector((state) => state.course.chapters);
+  const chapters = useSelector(selectChapters) as Chapter[];
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 
-  const [currentElement, setCurrentElement] = useState("");
+  const [currentElement, setCurrentElement] = useState<string>("");
 
   //List items related functions
-  const [listItems, setListItems] = useState([]);
+  const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState("");
 
-  const handleListInputChange = (event) => {
+  const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
 
@@ -75,7 +82,10 @@ function EditElements({ chapterIndex, slideIndex }) {
     </div>
   );
 
-  const handleFileInputChange = (e, id) => {
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
     const file = e.target.files[0]; // Get the first file from the input
     if (file) {
       dispatch(
@@ -89,7 +99,7 @@ function EditElements({ chapterIndex, slideIndex }) {
     }
   };
 
-  const handleDropdownChange = (e) => {
+  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCurrentElement(e.target.value);
   };
 
@@ -101,6 +111,7 @@ function EditElements({ chapterIndex, slideIndex }) {
           chapterIndex,
           slideIndex,
           elementType: currentElement,
+          value: "",
         })
       );
       setCurrentElement("");
@@ -117,7 +128,7 @@ function EditElements({ chapterIndex, slideIndex }) {
     }
   };
 
-  const handleInputChange = (id, value) => {
+  const handleInputChange = (id: string, value: string) => {
     dispatch(
       updateElement({
         chapterIndex,
@@ -128,7 +139,7 @@ function EditElements({ chapterIndex, slideIndex }) {
     );
   };
 
-  const handleDeleteButtonClick = (elementId) => {
+  const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
       deleteElement({
         chapterIndex,
@@ -139,7 +150,7 @@ function EditElements({ chapterIndex, slideIndex }) {
   };
 
   //Slide items related functions
-  const [slidesDetails, setSlidesDetails] = useState([]);
+  const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
   const [currentSlideDetails, setCurrentSlideDetails] = useState("");
 
   const handleAddSlide = () => {
@@ -149,7 +160,7 @@ function EditElements({ chapterIndex, slideIndex }) {
     }
   };
 
-  const handleDeleteSlideItem = (indexToDelete) => {
+  const handleDeleteSlideItem = (indexToDelete: number) => {
     const updatedSlides = slidesDetails.filter(
       (_, index) => index !== indexToDelete
     );
@@ -172,7 +183,6 @@ function EditElements({ chapterIndex, slideIndex }) {
     <div className="mt-4">
       <div className="flex flex-row items-center w-[100%] gap-1">
         <textarea
-          type="text"
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
@@ -211,14 +221,14 @@ function EditElements({ chapterIndex, slideIndex }) {
 
   // Quiz-related state and functions
   const [quizQuestion, setQuizQuestion] = useState("");
-  const [quizChoices, setQuizChoices] = useState([]);
+  const [quizChoices, setQuizChoices] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
 
-  const handleQuizQuestionChange = (event) => {
+  const handleQuizQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuizQuestion(event.target.value);
   };
 
-  const handleQuizChoiceChange = (index, text) => {
+  const handleQuizChoiceChange = (index: number, text: string) => {
     setQuizChoices(
       quizChoices.map((choice, i) => (i === index ? text : choice))
     );
@@ -228,7 +238,7 @@ function EditElements({ chapterIndex, slideIndex }) {
     setQuizChoices([...quizChoices, ""]); // Adds a new empty choice
   };
 
-  const handleCorrectAnswerChange = (value) => {
+  const handleCorrectAnswerChange = (value: string) => {
     setCorrectAnswer(value);
   };
 

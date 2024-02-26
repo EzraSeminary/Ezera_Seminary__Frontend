@@ -1,28 +1,44 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectSlides } from "@/redux/courseSlice";
+import {
+  selectSlides,
+  Slide,
+  CourseState,
+  CustomElement,
+  QuizElement,
+} from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 
-function AdminCourseDisplay({ selectedSlideIndex }) {
+interface SelectedSlideIndex {
+  chapter: number;
+  slide: number;
+}
+
+interface AdminCourseDisplayProps {
+  selectedSlideIndex: SelectedSlideIndex;
+}
+
+function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
   //radio input switch
-  const [selectedChoice, setSelectedChoice] = useState(null);
-  const handleRadioChange = (choiceIndex, choiceValue) => {
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+  const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide.elements.some((el) => el.type === "quiz")) {
       const quizElement = selectedSlide.elements.find(
-        (el) => el.type === "quiz"
+        (el): el is QuizElement => el.type === "quiz"
       );
-      const isCorrect = choiceValue === quizElement.value.correctAnswer;
-      setIsAnswerCorrect(isCorrect);
+      if (quizElement) {
+        const isCorrect = choiceValue === quizElement.value.correctAnswer;
+        setIsAnswerCorrect(isCorrect);
+      }
     }
   };
 
@@ -37,18 +53,18 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
     }
   };
 
-  const slides = useSelector((state) =>
+  const slides = useSelector((state: { course: CourseState }) =>
     selectSlides(state, selectedSlideIndex.chapter)
-  );
+  ) as Slide[];
   const selectedSlide = slides[selectedSlideIndex.slide];
 
   //Display image from state
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   useEffect(() => {
-    if (selectedSlide && selectedSlide.elements) {
+    if (selectedSlide && selectedSlide?.elements) {
       const imgElement = selectedSlide.elements.find((e) => e.type === "img");
       if (imgElement && imgElement.value instanceof File) {
-        const objectUrl = URL.createObjectURL(imgElement.value);
+        const objectUrl = URL.createObjectURL(imgElement.value as File);
         setImagePreviewUrl(objectUrl);
 
         // Clean up the URL when the component unmounts
@@ -58,7 +74,7 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
   }, [selectedSlide]);
 
   return (
-    <div className="mr-16 h-[80%] bg-chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+    <div className="mr-16 h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
       <div className="flex flex-col justify-between w-full h-full">
         <div>
           <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
@@ -79,7 +95,7 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
               {selectedSlide.slide}
             </h1>
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
-              {selectedSlide.elements.map((element, index) => {
+              {selectedSlide.elements.map((element: CustomElement, index) => {
                 let elementComponent = null;
                 const uniqueKey = `${element.type}-${index}`;
                 if (element.type === "title") {
@@ -110,11 +126,15 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
                     </p>
                   );
                 } else if (element.type === "img") {
+                  const altText =
+                    element.value instanceof File
+                      ? element.value.name
+                      : "image";
                   elementComponent = (
                     <img
                       key={element.type}
                       src={imagePreviewUrl}
-                      alt={element.value.name}
+                      alt={altText}
                       className="w-[40%] mx-auto"
                     />
                   );
@@ -206,15 +226,6 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
                 return elementComponent;
               })}
             </ul>
-            <button
-              className="absolute bottom-20 p-1 bg-black opacity-60 rounded-full text-white text-3xl"
-              onClick={() => {
-                const container = document.querySelector(".overflow-y-auto");
-                container.scrollTop += 50; // Adjust the scroll amount as needed
-              }}
-            >
-              ▼
-            </button>
           </div>
         )}
         <div className="mb-4 w-[100%] flex flex-col items-center justify-center">
@@ -227,12 +238,5 @@ function AdminCourseDisplay({ selectedSlideIndex }) {
     </div>
   );
 }
-
-AdminCourseDisplay.propTypes = {
-  selectedSlideIndex: PropTypes.shape({
-    chapter: PropTypes.number.isRequired,
-    slide: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
 export default AdminCourseDisplay;
