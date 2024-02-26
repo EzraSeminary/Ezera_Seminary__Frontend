@@ -199,6 +199,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           chapterIndex,
           slideIndex,
           elementType: currentElement,
+          value: "",
         })
       );
       setCurrentElement("");

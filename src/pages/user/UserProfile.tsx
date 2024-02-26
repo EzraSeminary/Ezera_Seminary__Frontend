@@ -1,9 +1,10 @@
 // Yet to be fixed ❗❗❗
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/redux/authSlice";
+import { RootState } from "@/redux/store";
 
 const UserProfile = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
   const handleLogout = () => {

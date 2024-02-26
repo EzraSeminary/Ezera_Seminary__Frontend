@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { useSelector } from "react-redux";
+=======
+import { useDispatch, useSelector } from "react-redux";
+>>>>>>> main
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { RootState } from "@/redux/store"; // Adjust this import according to your file structure
 import {
@@ -14,6 +18,10 @@ import {
   IconProps,
 } from "@phosphor-icons/react";
 import LogoutButton from "./LogoutButton";
+<<<<<<< HEAD
+=======
+import { resetCourse } from "@/redux/courseSlice";
+>>>>>>> main
 
 // Define a type for your menu items
 interface MenuItemType {
@@ -30,6 +38,10 @@ const Sidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+<<<<<<< HEAD
+=======
+  const dispatch = useDispatch();
+>>>>>>> main
   const [activeMenu, setActiveMenu] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -153,6 +165,7 @@ const Sidebar: React.FC = () => {
   ): void => {
     event.stopPropagation(); // Stop click from propagating to other elements
     navigate(path);
+    dispatch(resetCourse()); //reset the state to the initial values
   };
 
   return (

@@ -93,7 +93,7 @@ export const courseSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setImage: (state, action: PayloadAction<string>) => {
+    setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
     },
     addChapter: (state) => {
@@ -219,6 +219,15 @@ export const courseSlice = createSlice({
       const { chapterIndex, slideIndex } = action.payload;
       state.chapters[chapterIndex].slides.splice(slideIndex, 1);
     },
+
+    resetCourse: () => {
+      return {
+        title: "",
+        description: "",
+        image: "",
+        chapters: [],
+      };
+    },
   },
 });
 
@@ -240,6 +249,7 @@ export const {
 
   setCurrentChapter,
   setCurrentSlide,
+  resetCourse,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

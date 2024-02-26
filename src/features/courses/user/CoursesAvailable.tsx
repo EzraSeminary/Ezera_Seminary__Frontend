@@ -6,15 +6,8 @@ import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
-
 function CoursesAvailable() {
-  const { data: courses, error, isLoading } = useGetCoursesQuery({});
+  const { data: courses, error, isLoading } = useGetCoursesQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
@@ -46,7 +39,11 @@ function CoursesAvailable() {
   {
     /* Filter the data based on the search term */
   }
+<<<<<<< HEAD
   const filteredData = courses?.filter((course: Course) => {
+=======
+  const filteredData = (courses ?? []).filter((course) => {
+>>>>>>> main
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -90,6 +87,7 @@ function CoursesAvailable() {
     // Courses Available Section
     <div className="container space-y-3 mt-12 pt-12 ">
       {/* Container of title and seacrch bar*/}
+
       <div className="flex justify-between items-end">
         {/* Title of the page */}
         <div className="w-full tracking-wide">
@@ -149,7 +147,11 @@ function CoursesAvailable() {
         <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
+<<<<<<< HEAD
             .map((course: Course, index: number) => {
+=======
+            .map((course, index: number) => {
+>>>>>>> main
               return (
                 <div
                   key={index}
@@ -193,7 +195,11 @@ function CoursesAvailable() {
         <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
+<<<<<<< HEAD
             .map((course: Course, index: number) => {
+=======
+            .map((course, index: number) => {
+>>>>>>> main
               return (
                 <div
                   key={index}
@@ -237,7 +243,11 @@ function CoursesAvailable() {
         <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
+<<<<<<< HEAD
             .map((course: Course, index: number) => {
+=======
+            .map((course, index: number) => {
+>>>>>>> main
               return (
                 <div
                   key={index}
@@ -247,7 +257,11 @@ function CoursesAvailable() {
                   <div className="w-full p-2 h-full">
                     <img
                       src={
+<<<<<<< HEAD
                         `https://ezra-seminary.mybese.tech/images/` +
+=======
+                        `https://ezra-seminary-api.onrender.com/images/` +
+>>>>>>> main
                         course.image
                       }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"

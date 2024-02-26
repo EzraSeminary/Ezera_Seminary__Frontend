@@ -3,20 +3,15 @@ import { Link, useParams } from "react-router-dom";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
-interface Chapter {
-  _id: string;
-  chapter: string;
-}
-
-interface CourseData {
-  chapters: Chapter[];
-}
-
 function ChaptersDisplay() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
 
   const { courseId } = useParams<{ courseId: string }>();
+
+  if (!courseId) {
+    return <div>Course ID loading...</div>;
+  }
 
   //get single course
   const {
@@ -27,8 +22,8 @@ function ChaptersDisplay() {
     skip: !courseId, // Skip the query if courseId is not available yet
   });
 
-  const { chapters }: CourseData = courseData || {};
-  const data: Chapter[] = chapters || [];
+  const { chapters } = courseData || {};
+  const data = chapters || [];
 
   const updateIndex = (newIndex: number) => {
     if (newIndex < 0) {
