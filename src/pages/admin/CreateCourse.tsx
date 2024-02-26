@@ -19,8 +19,8 @@ function CreateCourse() {
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const handleImageChange = (e: ChangeEvent) => {
-    const file = e.target.files[[0]];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       dispatch(setImage(file)); // Dispatch the File object to the store
       const fileReader = new FileReader();

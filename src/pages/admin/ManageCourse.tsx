@@ -31,7 +31,7 @@ function ManageCourse() {
 
   if (isLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <BeatLoader
           color={"#707070"}
           loading
