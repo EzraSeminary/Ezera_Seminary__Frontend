@@ -62,7 +62,7 @@ const Header: React.FC = () => {
         />
       </div>
       {/* Header when the scroll is above 620  */}
-      <div className="relative z-20 py-2">
+      <div className="relative z-30 py-2">
         {show && (
           <div className="fixed top-0 z-0 w-full h-20 xl:h-28">
             {/* Header Background Image */}
@@ -188,7 +188,7 @@ const Header: React.FC = () => {
         }
       </div>
       {/* Header when the scroll is below 620  */}
-      <div className="relative z-10 py-2">
+      <div className="relative z-30 py-2">
         <div className="absolute top-[100%]  w-full  md:top-[15%] lg:top-[25%] xl:top-[80%]">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[95%] lg:w-[85%] mx-auto">
             {/* Logo */}
