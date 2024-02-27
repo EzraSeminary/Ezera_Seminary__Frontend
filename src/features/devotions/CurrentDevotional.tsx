@@ -7,32 +7,19 @@ import {
   setIsEditing,
 } from "../../redux/devotionsSlice";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { RootState } from '@/redux/types';
-
-
-
-interface Devotion {
-  _id: string;
-  month: string;
-  day: string;
-  title: string;
-  chapter: string;
-  verse: string;
-  body: string[];
-  prayer: string;
-  image: string;
-  previewUrl: string;
-  // add other properties of a devotion object
-}
+import { RootState, Devotion } from "@/redux/types";
 
 interface CurrentDevotionalProps {
   devotionToDisplay: Devotion;
   showControls: boolean;
 }
 
-const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({ devotionToDisplay, showControls }) => {
-  const { refetch } = useGetDevotionsQuery({});
-  const role = useSelector((state: RootState) => state.auth.role);// get the authentication token
+const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
+  devotionToDisplay,
+  showControls,
+}) => {
+  const { refetch } = useGetDevotionsQuery({}); // get the authentication token
+  const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
   const dispatch = useDispatch();
 
   const handleDelete = async (id: string) => {
@@ -135,7 +122,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({ devotionToDisplay
 
         <div className="w-[25%] mt-12 flex flex-col space-y-6">
           <img
-            src={`https://ezra-seminary-api.onrender.com/images/${
+            src={`https://ezra-seminary.mybese.tech/images/${
               devotionToDisplay && devotionToDisplay.image
             }`}
             alt="Devotion Image"

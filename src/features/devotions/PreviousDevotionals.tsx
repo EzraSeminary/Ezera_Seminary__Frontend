@@ -1,7 +1,15 @@
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 
-const PreviousDevotionals = ({ previousDevotions, setSelectedDevotion }) => {
+import { Devotion } from "@/redux/types"; // Import the Devotion type
+
+const PreviousDevotionals = ({
+  previousDevotions,
+  setSelectedDevotion,
+}: {
+  previousDevotions: Devotion[];
+  setSelectedDevotion: (devotion: Devotion) => void;
+}) => {
   return (
     <div className="flex flex-col h-auto space-y-6 w-[100%] mx-auto ">
       <div className="w-[100%] flex justify-between items-center">
@@ -30,7 +38,7 @@ const PreviousDevotionals = ({ previousDevotions, setSelectedDevotion }) => {
           <div key={devotion._id} className="w-[24%] ">
             <div className="rounded-lg shadow-xl  h-auto border-2 bg-[#fff] border-accent-6 text-secondary-6 overflow-hidden">
               <img
-                src={`https://ezra-seminary-api.onrender.com/images/${devotion.image}`}
+                src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
                 alt="Devotion Image"
                 className="h-56 w-[100%] mx-auto cursor-pointer object-cover"
                 onClick={() => {

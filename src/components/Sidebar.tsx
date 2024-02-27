@@ -197,7 +197,7 @@ const Sidebar: React.FC = () => {
             onClick={(event) => {
               if (isCollapsed) {
                 // When collapsed, navigate to the path of the first subitem
-                navigate(item.subItems[[0]].path);
+                navigate(item.subItems[0].path);
               } else {
                 // When not collapsed, handle the item click normally
                 handleItemClick(item, event);
@@ -227,7 +227,7 @@ const Sidebar: React.FC = () => {
       >
         <div className="flex items-center gap-2">
           <UserCircle size={28} className="text-primary-1 cursor-pointer " />
-          {user.role}
+          {user && user.firstName}
         </div>
       </div>
     </div>
