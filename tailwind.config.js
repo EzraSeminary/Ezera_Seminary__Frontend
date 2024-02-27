@@ -1,61 +1,60 @@
 import tailwindcssAnimate from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 export default {
-	darkMode: "class",
-	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
-	],
-	theme: {
-		screens: {
-			sm: "429px",
-			md: "768px",
-			lg: "1024px",
-			xl: "1440px",
-		},
-		container: {
-			center: true,
-			padding: "2rem",
-			screens: {
-				"2xl": "1400px",
-			},
-		},
-		fontSize: {
-			xs1: ["12px", { lineHeight: "20px", letterSpacing: "0" }],
-			xs: ["14px", { lineHeight: "22px", letterSpacing: "0" }],
-			sm: ["16px", { lineHeight: "24px", letterSpacing: "0" }],
-			lg: ["18px", { lineHeight: "28px", letterSpacing: "0" }],
-			xl: ["20px", { lineHeight: "30px", letterSpacing: "0" }],
-			"2xl": ["24px", { lineHeight: "36px", letterSpacing: "0" }],
-			"3xl": ["32px", { lineHeight: "48px", letterSpacing: "0" }],
-			"4xl": ["48px", { lineHeight: "64px", letterSpacing: "0" }],
-			"5xl": ["64px", { lineHeight: "80px", letterSpacing: "0" }],
-			"6xl": ["80px", { lineHeight: "94px", letterSpacing: "0" }],
-			"7xl": ["96px", { lineHeight: "110px", letterSpacing: "-0.02em" }],
-		},
-		extend: {
-			gridTemplateColumns: {
-				"admin-dashboard": "auto 1fr",
-			},
-			truncate: {
-				lines: {
-					2: "2",
-					3: "3",
-				},
-			},
-			fontFamily: {
-				"nokia-bold": ["Nokia Pure Headline Bold", "Inter", "sans-serif"],
-				"nokia-light": ["Nokia Pure Headline Light", "Inter", "sans-serif"],
-				"Lato-Light": ["Lato-Light", "sans-serif"],
-				"Lato-Regular": ["Lato-Regular", "sans-serif"],
-				"Lato-Black": ["Lato-Black", "sans-serif"],
-				"Lato-Bold": ["Lato-Bold", "sans-serif"],
-				"Lato-Thin": ["Lato-Thin", "sans-serif"],
-				inter: ["Inter", "sans-serif"],
-				sans: ["Public sans", "Inter", "sans-serif"],
-			},
+  darkMode: "class",
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  theme: {
+    screens: {
+      xs: "375px",
+      sm: "428px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1440px",
+    },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    fontSize: {
+      xs1: ["12px", { lineHeight: "20px", letterSpacing: "0" }],
+      xs: ["14px", { lineHeight: "22px", letterSpacing: "0" }],
+      sm: ["16px", { lineHeight: "24px", letterSpacing: "0" }],
+      lg: ["18px", { lineHeight: "28px", letterSpacing: "0" }],
+      xl: ["20px", { lineHeight: "30px", letterSpacing: "0" }],
+      "2xl": ["24px", { lineHeight: "36px", letterSpacing: "0" }],
+      "3xl": ["32px", { lineHeight: "48px", letterSpacing: "0" }],
+      "4xl": ["48px", { lineHeight: "64px", letterSpacing: "0" }],
+      "5xl": ["64px", { lineHeight: "80px", letterSpacing: "0" }],
+      "6xl": ["80px", { lineHeight: "94px", letterSpacing: "0" }],
+      "7xl": ["96px", { lineHeight: "110px", letterSpacing: "-0.02em" }],
+    },
+    extend: {
+      truncate: {
+        lines: {
+          2: "2",
+          3: "3",
+        },
+      },
+      fontFamily: {
+        "nokia-bold": ["Nokia Pure Headline Bold", "Inter", "sans-serif"],
+        "nokia-light": ["Nokia Pure Headline Light", "Inter", "sans-serif"],
+        "Lato-Light": ["Lato-Light", "sans-serif"],
+        "Lato-Regular": ["Lato-Regular", "sans-serif"],
+        "Lato-Black": ["Lato-Black", "sans-serif"],
+        "Lato-Bold": ["Lato-Bold", "sans-serif"],
+        "Lato-Thin": ["Lato-Thin", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        sans: ["Public sans", "Inter", "sans-serif"],
+      },
+
 
 			backgroundImage: {
 				"header-img": "url('./assets/header-img.svg')",
