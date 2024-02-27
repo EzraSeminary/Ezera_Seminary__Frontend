@@ -116,6 +116,12 @@
   background-repeat: no-repeat;
   width: 100%;
 }
+.coming-soon {
+  background-image: url("./assets/coming-soon.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
 .scrollbar-thin::-webkit-scrollbar {
   width: 8px; /* width of the vertical scrollbar */
 }

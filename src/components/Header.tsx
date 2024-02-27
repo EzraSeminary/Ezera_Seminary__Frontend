@@ -54,7 +54,7 @@ const Header: React.FC = () => {
   useOnClickOutside(ref, showAccountModal, () => setShowAccountModal(false));
 
   return (
-    <header className="relative max-w-screen">
+    <header className="relative max-w-screen mb-8">
       {/* Header Background Image */}
       <div className="absolute top-0 z-0 w-full h-16 shadow-xl">
         <img

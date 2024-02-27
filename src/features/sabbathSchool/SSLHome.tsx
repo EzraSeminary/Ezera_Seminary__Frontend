@@ -8,7 +8,7 @@ const SSLHome = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="">
+    <div className="mt-12 pt-12">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {(ssl ?? []).map((item, index) => (
           <Link
