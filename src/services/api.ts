@@ -71,7 +71,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // baseUrl: "http://localhost:5100/",
-    baseUrl: "https://ezra-seminary-api.onrender.com/",
+    baseUrl: "https://ezra-seminary.mybese.tech/",
   }),
   endpoints: (builder) => ({
     getCourses: builder.query<ApiState[], void>({

@@ -2,7 +2,9 @@ import { useGetCoursesQuery } from "../../services/api";
 import { Link } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
 
-{/*typeScript*/ }
+{
+  /*typeScript*/
+}
 interface LatestCourse {
   _id: string;
   title: string;
@@ -11,11 +13,14 @@ interface LatestCourse {
 }
 
 const LatestCourses = () => {
-
-  {/* Fetch the latest courses */ }
+  {
+    /* Fetch the latest courses */
+  }
   const { data: courses, isLoading } = useGetCoursesQuery({});
 
-  {/* Loading state */ }
+  {
+    /* Loading state */
+  }
   if (isLoading) {
     return (
       <>
@@ -42,9 +47,7 @@ const LatestCourses = () => {
   }
 
   return (
-
     <div className="flex-1 flex flex-col items-center justify-center space-y-4 w-full mx-auto ">
-
       {/* Title of the page */}
       <h1 className="text-3xl font-nokia-bold text-secondary-6">
         Latest Courses
@@ -60,7 +63,7 @@ const LatestCourses = () => {
               className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold"
             >
               <img
-                src={`https://ezra-seminary-api.onrender.com/images/${course.image}`}
+                src={`https://ezra-seminary.mybese.tech/images/${course.image}`}
                 className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                 alt=""
               />
@@ -71,9 +74,7 @@ const LatestCourses = () => {
                 to={`/courses/get/${course._id}`}
                 className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
               >
-                <button type="button">
-                  ኮርሱን ክፈት
-                </button>
+                <button type="button">ኮርሱን ክፈት</button>
               </Link>
             </div>
           );
