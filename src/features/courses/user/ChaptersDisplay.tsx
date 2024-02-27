@@ -7,15 +7,6 @@ import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-i
 import logo from "../../../assets/ezra-logo.svg";
 import bibleImage from "../../../assets/bible2.jpeg";
 
-interface Chapter {
-  _id: string;
-  chapter: string;
-}
-
-interface CourseData {
-  chapters: Chapter[];
-}
-
 function ChaptersDisplay() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState<boolean>(true);
@@ -40,12 +31,10 @@ function ChaptersDisplay() {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId, {
-    skip: !courseId, // Skip the query if courseId is not available yet
-  });
+  } = useGetCourseByIdQuery(courseId as string);
 
-  const { chapters }: CourseData = courseData || {};
-  const data: Chapter[] = chapters || [];
+  const { chapters } = courseData || {};
+  const data = chapters || [];
 
   const updateIndex = (newIndex: number) => {
     if (newIndex < 0) {

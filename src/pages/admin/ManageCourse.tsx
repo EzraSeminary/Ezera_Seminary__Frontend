@@ -1,25 +1,18 @@
 import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
-import { useGetCoursesQuery } from "../../../services/api";
+import { useGetCoursesQuery } from "../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-import useAxiosInstance from "../../../api/axiosInstance";
-
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
+import useAxiosInstance from "../../api/axiosInstance";
 
 function ManageCourse() {
-  const { data: courses, error, isLoading } = useGetCoursesQuery({});
+  const { data: courses, error, isLoading } = useGetCoursesQuery();
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = courses?.filter((course: Course) => {
+  const filteredData = courses?.filter((course) => {
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -38,7 +31,7 @@ function ManageCourse() {
 
   if (isLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <BeatLoader
           color={"#707070"}
           loading
@@ -84,7 +77,7 @@ function ManageCourse() {
         <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
         <div className="flex flex-col justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
-          {filteredData.map((course: Course, index: number) => {
+          {filteredData?.map((course, index: number) => {
             return (
               <div
                 key={index}

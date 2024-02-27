@@ -1,10 +1,12 @@
-import { useLogout } from "../hooks/useLogout";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/authSlice";
+import "../App.css";
 
 const LogoutButton = () => {
-  const { logout } = useLogout();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     localStorage.removeItem("user");
     window.location.href = "/login";
   };

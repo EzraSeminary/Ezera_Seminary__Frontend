@@ -1,32 +1,72 @@
 import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
-interface CourseState {
+export interface CourseState {
   title: string;
   description: string;
-  image: string;
+  image: string | File;
   chapters: Chapter[];
   currentChapterIndex?: number;
   currentSlideIndex?: number;
 }
 
 // Define a type for the Chapter
-interface Chapter {
+export interface Chapter {
   chapter: string;
   slides: Slide[];
 }
 
 // Define a type for each of the Slide and Element properties
-interface Slide {
+export interface Slide {
   slide: string;
-  elements: Element[];
+  elements: CustomElement[];
 }
 
-interface Element {
-  type: string;
-  id: string;
-  value: string | string[];
+export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | SlideElement | QuizElement;
+
+// export interface Element {
+//   type: string;
+//   id: string;
+//   value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
+// }
+
+export interface TitleElement extends Omit<Element, 'value'> {
+  type: 'title';
+  value: string;
 }
+
+export interface SubElement extends Omit<Element, 'value'> {
+  type: 'sub';
+  value: string;
+}
+
+export interface TextElement extends Omit<Element, 'value'> {
+  type: 'text';
+  value: string;
+}
+
+export interface ImgElement extends Omit<Element, 'value'> {
+  type: 'img';
+  value: File | string; // File if it's to be uploaded or string if it's a URL
+}
+
+export interface ListElement extends Omit<Element, 'value'> {
+  type: 'list';
+  value: string[];
+}
+
+export interface SlideElement extends Omit<Element, 'value'> {
+  type: 'slide';
+  _id?: string;
+  value: string[];
+}
+
+export interface QuizElement extends Omit<Element, 'value'> {
+  type: 'quiz';
+  value: QuizElementValue
+}
+
+export type QuizElementValue = { question: string; choices: { text: string }[]; correctAnswer: string };
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
@@ -53,7 +93,7 @@ export const courseSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setImage: (state, action: PayloadAction<string>) => {
+    setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
     },
     addChapter: (state) => {
@@ -90,7 +130,7 @@ export const courseSlice = createSlice({
       const { chapterIndex, slideIndex, value } = action.payload;
       state.chapters[chapterIndex].slides[slideIndex].slide = value;
     },
-    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value: string }>) => {
+    addElementToSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementType: string; value: string | string[] | File | QuizElementValue | null }>) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
 
       if (state.chapters[chapterIndex] == null) {
@@ -117,31 +157,47 @@ export const courseSlice = createSlice({
         return;
       }
 
-      const newElement = {
-        type: elementType,
+      const newElement: CustomElement = {
         id: `${elementType}${Math.random().toString(36).substr(2, 9)}`, // Unique ID generation
-        value: elementType === "list" || elementType === "slide" ? value : "",
-      };
-
-      // Handle other element types and set their values accordingly
-      if (
-        elementType === "title" ||
-        elementType === "sub" ||
-        elementType === "text" ||
-        elementType === "img" ||
-        elementType === "quiz"
-      ) {
-        newElement.value = ""; // For other types, initialize the value as an empty string
-      }
-
-      slides[slideIndex].elements.push(newElement);
+    } as CustomElement;
+    
+    // Determine the type of the element and set additional properties as needed
+    switch (elementType) {
+        case 'title':
+        case 'sub':
+        case 'text':
+            newElement.type = elementType;
+            newElement.value = value as string; // Cast value to string for these element types for now
+            break;
+        case 'img':
+            newElement.type = elementType;
+            newElement.value = value as string | File; // Cast value to string or File for image element
+            break;
+        case 'list':
+            newElement.type = elementType;
+            newElement.value = value as string[]; // Cast value to string array for list element
+            break;
+        case 'slide': // Assuming this type is similar to list
+            newElement.type = elementType;
+            newElement.value = value as string[]; // Cast value to string array for slide element
+            break;
+        case 'quiz':
+            newElement.type = elementType;
+            newElement.value = value as QuizElementValue; // Cast value to QuizElementValue for quiz element
+            break;
+        default:
+            // Handle unknown element type or throw error
+            throw new Error(`Unknown element type: ${elementType}`);
+    }
+    
+    slides[slideIndex].elements.push(newElement);
     },
-    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: string }>) => {
+    updateElement: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number; elementId: string; value: string | string[] | File | QuizElementValue | null }>) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);
       if (elementIndex !== -1) {
-        elements[elementIndex].value = value;
+        elements[elementIndex].value = value as CustomElement['value'];
       }
     },
 
@@ -162,6 +218,15 @@ export const courseSlice = createSlice({
     deleteSlide: (state, action: PayloadAction<{ chapterIndex: number; slideIndex: number }>) => {
       const { chapterIndex, slideIndex } = action.payload;
       state.chapters[chapterIndex].slides.splice(slideIndex, 1);
+    },
+
+    resetCourse: () => {
+      return {
+        title: "",
+        description: "",
+        image: "",
+        chapters: [],
+      };
     },
   },
 });
@@ -184,6 +249,7 @@ export const {
 
   setCurrentChapter,
   setCurrentSlide,
+  resetCourse,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

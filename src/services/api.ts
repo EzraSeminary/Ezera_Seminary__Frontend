@@ -1,5 +1,72 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export interface ApiState {
+  id: number;
+  _id: string;
+  title: string;
+  description: string;
+  image: string | File;
+  chapters: Chapter[];
+}
+
+export interface Chapter {
+  chapter: string;
+  slides: Slide[];
+  _id: string;
+}
+
+export interface Slide {
+  slide: string;
+  elements: CustomElement[];
+  _id: string;
+}
+
+export type CustomElement = TitleElement | SubElement | TextElement | ImgElement | ListElement | SlideElement | QuizElement;
+
+export interface TitleElement extends Omit<Element, 'value'> {
+  type: 'title';
+  value: string;
+  _id: string;
+}
+
+export interface SubElement extends Omit<Element, 'value'> {
+  type: 'sub';
+  value: string;
+  _id: string;
+}
+
+export interface TextElement extends Omit<Element, 'value'> {
+  type: 'text';
+  value: string;
+  _id: string;
+}
+
+export interface ImgElement extends Omit<Element, 'value'> {
+  type: 'img';
+  value: File | string; // File if it's to be uploaded or string if it's a URL
+  _id: string;
+}
+
+export interface ListElement extends Omit<Element, 'value'> {
+  type: 'list';
+  value: string[];
+  _id: string;
+}
+
+export interface SlideElement extends Omit<Element, 'value'> {
+  type: 'slide';
+  _id: string;
+  value: string[];
+}
+
+export interface QuizElement extends Omit<Element, 'value'> {
+  type: 'quiz';
+  value: QuizElementValue
+  _id: string;
+}
+
+export type QuizElementValue = { question: string; choices: { text: string }[]; correctAnswer: string; _id: string; };
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -7,10 +74,10 @@ export const api = createApi({
     baseUrl: "https://ezra-seminary-api.onrender.com/",
   }),
   endpoints: (builder) => ({
-    getCourses: builder.query({
+    getCourses: builder.query<ApiState[], void>({
       query: () => "course/getall",
     }),
-    getCourseById: builder.query({
+    getCourseById: builder.query<ApiState, string>({
       query: (id) => `course/get/${id}`,
     }),
   }),

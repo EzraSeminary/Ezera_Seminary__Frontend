@@ -9,6 +9,7 @@ import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
+
 import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-icons/react";
 // import {  } from "phosphor-react";
 import logo from "../../../assets/ezra-logo.svg";
@@ -20,21 +21,23 @@ interface Element {
   value: any;
 }
 
-interface Slide {
-  _id: string;
-  slide: string;
-  elements: Element[];
-}
 
-interface Chapter {
-  _id: string;
-  slides: Slide[];
-}
+
+  // New state variable to track the unlocked index
+  const [unlockedIndex, setUnlockedIndex] = useState(0);
+
+  //track whether the selected answer is correct or not.
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+
 
 function SlidesDisplay() {
   const [open, setOpen] = useState<boolean>(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
+
+  //radio input switch
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+
 
   {/* Function to open the chapters sidebar modal */ }
   const handleArrowClick = () => {
@@ -55,25 +58,23 @@ function SlidesDisplay() {
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
-  }>(); // Note the two separate parameters
+  }>();
 
   //get single course
   const {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId);
+  } = useGetCourseByIdQuery(courseId as string);
 
   // Extracting chapter data from the fetched course data
-  const chapter = courseData?.chapters.find(
-    (chap: Chapter) => chap._id === chapterId
-  );
+  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
   }
   // Setting the data to slides if the chapter is found
-  const data: Slide[] = chapter.slides;
+  const data = chapter.slides;
   // console.log(data);
 
   const updateIndex = (newIndex: number) => {
@@ -98,6 +99,8 @@ function SlidesDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
+
+  //Quiz Related functions
 
   const handleRadioChange = (
     choiceIndex: number,
@@ -136,6 +139,7 @@ function SlidesDisplay() {
   if (error) return <div>Something went wrong.</div>;
 
   return (
+
     // <div className="flex justify-center items-center w-[80%] mx-auto">
     <div className="flex flex-col mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative">
 
@@ -201,6 +205,7 @@ function SlidesDisplay() {
                   key={index}
                   className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${unlocked ? "text-black" : "text-gray-500"
                     }  ${index === activeIndex && "font-bold "}
+
                     `}
                   onClick={() => {
                     updateIndex(index);
@@ -413,6 +418,7 @@ function SlidesDisplay() {
             }
           })}
 
+
           <div className="mb-4">
             <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
             <button
@@ -424,6 +430,7 @@ function SlidesDisplay() {
             >
               ቀጥል
             </button>
+
           </div>
         </div>
       </div>
