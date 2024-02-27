@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useRef } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { CaretCircleLeft } from "@phosphor-icons/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -8,12 +9,46 @@ import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
-function SlidesDisplay() {
-  const [activeIndex, setActiveIndex] = useState(0);
+
+import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-icons/react";
+// import {  } from "phosphor-react";
+import logo from "../../../assets/ezra-logo.svg";
+import bibleImage from "../../../assets/bible2.jpeg";
+
+interface Element {
+  _id: string;
+  type: string;
+  value: any;
+}
+
+
 
   // New state variable to track the unlocked index
   const [unlockedIndex, setUnlockedIndex] = useState(0);
 
+  //track whether the selected answer is correct or not.
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+
+
+function SlidesDisplay() {
+  const [open, setOpen] = useState<boolean>(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
+
+  //radio input switch
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+
+
+  {/* Function to open the chapters sidebar modal */ }
+  const handleArrowClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  {/* Ref to listen the curser and close the chapters sidebar modal */ }
+  const ref = useRef<HTMLDivElement>(null);
+  useOnClickOutside(ref, open, () => setOpen(false));
+
+  //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
@@ -64,7 +99,9 @@ function SlidesDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
+
   //Quiz Related functions
+
   const handleRadioChange = (
     choiceIndex: number,
     choiceValue: string,
@@ -102,250 +139,303 @@ function SlidesDisplay() {
   if (error) return <div>Something went wrong.</div>;
 
   return (
-    <div className="flex justify-center items-center w-[80%] mx-auto">
-      <div className="flex w-[100%] justify-center items-center h-screen ">
-        <div className="flex flex-col justify-start items-center md:w-[30%] h-[80%] overflow-auto shadow-2xl rounded-lg border-2 border-accent-5 ">
-          {/* slide number */}
-          <div className="w-[90%] mx-auto ">
-            <div className="flex flex-col mt-6 border-accent-5 border-1">
-              <h1 className=" font-Lato-Black pb-1">
-                SLIDE {currentDataNumber}/{totalDataNumber}
-              </h1>
-              <hr className="border-accent-5 border-1 w-[100%] mx-auto" />
-            </div>
-            <div className="flex flex-col mt-[20px]">
-              {data.map((slides, index) => {
-                const unlocked = isSlideUnlocked(index);
-                return (
-                  <button
-                    key={index}
-                    className={`flex justify-between items-center text-sm font-nokia-bold border-b-2 border-accent-5 px-4 text-secondary-6 cursor-pointer py-2 ${
-                      unlocked ? "text-black" : "text-gray-500"
-                    }  ${index === activeIndex && "font-bold bg-[#FAE5C7]"}
-                    `}
-                    onClick={() => {
-                      updateIndex(index);
-                    }}
-                    disabled={!unlocked} // Disable the button if the slide is locked
-                  >
-                    <span>{slides.slide}</span>
-                    {unlocked ? (
-                      <span className="material-symbols-outlined text-accent-6 pl-4 text-xl">
-                        check_circle
-                      </span>
-                    ) : (
-                      <span className="material-symbols-outlined text-accent-6 pl-4 text-lg">
-                        radio_button_unchecked
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-            <Link to={`/courses/get/${courseId}`}>
-              <div className="flex justify-between items-center w-[100%] mx-auto mt-12">
-                <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all">
-                  ዘግተህ ውጣ
-                </button>
-                <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
-              </div>
-            </Link>
-          </div>
+
+    // <div className="flex justify-center items-center w-[80%] mx-auto">
+    <div className="flex flex-col mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative">
+
+      {/* Back button */}
+      <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
+        <NavLink
+          to={"/courses"}
+          className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
+        >
+          <ArrowLeft size={22} className="text-white bg-accent-6 border p-1 rounded-lg" />
+          <button className="text-accent-6 text-xs font-nokia-bold">ተመለስ</button>
+        </NavLink>
+      </div>
+
+
+      {/* Slides side bar*/}
+      <div ref={ref} className={`absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center ${open ? "w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]" : "w-0 h-0"}`}
+        style={{ transition: "width 0.3s" }}>
+
+        {open ? (
+          <ArrowLeft onClick={handleArrowClick} className="text-white text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer" />
+        ) : (
+          <ArrowRight onClick={handleArrowClick} className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -right-3 xl:-right-4 top-14 cursor-pointer" />
+
+        )}
+
+        {/* Bible image container*/}
+        <div className="w-[100%] ">
+          <img src={bibleImage} alt="Bible image" className="w-full rounded-t-lg" />
         </div>
-        {/* slides */}
-        <div className=" md:w-[70%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
-          <div className="flex flex-col justify-between h-full">
-            <div>
-              <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <h1 className="text-[#fff] text-sm font-Lato-Black">
-                  EZRA seminary
-                </h1>
-                <img
-                  src="../assets/close-icon.svg"
-                  className="w-[3%] z-40 cursor-pointer"
-                  alt=""
-                />
-              </div>
-              <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
-            </div>
 
+        {/* Short information*/}
+        <div className={`  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center  w-full text-xs1  lg:text-xs ${open ? "flex" : "hidden"}`}>
+          <div className="p-1 bg-accent-6 rounded">
+            <p className="font-Lato-Bold text-primary-1 ">10%</p>
+          </div>
+          <p className="font-Lato-Bold text-secondary-6 leading-none">Pass 100% of your lessons to complete this course</p>
+        </div>
+
+        {/* Course title and description*/}
+        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg h-full ">
+          <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
+            {courseData?.title}
+          </h1>
+          <hr className="border-accent-5 border w-[90%] mx-auto" />
+          <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+            {courseData?.description}
+          </p>
+
+          {/* Header */}
+          <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
+            <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
+              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+            </h1>
+            <hr className="border-accent-5 border-b-2 w-[30%] " />
+          </div>
+          {/* slide list */}
+          <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
             {data.map((slides, index) => {
-              if (index === activeIndex) {
-                return (
-                  <div
-                    key={index}
-                    className="flex flex-col justify-center items-center flex-grow w-[80%] mx-auto h-full overflow-y-hidden"
-                  >
-                    <h1 className="text-3xl text-[#fff] text-center font-nokia-bold">
+              const unlocked = isSlideUnlocked(index);
+              return (
+                <button
+                  key={index}
+                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${unlocked ? "text-black" : "text-gray-500"
+                    }  ${index === activeIndex && "font-bold "}
+
+                    `}
+                  onClick={() => {
+                    updateIndex(index);
+                  }}
+                  disabled={!unlocked} // Disable the button if the slide is locked
+                >
+                  <div className="flex flex-col items-start justify-center">
+                    <h2
+                      className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                       {slides.slide}
-                    </h1>
-                    <div className="flex flex-col justify-center items-center h-[80%] overflow-y-auto scrollbar-thin">
-                      {slides.elements.map((element) => {
-                        if (element.type === "title") {
-                          return (
-                            <h1
-                              key={element._id}
-                              className="text-white text-3xl font-nokia-bold pl-20"
-                            >
-                              {element.value}
-                            </h1>
-                          );
-                        } else if (element.type === "sub") {
-                          return (
-                            <p
-                              key={element._id}
-                              className="text-white font-nokia-bold  self-center tracking-wide text-center text-2xl mt-2"
-                            >
-                              {element.value}
-                            </p>
-                          );
-                        } else if (element.type === "text") {
-                          return (
-                            <p
-                              key={element._id}
-                              className="text-white font-nokia-bold self-center tracking-wide text-justify text-lg mt-2"
-                            >
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
-                            </p>
-                          );
-                        } else if (element.type === "img") {
-                          return (
-                            <img
-                              key={element._id}
-                              src={`https://ezra-seminary-api.onrender.com/images/${element.value}`}
-                              alt={element._id}
-                              className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
-                            />
-                          );
-                        } else if (element.type === "list") {
-                          const listItemsComponent = element.value.map(
-                            (listItem: string, index: number) => (
-                              <li
-                                key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-lg"
-                              >
-                                {listItem}
-                              </li>
-                            )
-                          );
-
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center ml-8"
-                            >
-                              <ul className="list-disc mt-2">
-                                {listItemsComponent}
-                              </ul>
-                            </div>
-                          );
-                        } else if (element.type === "slide") {
-                          const listItemsComponent = element.value.map(
-                            (listItem: string, index: number) => (
-                              <SplideSlide
-                                key={index}
-                                className="flex justify-center items-center text-white font-nokia-bold w-full tracking-wide text-left text-lg px-8"
-                              >
-                                {listItem}
-                              </SplideSlide>
-                            )
-                          );
-
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col w-full ml-8"
-                            >
-                              <Splide
-                                options={{
-                                  gap: "1rem",
-                                }}
-                                className="w-full p-8 rounded-md list-disc mt-2"
-                              >
-                                {listItemsComponent}
-                              </Splide>
-                            </div>
-                          );
-                        } else if (element.type === "quiz") {
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center mb-4"
-                            >
-                              {/* Questions */}
-                              <p className="text-white font-nokia-bold text-2xl">
-                                {element.value.question}
-                              </p>
-                              {/* Choices */}
-                              {element.value.choices && (
-                                <div className="flex flex-col mt-2">
-                                  {element.value.choices.map(
-                                    (
-                                      choice: { text: string },
-                                      choiceIndex: number
-                                    ) => {
-                                      return (
-                                        <label
-                                          key={`${element._id}-choice-${choiceIndex}`}
-                                          className="inline-flex items-center"
-                                        >
-                                          <input
-                                            type="radio"
-                                            className="w-5 h-5 appearance-none bg-white focus:bg-orange-400 rounded-full transition-all"
-                                            checked={
-                                              selectedChoice === choiceIndex
-                                            }
-                                            onChange={() =>
-                                              handleRadioChange(
-                                                choiceIndex,
-                                                choice.text,
-                                                element.value.correctAnswer
-                                              )
-                                            }
-                                          />
-                                          <span className="text-white font-nokia-bold text-lg ml-2">
-                                            {choice.text}
-                                          </span>
-                                        </label>
-                                      );
-                                    }
-                                  )}
-                                </div>
-                              )}
-                              {/* Correct Answer */}
-                              {renderQuizResult()}
-                            </div>
-                          );
-                        } else {
-                          return null;
-                        }
-                      })}
-                    </div>
+                    </h2>
+                    <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
+                      15/15 Slides
+                    </p>
                   </div>
-                );
-              } else {
-                return null; // Hide the slide if it doesn't match the activeIndex
-              }
+                  {unlocked ? (
+                    <CheckCircle size={16} weight="fill" color={'#EA9215'} />
+                  ) : (
+                    <Circle size={16} color={'#EA9215'} />
+                  )}
+                </button>
+              );
             })}
-
-            <div className="mb-4">
-              <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
-              <button
-                className={`text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl mx-auto text-2xl transition-all ${
-                  activeIndex === data.length - 1 ? "hidden" : "block"
-                }`} // hidding the next button for the last slide
-                onClick={() => {
-                  updateIndex(activeIndex + 1);
-                }}
-              >
-                ቀጥል
+          </div>
+          <NavLink to={`/courses/get/${courseId}`}>
+            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
+              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
+                ዘግተህ ውጣ
               </button>
+              <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
             </div>
+          </NavLink>
+        </div>
+      </div>
+      {/* slides display window*/}
+      <div className="  lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg ">
+        {/* Chapter display container */}
+        <div className="flex flex-col justify-between h-full">
+          {/* Header */}
+          <div>
+            <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
+              <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+                <img src={logo} className="w-8 h-5 md:w-10 md:h-6  z-30" alt="" />
+                <h3 className="text-white font-nokia-bold text-xs md:text-sm ">
+                  <strong>Ezra</strong> Seminary
+                </h3>
+              </div>
+              <XCircle size={24} color={'#EA9215'} className="z-20 cursor-pointer" />
+            </div>
+            <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
+          </div>
+
+          {/* Slide content */}
+          {data.map((slides, index) => {
+            if (index === activeIndex) {
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col justify-center items-center  w-[80%] mx-auto h-full overflow-y-hidden"
+                >
+                  <h1 className="text-2xl text-[#fff] text-center font-nokia-bold">
+                    {slides.slide}
+                  </h1>
+                  <div className="flex flex-col justify-center items-center h-auto overflow-y-auto py-2">
+                    {slides.elements.map((element) => {
+                      if (element.type === "title") {
+                        return (
+                          <h1
+                            key={element._id}
+                            className="text-white text-lg font-nokia-bold pb-2 "
+                          >
+                            {element.value}
+                          </h1>
+                        );
+                      } else if (element.type === "sub") {
+                        return (
+                          <p
+                            key={element._id}
+                            className="text-white font-nokia-bold  self-center tracking-wide text-center text-sm"
+                          >
+                            {element.value}
+                          </p>
+                        );
+                      } else if (element.type === "text") {
+                        return (
+                          <p
+                            key={element._id}
+                            className="text-white font-nokia-bold self-center tracking-wide text-justify text-xs1 lg:text-xs "
+                          >
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
+                          </p>
+                        );
+                      } else if (element.type === "img") {
+                        return (
+                          <img
+                            key={element._id}
+                            src={`https://ezra-seminary-api.onrender.com/images/${element.value}`}
+                            alt={element._id}
+                            className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
+                          />
+                        );
+                      } else if (element.type === "list") {
+                        const listItemsComponent = element.value.map(
+                          (listItem: string, index: number) => (
+                            <li
+                              key={index}
+                              className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                            >
+                              {listItem}
+                            </li>
+                          )
+                        );
+
+                        return (
+                          <div
+                            key={element._id}
+                            className="flex flex-col justify-center items-center ml-8"
+                          >
+                            <ul className="list-disc mt-2">
+                              {listItemsComponent}
+                            </ul>
+                          </div>
+                        );
+                      } else if (element.type === "slide") {
+                        const listItemsComponent = element.value.map(
+                          (listItem: string, index: number) => (
+                            <SplideSlide
+                              key={index}
+                              className="flex justify-center items-center text-white font-nokia-bold w-full tracking-wide text-left text-lg px-8"
+                            >
+                              {listItem}
+                            </SplideSlide>
+                          )
+                        );
+
+                        return (
+                          <div
+                            key={element._id}
+                            className="flex flex-col w-full ml-8"
+                          >
+                            <Splide
+                              options={{
+                                gap: "1rem",
+                              }}
+                              className="w-full p-8 rounded-md list-disc mt-2"
+                            >
+                              {listItemsComponent}
+                            </Splide>
+                          </div>
+                        );
+                      } else if (element.type === "quiz") {
+                        return (
+                          <div
+                            key={element._id}
+                            className="flex flex-col justify-center items-center mb-4"
+                          >
+                            {/* Questions */}
+                            <p className="text-white font-nokia-bold text-2xl">
+                              {element.value.question}
+                            </p>
+                            {/* Choices */}
+                            {element.value.choices && (
+                              <div className="flex flex-col mt-2">
+                                {element.value.choices.map(
+                                  (
+                                    choice: { text: string },
+                                    choiceIndex: number
+                                  ) => {
+                                    return (
+                                      <label
+                                        key={`${element._id}-choice-${choiceIndex}`}
+                                        className="inline-flex items-center"
+                                      >
+                                        <input
+                                          type="radio"
+                                          className="w-5 h-5 appearance-none bg-white focus:bg-orange-400 rounded-full transition-all"
+                                          checked={
+                                            selectedChoice === choiceIndex
+                                          }
+                                          onChange={() =>
+                                            handleRadioChange(
+                                              choiceIndex,
+                                              choice.text,
+                                              element.value.correctAnswer
+                                            )
+                                          }
+                                        />
+                                        <span className="text-white font-nokia-bold text-lg ml-2">
+                                          {choice.text}
+                                        </span>
+                                      </label>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            )}
+                            {/* Correct Answer */}
+                            {renderQuizResult()}
+                          </div>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </div>
+                </div>
+              );
+            } else {
+              return null; // Hide the slide if it doesn't match the activeIndex
+            }
+          })}
+
+
+          <div className="mb-4">
+            <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
+            <button
+              className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${activeIndex === data.length - 1 ? "hidden" : "block"
+                }`} // hidding the next button for the last slide
+              onClick={() => {
+                updateIndex(activeIndex + 1);
+              }}
+            >
+              ቀጥል
+            </button>
+
           </div>
         </div>
       </div>
-      ;
     </div>
+    // </div>
   );
 }
 
