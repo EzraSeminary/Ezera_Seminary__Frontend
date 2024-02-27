@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   const [show, handleShow] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 620) {
+      if (window.scrollY > 20) {
         handleShow(true);
       } else handleShow(false);
     };
@@ -56,31 +56,31 @@ const Header: React.FC = () => {
   return (
     <header className="relative max-w-screen">
       {/* Header Background Image */}
-      <div className="absolute top-0 z-0 w-full h-20 xl:h-28">
+      <div className="absolute top-0 z-0 w-full h-16 shadow-xl">
         <img
           src={bgImage}
           className="w-full h-full  object-cover"
           alt="Background"
         />
       </div>
-      {/* Header when the scroll is above 620  */}
-      <div className="relative z-30 py-2">
+      {/* Header when the scroll is above 20  */}
+      <div className="relative z-50 py-2">
         {show && (
-          <div className="fixed top-0 z-0 w-full h-20 xl:h-28">
+          <div className="fixed top-0 z-0 w-full h-16  bg-white shadow-xl">
             {/* Header Background Image */}
-            <img
+            {/* <img
               src={bgImage}
               className="w-full h-full -mt-3 object-cover"
               alt="Background"
-            />
+            /> */}
             {/* Navigation and Logo */}
-            <div className="absolute top-[32%]  w-full md:top-[16%]">
+            <div className="absolute top-[32%]  w-full md:top-[16%] ">
               <div className="  flex justify-between items-center  w-[90%] md:w-[95%] lg:w-[85%] mx-auto ">
 
                 <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-                  <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7  xl:w-12 xl:h-9 z-30" alt="" />
+                  <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7  xl:w-12 xl:h-9 z-30 bg-secondary-6 object-contain" alt="" />
                   <NavLink to="/" onClick={closeMenu}>
-                  <h3 className="text-white font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl ">
+                  <h3 className=" font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl ">
                     <strong>Ezra</strong> Seminary
                   </h3>
                   </NavLink>
@@ -89,26 +89,26 @@ const Header: React.FC = () => {
                 <div className="md:hidden  flex">
                   <button
                     onClick={handleMenuClick}
-                    className="text-white focus:outline-none "
+                    className=" focus:outline-none "
                   >
                     {showMenu ? (
                       <FaTimes
                         size={20}
-                        className="z-20 fixed top-[1.5rem] left-[90%] block"
+                        className="z-20 fixed top-[1.5rem] left-[90%] block text-primary-1"
                       />
                     ) : (
-                      <FaBars size={20} className=" fixed top-[1.5rem] left-[90%] block" />
+                      <FaBars size={20} className="text-secondary-6 fixed top-[1.5rem] left-[90%] block" />
                     )}
                   </button>
                 </div>
                 {/* Navigation */}
                 <ul
                   className={`${showMenu
-                    ? "flex flex-col justify-center items-end text-xl text-white font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                    : "hidden font-Lato-Regular  cursor-pointer  md:flex md:items-center md:justify-end md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-white"
+                    ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
+                    : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-secondary-6 font-nokia-bold transition-all"
                     }`}
                 >
-                  <li className="hover:text-accent-6">
+                  <li className="  hover:text-accent-6">
                     <NavLink to="/" onClick={closeMenu}>
                       Home
                     </NavLink>
@@ -190,9 +190,9 @@ const Header: React.FC = () => {
         )
         }
       </div>
-      {/* Header when the scroll is below 620  */}
-      <div className="relative z-30 py-2">
-        <div className="absolute top-[100%]  w-full  md:top-[15%] lg:top-[25%] xl:top-[80%]">
+      {/* Header when the scroll is below 20  */}
+      <div className=" z-30 py-2">
+        <div className="absolute top-[30%]  w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[95%] lg:w-[85%] mx-auto">
             {/* Logo */}
             <div className="flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">

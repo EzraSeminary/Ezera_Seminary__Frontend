@@ -8,26 +8,10 @@ import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
-
-
 import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-icons/react";
 // import {  } from "phosphor-react";
 import logo from "../../../assets/ezra-logo.svg";
 import bibleImage from "../../../assets/bible2.jpeg";
-
-interface Element {
-  _id: string;
-  type: string;
-  value: any;
-}
-
-
-
-  // New state variable to track the unlocked index
-  const [unlockedIndex, setUnlockedIndex] = useState(0);
-
-  //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
 
 function SlidesDisplay() {
@@ -37,7 +21,6 @@ function SlidesDisplay() {
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-
 
   {/* Function to open the chapters sidebar modal */ }
   const handleArrowClick = () => {
@@ -52,8 +35,7 @@ function SlidesDisplay() {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  //radio input switch
-  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+  
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
