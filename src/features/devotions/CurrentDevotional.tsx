@@ -91,12 +91,17 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           </div>
 
           {/* devotion chapter */}
-          <h2 className=" text-sm text-accent-5">
-            {devotionToDisplay && devotionToDisplay.chapter}
-          </h2>
+         
+          <h4 className="flex gap-2 text-1xl text-secondary-6 w-full">የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል- 
+            <span>
+              <h2 className=" text-sm text-accent-5">
+                {devotionToDisplay && devotionToDisplay.chapter}
+              </h2>
+            </span>
+          </h4>
 
           {/* devotion verse */}
-          <p className=" text-xs text-secondary-6">
+          <p className=" text-xs text-accent-5">
             {devotionToDisplay && devotionToDisplay.verse}
           </p>
 

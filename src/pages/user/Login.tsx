@@ -38,7 +38,7 @@ const Login = () => {
   return (
     <div className="flex w-[90%] md:w-[70%] rounded-xl md:border-2 md:border-accent-6 mx-auto my-20">
       <div
-        className="md:flex flex-col bg-coming-soon bg-cover hidden lg:w-[58%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
+        className="md:flex flex-col coming-soon bg-cover hidden lg:w-[58%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
         style={{ backgroundPositionX: "-80px" }}
       >
         <div className="flex space-x-3 cursor-pointer text-white ">

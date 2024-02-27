@@ -81,7 +81,7 @@ function CoursesAvailable() {
 
   return (
     // Courses Available Section
-    <div className="container space-y-3 pt-10  ">
+    <div className="container space-y-3 pt-10 mb-12">
       {/* Container of title and seacrch bar*/}
 
       <div className="flex justify-between items-end">

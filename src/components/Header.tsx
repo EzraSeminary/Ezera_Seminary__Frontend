@@ -74,13 +74,15 @@ const Header: React.FC = () => {
               alt="Background"
             /> */}
             {/* Navigation and Logo */}
-            <div className="absolute top-[32%]  w-full md:top-[16%] ">
+            <div className="absolute top-[30%]  w-full md:top-[24%] ">
               <div className="  flex justify-between items-center  w-[90%] md:w-[95%] lg:w-[85%] mx-auto ">
 
-                <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-                  <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7  xl:w-12 xl:h-9 z-30 bg-secondary-6 object-contain" alt="" />
+                <div className=" z-30 h-full flex justify-center items-center gap-1 cursor-pointer ">
+                  <div className="rounded-md bg-secondary-6 ">
+                  <img src="src/assets/ezra-logo.svg" className="w-6 h-5  md:h-6 lg:h-7 xl:h-9 z-30 object-contain  p-1" alt="" />
+                  </div>
                   <NavLink to="/" onClick={closeMenu}>
-                  <h3 className=" font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl ">
+                  <h3 className="text-secondary-6 font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl">
                     <strong>Ezra</strong> Seminary
                   </h3>
                   </NavLink>
@@ -94,10 +96,10 @@ const Header: React.FC = () => {
                     {showMenu ? (
                       <FaTimes
                         size={20}
-                        className="z-20 fixed top-[1.5rem] left-[90%] block text-primary-1"
+                        className="z-20 fixed top-[1.2rem] left-[90%] block text-primary-1"
                       />
                     ) : (
-                      <FaBars size={20} className="text-secondary-6 fixed top-[1.5rem] left-[90%] block" />
+                      <FaBars size={20} className="text-secondary-6 fixed top-[1.2rem] left-[90%] block" />
                     )}
                   </button>
                 </div>
@@ -105,7 +107,7 @@ const Header: React.FC = () => {
                 <ul
                   className={`${showMenu
                     ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                    : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-secondary-6 font-nokia-bold transition-all"
+                    : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
                     }`}
                 >
                   <li className="  hover:text-accent-6">
@@ -144,8 +146,8 @@ const Header: React.FC = () => {
                         className="flex items-center space-x-2 bg-accent-6 rounded-full py-1 px-2 lg:px-3 xl:px-4 xl:py-2 hover:bg-accent-7 cursor-pointer"
                         onClick={handleAccountClick}
                       >
-                        <FaRegUserCircle />
-                        <div className="text-xs  xl:text-lg font-medium text-white">
+                        <FaRegUserCircle className="text-primary-1" />
+                        <div className="text-xs  xl:text-lg font-medium text-primary-1">
                           {user.firstName}
                         </div>
                       </div>
@@ -192,7 +194,7 @@ const Header: React.FC = () => {
       </div>
       {/* Header when the scroll is below 20  */}
       <div className="relative z-30 py-2">
-        <div className="absolute -top-1  w-full ">
+        <div className="absolute top-0  w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[95%] lg:w-[85%] mx-auto">
             {/* Logo */}
             <div className="flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">

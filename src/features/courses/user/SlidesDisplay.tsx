@@ -191,6 +191,7 @@ function SlidesDisplay() {
                     `}
                   onClick={() => {
                     updateIndex(index);
+                    handleArrowClick();
                   }}
                   disabled={!unlocked} // Disable the button if the slide is locked
                 >
