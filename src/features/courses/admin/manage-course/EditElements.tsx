@@ -86,16 +86,18 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     e: ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
-    const file = e.target.files[0]; // Get the first file from the input
-    if (file) {
-      dispatch(
-        updateElement({
-          chapterIndex,
-          slideIndex,
-          elementId: id,
-          value: file,
-        })
-      );
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]; // Get the first file from the input
+      if (file) {
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId: id,
+            value: file,
+          })
+        );
+      }
     }
   };
 

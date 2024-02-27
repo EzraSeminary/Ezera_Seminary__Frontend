@@ -10,23 +10,27 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
+
+  // New state variable to track the unlocked index
+  const [unlockedIndex, setUnlockedIndex] = useState(0);
+
+  //track whether the selected answer is correct or not.
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+
+  //radio input switch
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
-  }>(); // Note the two separate parameters
-
-  if (!courseId) {
-    return <div>Course ID loading...</div>;
-  }
+  }>();
 
   //get single course
   const {
     data: courseData,
     error,
     isLoading,
-  } = useGetCourseByIdQuery(courseId);
+  } = useGetCourseByIdQuery(courseId as string);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -61,11 +65,6 @@ function SlidesDisplay() {
   };
 
   //Quiz Related functions
-  //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
-
-  //radio input switch
-  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (
     choiceIndex: number,
     choiceValue: string,
