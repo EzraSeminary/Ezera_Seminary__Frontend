@@ -86,6 +86,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </>
             )}
           </div>
+          <h4 className="text-1xl text-secondary-6">የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል- </h4>
           <h2 className=" text-lg text-accent-5">
             {devotionToDisplay && devotionToDisplay.chapter}
           </h2>
