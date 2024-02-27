@@ -44,9 +44,8 @@ const initialState: DevotionsState = {
 // Async thunk for fetching devotions
 export const fetchDevotions = createAsyncThunk(
   "devotions/fetchDevotions",
-  async (arg, { getState }) => {
-    const token = (getState() as RootState).auth.user?.token || "";
-    const axiosInstance = createAxiosInstance(token);
+  async () => {
+    const axiosInstance = createAxiosInstance();
     const response = await axiosInstance.get("/devotion/show");
     return response.data;
   }
