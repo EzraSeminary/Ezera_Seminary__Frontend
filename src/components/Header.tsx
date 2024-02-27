@@ -191,8 +191,8 @@ const Header: React.FC = () => {
         }
       </div>
       {/* Header when the scroll is below 20  */}
-      <div className=" z-30 py-2">
-        <div className="absolute top-[30%]  w-full ">
+      <div className="relative z-30 py-2">
+        <div className="absolute -top-1  w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[95%] lg:w-[85%] mx-auto">
             {/* Logo */}
             <div className="flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
