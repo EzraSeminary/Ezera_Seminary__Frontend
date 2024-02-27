@@ -35,61 +35,68 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   return (
     <div className="h-auto border-2 shadow-lg rounded-2xl p-6">
       <div>
-        <h1 className="font-nokia-bold  text-3xl text-accent-5 ">
+        <h1 className="font-nokia-bold  md:text-xl text-accent-5 ">
           Daily Devotional
         </h1>
       </div>
-      <div className="flex space-x-12">
+      <div className="flex flex-col justify-center md:flex-row  md:space-x-12">
         {/* Replace latestDevotion with devotionToDisplay */}
         {devotionToDisplay &&
         (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
-          <div className="rounded-xl w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+          <div className="rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
             <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-6">
-              <p className=" font-nokia-bold text-3xl text-[#fff]">
+              <p className=" font-nokia-bold md:text-xl text-[#fff]">
                 {devotionToDisplay.month}
               </p>
-              <p className="text-5xl font-nokia-bold text-[#fff]">
+              <p className="md:text-3xl font-nokia-bold text-[#fff]">
                 {devotionToDisplay.day}
               </p>
             </div>
           </div>
         ) : (
-          <div className="hidden rounded-xl w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+          <div className="hidden rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
             <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
-              <p className="font-nokia-bold text-3xl text-[#fff]">
+              <p className="font-nokia-bold md:text-xl text-[#fff]">
                 {devotionToDisplay && devotionToDisplay.month}
               </p>
-              <p className="font-nokia-bold text-5xl text-[#fff]">
+              <p className="font-nokia-bold md:text-3xl text-[#fff]">
                 {devotionToDisplay && devotionToDisplay.day}
               </p>
             </div>
           </div>
         )}
 
-        <div className="font-nokia-bold flex flex-col w-[50%] space-y-2 mt-8">
+        {/* devotion contents */}
+        <div className="font-nokia-bold flex flex-col w-[90%] md:w-[50%] space-y-2 mt-8 mx-auto">
+
+          {/* devotion titles */}
           <div className="flex width: 100% space-x-12">
-            <h1 className="text-4xl text-justify text-secondary-6">
+            <h1 className="md:text-2xl text-justify text-secondary-6">
               {devotionToDisplay && devotionToDisplay.title}
             </h1>
             {role === "Admin" && showControls && (
               <>
                 <FaTrash
-                  className="text-gray-700 text-xl cursor-pointer self-center"
+                  className="text-gray-700 md:text-sm cursor-pointer self-center"
                   onClick={() =>
                     handleDelete(devotionToDisplay && devotionToDisplay._id)
                   }
                 />
                 <FaEdit
-                  className="text-gray-700 text-xl cursor-pointer self-center "
+                  className="text-gray-700 md:text-xl cursor-pointer self-center "
                   onClick={() => startEditing(devotionToDisplay)}
                 />
               </>
             )}
           </div>
-          <h2 className=" text-lg text-accent-5">
+
+          {/* devotion chapter */}
+          <h2 className=" text-sm text-accent-5">
             {devotionToDisplay && devotionToDisplay.chapter}
           </h2>
-          <p className=" text-1xl text-secondary-6">
+
+          {/* devotion verse */}
+          <p className=" text-xs text-secondary-6">
             {devotionToDisplay && devotionToDisplay.verse}
           </p>
 
@@ -99,33 +106,37 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             <hr className="hidden border-secondary-6" />
           )}
 
+          {/* devotion paragraphs */}
           {devotionToDisplay &&
             devotionToDisplay.body.map((paragraph, paragraphIndex) => (
               <p
-                className=" font-nokia-bold text-sm text-justify text-secondary-6 space-y-3"
+                className=" font-nokia-bold text-xs leading-6 tracking-wide text-justify text-secondary-6 space-y-3"
                 key={paragraphIndex}
               >
                 {paragraph}
               </p>
             ))}
 
+          {/* devotion prayer */}
           {devotionToDisplay && devotionToDisplay.prayer !== "" ? (
-            <p className="font-nokia-bold text-1xl text-center border-2 border-accent-5 p-2 rounded text-accent-5">
+            <p className="font-nokia-bold md:text-xs text-center border-2 border-accent-5 p-2 rounded text-accent-5">
               {devotionToDisplay.prayer}
             </p>
           ) : (
-            <p className="hidden font-nokia-bold text-1xl text-center border-2 border-accent-5 p-2 rounded text-accent-5">
+            <p className="hidden font-nokia-bold md:text-1xl text-center border-2 border-accent-5 p-2 rounded text-accent-5">
               {devotionToDisplay && devotionToDisplay.prayer}
             </p>
           )}
         </div>
 
-        <div className="w-[25%] mt-12 flex flex-col space-y-6">
+        {/* devotion image */}
+        <div className="w-full md:w-[25%] h-full mt-12">
           <img
             src={`https://ezra-seminary.mybese.tech/images/${
               devotionToDisplay && devotionToDisplay.image
             }`}
             alt="Devotion Image"
+            className="h-full"
           />
 
           {devotionToDisplay && devotionToDisplay.previewUrl && (

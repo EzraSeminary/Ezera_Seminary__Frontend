@@ -22,7 +22,7 @@ const PreviousDevotionals = ({
           </h2>
           <hr className=" border-1 border-accent-6 w-[40%]" />
         </div>
-        <div className="self-end w-[15%]">
+        <div className="self-end w-auto">
           <Button
             // type="button"
             // className="border-2 w-[70%] border-accent-6 rounded-full  px-2 text-accent-6 text-xs"
@@ -33,20 +33,22 @@ const PreviousDevotionals = ({
           </Button>
         </div>
       </div>
-      <div className="flex flex-wrap gap-3 w-[100%] mx-auto  ">
+      <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-3 w-[90%]  mx-auto pb-4">
         {previousDevotions.map((devotion) => (
-          <div key={devotion._id} className="w-[24%] ">
-            <div className="rounded-lg shadow-xl  h-auto border-2 bg-[#fff] border-accent-6 text-secondary-6 overflow-hidden">
-              <img
-                src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
-                alt="Devotion Image"
-                className="h-56 w-[100%] mx-auto cursor-pointer object-cover"
-                onClick={() => {
-                  // open the devotion on click
-                  // console.log("clicked");
-                  setSelectedDevotion(devotion);
-                }}
-              />
+          <div key={devotion._id} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
+            {/* <div className="rounded-lg shadow-xl  h-auto border-2 bg-[#fff] border-accent-6 text-secondary-6 overflow-hidden"> */}
+              <div className="h-full w-full">
+                <img
+                  src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
+                  alt="Devotion Image"
+                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
+                  onClick={() => {
+                    // open the devotion on click
+                    // console.log("clicked");
+                    setSelectedDevotion(devotion);
+                  }}
+                />
+              </div>
               <div className="w-[90%] mx-auto flex justify-between items-center pb-3">
                 <div className="w-[80%]">
                   <h1 className="font-customBold text-2xl text-justify mt-2">
@@ -73,7 +75,7 @@ const PreviousDevotionals = ({
                   </Button>
                 </div>
               </div>
-            </div>
+            {/* </div> */}
           </div>
         ))}
       </div>
