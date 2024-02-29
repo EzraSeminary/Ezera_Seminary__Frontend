@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Devotion } from "@/redux/types";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -6,7 +7,7 @@ export const apiSlice = createApi({
     baseUrl: "https://ezra-seminary.mybese.tech",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = user ? user.token : "";
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -14,6 +15,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Devotions"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -51,13 +53,14 @@ export const apiSlice = createApi({
     getCourseById: builder.query({
       query: (id) => `course/get/${id}`,
     }),
-    getDevotions: builder.query({
+    getDevotions: builder.query<Devotion[], void>({
+      // Provide types here
       query: () => ({
         url: "/devotion/show",
       }),
-      providesTags: [{ type: "Devotions", id: "LIST" }],
+      providesTags: ["Devotions"], // Use tagTypes that you have specified
     }),
-    createDevotion: builder.mutation({
+    createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
         const formData = new FormData();
         Object.entries(newDevotion).forEach(([key, value]) => {
@@ -74,7 +77,9 @@ export const apiSlice = createApi({
       },
       invalidatesTags: [{ type: "Devotions", id: "LIST" }],
     }),
-    updateDevotion: builder.mutation({
+    updateDevotion: builder.mutation<
+      void,
+      { id: string; updatedDevotion: FormData }> ({
       query: ({ id, updatedDevotion }) => {
         const formData = new FormData();
         Object.entries(updatedDevotion).forEach(([key, value]) => {

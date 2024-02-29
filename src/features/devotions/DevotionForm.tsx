@@ -109,7 +109,8 @@ const DevotionForm = () => {
             <option value="ግንቦት">ግንቦት</option>
             <option value="ሰኔ">ሰኔ</option>
             <option value="ሐምሌ">ሐምሌ</option>
-            <option value="ነሀሴ">ነሀሴ</option>
+            <option value="ነሐሴ">ነሐሴ</option>
+            <option value="ጳጉሜ">ጳጉሜ</option>
           </select>
           <input
             type="number"
