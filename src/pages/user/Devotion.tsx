@@ -1,19 +1,23 @@
-// Not fixed ❗❗❗❗❗❗
 import { useState } from "react";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
-import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice"; // import the hook from your apiSlice
+import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
+import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
-  const [selectedDevotion, setSelectedDevotion] = useState(null);
+  // Explicitly type the useState hook to use Devotion | null
+  const [selectedDevotion, setSelectedDevotion] = useState<DevotionType | null>(
+    null
+  );
 
   // Use the useGetDevotionsQuery hook to fetch devotions
-  const { data: devotions, error, isLoading } = useGetDevotionsQuery({});
+  // Assuming the hook does not require an argument, remove `undefined`
+  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
   if (isLoading) return "Loading...";
   if (error) return `Error: ${(error as Error).message}`;
 
   return (
-    <div className=" flex h-auto mt-12 pt-12 w-[100%] mx-auto">
+    <div className="flex h-auto mt-12 pt-12 w-[100%] mx-auto">
       <DevotionDisplay
         devotions={devotions}
         selectedDevotion={selectedDevotion}

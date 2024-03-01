@@ -19,13 +19,21 @@ import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
 const AdminDashboard = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showComponent, setShowComponent] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="grid grid-cols-admin-dashboard">
-      <div className="fixed top-0 left-0 z-10 h-screen ">
+    <div className="flex">
+      <div
+        // Make the sidebar fixed to be visible on vertical scroll...!!
+        className={`top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-64"
+        } text-white`}
+      >
         <Sidebar />
       </div>
-      <div className="col-span-4 ml-64 px-12">
+      <div
+        className={`flex-grow bg-gray-100 transition-all duration-500 ease-in-out pl-4`}
+      >
         <AdminHeader />
         <Routes>
           <Route path="/" element={<div>Admin Home</div>} />
