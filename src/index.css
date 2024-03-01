@@ -134,3 +134,10 @@
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent; /* color of the scrollbar track */
 }
+
+
+/* Change the background color and text color of the toast */
+.Toastify__toast {
+  background-color: #333;
+  color: #cd5d0c;
+}
