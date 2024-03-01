@@ -44,6 +44,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   return (
     <>
+      <ToastContainer />
       <div className="h-auto border-2 shadow-lg rounded-2xl p-6">
         <div>
           <h1 className="font-nokia-bold  text-3xl text-accent-5 ">
