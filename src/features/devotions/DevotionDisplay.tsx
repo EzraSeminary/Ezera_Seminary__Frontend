@@ -9,18 +9,16 @@ import { Devotion } from "@/redux/types";
 
 interface DevotionDisplayProps {
   showControls: boolean;
+  devotions: Devotion[] | undefined; // Add this line
+  selectedDevotion: Devotion | null;
+  setSelectedDevotion: React.Dispatch<React.SetStateAction<Devotion | null>>;
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
   );
-  const {
-    data: devotions,
-    error,
-    isLoading,
-    refetch,
-  } = useGetDevotionsQuery({});
+  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery(); // Fix the argument type
 
   useEffect(() => {
     if (devotions && devotions.length > 0) {
@@ -30,7 +28,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
 
   useEffect(() => {
     refetch();
-  }, [devotions]);
+  }, [devotions, refetch]);
 
   if (isLoading) return "Loading...";
   if (error) return `Error: ${(error as Error).message}`;
@@ -53,7 +51,9 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
       />
       <PreviousDevotionals
         previousDevotions={previousDevotions}
-        setSelectedDevotion={(devotion: Devotion) => setSelectedDevotion(devotion)}
+        setSelectedDevotion={(devotion: Devotion) =>
+          setSelectedDevotion(devotion)
+        }
       />
       <Categories title="Lessons Available" />
     </div>
