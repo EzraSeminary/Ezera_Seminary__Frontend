@@ -17,6 +17,8 @@ import PhotoUploader from "./PhotoUploader";
 import { CircleNotch } from "@phosphor-icons/react";
 import { AppDispatch } from "@/redux/store";
 import { RootState, Devotion } from "@/redux/types";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface DevotionFormProps {
   // Add any custom props if needed
