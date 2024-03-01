@@ -30,6 +30,9 @@ export interface Devotion {
 }
 
 export interface FormState {
+  previewUrl: Devotion;
+  _id: string;
+  body: string[] | undefined;
   month: string;
   day: string;
   title: string;

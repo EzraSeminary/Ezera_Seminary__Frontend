@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
 import { FaTrash, FaEdit } from "react-icons/fa";
 import {
   selectDevotion,
@@ -18,11 +19,12 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,
 }) => {
-  const { refetch } = useGetDevotionsQuery({}); // get the authentication token
+  const { refetch } = useGetDevotionsQuery(); // get the authentication token
   const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleDelete = async (id: string) => {
+    // ❗❗ big errors to fix later
     await dispatch(deleteDevotion(id)); // dispatch delete action
     refetch(); // refetch the devotions data
   };
@@ -75,9 +77,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               <>
                 <FaTrash
                   className="text-gray-700 text-xl cursor-pointer self-center"
-                  onClick={() =>
-                    handleDelete(devotionToDisplay && devotionToDisplay._id)
-                  }
+                  onClick={() => handleDelete(devotionToDisplay?._id || "")}
                 />
                 <FaEdit
                   className="text-gray-700 text-xl cursor-pointer self-center "
@@ -86,7 +86,9 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </>
             )}
           </div>
-          <h4 className="text-1xl text-secondary-6">የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል- </h4>
+          <h4 className="text-1xl text-secondary-6">
+            የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል-{" "}
+          </h4>
           <h2 className=" text-lg text-accent-5">
             {devotionToDisplay && devotionToDisplay.chapter}
           </h2>
@@ -129,11 +131,12 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             alt="Devotion Image"
           />
 
-          {devotionToDisplay && devotionToDisplay.previewUrl && (
-            <img src={devotionToDisplay.previewUrl} alt="Preview" />
-          )}
+          {devotionToDisplay &&
+            typeof devotionToDisplay.previewUrl === "string" && (
+              <img src={devotionToDisplay.previewUrl} alt="Preview" />
+            )}
 
-          {devotionToDisplay && devotionToDisplay.previewUrl !== "" ? (
+          {devotionToDisplay && devotionToDisplay.previewUrl ? (
             <img src="../../assets/Advert-Image.svg" alt="" />
           ) : (
             <img
@@ -149,7 +152,6 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 };
 
 CurrentDevotional.propTypes = {
-  devotionToDisplay: PropTypes.object.isRequired,
   showControls: PropTypes.bool.isRequired,
 };
 
