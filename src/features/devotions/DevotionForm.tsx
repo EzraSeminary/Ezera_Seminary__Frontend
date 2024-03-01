@@ -84,20 +84,27 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
     };
     const validToken = token || ""; // Ensure token is not undefined
 
-    if (form._id) {
-      await dispatch(updateDevotion({ token: validToken, devotion }));
-    } else {
-      await dispatch(createDevotion({ token: validToken, devotion }));
+    try {
+      if (form._id) {
+        await dispatch(updateDevotion({ token: validToken, devotion }));
+        toast.success("Devotion updated successfully!");
+      } else {
+        await dispatch(createDevotion({ token: validToken, devotion }));
+        toast.success("Devotion created successfully!");
+      }
+
+      await dispatch(fetchDevotions());
+
+      dispatch(resetForm());
+      setLocalParagraphs([]);
+      dispatch(setIsEditing(false));
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false); // Set back to false after submission is complete
+      // Reload the page
+      window.location.reload();
     }
-
-    await dispatch(fetchDevotions());
-
-    dispatch(resetForm());
-    setLocalParagraphs([]);
-    dispatch(setIsEditing(false));
-    setIsSubmitting(false); // Set back to false after submission is complete
-    // Reload the page
-    window.location.reload();
   };
 
   return (
