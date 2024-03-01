@@ -152,3 +152,17 @@
   background-color: #bd362f;
 }
 
+/* Change the background color of the toast when it's an info message */
+.Toastify__toast--info {
+  background-color: #b4622f;
+}
+
+/* Change the background color of the toast when it's a warning message */
+.Toastify__toast--warning {
+  background-color: #c57300;
+}
+
+/* Change the color of the progress bar */
+.Toastify__progress-bar {
+  background-color: rgb(255, 85, 0);
+}
