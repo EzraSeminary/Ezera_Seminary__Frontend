@@ -141,3 +141,8 @@
   background-color: #333;
   color: #cd5d0c;
 }
+
+/* Change the background color of the toast when it's a success message */
+.Toastify__toast--success {
+  background-color: #ffffff;
+}
