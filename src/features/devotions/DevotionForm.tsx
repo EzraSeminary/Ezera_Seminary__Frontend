@@ -57,12 +57,15 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
   }, [dispatch, isEditing, selectedDevotion]);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     if (event.target.name === "image") {
       setFile(event.target.files);
+    } else {
+      dispatch(updateForm({ [event.target.name]: event.target.value }));
     }
-    dispatch(updateForm({ [event.target.name]: event.target.value }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -70,7 +73,13 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
 
     setIsSubmitting(true);
 
-    const devotion: Devotion = { ...form, paragraphs, photo: file };
+    const devotion: Devotion = {
+      ...form,
+      paragraphs,
+      photo: file,
+      image: form.image,
+      body: form.body || [],
+    };
     const validToken = token || ""; // Ensure token is not undefined
 
     if (form._id) {
@@ -97,11 +106,9 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
             className="border-2 border-accent-6 bg-[#fff] outline-accent-7  rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs  mr-6"
             name="month"
             value={form.month}
-            onChange={(
-              event:
-                | ChangeEvent<HTMLSelectElement>
-                | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleChange(event)}
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              handleChange(event)
+            }
             required
           >
             <option value="" disabled>
