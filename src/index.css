@@ -146,3 +146,9 @@
 .Toastify__toast--success {
   background-color: #ffffff;
 }
+
+/* Change the background color of the toast when it's an error message */
+.Toastify__toast--error {
+  background-color: #bd362f;
+}
+
