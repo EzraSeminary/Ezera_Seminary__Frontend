@@ -1,52 +1,58 @@
+// import { useState } from "react";
+import { ChangeEvent } from "react";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFile, selectPreviewUrl } from "@/redux/devotionsSlice";
-import { useState } from "react";
-import PropTypes from "prop-types";
 
-function PhotoUploader({ handleChange }) {
+interface PhotoUploaderProps {
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleChange }) => {
   const dispatch = useDispatch();
   const previewUrl = useSelector(selectPreviewUrl);
 
-  // eslint-disable-next-line no-unused-vars
-  const [file, setFile] = useState(null);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newFile = event.target.files?.[0]; // Use optional chaining
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
+    if (newFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        dispatch(updateFile(reader.result));
-        setFile(file); // set the file object to the local state
+        // Ensure `reader.result` is a string before dispatching
+        dispatch(updateFile(reader.result as string));
+
         handleChange({
           target: {
             name: "image",
-            value: reader.result,
-            file, // pass the file object to DevotionForm.jsx
+            value: reader.result as string,
+            files: newFile,
           },
         });
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(newFile);
+    } else {
+      // Handle the case where no file is selected (e.g., display an error message)
     }
   };
 
   return (
     <div>
-      {previewUrl && (
+      {previewUrl && typeof previewUrl === "string" && (
         <img src={previewUrl} alt="Preview" className="w-32 h-auto" />
       )}
-      <label className=" bg-accent-6 text-[#fff] hover:bg-accent-7 rounded-full px-4 py-1  cursor-pointer text-sm  font-nokia-bold w-[27%]">
+      <label className="bg-accent-6 text-[#fff] hover:bg-accent-7 rounded-full px-4 py-1 cursor-pointer text-sm font-nokia-bold w-[27%]">
         <span className="placeholder-secondary-6">Upload Image</span>
+        {/* Use input type="file" for file selection */}
         <input
           type="file"
           accept="image/*"
           onChange={handleFileChange}
           className="hidden"
-          src={previewUrl}
         />
       </label>
     </div>
   );
-}
+};
 
 PhotoUploader.propTypes = {
   handleChange: PropTypes.func.isRequired,

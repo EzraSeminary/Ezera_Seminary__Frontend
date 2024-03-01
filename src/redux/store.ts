@@ -28,4 +28,8 @@ const store = configureStore({
     getDefaultMiddleware().concat(SSLapi.middleware, apiSlice.middleware),
 });
 
+type AppDispatch = typeof store.dispatch;
+
+export type { AppDispatch };
+
 export default store;
