@@ -24,9 +24,16 @@ interface CurrentDevotionalProps {
 // This line should be placed outside your component
 Modal.setAppElement("#root");
 
+interface CurrentDevotionalProps {
+  devotionToDisplay: Devotion;
+  showControls: boolean;
+  toogleForm: () => void; // Add the toogleForm property
+}
+
 const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,
+  toogleForm,
 }) => {
   const { refetch } = useGetDevotionsQuery(); // get the authentication token
   const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
@@ -45,6 +52,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   const startEditing = (devotion: Devotion) => {
     dispatch(selectDevotion(devotion)); // dispatch select action
     dispatch(setIsEditing(true)); // dispatch startEditing action
+    toogleForm();
   };
 
   return (

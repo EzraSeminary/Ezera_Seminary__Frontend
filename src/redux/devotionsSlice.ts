@@ -171,6 +171,10 @@ const devotionsSlice = createSlice({
     deleteSubtitle: (state, action) => {
       state.form.subTitles.splice(action.payload, 1);
     },
+    clearSelectedDevotion: (state) => {
+      state.form = initialState.form;
+      state.selectedDevotion = null;
+    },
     // ... additional reducers will need to update their action payloads with types as well
   },
   extraReducers: (builder) => {
@@ -228,6 +232,7 @@ export const {
   deleteSubtitle,
   updateFile,
   resetForm,
+  clearSelectedDevotion,
 } = devotionsSlice.actions;
 
 export default devotionsSlice.reducer;

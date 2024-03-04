@@ -8,14 +8,18 @@ import { toEthiopian } from "ethiopian-date";
 
 // Define the type for a devotion object
 
-interface DevotionDisplayProps {
+export interface DevotionDisplayProps {
   showControls: boolean;
   devotions: Devotion[] | undefined; // Add this line
   selectedDevotion: Devotion | null;
+  toggleForm: () => void; // Add this line
   setSelectedDevotion: React.Dispatch<React.SetStateAction<Devotion | null>>;
 }
 
-const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
+const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
+  showControls,
+  toggleForm,
+}) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
   );
@@ -89,6 +93,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
       <CurrentDevotional
         devotionToDisplay={devotionToDisplay}
         showControls={showControls}
+        toogleForm={toggleForm} // Add this line
       />
       <PreviousDevotionals
         previousDevotions={previousDevotions}
