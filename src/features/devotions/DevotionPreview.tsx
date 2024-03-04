@@ -1,30 +1,17 @@
-import { FaTrash, FaEdit } from "react-icons/fa";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  deleteDevotion,
-  startEditing,
   selectForm,
   selectParagraphs,
   selectPreviewUrl,
-  selectDevotionToDisplay, // import the selector if devotionToDisplay is from Redux
 } from "../../redux/devotionsSlice";
 
-const DevotionPreview = ({ devotionToDisplay }) => {
+const DevotionPreview = () => {
   // add as a prop if it's passed from a parent component
-  const dispatch = useDispatch();
   const form = useSelector(selectForm);
   const paragraphs = useSelector(selectParagraphs);
   const previewUrl = useSelector(selectPreviewUrl);
-  devotionToDisplay = useSelector(selectDevotionToDisplay); // add this line if devotionToDisplay is from Redux
-
-  const handleDelete = (id) => {
-    dispatch(deleteDevotion(id));
-  };
-
-  // const handleStartEditing = (devotion) => {
-  //   dispatch(startEditing(devotion));
-  // };
+  // const devotionToDisplay = useSelector(selectDevotionToDisplay); // add this line if devotionToDisplay is from Redux
 
   return (
     <div className="h-auto border-2 shadow-lg rounded-2xl p-6 w-[80%]">
@@ -62,34 +49,6 @@ const DevotionPreview = ({ devotionToDisplay }) => {
             <h1 className="text-4xl text-justify text-secondary-6">
               {form && form.title}
             </h1>
-
-            {form && form.title !== "" ? (
-              <>
-                <FaTrash
-                  className="text-gray-700 text-xl cursor-pointer self-center"
-                  onClick={() =>
-                    handleDelete(devotionToDisplay && devotionToDisplay._id)
-                  }
-                />
-                <FaEdit
-                  className="text-gray-700 text-xl cursor-pointer self-center"
-                  onClick={() => startEditing(devotionToDisplay)}
-                />
-              </>
-            ) : (
-              <>
-                <FaTrash
-                  className="hidden text-gray-700 text-xl cursor-pointer self-center"
-                  onClick={() =>
-                    handleDelete(devotionToDisplay && devotionToDisplay._id)
-                  }
-                />
-                <FaEdit
-                  className="hidden text-gray-700 text-xl cursor-pointer self-center"
-                  onClick={() => startEditing(devotionToDisplay)}
-                />
-              </>
-            )}
           </div>
           <h2 className=" text-lg text-accent-5">{form && form.chapter}</h2>
 
@@ -121,7 +80,9 @@ const DevotionPreview = ({ devotionToDisplay }) => {
           )}
         </div>
         <div className="w-[25%] mt-12 flex flex-col space-y-6">
-          {previewUrl && <img src={previewUrl} alt="Preview" />}
+          {previewUrl && typeof previewUrl === "string" && (
+            <img src={previewUrl} alt="Preview" />
+          )}
           {previewUrl !== "" ? (
             <img src="../../assets/Advert-Image.svg" alt="" />
           ) : (
