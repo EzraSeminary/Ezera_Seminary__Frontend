@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import {DownloadSimple} from "@phosphor-icons/react";
+import {ShareNetwork} from "@phosphor-icons/react";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import {
   selectDevotion,
@@ -33,22 +35,22 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   };
 
   return (
-    <div className="h-auto border-2 shadow-lg rounded-2xl p-6">
+    <div className="h-auto border shadow-lg rounded-2xl p-6 md:w-[90%] mx-auto border-accent-6">
       <div>
-        <h1 className="font-nokia-bold  md:text-xl text-accent-5 ">
-          Daily Devotional
-        </h1>
+      <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
+            Daily Devotional
+          </h1>
       </div>
-      <div className="flex flex-col justify-center md:flex-row  md:space-x-12">
+      <div className="flex flex-col justify-center lg:flex-row  lg:space-x-12">
         {/* Replace latestDevotion with devotionToDisplay */}
         {devotionToDisplay &&
         (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
-          <div className="rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
-            <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-6">
-              <p className=" font-nokia-bold md:text-xl text-[#fff]">
+          <div className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+            <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-4">
+              <p className=" font-nokia-bold md:text-2xl text-[#fff]">
                 {devotionToDisplay.month}
               </p>
-              <p className="md:text-3xl font-nokia-bold text-[#fff]">
+              <p className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
                 {devotionToDisplay.day}
               </p>
             </div>
@@ -56,10 +58,10 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
         ) : (
           <div className="hidden rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
             <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
-              <p className="font-nokia-bold md:text-xl text-[#fff]">
+              <p className="font-nokia-bold md:text-2xl text-[#fff]">
                 {devotionToDisplay && devotionToDisplay.month}
               </p>
-              <p className="font-nokia-bold md:text-3xl text-[#fff]">
+              <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">
                 {devotionToDisplay && devotionToDisplay.day}
               </p>
             </div>
@@ -67,7 +69,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
         )}
 
         {/* devotion contents */}
-        <div className="font-nokia-bold flex flex-col w-[90%] md:w-[50%] space-y-2 mt-8 mx-auto">
+        <div className="font-nokia-bold flex flex-col w-[90%] lg:w-[50%] space-y-2 mt-8 mx-auto">
 
           {/* devotion titles */}
           <div className="flex width: 100% space-x-12">
@@ -135,13 +137,13 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
         </div>
 
         {/* devotion image */}
-        <div className="w-full md:w-[25%] h-full mt-12">
+        <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
           <img
             src={`https://ezra-seminary.mybese.tech/images/${
               devotionToDisplay && devotionToDisplay.image
             }`}
             alt="Devotion Image"
-            className="h-full"
+            className="h-full rounded-xl p-1"
           />
 
           {devotionToDisplay && devotionToDisplay.previewUrl && (
@@ -157,6 +159,32 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               className="hidden"
             />
           )}
+          <div className='flex  gap-2 justify-center my-2 w-[90%] mx-auto'>
+              
+              <button
+                className='flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1'
+                // onClick={handleDownload}
+                >
+                  ምስሉን አውርድ
+                <DownloadSimple
+                  size={24}
+                  weight="bold"
+                  className='text-primary-1'
+                /> 
+                
+              </button>
+              <button
+                 className='flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1'
+                 // onClick={handleShare}>
+                 >
+                  ምስሉን አጋራ
+                <ShareNetwork
+                  size={24}
+                  weight="bold"
+                  className='text-primary-1'
+                />
+              </button>
+            </div>
         </div>
       </div>
     </div>

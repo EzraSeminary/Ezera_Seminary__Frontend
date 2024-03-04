@@ -13,7 +13,7 @@ const Devotion = () => {
   if (error) return `Error: ${(error as Error).message}`;
 
   return (
-    <div className=" flex h-auto mt-12 pt-12 w-[100%] mx-auto">
+    <div className=" flex h-auto mt-12 pt-12 md:w-[95%] mx-auto">
       <DevotionDisplay
         devotions={devotions}
         selectedDevotion={selectedDevotion}

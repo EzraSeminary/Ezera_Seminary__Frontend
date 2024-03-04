@@ -9,22 +9,25 @@ interface CategoriesProps {
 
 const Categories: React.FC<CategoriesProps> = ({ title }) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-[94%] mx-auto">
 
       {/* Container for Title of the page */}
-      <div>
-
-        <h2 className="text-3xl font-nokia-bold text-secondary-6 ">
-          {title}
-        </h2>
-        <h3 className="text-xs md:text-sm font-Lato-bold  text-accent-5">
-          Explore different topics
-        </h3>
-      </div>
+       {/* Title of the page */}
+       <div className="w-full tracking-wide">
+          <h1 className="text-secondary-6 text-xl font-nokia-bold md:text-3xl ">
+           {title}
+          </h1>
+          <h3 className="text-accent-6 text-xs font-Lato-Regular md:text-sm ">
+            Explore Programs and Devotionals
+          </h3>
+          <h2 className="hidden md:block text-secondary-6 text-sm font-Lato-Regular md:text-sm ">
+            Our Most Popular Devotionals
+          </h2>
+        </div>
       <hr className="border-accent-5 border-1 w-[10 0%] md:w-[30%] pb-3" />
 
       {/* Container for Categories */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-[90%] mx-auto">
 
         {/* Category 1 */}
         <div className="bg-secondary-6  space-y-3  font-nokia-bold rounded-xl shadow-2xl h-auto w-full border-accent-5 border-2">

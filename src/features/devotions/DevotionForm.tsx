@@ -110,6 +110,7 @@ const DevotionForm = () => {
             <option value="ሰኔ">ሰኔ</option>
             <option value="ሐምሌ">ሐምሌ</option>
             <option value="ነሀሴ">ነሀሴ</option>
+            <option value="ጳጉሜ">ጳጉሜ</option>
           </select>
           <input
             type="number"
