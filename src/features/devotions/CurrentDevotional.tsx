@@ -21,6 +21,9 @@ interface CurrentDevotionalProps {
   showControls: boolean;
 }
 
+// This line should be placed outside your component
+Modal.setAppElement("#root");
+
 const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,

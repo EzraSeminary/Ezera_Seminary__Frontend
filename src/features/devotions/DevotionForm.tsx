@@ -29,11 +29,8 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   // Use destructuring and type annotations for clarity
-  const { form, paragraphs } = useSelector((state: RootState) => ({
-    form: selectForm(state),
-    paragraphs: selectParagraphs(state),
-  }));
-
+  const form = useSelector(selectForm);
+  const paragraphs = useSelector(selectParagraphs);
   const [file, setFile] = useState<File | null>(null);
   const [localParagraphs, setLocalParagraphs] = useState<string[]>([]);
   const isEditing = useSelector(
@@ -64,6 +61,8 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
     >
   ) => {
     if (event.target.name === "image") {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setFile(event.target.files);
     } else {
       dispatch(updateForm({ [event.target.name]: event.target.value }));
@@ -108,7 +107,6 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
   };
 
   return (
-
     <>
       <ToastContainer />
       <div className="flex border-2 shadow-lg rounded-l-2xl h-[100%] font-nokia-bold ">
@@ -195,7 +193,6 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
             paragraphs={form.body}
             localParagraphs={localParagraphs}
             setLocalParagraphs={setLocalParagraphs}
-
           />
           <div className="space-y-1 text-sm text-accent-6">
             <label>Prayer</label>
