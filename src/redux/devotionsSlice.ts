@@ -32,6 +32,7 @@ const initialState: DevotionsState = {
     chapter: "",
     verse: "",
     paragraphs: [],
+    body: [],
     prayer: "",
     subTitles: [],
     photo: null,

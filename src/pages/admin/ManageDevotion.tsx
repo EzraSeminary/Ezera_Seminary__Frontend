@@ -14,6 +14,7 @@ const ManageDevotion = () => {
       dispatch(clearSelectedDevotion());
     }
   };
+
   return (
     <div className=" flex h-auto mt-12 pt-12 w-[100%] mx-auto">
       <DevotionDisplay
