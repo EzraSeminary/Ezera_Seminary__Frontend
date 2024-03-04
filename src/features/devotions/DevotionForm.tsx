@@ -108,6 +108,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
   };
 
   return (
+
     <>
       <ToastContainer />
       <div className="flex border-2 shadow-lg rounded-l-2xl h-[100%] font-nokia-bold ">
@@ -194,6 +195,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
             paragraphs={form.body}
             localParagraphs={localParagraphs}
             setLocalParagraphs={setLocalParagraphs}
+
           />
           <div className="space-y-1 text-sm text-accent-6">
             <label>Prayer</label>

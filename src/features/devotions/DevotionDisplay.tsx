@@ -44,7 +44,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
   );
 
   return (
-    <div className="w-[100%] h-auto font-nokia-bold  flex flex-col mx-auto container space-y-12 mb-12">
+    <div className="w-[100%] h-auto font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12">
       <CurrentDevotional
         devotionToDisplay={devotionToDisplay}
         showControls={showControls}

@@ -4,8 +4,8 @@ import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { CaretCircleLeft } from "@phosphor-icons/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import "@splidejs/react-splide/css/sea-green";
-import "@splidejs/react-splide/css/core";
+// import "@splidejs/react-splide/css/sea-green";
+// import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import { ArrowLeft, CheckCircle, Circle, XCircle, ArrowRight } from "@phosphor-icons/react";
@@ -191,6 +191,7 @@ function SlidesDisplay() {
                     `}
                   onClick={() => {
                     updateIndex(index);
+                    handleArrowClick();
                   }}
                   disabled={!unlocked} // Disable the button if the slide is locked
                 >
@@ -248,7 +249,7 @@ function SlidesDisplay() {
                   key={index}
                   className="flex flex-col justify-center items-center  w-[80%] mx-auto h-full overflow-y-hidden"
                 >
-                  <h1 className="text-2xl text-[#fff] text-center font-nokia-bold">
+                  <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                     {slides.slide}
                   </h1>
                   <div className="flex flex-col justify-center items-center h-auto overflow-y-auto py-2">
@@ -257,7 +258,7 @@ function SlidesDisplay() {
                         return (
                           <h1
                             key={element._id}
-                            className="text-white text-lg font-nokia-bold pb-2 "
+                            className="text-white text-sm lg:text-lg font-nokia-bold pb-2 "
                           >
                             {element.value}
                           </h1>
@@ -316,7 +317,8 @@ function SlidesDisplay() {
                           (listItem: string, index: number) => (
                             <SplideSlide
                               key={index}
-                              className="flex justify-center items-center text-white font-nokia-bold w-full tracking-wide text-left text-lg px-8"
+                              
+                              className="  flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide  text-xs1 md:text-xs "
                             >
                               {listItem}
                             </SplideSlide>
@@ -326,16 +328,24 @@ function SlidesDisplay() {
                         return (
                           <div
                             key={element._id}
-                            className="flex flex-col w-full ml-8"
+                            className=" flex  w-[50%] md:w-[80%] lg:w-[90%] mx-auto h-auto"
                           >
                             <Splide
-                              options={{
-                                gap: "1rem",
-                              }}
-                              className="w-full p-8 rounded-md list-disc mt-2"
-                            >
-                              {listItemsComponent}
-                            </Splide>
+                            options={{
+                              perPage: 1,
+                              width: "100%",
+                              height: "100%",
+                              autoWidth: true,
+                              arrows: true, // Enable arrow navigation
+                              pagination: false,
+                              focus: "center",
+                              trimSpace: true,
+                              isNavigation: false,
+                            }}
+                          >
+                            {listItemsComponent}
+                          </Splide>
+
                           </div>
                         );
                       } else if (element.type === "quiz") {

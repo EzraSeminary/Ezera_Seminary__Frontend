@@ -187,6 +187,7 @@ function ChaptersDisplay() {
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
+                      handleArrowClick();
                     }}
                   >
                     <div className="flex flex-col items-start justify-center">

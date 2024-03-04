@@ -24,6 +24,7 @@ import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
 import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
 import { RootState } from "@/redux/store";
+import Courses from "./pages/user/Courses";
 
 function App() {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ function App() {
         <Route path="/devotion" element={<Devotion />} />
         <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/courses" element={<CoursesAvailable />} />
+        <Route path="/courses" element={<Courses />} />
         <Route
           path="/profile"
           element={
