@@ -134,3 +134,35 @@
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent; /* color of the scrollbar track */
 }
+
+
+/* Change the background color and text color of the toast */
+.Toastify__toast {
+  background-color: #333;
+  color: #cd5d0c;
+}
+
+/* Change the background color of the toast when it's a success message */
+.Toastify__toast--success {
+  background-color: #ffffff;
+}
+
+/* Change the background color of the toast when it's an error message */
+.Toastify__toast--error {
+  background-color: #bd362f;
+}
+
+/* Change the background color of the toast when it's an info message */
+.Toastify__toast--info {
+  background-color: #b4622f;
+}
+
+/* Change the background color of the toast when it's a warning message */
+.Toastify__toast--warning {
+  background-color: #c57300;
+}
+
+/* Change the color of the progress bar */
+.Toastify__progress-bar {
+  background-color: rgb(255, 85, 0);
+}

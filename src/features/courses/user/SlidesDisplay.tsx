@@ -35,7 +35,7 @@ function SlidesDisplay() {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  
+
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -285,7 +285,7 @@ function SlidesDisplay() {
                         return (
                           <img
                             key={element._id}
-                            src={`https://ezra-seminary-api.onrender.com/images/${element.value}`}
+                            src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                             alt={element._id}
                             className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
                           />

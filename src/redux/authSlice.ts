@@ -11,7 +11,7 @@ interface User {
 }
 
 export interface AuthState {
-  token: any;
+  token: string;
   user: User | null;
   isAuthReady: boolean;
 }
