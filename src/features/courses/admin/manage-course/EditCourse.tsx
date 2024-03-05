@@ -7,6 +7,8 @@ import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
 import BeatLoader from "react-spinners/BeatLoader";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditCourse() {
   const navigate = useNavigate();
@@ -80,6 +82,8 @@ function EditCourse() {
     const payload = Object.fromEntries(formData);
     console.log("payload" + payload);
 
+    toast.success(`Course "${course.title}" has been updated!`);
+
     //update course
     instance
       .put("/course/update/" + id, formData, {
@@ -88,11 +92,15 @@ function EditCourse() {
         },
       })
       .then((res) => {
-        console.log("Course updated: ", res.data);
+        toast.success("Course updated successfully!");
+        console.log(res);
         navigate("/admin/course/edit");
       })
       .catch((err) => {
-        console.error("Error updating course: ", err);
+        toast.error(
+          "Error updating course: Could not update the course. Please try again."
+        );
+        console.log(err);
       });
   };
 
@@ -117,45 +125,52 @@ function EditCourse() {
     );
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
-        <div className="flex justify-center items-center my-auto">
-          <button className="font-nokia-bold text-accent-6 flex flex-row gap-2 hover:text-accent-7 transition-all pr-3 border-r border-accent-6">
-            <Link
-              to="/admin/course/edit"
-              className="flex flex-row gap-2 items-center justify-center mt-3"
+    <>
+      <ToastContainer />
+      <div className="w-full">
+        <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
+          <div className="flex justify-center items-center my-auto">
+            <button className="font-nokia-bold text-accent-6 flex flex-row gap-2 hover:text-accent-7 transition-all pr-3 border-r border-accent-6">
+              <Link
+                to="/admin/course/edit"
+                className="flex flex-row gap-2 items-center justify-center mt-3"
+              >
+                <ArrowCircleLeft weight="fill" size={24} />
+              </Link>
+            </button>
+            <button
+              onClick={handleButtonClick}
+              className="ml-3 flex items-center bg-gray-200 rounded-xl px-4 py-1 border hover:border-gray-400 transition-all"
             >
-              <ArrowCircleLeft weight="fill" size={24} />
-            </Link>
-          </button>
-          <button
-            onClick={handleButtonClick}
-            className="ml-3 flex items-center bg-gray-200 rounded-xl px-4 py-1 border hover:border-gray-400 transition-all"
-          >
-            <p className="text-accent-6 font-nokia-bold text-sm pr-4">
-              {course.title}
-            </p>
-            <Pen size={24} className="text-accent-6" />
-          </button>
+              <p className="text-accent-6 font-nokia-bold text-sm pr-4">
+                {course.title}
+              </p>
+              <Pen size={24} className="text-accent-6" />
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={handleSubmit}
+              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
+              style={{ padding: "10px" }}
+            >
+              <span>Update</span>
+              <ArrowSquareOut
+                size={22}
+                weight="fill"
+                className="self-centered"
+              />
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            onClick={handleSubmit}
-            className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
-            style={{ padding: "10px" }}
-          >
-            <span>Update</span>
-            <ArrowSquareOut size={22} weight="fill" className="self-centered" />
-          </button>
-        </div>
+        {/* display the edit course or edit chapters */}
+        {showComponent ? (
+          <EditCourseFirst setShowComponent={setShowComponent} />
+        ) : (
+          <EditChapters />
+        )}
       </div>
-      {/* display the edit course or edit chapters */}
-      {showComponent ? (
-        <EditCourseFirst setShowComponent={setShowComponent} />
-      ) : (
-        <EditChapters />
-      )}
-    </div>
+    </>
   );
 }
 

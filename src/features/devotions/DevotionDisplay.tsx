@@ -4,25 +4,70 @@ import PreviousDevotionals from "./PreviousDevotionals";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
+import { toEthiopian } from "ethiopian-date";
 
 // Define the type for a devotion object
 
-interface DevotionDisplayProps {
+export interface DevotionDisplayProps {
   showControls: boolean;
   devotions: Devotion[] | undefined; // Add this line
   selectedDevotion: Devotion | null;
+  toggleForm: () => void; // Add this line
   setSelectedDevotion: React.Dispatch<React.SetStateAction<Devotion | null>>;
 }
 
-const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
+const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
+  showControls,
+  toggleForm,
+}) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
   );
   const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery(); // Fix the argument type
 
+  const ethiopianMonths = [
+    "", // There is no month 0
+    "መስከረም",
+    "ጥቅምት",
+    "ህዳር",
+    "ታህሳስ",
+    "ጥር",
+    "የካቲት",
+    "መጋቢት",
+    "ሚያዝያ",
+    "ግንቦት",
+    "ሰኔ",
+    "ሐምሌ",
+    "ነሐሴ",
+    "ጳጉሜ", // 13th month
+  ];
+
   useEffect(() => {
     if (devotions && devotions.length > 0) {
-      setSelectedDevotion(devotions[0]);
+      const today = new Date();
+      console.log("Today:", today); // Add this line
+
+      const ethiopianDate = toEthiopian(
+        today.getFullYear(),
+        today.getMonth() + 1,
+        today.getDate()
+      ); // convert to Ethiopian date
+
+      console.log("Ethiopian date:", ethiopianDate); // Add this line
+
+      const [year, month, day] = ethiopianDate;
+
+      // Convert the month number to its Ethiopian name
+      const ethiopianMonth = ethiopianMonths[month];
+
+      // Find today's devotion
+      const todaysDevotion = devotions.find(
+        (devotion) =>
+          devotion.month === ethiopianMonth && Number(devotion.day) === day
+      );
+
+      // If there's no devotion for today, use the most recent one
+      setSelectedDevotion(todaysDevotion || devotions[0]);
     }
   }, [devotions]);
 
@@ -48,6 +93,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({ showControls }) => {
       <CurrentDevotional
         devotionToDisplay={devotionToDisplay}
         showControls={showControls}
+        toogleForm={toggleForm} // Add this line
       />
       <PreviousDevotionals
         previousDevotions={previousDevotions}

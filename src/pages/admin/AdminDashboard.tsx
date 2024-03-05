@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     <div className="flex">
       <div
         // Make the sidebar fixed to be visible on vertical scroll...!!
-        className={`top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
+        className={`sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
       >
         <Sidebar />
       </div>

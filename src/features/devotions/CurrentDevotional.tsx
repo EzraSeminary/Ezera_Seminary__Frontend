@@ -21,9 +21,19 @@ interface CurrentDevotionalProps {
   showControls: boolean;
 }
 
+// This line should be placed outside your component
+Modal.setAppElement("#root");
+
+interface CurrentDevotionalProps {
+  devotionToDisplay: Devotion;
+  showControls: boolean;
+  toogleForm: () => void; // Add the toogleForm property
+}
+
 const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,
+  toogleForm,
 }) => {
   const { refetch } = useGetDevotionsQuery(); // get the authentication token
   const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
@@ -42,6 +52,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   const startEditing = (devotion: Devotion) => {
     dispatch(selectDevotion(devotion)); // dispatch select action
     dispatch(setIsEditing(true)); // dispatch startEditing action
+    toogleForm();
   };
 
   return (
@@ -50,7 +61,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
       <div className="h-auto border shadow-lg rounded-2xl p-6 md:w-[90%] mx-auto border-accent-6">
         <div>
           <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
-            Daily Devotional
+            Daily Devotional - የዕለቱ ጥቅስ
           </h1>
         </div>
         <div className="flex flex-col justify-center lg:flex-row  lg:space-x-12">
