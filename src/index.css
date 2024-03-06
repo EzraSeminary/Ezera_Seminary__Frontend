@@ -122,6 +122,15 @@
   background-repeat: no-repeat;
   width: 100%;
 }
+
+.about-img {
+  background-image: url("./assets/about-img.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  width: 100%;
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   width: 8px; /* width of the vertical scrollbar */
 }
