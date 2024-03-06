@@ -1,19 +1,21 @@
 // import Slide from "../components/Slide";
 // import Quiz from "../components/Quiz";
+import OurTeam from "../../features/about/OurTeams";
+import Purpose from "../../features/about/Purpose";
 
 const AboutUs = () => {
    return (
-    <div className="relative h-screen">
-      <div
-        className="home-page-img bg-cover h-full"
-      ></div>
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40"></div>
-        <div className="relative z-10 text-primary-1 align-middle font-bold text-7xl text-center">
-          <div>About Us</div>
-          <div className="text-3xl">Coming Soon</div>
+    <div className="h-auto space-y-8 lg:space-y-12">
+     
+      <div className="about-img bg-cover  w-full h-[35%] py-4  md:py-6 lg:py-20 flex  justify-center items-center pointer-events-none">
+        
+        <div className=" z-10 text-primary-1 align-middle font-bold  text-center">
+          <div className=" text-2xl md:text-5xl">About Us</div>
+          <div className="text-lg md:text-3xl">ስለ እኛ</div>
         </div>
       </div>
+      <Purpose />
+      <OurTeam />
     </div>
   );
 };
