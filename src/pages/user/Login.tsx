@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/redux/api-slices/apiSlice";
 import { login as loginAction } from "@/redux/authSlice";
-import LoadingAnimation from "./LoadingAnimtaion";
+import LoadingAnimation from "./LoadingAnimation";
 
 const Login = () => {
   const [email, setEmail] = useState("");
