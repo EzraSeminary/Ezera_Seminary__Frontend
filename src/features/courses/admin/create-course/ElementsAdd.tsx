@@ -386,12 +386,12 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
               <label className="text-accent-6 font-bold mb-1">
                 {element.type}
               </label>
-              <button
-                className="flex items-center text-accent-6 hover:text-accent-6"
+              <Trash
                 onClick={() => handleDeleteButtonClick(element.id)}
-              >
-                <span className="material-symbols-outlined">delete</span>
-              </button>
+                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                weight="fill"
+                size={18}
+              />
             </div>
             {element.type === "img" ? (
               <input
