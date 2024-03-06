@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
+  selectChapters,
+  selectSlides,
+  Chapter,
   CustomElement,
   QuizElement,
-  selectSlides,
   Slide,
 } from "../../../../redux/courseSlice";
 import { RootState } from "../../../../redux/store";
@@ -17,33 +19,12 @@ interface SlideDataDisplayProps {
     chapter: number;
     slide: number;
   };
+  onNextSlide: () => void;
 }
-
-// interface QuizElement {
-//   type: "quiz";
-//   value: {
-//     question: string;
-//     choices: Array<{
-//       text: string;
-//     }>;
-//     correctAnswer: string;
-//   };
-// }
-
-// interface ImageElement {
-//   type: "img";
-//   value: File | string; // Assuming that value could be a File object or a URL
-// }
-
-// interface TextElement {
-//   type: "title" | "sub" | "text" | "list" | "slide";
-//   value: string | string[];
-// }
-
-// type Element = QuizElement | ImageElement | TextElement;
 
 const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   selectedSlideIndex,
+  onNextSlide,
 }) => {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
@@ -76,10 +57,17 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     }
   };
 
+  const chapters = useSelector(selectChapters) as Chapter[];
   const slides: Slide[] = useSelector((state: RootState) =>
     selectSlides(state, selectedSlideIndex.chapter)
   );
+  const selectedChapter = chapters[selectedSlideIndex.chapter];
   const selectedSlide = slides[selectedSlideIndex.slide];
+
+  //slide number
+  const currentSlideNumber = selectedSlideIndex.slide + 1;
+  const totalSlides = slides.length;
+  const isLastSlide = selectedSlideIndex.slide === totalSlides - 1;
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   useEffect(() => {
@@ -98,27 +86,25 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   }, [selectedSlide]);
 
   return (
-    <div className="mr-16 h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+    <div className="max-w-full h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
       <div className="flex flex-col justify-between w-full h-full">
         <div>
           <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-            <h1 className="text-[#fff] text-sm font-Lato-Black">
-              EZRA seminary
+            <h1 className="font-nokia-bold text-white text-xs lg:text-sm">
+              {selectedChapter?.chapter}
             </h1>
-            <img
-              src="../assets/close-icon.svg"
-              className="w-[3%] z-40 cursor-pointer"
-              alt=""
-            />
+            <p className="font-nokia-bold text-white text-xs lg:text-sm">
+              {currentSlideNumber}/{totalSlides}
+            </p>
           </div>
           <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
         </div>
         {selectedSlide && selectedSlide.elements && (
           <div className="flex flex-col justify-center items-center flex-grow p-5 w-full h-full overflow-y-hidden">
-            <h1 className="text-3xl text-[#fff] text-center font-nokia-bold">
-              {selectedSlide.slide}
-            </h1>
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
+              <h1 className="text-2xl text-[#fff] text-center font-nokia-bold">
+                {selectedSlide.slide}
+              </h1>
               {selectedSlide.elements.map((element: CustomElement, index) => {
                 let elementComponent = null;
                 const uniqueKey = `${element.type}-${index}`;
@@ -127,7 +113,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   elementComponent = (
                     <h1
                       key={element.type}
-                      className="text-white text-3xl font-nokia-bold text-center"
+                      className="text-white text-2xl font-nokia-bold text-center"
                     >
                       {element.value}
                     </h1>
@@ -136,7 +122,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   elementComponent = (
                     <p
                       key={element.type}
-                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-2xl text-center"
+                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-lg text-center"
                     >
                       {element.value}
                     </p>
@@ -145,7 +131,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   elementComponent = (
                     <p
                       key={element.type}
-                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-justify text-lg mt-2"
+                      className="text-white font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
                     >
                       {element.value}
                     </p>
@@ -155,7 +141,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                     (listItem, index) => (
                       <li
                         key={`${uniqueKey}-list-${index}`}
-                        className="text-white font-nokia-bold w-[100%] tracking-wide text-lg"
+                        className="text-white font-nokia-bold w-[100%] tracking-wide text-xs"
                       >
                         {listItem}
                       </li>
@@ -174,7 +160,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                       className="flex flex-col justify-center items-center mb-4"
                     >
                       {/* Questions */}
-                      <p className="text-white font-nokia-bold text-2xl">
+                      <p className="text-white font-nokia-bold text-lg">
                         {element.value.question}
                       </p>
                       {/* Choices */}
@@ -194,7 +180,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                                     handleRadioChange(choiceIndex, choice.text)
                                   }
                                 />
-                                <span className="text-white font-nokia-bold text-lg ml-2">
+                                <span className="text-white font-nokia-bold text-sm ml-2">
                                   {choice.text}
                                 </span>
                               </label>
@@ -211,7 +197,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                     (listItem, index) => (
                       <SplideSlide
                         key={index}
-                        className="flex justify-center items-center text-white font-nokia-bold w-full tracking-wide text-left text-lg px-8"
+                        className="text-white font-nokia-bold text-xs"
                       >
                         {listItem}
                       </SplideSlide>
@@ -219,18 +205,8 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   );
 
                   return (
-                    <div
-                      key={element._id}
-                      className="flex flex-col w-full ml-8"
-                    >
-                      <Splide
-                        options={{
-                          gap: "1rem",
-                        }}
-                        className="w-full p-8 rounded-md list-disc mt-2"
-                      >
-                        {listItemsComponent}
-                      </Splide>
+                    <div key={element._id}>
+                      <Splide>{listItemsComponent}</Splide>
                     </div>
                   );
                 } else if (element.type === "img") {
@@ -255,9 +231,14 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
         )}
         <div className="mb-4 w-[100%] flex flex-col items-center justify-center">
           <hr className="border-accent-5  border-1 w-[90%] mx-auto z-50 " />
-          <button className="text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl text-2xl transition-all">
-            ቀጥል
-          </button>
+          {!isLastSlide && (
+            <button
+              onClick={onNextSlide}
+              className="text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl text-xs transition-all"
+            >
+              ቀጥል
+            </button>
+          )}
         </div>
       </div>
     </div>
