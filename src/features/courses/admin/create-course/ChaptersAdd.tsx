@@ -72,16 +72,30 @@ function ChaptersAdd() {
     }
   };
 
+  //Next button
+  const goToNextSlide = () => {
+    setEditingSlideIndex((prevSlideIndex) => {
+      if (prevSlideIndex) {
+        return { ...prevSlideIndex, slide: prevSlideIndex.slide + 1 };
+      }
+      return prevSlideIndex;
+    });
+  };
+
   console.log(course);
 
   return (
     <div className="flex justify-between h-screen w-full bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
-      <div className="bg-primary-1 w-[30%] h-screen overflow-auto p-6">
+      <div className="bg-primary-1 w-[30%] h-screen overflow-auto scrollbar-thin p-6">
         <button
-          className="flex justify-center items-center text-white bg-accent-6 hover:bg-accent-6 rounded-3xl mb-4 p-2"
+          className="flex justify-center items-center text-white bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
           onClick={addChapterHandler}
         >
-          <span className="material-symbols-outlined">add</span>
+          <PlusCircle
+            className="text-white hover:cursor-pointer transition-all"
+            size={24}
+            weight="fill"
+          />
           Add Chapter
         </button>
         {chapters.map((chapter, chapterIndex) => {
@@ -127,6 +141,9 @@ function ChaptersAdd() {
                   {slides.map((slide, slideIndex) => (
                     <div key={slideIndex} className="flex flex-col ">
                       <div className="flex px-2 items-center">
+                        <p className="flex items-center font-nokia-bold text-secondary-6 text-xs lg:text-sm pr-1">
+                          {slideIndex + 1}
+                        </p>
                         <input
                           type="text"
                           name={`slide-${chapterIndex}-${slideIndex}`}
@@ -189,7 +206,10 @@ function ChaptersAdd() {
       <div className="w-[65%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
-          <SlideDataDisplay selectedSlideIndex={editingSlideIndex} />
+          <SlideDataDisplay
+            selectedSlideIndex={editingSlideIndex}
+            onNextSlide={goToNextSlide}
+          />
         )}
       </div>
     </div>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
+  selectChapters,
   selectSlides,
+  Chapter,
   Slide,
   CourseState,
   CustomElement,
@@ -19,9 +21,13 @@ interface SelectedSlideIndex {
 
 interface AdminCourseDisplayProps {
   selectedSlideIndex: SelectedSlideIndex;
+  onNextSlide: () => void;
 }
 
-function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
+function AdminCourseDisplay({
+  selectedSlideIndex,
+  onNextSlide,
+}: AdminCourseDisplayProps) {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
@@ -53,10 +59,17 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
     }
   };
 
+  const chapters = useSelector(selectChapters) as Chapter[];
   const slides = useSelector((state: { course: CourseState }) =>
     selectSlides(state, selectedSlideIndex.chapter)
   ) as Slide[];
+  const selectedChapter = chapters[selectedSlideIndex.chapter];
   const selectedSlide = slides[selectedSlideIndex.slide];
+
+  //slide number
+  const currentSlideNumber = selectedSlideIndex.slide + 1;
+  const totalSlides = slides.length;
+  const isLastSlide = selectedSlideIndex.slide === totalSlides - 1;
 
   //Display image from state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
@@ -74,27 +87,25 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
   }, [selectedSlide]);
 
   return (
-    <div className="mr-16 h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+    <div className="max-w-full h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
       <div className="flex flex-col justify-between w-full h-full">
         <div>
           <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-            <h1 className="text-[#fff] text-sm font-Lato-Black">
-              EZRA seminary
+            <h1 className="font-nokia-bold text-white text-xs lg:text-sm">
+              {selectedChapter?.chapter}
             </h1>
-            <img
-              src="../assets/close-icon.svg"
-              className="w-[3%] z-40 cursor-pointer"
-              alt=""
-            />
+            <p className="font-nokia-bold text-white text-xs lg:text-sm">
+              {currentSlideNumber}/{totalSlides}
+            </p>
           </div>
           <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
         </div>
         {selectedSlide && selectedSlide.elements && (
           <div className="flex flex-col justify-center items-center flex-grow p-5 w-full h-full overflow-y-hidden">
-            <h1 className="text-3xl text-[#fff] text-center font-nokia-bold">
-              {selectedSlide.slide}
-            </h1>
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
+              <h1 className="text-2xl text-[#fff] text-center font-nokia-bold">
+                {selectedSlide.slide}
+              </h1>
               {selectedSlide.elements.map((element: CustomElement, index) => {
                 let elementComponent = null;
                 const uniqueKey = `${element.type}-${index}`;
@@ -111,7 +122,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                   elementComponent = (
                     <p
                       key={element.type}
-                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-1xl text-center"
+                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-lg text-center"
                     >
                       {element.value}
                     </p>
@@ -120,7 +131,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                   elementComponent = (
                     <p
                       key={element.type}
-                      className="text-white font-nokia-bold w-[100%] self-center tracking-wide text-justify text-lg"
+                      className="text-white font-nokia-bold self-center tracking-wide text-justify text-xs"
                     >
                       {element.value}
                     </p>
@@ -143,7 +154,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                     (listItem, index) => (
                       <li
                         key={`${uniqueKey}-list-${index}`}
-                        className="text-white font-nokia-bold w-[100%] tracking-wide text-lg"
+                        className="text-white font-nokia-bold w-[100%] tracking-wide text-xs"
                       >
                         {listItem}
                       </li>
@@ -162,7 +173,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                       className="flex flex-col justify-center items-center mb-4"
                     >
                       {/* Questions */}
-                      <p className="text-white font-nokia-bold text-2xl">
+                      <p className="text-white font-nokia-bold text-lg">
                         {element.value.question}
                       </p>
                       {/* Choices */}
@@ -182,7 +193,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                                     handleRadioChange(choiceIndex, choice.text)
                                   }
                                 />
-                                <span className="text-white font-nokia-bold text-lg ml-2">
+                                <span className="text-white font-nokia-bold text-sm ml-2">
                                   {choice.text}
                                 </span>
                               </label>
@@ -199,7 +210,7 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                     (listItem, index) => (
                       <SplideSlide
                         key={index}
-                        className="flex justify-center items-center text-white font-nokia-bold w-full tracking-wide text-left text-lg px-8"
+                        className="text-white font-nokia-bold text-xs"
                       >
                         {listItem}
                       </SplideSlide>
@@ -207,15 +218,17 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
                   );
 
                   return (
-                    <div
-                      key={element._id}
-                      className="flex flex-col w-full ml-8"
-                    >
+                    <div key={element._id} className="">
                       <Splide
-                        options={{
-                          gap: "1rem",
-                        }}
-                        className="w-full p-8 rounded-md list-disc mt-2"
+                        className=""
+                        // options={{
+                        //   width: "100%",
+                        //   autoWidth: false,
+                        //   arrows: false,
+                        //   pagination: true,
+                        //   trimSpace: true,
+                        //   isNavigation: true,
+                        // }}
                       >
                         {listItemsComponent}
                       </Splide>
@@ -230,9 +243,14 @@ function AdminCourseDisplay({ selectedSlideIndex }: AdminCourseDisplayProps) {
         )}
         <div className="mb-4 w-[100%] flex flex-col items-center justify-center">
           <hr className="border-accent-5  border-1 w-[90%] mx-auto z-50 " />
-          <button className="text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl text-2xl transition-all">
-            ቀጥል
-          </button>
+          {!isLastSlide && (
+            <button
+              onClick={onNextSlide}
+              className="text-white text-center font-nokia-bold mt-2 py-1 px-2 bg-accent-6 hover:bg-accent-7 w-[15%] rounded-3xl text-xs transition-all"
+            >
+              ቀጥል
+            </button>
+          )}
         </div>
       </div>
     </div>
