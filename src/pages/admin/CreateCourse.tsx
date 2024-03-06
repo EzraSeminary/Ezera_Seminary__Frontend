@@ -50,9 +50,8 @@ function CreateCourse() {
 
           <input
             type="file"
-            className="relative z-10 w-[100%]
-            lg:px-[30%] lg:py-[25%]
-            md:px-[20%] md:py-[20%]
+            className="relative z-10 w-[100%] lg:px-[40%] lg:py-[20%]
+            md:px-[30%] md:py-[30%]
             file:mr-4 file:py-2 file:px-4
             file:rounded-md file:border-0
             file:text-sm file:font-semibold
@@ -63,7 +62,6 @@ function CreateCourse() {
             onChange={handleImageChange}
             required
           />
-          <div className="absolute inset-0 rounded-md bg-accent-8 opacity-60"></div>
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Course Title</label>
