@@ -86,10 +86,14 @@ function EditChapters() {
     <div className="flex justify-between h-screen w-full bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
       <div className="bg-primary-1 w-[30%] h-screen overflow-auto scrollbar-thin p-6">
         <button
-          className="flex justify-center items-center text-white bg-accent-6 hover:bg-accent-6 rounded-3xl mb-4 p-2"
+          className="flex justify-center items-center text-white bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
           onClick={addChapterHandler}
         >
-          <span className="material-symbols-outlined">add</span>
+          <PlusCircle
+            className="text-white hover:cursor-pointer transition-all"
+            size={24}
+            weight="fill"
+          />
           Add Chapter
         </button>
         {chapters.map((chapter, chapterIndex) => {
