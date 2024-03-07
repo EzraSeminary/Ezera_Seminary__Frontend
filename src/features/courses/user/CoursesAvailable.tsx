@@ -299,11 +299,21 @@ function CoursesAvailable() {
                     </p>
                     <Link
                       to={`/courses/get/` + course._id}
-                      className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 trnsition-all"
+                      className=""
                     >
-                      <button className="mt-2" type="button">
+                      <motion.button 
+                      whileHover={{ 
+                        scale: 1.1,
+                        backgroundColor:  "#C77C12",
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{
+                        bounceDamping: 10,
+                        bounceStiffness: 600,
+                      }}
+                      className="bg-accent-6 mt-2 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs1 " type="button">
                         ኮርሱን ክፈት
-                      </button>
+                      </motion.button>
                     </Link>
                   </motion.div>
                 </motion.div>
