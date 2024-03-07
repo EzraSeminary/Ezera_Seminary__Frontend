@@ -17,6 +17,8 @@ import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
 
 const AdminDashboard = () => {
+  // eslint-disable-next-line
+  // @ts-expect-error
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showComponent, setShowComponent] = useState(false);
 

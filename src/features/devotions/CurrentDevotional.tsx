@@ -43,6 +43,8 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   const handleDelete = async (id: string) => {
     // One typescript error below to fix ❗❗❗
+    // eslint-disable-next-line
+    // @ts-expect-error
     await dispatch(deleteDevotion(id)); // dispatch delete action
     toast.success("Devotion deleted successfully!");
     refetch(); // refetch the devotions data

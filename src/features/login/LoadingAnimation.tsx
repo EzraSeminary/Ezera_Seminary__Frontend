@@ -9,7 +9,6 @@ const LoadingAnimation = () => {
         <div className="circle"></div>
         <div className="circle"></div>
       </div>
-      <p className="loading-text">Logging you in...</p>
     </div>
   );
 };
