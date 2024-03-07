@@ -5,18 +5,12 @@ import BeatLoader from "react-spinners/BeatLoader";
 {
   /*typeScript*/
 }
-interface LatestCourse {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
 
 const LatestCourses = () => {
   {
     /* Fetch the latest courses */
   }
-  const { data: courses, isLoading } = useGetCoursesQuery({});
+  const { data: courses, isLoading } = useGetCoursesQuery();
 
   {
     /* Loading state */
@@ -56,7 +50,7 @@ const LatestCourses = () => {
 
       {/* Latest Courses */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]">
-        {courses?.slice(0, 4).map((course: LatestCourse, index: number) => {
+        {courses?.slice(0, 4).map((course, index: number) => {
           return (
             <div
               key={index}

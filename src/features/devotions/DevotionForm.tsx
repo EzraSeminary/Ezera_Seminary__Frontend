@@ -84,12 +84,25 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
     const validToken = token || ""; // Ensure token is not undefined
 
     try {
+      let response;
       if (form._id) {
-        await dispatch(updateDevotion({ token: validToken, devotion }));
-        toast.success("Devotion updated successfully!");
+        response = await dispatch(
+          updateDevotion({ token: validToken, devotion })
+        );
+        if (response.payload) {
+          toast.success("Devotion updated successfully!");
+        }
       } else {
-        await dispatch(createDevotion({ token: validToken, devotion }));
-        toast.success("Devotion created successfully!");
+        response = await dispatch(
+          createDevotion({ token: validToken, devotion })
+        );
+        if (response.payload) {
+          toast.success("Devotion created successfully!");
+        }
+      }
+
+      if (!response.payload) {
+        throw new Error();
       }
 
       await dispatch(fetchDevotions());

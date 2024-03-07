@@ -25,6 +25,8 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleChange }) => {
           target: {
             name: "image",
             value: reader.result as string,
+            // eslint-disable-next-line
+            // @ts-expect-error
             files: newFile,
           },
         });

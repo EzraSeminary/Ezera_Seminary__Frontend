@@ -25,6 +25,8 @@ interface DevotionsState {
 }
 
 const initialState: DevotionsState = {
+  // eslint-disable-next-line
+  // @ts-expect-error
   form: {
     month: "",
     day: "",
