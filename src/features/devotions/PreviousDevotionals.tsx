@@ -1,10 +1,26 @@
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 import  { useState } from 'react'; // Import the useState function from the 'react' package
 import { Button } from "@/components/ui/button";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { Devotion } from "@/redux/types"; // Import the Devotion type
+
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const gridSquareVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 const PreviousDevotionals = ({
   previousDevotions,
@@ -213,10 +229,17 @@ const PreviousDevotionals = ({
         ))}
       </div>
       ) : (
-        <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-3 w-[90%]  mx-auto pb-4">
+        <motion.div
+        variants={gridContainerVariants} 
+        initial= "hidden"
+        animate="show"
+                 className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-3 w-[90%]  mx-auto pb-4">
         {filteredData
             .slice(0, showAllDevotions ? filteredData.length : 8).map((devotion, index: number) => (
-          <div key={index} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
+              <motion.div
+                variants={gridSquareVariants
+                }
+               key={index} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
             {/* devotion Images */}
               <div className="h-full w-full">
                 <img
@@ -243,10 +266,19 @@ const PreviousDevotionals = ({
                   </h2>
                 </div>
                 <div className="w-[20%]">
-                  <Button
+                <motion.button 
+                      whileHover={{ 
+                        scale: 1.1,
+                        // backgroundColor:  "#C77C12",
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{
+                        bounceDamping: 10,
+                        bounceStiffness: 600,
+                      }}
                     type="button"
                     className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
-                    size="devotion"
+                    // size="devotion"
                     onClick={() => {
                       // open the devotion on click
                       // console.log("clicked");
@@ -254,12 +286,12 @@ const PreviousDevotionals = ({
                     }}
                   >
                     ክፈት
-                  </Button>
+                  </motion.button>
                 </div>
               </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       )}
 
        {/* Button to view all courses */}
