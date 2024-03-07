@@ -270,7 +270,11 @@ function CoursesAvailable() {
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
                   {/* Image of the course */}
-                  <div className="w-full p-2 h-full">
+                  <motion.div
+                  initial={{ opacity: 0, y: -100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}}
+                   className="w-full p-2 h-full">
                     <img
                       src={
                         `http://ezra-seminary.mybese.tech/images/` +
@@ -279,10 +283,13 @@ function CoursesAvailable() {
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
                       alt=""
                     />
-                  </div>
+                  </motion.div>
 
                   {/* Title, Description and button */}
-                  <div className=" w-[95%] md:w-[90%] mx-auto h-full">
+                  <motion.div
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.4}} className=" w-[95%] md:w-[90%] mx-auto h-full">
                     <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
                       {course.title}
                     </h2>
@@ -298,7 +305,7 @@ function CoursesAvailable() {
                         ኮርሱን ክፈት
                       </button>
                     </Link>
-                  </div>
+                  </motion.div>
                 </motion.div>
               );
             })}
