@@ -258,7 +258,7 @@ function CoursesAvailable() {
         variants={gridContainerVariants} 
           initial= "hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 lg:gap-4 mx-auto pb-4 cursor-pointer">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
@@ -266,6 +266,14 @@ function CoursesAvailable() {
                 <motion.div
                 variants={gridSquareVariants
                 }
+                whileHover={{ 
+                  scale: 0.9,
+                }}
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  bounceDamping: 10,
+                  bounceStiffness: 600,
+                }}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
