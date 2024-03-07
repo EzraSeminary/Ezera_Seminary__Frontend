@@ -1,10 +1,26 @@
 import { useState, ChangeEvent } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const gridSquareVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 function CoursesAvailable() {
   const { data: courses, error, isLoading } = useGetCoursesQuery();
@@ -140,12 +156,17 @@ function CoursesAvailable() {
 
       {/* Container for Courses */}
       {isSmallScreen ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants} 
+          initial= "hidden"
+          animate="show"
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -179,17 +200,22 @@ function CoursesAvailable() {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       ) : isMediumScreen ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -223,17 +249,23 @@ function CoursesAvailable() {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants} 
+          initial= "hidden"
+          animate="show"
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants
+                }
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -267,10 +299,10 @@ function CoursesAvailable() {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       )}
 
       {/* Button to view all courses */}
