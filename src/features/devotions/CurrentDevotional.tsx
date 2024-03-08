@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { DownloadSimple } from "@phosphor-icons/react";
 import { ShareNetwork } from "@phosphor-icons/react";
@@ -135,16 +136,30 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           </Modal>
           {devotionToDisplay &&
           (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
-            <div className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+            <motion.div
+            animate={{
+              scale: [1, 1.1, 1.1, 1],
+              rotate: [0, 0, 0, 0],
+              borderRadius: ["10%", "10%", "50%", "10%"],
+  
+            }}
+            transition={{
+              duration: 5,
+              ease: "easeInOut",
+              repeatDelay: 1,
+              repeat: Infinity,
+            
+            }} className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
               <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-4">
                 <p className=" font-nokia-bold md:text-2xl text-[#fff]">
                   {devotionToDisplay.month}
                 </p>
-                <p className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
+                <p
+                className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
                   {devotionToDisplay.day}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ) : (
             <div className="hidden rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
               <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
@@ -227,7 +242,8 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           </div>
 
           {/* devotion image */}
-          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
+          <div
+           className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
             <img
               src={`https://ezra-seminary.mybese.tech/images/${
                 devotionToDisplay && devotionToDisplay.image
@@ -250,7 +266,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               />
             )}
 
-            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto">
+            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
                 className="flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
                 // onClick={handleDownload}
@@ -259,18 +275,18 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                 <DownloadSimple
                   size={24}
                   weight="bold"
-                  className="text-primary-1"
+                  className="text-primary-1 animate-pulse"
                 />
               </button>
               <button
-                className="flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
+                className="flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1 "
                 // onClick={handleShare}>
               >
                 ምስሉን አጋራ
                 <ShareNetwork
                   size={24}
                   weight="bold"
-                  className="text-primary-1"
+                  className="text-primary-1 animate-pulse"
                 />
               </button>
             </div>

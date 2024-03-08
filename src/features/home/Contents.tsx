@@ -1,7 +1,23 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
 import content1 from "../../assets/content-1.svg";
 import content2 from "../../assets/content-2.svg";
 import content3 from "../../assets/content-3.svg";
+
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.7,
+    },
+  },
+};
+
+const gridSquareVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 const Contents = () => {
 
@@ -36,73 +52,155 @@ const Contents = () => {
         <hr className="border-accent-5 border-1 w-[90%] pb-3" />
 
         {/* container of the Contents */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+        <motion.div 
+        variants={gridContainerVariants} 
+        initial= "hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 cursor-pointer cu">
 
           {/* Content 1 */}
-          <div className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
+          <motion.div
+          variants={gridSquareVariants
+          }
+          whileHover={{ 
+            scale: 1.1,
+          }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            bounceDamping: 10,
+            bounceStiffness: 600,
+          }}
+           className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
 
             {/* Image of the content */}
-            <div className="mx-auto w-[100%]">
+            <motion.div
+                  initial={{ opacity: 0, y: -100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}} className="mx-auto w-[100%]">
               <img className="w-full" src={content1} alt="content1" />
-            </div>
+            </motion.div>
 
             {/* Texts and button of the content */}
-            <h2 className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Course Study</h2>
-            <p className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
+            <motion.h2
+            
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.4}}
+             className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Course Study</motion.h2>
+            <motion.p
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.6}}
+             className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
               Study on specific bible topics.
-            </p>
-            <button
+            </motion.p>
+            <motion.button
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
               className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleCourseClick}
             >
               See More
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Content 2 */}
-          <div className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
+          <motion.div 
+           variants={gridSquareVariants
+           }
+           whileHover={{ 
+             scale: 1.1,
+           }}
+           whileTap={{ scale: 0.9 }}
+           transition={{
+             bounceDamping: 10,
+             bounceStiffness: 600,
+           }}
+          className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
 
             {/* Image of the content */}
-            <div className="mx-auto w-[100%]">
+            <motion.div
+                  initial={{ opacity: 0, y: -100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}} className="mx-auto w-[100%]">
               <img className="w-full" src={content2} alt="content2" />
-            </div>
+            </motion.div>
 
             {/* Texts and button of the content */}
-            <h2 className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Sabbath School Study</h2>
-            <p className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
+            <motion.h2
+            
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.4}}
+            className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Sabbath School Study</motion.h2>
+            <motion.p
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.6}}
+             className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
               Quarterly bible study on a topic.
-            </p>
-            <button
+            </motion.p>
+            <motion.button
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
               className="bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleSabathSchoolClick}
             >
               See More
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          <div className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
+          <motion.div
+           variants={gridSquareVariants
+           }
+           whileHover={{ 
+             scale: 1.1,
+           }}
+           whileTap={{ scale: 0.9 }}
+           transition={{
+             bounceDamping: 10,
+             bounceStiffness: 600,
+           }}
+          className="bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold rounded-xl shadow-2xl">
 
             {/* Image of the content */}
-            <div className="mx-auto w-[100%]">
+            <motion.div
+                  initial={{ opacity: 0, y: -100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}} className="mx-auto w-[100%]">
               <img className="w-full" src={content3} alt="content3" />
-            </div>
+            </motion.div>
 
             {/* Texts and button of the content */}
-            <h2 className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Devotional Study</h2>
-            <p className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
+            <motion.h2
+            
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.4}}
+             className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4">Devotional Study</motion.h2>
+            <motion.p
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.6}}
+             className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4">
               Daily devotional text study.
-            </p>
-            <button
+            </motion.p>
+            <motion.button
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
               className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleDevotionClick}
             >
               See More
-            </button>
-          </div>
-        </div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
