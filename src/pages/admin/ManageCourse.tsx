@@ -132,12 +132,12 @@ function ManageCourse() {
           </div>
           <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
-          <div className="flex flex-col justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
+          <div className="flex flex-col md:grid md:grid-cols-4 justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
             {filteredData?.map((course, index: number) => {
               return (
                 <div
                   key={index}
-                  className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] md:w-[23.7%] shadow-xl rounded-3xl md:rounded-xl h-auto pb-6 "
+                  className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] shadow-xl rounded-3xl md:rounded-xl h-auto pb-6 "
                 >
                   <div className="w-full p-2">
                     <img
