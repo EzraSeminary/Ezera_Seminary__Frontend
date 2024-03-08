@@ -1,4 +1,3 @@
-// import { FaTrash } from "react-icons/fa";
 import { Trash } from "@phosphor-icons/react";
 import { useEffect, ChangeEvent, FC, Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
