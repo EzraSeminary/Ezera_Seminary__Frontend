@@ -95,6 +95,7 @@ function EditCourse() {
         toast.success("Course updated successfully!");
         console.log(res);
         navigate("/admin/course/edit");
+        window.location.reload();
       })
       .catch((err) => {
         toast.error(

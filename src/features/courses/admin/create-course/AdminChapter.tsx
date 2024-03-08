@@ -47,6 +47,7 @@ function AdminChapter() {
         console.log(res);
         toast.success("Course published successfully!");
         navigate("/admin/course/edit");
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
