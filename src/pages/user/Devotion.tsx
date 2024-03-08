@@ -18,7 +18,7 @@ const Devotion = () => {
 
   return (
 
-    <div className=" flex h-auto mt-12 pt-12 md:w-[95%] mx-auto">
+    <div className=" flex h-full mt-12 pt-12 md:w-[95%] mx-auto">
 
       <DevotionDisplay
         devotions={devotions}
