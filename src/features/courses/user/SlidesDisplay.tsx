@@ -83,6 +83,7 @@ function SlidesDisplay() {
   // slide number
   const currentDataNumber = activeIndex + 1;
   const totalDataNumber = data.length;
+  const isLastSlide = activeIndex === totalDataNumber - 1;
 
   const isSlideUnlocked = (index: number) => {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
@@ -439,14 +440,16 @@ function SlidesDisplay() {
                     })}
                   </div>
 
-                  <NavLink
-                    to={`/courses/get/${courseId}`}
-                    className="flex justify-center items-center mx-auto"
-                  >
-                    <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1">
-                      ዘግተህ ውጣ
-                    </button>
-                  </NavLink>
+                  {isLastSlide && (
+                    <NavLink
+                      to={`/courses/get/${courseId}`}
+                      className="flex justify-center items-center mx-auto"
+                    >
+                      <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1">
+                        ዘግተህ ውጣ
+                      </button>
+                    </NavLink>
+                  )}
                 </div>
               );
             } else {
