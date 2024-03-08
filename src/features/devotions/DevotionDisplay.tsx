@@ -55,7 +55,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
       console.log("Ethiopian date:", ethiopianDate); // Add this line
 
-      const [year, month, day] = ethiopianDate;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [, month, day] = ethiopianDate;
 
       // Convert the month number to its Ethiopian name
       const ethiopianMonth = ethiopianMonths[month];

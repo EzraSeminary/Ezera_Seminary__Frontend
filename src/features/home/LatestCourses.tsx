@@ -22,18 +22,12 @@ const gridSquareVariants = {
 {
   /*typeScript*/
 }
-interface LatestCourse {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-}
 
 const LatestCourses = () => {
   {
     /* Fetch the latest courses */
   }
-  const { data: courses, isLoading } = useGetCoursesQuery({});
+  const { data: courses, isLoading } = useGetCoursesQuery();
 
   {
     /* Loading state */
@@ -72,12 +66,14 @@ const LatestCourses = () => {
       <hr className="border-accent-5 border-1 w-[90%] pb-3" />
 
       {/* Latest Courses */}
+
       <motion.div 
         variants={gridContainerVariants} 
         initial= "hidden"
         animate="show"
          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]">
         {courses?.slice(0, 4).map((course: LatestCourse, index: number) => {
+
           return (
             <motion.div
             variants={gridSquareVariants

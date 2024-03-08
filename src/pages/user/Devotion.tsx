@@ -20,11 +20,15 @@ const Devotion = () => {
 
     <div className=" flex h-full mt-12 pt-12 md:w-[95%] mx-auto">
 
+
       <DevotionDisplay
         devotions={devotions}
         selectedDevotion={selectedDevotion}
         setSelectedDevotion={setSelectedDevotion}
         showControls={false}
+        toggleForm={function (): void {
+          throw new Error("Function not implemented.");
+        }}
       />
     </div>
   );

@@ -17,7 +17,6 @@ import Login from "@/pages/user/Login";
 import Signup from "@/pages/user/Signup";
 import Footer from "./components/Footer";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
-import CoursesAvailable from "@/features/courses/user/CoursesAvailable";
 import ChaptersDisplay from "@/features/courses/user/ChaptersDisplay";
 import SlidesDisplay from "@/features/courses/user/SlidesDisplay";
 import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";

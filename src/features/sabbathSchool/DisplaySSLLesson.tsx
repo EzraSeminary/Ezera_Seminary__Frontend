@@ -9,7 +9,6 @@ import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
-import React from "react";
 
 function DisplaySSLLesson() {
   interface Params {
@@ -24,18 +23,18 @@ function DisplaySSLLesson() {
 
   const { quarter, id, day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
-  const daysOfWeek = ["አርብ","ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
+  const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
   const {
     data: lessonDetails,
     error: lessonError,
     isLoading,
   } = useGetSSLOfDayLessonQuery({ path: quarter, id: id, day: day });
 
-  const {
-    data: dayDetails,
-    error: dayError,
-  } = useGetSSLOfDayQuery({ path: quarter, id: id });
-  const [selectedVerse, setSelectedVerse] = useState('');
+  const { data: dayDetails, error: dayError } = useGetSSLOfDayQuery({
+    path: quarter,
+    id: id,
+  });
+  const [selectedVerse, setSelectedVerse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -43,10 +42,14 @@ function DisplaySSLLesson() {
   };
 
   const handleVerseClick = (verseKey: string) => {
-    if (lessonDetails?.bible && lessonDetails.bible.length >= 1 && lessonDetails.bible[0].verses) {
+    if (
+      lessonDetails?.bible &&
+      lessonDetails.bible.length >= 1 &&
+      lessonDetails.bible[0].verses
+    ) {
       const verses = lessonDetails.bible[0].verses as VerseMap;
       const verseText: string | undefined = verses[verseKey];
-  
+
       if (verseText) {
         setSelectedVerse(verseText);
         setIsModalOpen(true);
@@ -54,19 +57,29 @@ function DisplaySSLLesson() {
         console.error(`Verse key "${verseKey}" not found`);
       }
     } else {
-      console.error("Bible data is not available or not in the expected format.");
+      console.error(
+        "Bible data is not available or not in the expected format."
+      );
     }
   };
 
-
   const modifyContentForDisplay = (content: string) => {
     if (!lessonDetails) return null;
-  
+
     return parse(content, {
       replace: (domNode) => {
-        if (domNode.type === 'tag' && domNode.name === 'a' && domNode.attribs && domNode.attribs.class === 'verse') {
+        if (
+          domNode.type === "tag" &&
+          domNode.name === "a" &&
+          domNode.attribs &&
+          domNode.attribs.class === "verse"
+        ) {
           const verseKey = domNode.attribs.verse;
-          const verseContent = domNode.children.map(childNode => childNode.type === 'text' ? childNode.data : '').join('');
+          const verseContent = domNode.children
+            .map((childNode) =>
+              childNode.type === "text" ? childNode.data : ""
+            )
+            .join("");
           return (
             <a
               href="#"
@@ -83,7 +96,7 @@ function DisplaySSLLesson() {
       },
     });
   };
-  
+
   useEffect(() => {
     if (dayDetails) {
       setBackgroundImage(dayDetails.lesson.cover);
@@ -91,8 +104,12 @@ function DisplaySSLLesson() {
   }, [lessonDetails, backgroundImage, dayDetails]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
+  if (lessonError && "message" in lessonError)
+    return <div>Error: {lessonError.message}</div>;
   if (!lessonDetails) return null;
+
+  if (dayError && "message" in dayError)
+    return <div>Error: {dayError.message}</div>;
 
   return (
     <div>
@@ -110,19 +127,25 @@ function DisplaySSLLesson() {
         </div>
         <div className="flex flex-col">
           <p className="flex flex-row text-primary-5 text-lg">
-            {daysOfWeek[((Number(day) ?? 0) % 7)]}፣&nbsp;&nbsp;
+            {daysOfWeek[(Number(day) ?? 0) % 7]}፣&nbsp;&nbsp;
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />
           <div className="text-3xl text-primary-0">{lessonDetails.title}</div>
         </div>
       </div>
-      {isModalOpen && 
-  <Modal key={selectedVerse} showModal={isModalOpen} toggleModal={toggleModal}>
-    {parse(selectedVerse, { trim: true })}
-  </Modal>
-}
-      <div className="text-secondary-6 text-justify wrapper my-4">{modifyContentForDisplay(lessonDetails.content)}</div>
+      {isModalOpen && (
+        <Modal
+          key={selectedVerse}
+          showModal={isModalOpen}
+          toggleModal={toggleModal}
+        >
+          {parse(selectedVerse, { trim: true })}
+        </Modal>
+      )}
+      <div className="text-secondary-6 text-justify wrapper my-4">
+        {modifyContentForDisplay(lessonDetails.content)}
+      </div>
     </div>
   );
 }
