@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import { DownloadSimple } from "@phosphor-icons/react";
 import { ShareNetwork } from "@phosphor-icons/react";
 import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { PencilSimpleLine, Trash } from "@phosphor-icons/react";
+
 import {
   selectDevotion,
   deleteDevotion,
@@ -137,25 +138,24 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {devotionToDisplay &&
           (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
             <motion.div
-            animate={{
-              scale: [1, 1.1, 1.1, 1],
-              rotate: [0, 0, 0, 0],
-              borderRadius: ["10%", "10%", "50%", "10%"],
-  
-            }}
-            transition={{
-              duration: 5,
-              ease: "easeInOut",
-              repeatDelay: 1,
-              repeat: Infinity,
-            
-            }} className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+              animate={{
+                scale: [1, 1.1, 1.1, 1],
+                rotate: [0, 0, 0, 0],
+                borderRadius: ["10%", "10%", "50%", "10%"],
+              }}
+              transition={{
+                duration: 5,
+                ease: "easeInOut",
+                repeatDelay: 1,
+                repeat: Infinity,
+              }}
+              className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6"
+            >
               <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-4">
                 <p className=" font-nokia-bold md:text-2xl text-[#fff]">
                   {devotionToDisplay.month}
                 </p>
-                <p
-                className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
+                <p className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
                   {devotionToDisplay.day}
                 </p>
               </div>
@@ -182,14 +182,16 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </h1>
               {role === "Admin" && showControls && (
                 <>
-                  <FaTrash
-                    className="text-gray-700 text-xl cursor-pointer self-center"
+                  <Trash
+                    size={28}
+                    className="text-red-700 text-xl cursor-pointer self-center"
                     onClick={() => {
                       setDevotionToDelete(devotionToDisplay?._id || ""); // set the id to delete
                       setModalIsOpen(true); // open the modal
                     }}
                   />
-                  <FaEdit
+                  <PencilSimpleLine
+                    size={28}
                     className="text-gray-700 text-xl cursor-pointer self-center "
                     onClick={() => startEditing(devotionToDisplay)}
                   />
@@ -242,8 +244,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           </div>
 
           {/* devotion image */}
-          <div
-           className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
+          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
             <img
               src={`https://ezra-seminary.mybese.tech/images/${
                 devotionToDisplay && devotionToDisplay.image
