@@ -1,10 +1,26 @@
 import { useState, ChangeEvent } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const gridSquareVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 function CoursesAvailable() {
   const { data: courses, error, isLoading } = useGetCoursesQuery();
@@ -140,12 +156,17 @@ function CoursesAvailable() {
 
       {/* Container for Courses */}
       {isSmallScreen ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants} 
+          initial= "hidden"
+          animate="show"
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -179,17 +200,22 @@ function CoursesAvailable() {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       ) : isMediumScreen ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -223,22 +249,40 @@ function CoursesAvailable() {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div 
+        variants={gridContainerVariants} 
+          initial= "hidden"
+          animate="show"
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 lg:gap-4 mx-auto pb-4 cursor-pointer">
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                variants={gridSquareVariants
+                }
+                whileHover={{ 
+                  scale: 0.9,
+                }}
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  bounceDamping: 10,
+                  bounceStiffness: 600,
+                }}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
                   {/* Image of the course */}
-                  <div className="w-full p-2 h-full">
+                  <motion.div
+                  initial={{ opacity: 0, y: -100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}}
+                   className="w-full p-2 h-full">
                     <img
                       src={
                         `http://ezra-seminary.mybese.tech/images/` +
@@ -247,10 +291,13 @@ function CoursesAvailable() {
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
                       alt=""
                     />
-                  </div>
+                  </motion.div>
 
                   {/* Title, Description and button */}
-                  <div className=" w-[95%] md:w-[90%] mx-auto h-full">
+                  <motion.div
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.4}} className=" w-[95%] md:w-[90%] mx-auto h-full">
                     <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
                       {course.title}
                     </h2>
@@ -260,17 +307,27 @@ function CoursesAvailable() {
                     </p>
                     <Link
                       to={`/courses/get/` + course._id}
-                      className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 trnsition-all"
+                      className=""
                     >
-                      <button className="mt-2" type="button">
+                      <motion.button 
+                      whileHover={{ 
+                        scale: 1.1,
+                        backgroundColor:  "#C77C12",
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{
+                        bounceDamping: 10,
+                        bounceStiffness: 600,
+                      }}
+                      className="bg-accent-6 mt-2 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs1 " type="button">
                         ኮርሱን ክፈት
-                      </button>
+                      </motion.button>
                     </Link>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       )}
 
       {/* Button to view all courses */}

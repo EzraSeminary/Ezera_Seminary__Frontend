@@ -1,9 +1,14 @@
 // import Slide from "../components/Slide";
 // import Quiz from "../components/Quiz";
+// import {motion} from "framer-motion";
+// import {useRef} from "react";
 import OurTeam from "../../features/about/OurTeams";
 import Purpose from "../../features/about/Purpose";
 
 const AboutUs = () => {
+  // const containerRef = useRef(null);
+  // const isInView = useInView(containerRef, {once: true});
+  // const mainContainer = useInView(containerRef, {once: true});
    return (
     <div className="h-auto space-y-8 lg:space-y-12">
      

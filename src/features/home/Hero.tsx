@@ -30,7 +30,7 @@ const Hero = () => {
               Study The <br className="hidden md:block" /> Bible On <br />
               <span className="text-accent-5 text-highlight">Your Phone</span>
             </h1>
-            <div className="flex justify-center sm:justify-end items-center pt-2 gap-2 md:gap-3">
+            <div className="flex justify-center sm:justify-end items-center pt-2 gap-2 md:gap-3 animate-pulse">
               <a href="#">
                 <img
                   className="h-6 md:h-8 xl:h-12"
