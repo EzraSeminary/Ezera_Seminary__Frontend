@@ -264,7 +264,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               />
             )}
 
-            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto">
+            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
                 className="flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
                 // onClick={handleDownload}
@@ -273,18 +273,18 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                 <DownloadSimple
                   size={24}
                   weight="bold"
-                  className="text-primary-1"
+                  className="text-primary-1 animate-pulse"
                 />
               </button>
               <button
-                className="flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
+                className="flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1 "
                 // onClick={handleShare}>
               >
                 ምስሉን አጋራ
                 <ShareNetwork
                   size={24}
                   weight="bold"
-                  className="text-primary-1"
+                  className="text-primary-1 animate-pulse"
                 />
               </button>
             </div>
