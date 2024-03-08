@@ -113,7 +113,7 @@ function SlidesDisplay() {
 
   if (isLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <BeatLoader
           color={"#707070"}
           loading
@@ -132,7 +132,7 @@ function SlidesDisplay() {
       {/* Back button */}
       <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
         <NavLink
-          to={"/courses"}
+          to={`/courses/get/${courseId}`}
           className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
         >
           <ArrowLeft
@@ -438,6 +438,15 @@ function SlidesDisplay() {
                       }
                     })}
                   </div>
+
+                  <NavLink
+                    to={`/courses/get/${courseId}`}
+                    className="flex justify-center items-center mx-auto"
+                  >
+                    <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1">
+                      ዘግተህ ውጣ
+                    </button>
+                  </NavLink>
                 </div>
               );
             } else {
