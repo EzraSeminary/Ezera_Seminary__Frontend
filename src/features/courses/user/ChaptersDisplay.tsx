@@ -229,16 +229,13 @@ function ChaptersDisplay() {
                     <strong>Ezra</strong> Seminary
                   </h3>
                 </div>
-                {/* <NavLink
-                  to={"/courses"}
-                  className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
-                > */}
-                <XCircle
-                  size={24}
-                  color={"#EA9215"}
-                  className="z-20 cursor-pointer"
-                />
-                {/* </NavLink> */}
+                <NavLink to={"/courses"}>
+                  <XCircle
+                    size={24}
+                    color={"white"}
+                    className="z-20 cursor-pointer"
+                  />
+                </NavLink>
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
             </div>

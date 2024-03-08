@@ -267,11 +267,13 @@ function SlidesDisplay() {
                   <strong>Ezra</strong> Seminary
                 </h3>
               </div>
-              <XCircle
-                size={24}
-                color={"#EA9215"}
-                className="z-20 cursor-pointer"
-              />
+              <NavLink to={`/courses/get/${courseId}`}>
+                <XCircle
+                  size={24}
+                  color={"white"}
+                  className="z-20 cursor-pointer"
+                />
+              </NavLink>
             </div>
             <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
           </div>
@@ -448,7 +450,7 @@ function SlidesDisplay() {
             <div className="flex justify-between">
               <button
                 className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
-                  activeIndex === data.length + 1 ? "hidden" : "block"
+                  activeIndex === 0 ? "hidden" : "block"
                 }`} // hidding the previous button for the first slide
                 onClick={() => {
                   updateIndex(activeIndex - 1);
