@@ -75,7 +75,7 @@ function ChaptersDisplay() {
   }
   if (isLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <BeatLoader
           color={"#707070"}
           loading
@@ -196,7 +196,7 @@ function ChaptersDisplay() {
                         {/* <Text>ID</Text> {courseId} */}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
-                        15/15 Slides
+                        {index + 1}/{totalDataNumber} Chapters
                       </p>
                     </div>
                     {unlocked ? (
