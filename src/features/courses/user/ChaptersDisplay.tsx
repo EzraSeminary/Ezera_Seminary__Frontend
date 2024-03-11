@@ -11,7 +11,6 @@ import {
   ArrowRight,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
-import bibleImage from "../../../assets/bible2.jpeg";
 
 function ChaptersDisplay() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -132,12 +131,10 @@ function ChaptersDisplay() {
           {/* Bible image container*/}
           <div className="w-[100%]">
             <img
-              src={bibleImage}
-              // src={
-              //   `http://ezra-seminary.mybese.tech/images/` +
-              //   courseData?.image
-              // }
-              alt="Bible image"
+              src={
+                `http://ezra-seminary.mybese.tech/images/` + courseData?.image
+              }
+              alt=""
               className="w-full rounded-t-lg"
             />
           </div>

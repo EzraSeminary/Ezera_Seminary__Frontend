@@ -13,6 +13,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
+import { XCircle, CheckFat } from "@phosphor-icons/react";
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
@@ -30,6 +31,9 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
+  //show quiz result
+  const [showQuizResult, setShowQuizResult] = useState(false);
+
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
@@ -42,18 +46,21 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
       if (quizElement) {
         const isCorrect = choiceValue === quizElement.value.correctAnswer;
         setIsAnswerCorrect(isCorrect);
+        setShowQuizResult(false); // Reset showResult when a new answer is selected
       }
     }
   };
 
   //isCorrect switch
   const renderQuizResult = () => {
-    if (isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
+    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
     if (isAnswerCorrect) {
-      return <p className="text-green-800 font-bold text-xl">Correct!</p>;
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
     } else {
-      return <p className="text-red-700 font-bold text-xl">Wrong!</p>;
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
   };
 
@@ -83,6 +90,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
         return () => URL.revokeObjectURL(objectUrl);
       }
     }
+    setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
 
   return (
@@ -189,7 +197,15 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                         </div>
                       )}
                       {/* Correct Answer */}
-                      {renderQuizResult()}
+                      <div className="flex mt-2">
+                        <button
+                          className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                          onClick={() => setShowQuizResult(true)}
+                        >
+                          Check Answer
+                        </button>
+                        {renderQuizResult()}
+                      </div>
                     </div>
                   );
                 } else if (element.type === "slide") {
