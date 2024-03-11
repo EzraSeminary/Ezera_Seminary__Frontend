@@ -45,6 +45,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
       if (quizElement) {
         const isCorrect = choiceValue === quizElement.value.correctAnswer;
         setIsAnswerCorrect(isCorrect);
+        setShowQuizResult(false); // Reset showResult when a new answer is selected
       }
     }
   };
@@ -192,7 +193,15 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                         </div>
                       )}
                       {/* Correct Answer */}
-                      {renderQuizResult()}
+                      <div className="flex mt-2">
+                        <button
+                          className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                          onClick={() => setShowQuizResult(true)}
+                        >
+                          Check Answer
+                        </button>
+                        {renderQuizResult()}
+                      </div>
                     </div>
                   );
                 } else if (element.type === "slide") {
