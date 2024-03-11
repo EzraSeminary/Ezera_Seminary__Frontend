@@ -52,12 +52,14 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
 
   //isCorrect switch
   const renderQuizResult = () => {
-    if (isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
+    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
     if (isAnswerCorrect) {
-      return <p className="text-green-800 font-bold text-xl">Correct!</p>;
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
     } else {
-      return <p className="text-red-700 font-bold text-xl">Wrong!</p>;
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
   };
 
