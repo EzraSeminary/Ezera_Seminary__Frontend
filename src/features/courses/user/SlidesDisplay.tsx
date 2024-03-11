@@ -27,6 +27,9 @@ function SlidesDisplay() {
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
 
+  //show quiz result
+  const [showQuizResult, setShowQuizResult] = useState(false);
+
   {
     /* Function to open the chapters sidebar modal */
   }
@@ -99,11 +102,12 @@ function SlidesDisplay() {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     setIsAnswerCorrect(choiceValue === elementCorrectAnswer);
+    setShowQuizResult(false); // Reset showResult when a new answer is selected
   };
 
   //isCorrect switch
   const renderQuizResult = () => {
-    if (isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
+    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
     if (isAnswerCorrect) {
       return <p className="text-green-800 font-bold text-xl">Correct!</p>;
@@ -229,7 +233,7 @@ function SlidesDisplay() {
                       {slides.slide}
                     </h2>
                     <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
-                      15/15 Slides
+                      {index + 1}/{totalDataNumber} Slides
                     </p>
                   </div>
                   {unlocked ? (
@@ -290,7 +294,7 @@ function SlidesDisplay() {
                   <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                     {slides.slide}
                   </h1>
-                  <div className="flex flex-col justify-center items-center h-auto overflow-y-auto py-2">
+                  <div className="flex flex-col justify-center items-center h-auto overflow-y-auto scrollbar-thin py-2">
                     {slides.elements.map((element) => {
                       if (element.type === "title") {
                         return (
@@ -355,7 +359,7 @@ function SlidesDisplay() {
                           (listItem: string, index: number) => (
                             <SplideSlide
                               key={index}
-                              className="  flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide  text-xs1 md:text-xs "
+                              className="flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide text-xs1 md:text-xs "
                             >
                               {listItem}
                             </SplideSlide>
@@ -391,7 +395,7 @@ function SlidesDisplay() {
                             className="flex flex-col justify-center items-center mb-4"
                           >
                             {/* Questions */}
-                            <p className="text-white font-nokia-bold text-2xl">
+                            <p className="text-white font-nokia-bold text-sm lg:text-xl">
                               {element.value.question}
                             </p>
                             {/* Choices */}
@@ -421,7 +425,7 @@ function SlidesDisplay() {
                                             )
                                           }
                                         />
-                                        <span className="text-white font-nokia-bold text-lg ml-2">
+                                        <span className="text-white font-nokia-bold text-xs lg:text-lg ml-2">
                                           {choice.text}
                                         </span>
                                       </label>
@@ -431,6 +435,12 @@ function SlidesDisplay() {
                               </div>
                             )}
                             {/* Correct Answer */}
+                            <button
+                              className="text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                              onClick={() => setShowQuizResult(true)}
+                            >
+                              Check Answer
+                            </button>
                             {renderQuizResult()}
                           </div>
                         );
