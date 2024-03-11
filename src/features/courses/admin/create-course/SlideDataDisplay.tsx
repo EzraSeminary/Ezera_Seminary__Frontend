@@ -30,6 +30,9 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
+  //show quiz result
+  const [showQuizResult, setShowQuizResult] = useState(false);
+
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
