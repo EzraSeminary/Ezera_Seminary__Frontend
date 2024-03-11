@@ -79,6 +79,7 @@ function SlidesDisplay() {
     }
 
     setActiveIndex(newIndex);
+    setShowQuizResult(false); // Reset the showQuizResult state
   };
 
   // slide number
