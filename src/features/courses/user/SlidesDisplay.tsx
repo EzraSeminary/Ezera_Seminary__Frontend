@@ -1,11 +1,8 @@
 import { useState, useRef } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { CaretCircleLeft } from "@phosphor-icons/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-// import "@splidejs/react-splide/css/sea-green";
-// import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import {
@@ -14,8 +11,9 @@ import {
   Circle,
   XCircle,
   ArrowRight,
+  CaretCircleLeft,
+  CheckFat,
 } from "@phosphor-icons/react";
-// import {  } from "phosphor-react";
 import logo from "../../../assets/ezra-logo.svg";
 import bibleImage from "../../../assets/bible2.jpeg";
 
@@ -110,9 +108,11 @@ function SlidesDisplay() {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
     if (isAnswerCorrect) {
-      return <p className="text-green-800 font-bold text-xl">Correct!</p>;
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
     } else {
-      return <p className="text-red-700 font-bold text-xl">Wrong!</p>;
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
   };
 
@@ -435,13 +435,15 @@ function SlidesDisplay() {
                               </div>
                             )}
                             {/* Correct Answer */}
-                            <button
-                              className="text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                              onClick={() => setShowQuizResult(true)}
-                            >
-                              Check Answer
-                            </button>
-                            {renderQuizResult()}
+                            <div className="flex mt-2">
+                              <button
+                                className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                onClick={() => setShowQuizResult(true)}
+                              >
+                                Check Answer
+                              </button>
+                              {renderQuizResult()}
+                            </div>
                           </div>
                         );
                       } else {
