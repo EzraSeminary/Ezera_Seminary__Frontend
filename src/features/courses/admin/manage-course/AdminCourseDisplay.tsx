@@ -13,6 +13,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
+import { XCircle, CheckFat } from "@phosphor-icons/react";
 
 interface SelectedSlideIndex {
   chapter: number;
@@ -90,6 +91,7 @@ function AdminCourseDisplay({
         return () => URL.revokeObjectURL(objectUrl);
       }
     }
+    setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
 
   return (
