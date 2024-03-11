@@ -52,10 +52,13 @@ function CoursesAvailable() {
   }
   const isMediumScreen = window.matchMedia("(max-width: 1023px)").matches;
 
+  // Reverse the courses to display from the latest
+  const reversedCourses = [...(courses ?? [])].reverse();
+
   {
     /* Filter the data based on the search term */
   }
-  const filteredData = (courses ?? []).filter((course) => {
+  const filteredData = reversedCourses.filter((course) => {
     return course.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -71,7 +74,7 @@ function CoursesAvailable() {
   }
   if (isLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <BeatLoader
           color={"#707070"}
           loading
@@ -156,17 +159,18 @@ function CoursesAvailable() {
 
       {/* Container for Courses */}
       {isSmallScreen ? (
-        <motion.div 
-        variants={gridContainerVariants} 
-          initial= "hidden"
+        <motion.div
+          variants={gridContainerVariants}
+          initial="hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4"
+        >
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
             .map((course, index: number) => {
               return (
                 <motion.div
-                variants={gridSquareVariants}
+                  variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -205,17 +209,18 @@ function CoursesAvailable() {
             })}
         </motion.div>
       ) : isMediumScreen ? (
-        <motion.div 
-        variants={gridContainerVariants}
-        initial="hidden"
-        animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4">
+        <motion.div
+          variants={gridContainerVariants}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 mx-auto pb-4"
+        >
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
             .map((course, index: number) => {
               return (
                 <motion.div
-                variants={gridSquareVariants}
+                  variants={gridSquareVariants}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
@@ -254,35 +259,36 @@ function CoursesAvailable() {
             })}
         </motion.div>
       ) : (
-        <motion.div 
-        variants={gridContainerVariants} 
-          initial= "hidden"
+        <motion.div
+          variants={gridContainerVariants}
+          initial="hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 lg:gap-4 mx-auto pb-4 cursor-pointer">
+          className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 w-[95%] md:gap-4 lg:gap-4 mx-auto pb-4 cursor-pointer"
+        >
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
               return (
                 <motion.div
-                variants={gridSquareVariants
-                }
-                whileHover={{ 
-                  scale: 0.9,
-                }}
-                whileTap={{ scale: 0.9 }}
-                transition={{
-                  bounceDamping: 10,
-                  bounceStiffness: 600,
-                }}
+                  variants={gridSquareVariants}
+                  whileHover={{
+                    scale: 0.9,
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{
+                    bounceDamping: 10,
+                    bounceStiffness: 600,
+                  }}
                   key={index}
                   className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
                 >
                   {/* Image of the course */}
                   <motion.div
-                  initial={{ opacity: 0, y: -100 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, ease:"easeOut", delay: 0.2}}
-                   className="w-full p-2 h-full">
+                    initial={{ opacity: 0, y: -100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                    className="w-full p-2 h-full"
+                  >
                     <img
                       src={
                         `http://ezra-seminary.mybese.tech/images/` +
@@ -295,9 +301,11 @@ function CoursesAvailable() {
 
                   {/* Title, Description and button */}
                   <motion.div
-                  initial={{ opacity: 0, y: 100 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, ease:"easeOut", delay: 0.4}} className=" w-[95%] md:w-[90%] mx-auto h-full">
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+                    className=" w-[95%] md:w-[90%] mx-auto h-full"
+                  >
                     <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
                       {course.title}
                     </h2>
@@ -305,21 +313,20 @@ function CoursesAvailable() {
                     <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
                       {course.description}
                     </p>
-                    <Link
-                      to={`/courses/get/` + course._id}
-                      className=""
-                    >
-                      <motion.button 
-                      whileHover={{ 
-                        scale: 1.1,
-                        backgroundColor:  "#C77C12",
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      transition={{
-                        bounceDamping: 10,
-                        bounceStiffness: 600,
-                      }}
-                      className="bg-accent-6 mt-2 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs1 " type="button">
+                    <Link to={`/courses/get/` + course._id} className="">
+                      <motion.button
+                        whileHover={{
+                          scale: 1.1,
+                          backgroundColor: "#C77C12",
+                        }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{
+                          bounceDamping: 10,
+                          bounceStiffness: 600,
+                        }}
+                        className="bg-accent-6 mt-2 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs1 "
+                        type="button"
+                      >
                         ኮርሱን ክፈት
                       </motion.button>
                     </Link>

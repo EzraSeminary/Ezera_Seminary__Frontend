@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
-import { FaRegUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import { UserCircle, XCircle, List } from "@phosphor-icons/react";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { Button } from "./ui/button";
 import bgImage from "../assets/header-img.webp";
@@ -11,13 +11,18 @@ import { RootState } from "@/redux/store";
 const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
-  {/* State to control account modal  */ }
+  {
+    /* State to control account modal  */
+  }
   const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
-  {/* State to control mobile menu bar  */ }
+  {
+    /* State to control mobile menu bar  */
+  }
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
-
-  {/* State and Effect to control header by listening the scroll */ }
+  {
+    /* State and Effect to control header by listening the scroll */
+  }
   const [show, handleShow] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -26,30 +31,36 @@ const Header: React.FC = () => {
       } else handleShow(false);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-
-
-  {/* Function to open the account modal */ }
+  {
+    /* Function to open the account modal */
+  }
   const handleAccountClick = () => {
     setShowAccountModal((prev) => !prev);
   };
 
-  {/* Function to open the mobile menu */ }
+  {
+    /* Function to open the mobile menu */
+  }
   const handleMenuClick = () => {
     setShowMenu((prev) => !prev);
   };
 
-  {/* Function to close the mobile menu */ }
+  {
+    /* Function to close the mobile menu */
+  }
   const closeMenu = () => {
     setShowMenu(false);
   };
 
-  {/* Ref to listen the curser and close the account modal */ }
+  {
+    /* Ref to listen the curser and close the account modal */
+  }
   const ref = useRef<HTMLLIElement>(null);
   useOnClickOutside(ref, showAccountModal, () => setShowAccountModal(false));
 
@@ -76,39 +87,46 @@ const Header: React.FC = () => {
             {/* Navigation and Logo */}
             <div className="absolute top-[30%]  w-full md:top-[24%] ">
               <div className="  flex justify-between items-center  w-[90%] md:w-[95%] lg:w-[85%] mx-auto ">
-
                 <div className=" z-30 h-full flex justify-center items-center gap-1 cursor-pointer ">
                   <div className="rounded-md bg-secondary-6 ">
-                  <img src="src/assets/ezra-logo.svg" className="w-6 h-5  md:h-6 lg:h-7 xl:h-9 z-30 object-contain  p-1" alt="" />
+                    <img
+                      src="src/assets/ezra-logo.svg"
+                      className="w-6 h-5  md:h-6 lg:h-7 xl:h-9 z-30 object-contain  p-1"
+                      alt=""
+                    />
                   </div>
                   <NavLink to="/" onClick={closeMenu}>
-                  <h3 className="text-secondary-6 font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl">
-                    <strong>Ezra</strong> Seminary
-                  </h3>
+                    <h3 className="text-secondary-6 font-nokia-bold text-xs md:text-sm lg:text-lg xl:text-2xl">
+                      <strong>Ezra</strong> Seminary
+                    </h3>
                   </NavLink>
                 </div>
                 {/* MenuBar */}
-                <div className="md:hidden  flex">
+                <div className="md:hidden flex">
                   <button
                     onClick={handleMenuClick}
                     className=" focus:outline-none "
                   >
                     {showMenu ? (
-                      <FaTimes
+                      <XCircle
                         size={20}
                         className="z-20 fixed top-[1.2rem] left-[90%] block text-primary-1"
                       />
                     ) : (
-                      <FaBars size={20} className="text-secondary-6 fixed top-[1.2rem] left-[90%] block" />
+                      <List
+                        size={20}
+                        className="text-secondary-6 fixed top-[1.2rem] left-[90%] block"
+                      />
                     )}
                   </button>
                 </div>
                 {/* Navigation */}
                 <ul
-                  className={`${showMenu
-                    ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                    : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
-                    }`}
+                  className={`${
+                    showMenu
+                      ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
+                      : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
+                  }`}
                 >
                   <li className="  hover:text-accent-6">
                     <NavLink to="/" onClick={closeMenu}>
@@ -146,7 +164,7 @@ const Header: React.FC = () => {
                         className="flex items-center space-x-2 bg-accent-6 rounded-full py-1 px-2 lg:px-3 xl:px-4 xl:py-2 hover:bg-accent-7 cursor-pointer"
                         onClick={handleAccountClick}
                       >
-                        <FaRegUserCircle className="text-primary-1" />
+                        <UserCircle size={24} className="text-primary-1" />
                         <div className="text-xs  xl:text-lg font-medium text-primary-1">
                           {user.firstName}
                         </div>
@@ -180,7 +198,12 @@ const Header: React.FC = () => {
                       </li>
                       <li className="hover:text-gray-400 text-base ">
                         <NavLink to="/signup">
-                          <Button size="round" className=" bg-accent-6 rounded-full px-3 py-1 text-xs xl:px-5 xl:py-7  xl:text-lg  hover:bg-accent-7 cursor-pointer transition-all">Create Account</Button>
+                          <Button
+                            size="round"
+                            className=" bg-accent-6 rounded-full px-3 py-1 text-xs xl:px-5 xl:py-7  xl:text-lg  hover:bg-accent-7 cursor-pointer transition-all"
+                          >
+                            Create Account
+                          </Button>
                         </NavLink>
                       </li>
                     </>
@@ -189,8 +212,7 @@ const Header: React.FC = () => {
               </div>
             </div>
           </div>
-        )
-        }
+        )}
       </div>
       {/* Header when the scroll is below 20  */}
       <div className="relative z-30 py-2">
@@ -198,37 +220,45 @@ const Header: React.FC = () => {
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[95%] lg:w-[85%] mx-auto">
             {/* Logo */}
             <div className="flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-              <img src="src/assets/ezra-logo.svg" className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7 xl:w-12 xl:h-9" alt="" />
+              <img
+                src="src/assets/ezra-logo.svg"
+                className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7 xl:w-12 xl:h-9"
+                alt=""
+              />
               <NavLink to="/" onClick={closeMenu}>
                 <h3 className="text-xs md:text-sm lg:text-lg xl:text-2xl">
-                  <strong >Ezra</strong> Seminary
+                  <strong>Ezra</strong> Seminary
                 </h3>
               </NavLink>
             </div>
             {/* Navigation and Logo */}
             <nav>
               {/* MenuBar */}
-              <div className="md:hidden  flex">
+              <div className="md:hidden flex">
                 <button
                   onClick={handleMenuClick}
                   className="text-white focus:outline-none "
                 >
                   {showMenu ? (
-                    <FaTimes
+                    <XCircle
                       size={20}
                       className="z-20 fixed top-[2.2rem] left-[90%]"
                     />
                   ) : (
-                    <FaBars size={20} className=" z-20 top-[2.7rem] left-[90%] block" />
+                    <List
+                      size={20}
+                      className=" z-20 top-[2.7rem] left-[90%] block"
+                    />
                   )}
                 </button>
               </div>
               {/* Navigation */}
               <ul
-                className={`${showMenu
-                  ? "flex flex-col justify-center items-end text-xl font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                  : "hidden font-Lato-Regular  cursor-pointer  md:flex md:items-center md:justify-end md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  "
-                  }`}
+                className={`${
+                  showMenu
+                    ? "flex flex-col justify-center items-end text-xl font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
+                    : "hidden font-Lato-Regular  cursor-pointer  md:flex md:items-center md:justify-end md:text-xs gap-[0.4rem] lg:space-x-2 xl:text-lg xl:space-x-2  "
+                }`}
               >
                 <li className="hover:text-accent-6">
                   <NavLink to="/" onClick={closeMenu}>
@@ -266,7 +296,7 @@ const Header: React.FC = () => {
                       className="flex items-center space-x-2 bg-accent-6 rounded-full px-2 py-1 text-xs1  hover:bg-accent-7 cursor-pointer"
                       onClick={handleAccountClick}
                     >
-                      <FaRegUserCircle />
+                      <UserCircle size={25} />
                       <div className="text-xs  xl:text-lg font-medium text-white">
                         {user.firstName}
                       </div>
@@ -300,7 +330,12 @@ const Header: React.FC = () => {
                     </li>
                     <li className="hover:text-gray-400 text-base ">
                       <NavLink to="/signup">
-                        <Button size="round" className=" bg-accent-6 rounded-full px-3 py-1 text-xs xl:px-5 xl:py-7  xl:text-lg  hover:bg-accent-7 cursor-pointer transition-all">Create Account</Button>
+                        <Button
+                          size="round"
+                          className=" bg-accent-6 rounded-full px-3 py-1 text-xs xl:px-5 xl:py-7  xl:text-lg  hover:bg-accent-7 cursor-pointer transition-all"
+                        >
+                          Create Account
+                        </Button>
                       </NavLink>
                     </li>
                   </>

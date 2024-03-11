@@ -1,4 +1,4 @@
-import { FaTrash } from "react-icons/fa";
+import { Trash } from "@phosphor-icons/react";
 import { useEffect, ChangeEvent, FC, Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -15,7 +15,11 @@ interface AddParagraphProps {
   setLocalParagraphs: Dispatch<SetStateAction<string[]>>;
 }
 
-const AddParagraph: FC<AddParagraphProps> = ({ paragraphs, localParagraphs, setLocalParagraphs }) => {
+const AddParagraph: FC<AddParagraphProps> = ({
+  paragraphs,
+  localParagraphs,
+  setLocalParagraphs,
+}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +34,10 @@ const AddParagraph: FC<AddParagraphProps> = ({ paragraphs, localParagraphs, setL
     });
   }, [localParagraphs, dispatch]);
 
-  const handleParaChange = (event: ChangeEvent<HTMLTextAreaElement>, index: number) => {
+  const handleParaChange = (
+    event: ChangeEvent<HTMLTextAreaElement>,
+    index: number
+  ) => {
     const newParagraphs = [...localParagraphs];
     newParagraphs[index] = event.target.value;
     setLocalParagraphs(newParagraphs);
@@ -70,7 +77,8 @@ const AddParagraph: FC<AddParagraphProps> = ({ paragraphs, localParagraphs, setL
                 value={para}
                 onChange={(e) => handleParaChange(e, paragraphIndex)}
               />
-              <FaTrash
+              <Trash
+                size={25}
                 onClick={() => deletePara(paragraphIndex)}
                 className=" text-gray-700 text-xl cursor-pointer self-center"
               />

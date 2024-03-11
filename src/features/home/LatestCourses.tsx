@@ -1,6 +1,6 @@
 import { useGetCoursesQuery } from "../../services/api";
 import { Link } from "react-router-dom";
-import {motion } from "framer-motion";
+import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const gridContainerVariants = {
@@ -17,7 +17,6 @@ const gridSquareVariants = {
   hidden: { opacity: 0 },
   show: { opacity: 1 },
 };
-
 
 {
   /*typeScript*/
@@ -67,25 +66,24 @@ const LatestCourses = () => {
 
       {/* Latest Courses */}
 
-      <motion.div 
-        variants={gridContainerVariants} 
-        initial= "hidden"
+      <motion.div
+        variants={gridContainerVariants}
+        initial="hidden"
         animate="show"
-         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]">
-        {courses?.slice(0, 4).map((course: LatestCourse, index: number) => {
-
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]"
+      >
+        {courses?.slice(0, 4).map((course, index: number) => {
           return (
             <motion.div
-            variants={gridSquareVariants
-            }
-            whileHover={{ 
-              scale: 0.9,
-            }}
-            whileTap={{ scale: 0.9 }}
-            transition={{
-              bounceDamping: 10,
-              bounceStiffness: 600,
-            }}
+              variants={gridSquareVariants}
+              whileHover={{
+                scale: 0.9,
+              }}
+              whileTap={{ scale: 0.9 }}
+              transition={{
+                bounceDamping: 10,
+                bounceStiffness: 600,
+              }}
               key={index}
               className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold"
             >

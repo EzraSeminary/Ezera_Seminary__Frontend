@@ -24,10 +24,11 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
+      dispatch(setImage(file)); // Dispatch the File object to the store
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
         const imageString = fileReader.result as string;
-        dispatch(setImage(imageString)); // Dispatch the string representation of the File object to the store
+        // dispatch(setImage(imageString)); // Dispatch the string representation of the File object to the store
         setImagePreviewUrl(imageString);
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
