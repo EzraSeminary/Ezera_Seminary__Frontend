@@ -1,4 +1,6 @@
-function ErrorPage({ error, resetErrorBoundary }) {
+import { FallbackProps } from "react-error-boundary";
+
+function ErrorPage({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div>
       <p>An error occurred:</p>
