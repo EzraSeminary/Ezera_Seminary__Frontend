@@ -9,6 +9,7 @@ import Home from "@/pages/user/Home";
 import Footer from "./components/Footer";
 import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
+import LoadingPage from "./pages/user/LoadingPage";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -95,7 +96,7 @@ function App() {
     <BrowserRouter>
       {!isAdmin && <Header />}
       {/* Wrap Routes in Suspense for React lazy loading */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingPage />}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
