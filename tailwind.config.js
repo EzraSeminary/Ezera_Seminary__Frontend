@@ -56,6 +56,21 @@ export default {
           3: "3",
         },
       },
+      xl: {
+        fontSize: {
+          xs1: ["12px", { lineHeight: "18px", letterSpacing: "0" }],
+          xs: ["14px", { lineHeight: "20px", letterSpacing: "0" }],
+          sm: ["16px", { lineHeight: "22px", letterSpacing: "0" }],
+          lg: ["28px", { lineHeight: "26px", letterSpacing: "0" }],
+          xl: ["28px", { lineHeight: "28px", letterSpacing: "0" }],
+          "2xl": ["34px", { lineHeight: "32px", letterSpacing: "0" }],
+          "3xl": ["32px", { lineHeight: "44px", letterSpacing: "0" }],
+          "4xl": ["44px", { lineHeight: "56px", letterSpacing: "0" }],
+          "5xl": ["62px", { lineHeight: "72px", letterSpacing: "0" }],
+          "6xl": ["78px", { lineHeight: "84px", letterSpacing: "0" }],
+          "7xl": ["92px", { lineHeight: "100px", letterSpacing: "-0.02em" }],
+        },
+      },
       fontFamily: {
         "nokia-bold": ["Nokia Pure Headline Bold", "Inter", "sans-serif"],
         "nokia-light": ["Nokia Pure Headline Light", "Inter", "sans-serif"],

@@ -12,7 +12,7 @@ const gridContainerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.2,
     },
   },
 };
@@ -272,9 +272,8 @@ function CoursesAvailable() {
                 <motion.div
                   variants={gridSquareVariants}
                   whileHover={{
-                    scale: 0.95,
+                    scale: 1.03,
                   }}
-                  whileTap={{ scale: 0.9 }}
                   transition={{
                     bounceDamping: 10,
                     bounceStiffness: 600,
