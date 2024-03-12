@@ -94,7 +94,7 @@ function App() {
   return (
     <BrowserRouter>
       {!isAdmin && <Header />}
-      {/* Wrap Routes in Suspense */}
+      {/* Wrap Routes in Suspense for React lazy loading */}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {/* Public Routes */}
