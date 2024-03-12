@@ -1,29 +1,38 @@
 // App.jsx
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, setAuthReady } from "./redux/authSlice";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/user/Home";
-import SabbathSchool from "@/pages/user/SabbathSchool";
-import UserProfile from "@/pages/user/UserProfile";
-import ProfileSettings from "@/pages/user/ProfileSettings";
-import Devotion from "@/pages/user/Devotion";
-import AboutUs from "@/pages/user/AboutUs";
-import ContactUs from "@/pages/user/ContactUs";
-import NotMatch from "@/pages/user/NotMatch";
-import Login from "@/pages/user/Login";
-import Signup from "@/pages/user/Signup";
 import Footer from "./components/Footer";
-import AdminDashboard from "@/pages/admin/AdminDashboard";
-import ChaptersDisplay from "@/features/courses/user/ChaptersDisplay";
-import SlidesDisplay from "@/features/courses/user/SlidesDisplay";
-import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
-import SSLDay from "@/features/sabbathSchool/SSLDay";
-import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
+import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
-import Courses from "./pages/user/Courses";
+
+// React.lazy for dynamic imports
+const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
+const UserProfile = lazy(() => import("@/pages/user/UserProfile"));
+const ProfileSettings = lazy(() => import("@/pages/user/ProfileSettings"));
+const Devotion = lazy(() => import("@/pages/user/Devotion"));
+const AboutUs = lazy(() => import("@/pages/user/AboutUs"));
+const ContactUs = lazy(() => import("@/pages/user/ContactUs"));
+const NotMatch = lazy(() => import("@/pages/user/NotMatch"));
+const Login = lazy(() => import("@/pages/user/Login"));
+const Signup = lazy(() => import("@/pages/user/Signup"));
+const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+const ChaptersDisplay = lazy(
+  () => import("@/features/courses/user/ChaptersDisplay")
+);
+const SlidesDisplay = lazy(
+  () => import("@/features/courses/user/SlidesDisplay")
+);
+const SSLQuarter = lazy(() => import("@/features/sabbathSchool/SSLQuarter"));
+const SSLDay = lazy(() => import("@/features/sabbathSchool/SSLDay"));
+const DisplaySSLLesson = lazy(
+  () => import("@/features/sabbathSchool/DisplaySSLLesson")
+);
+const Courses = lazy(() => import("./pages/user/Courses"));
 
 function App() {
   const dispatch = useDispatch();
