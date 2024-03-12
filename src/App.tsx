@@ -10,14 +10,13 @@ import Footer from "./components/Footer";
 import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
 
-// React.lazy for dynamic imports
+// using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
 const UserProfile = lazy(() => import("@/pages/user/UserProfile"));
 const ProfileSettings = lazy(() => import("@/pages/user/ProfileSettings"));
 const Devotion = lazy(() => import("@/pages/user/Devotion"));
 const AboutUs = lazy(() => import("@/pages/user/AboutUs"));
 const ContactUs = lazy(() => import("@/pages/user/ContactUs"));
-const NotMatch = lazy(() => import("@/pages/user/NotMatch"));
 const Login = lazy(() => import("@/pages/user/Login"));
 const Signup = lazy(() => import("@/pages/user/Signup"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
@@ -95,71 +94,77 @@ function App() {
   return (
     <BrowserRouter>
       {!isAdmin && <Header />}
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
-        <Route
-          path="/courses/get/:courseId/chapter/:chapterId"
-          element={<SlidesDisplay />}
-        />
-        <Route path="/sabbathSchool" element={<SabbathSchool />} />
-        <Route path="/sabbathSchool/:quarter" element={<SSLQuarter />} />
-        <Route path="/sabbathSchool/:quarter/lessons/:id" element={<SSLDay />}>
-          <Route path="days/:day/read" element={<DisplaySSLLesson />} />
-        </Route>
-        <Route path="/devotion" element={<Devotion />} />
-        <Route path="/aboutUs" element={<AboutUs />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route
-          path="/profile"
-          element={
-            <PrivateUserRoute>
-              <UserProfile />
-            </PrivateUserRoute>
-          }
-        />
-        <Route
-          path="/profile/settings"
-          element={
-            <PrivateUserRoute>
-              <ProfileSettings />
-            </PrivateUserRoute>
-          }
-        />
+      {/* Wrap Routes in Suspense */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
+          <Route
+            path="/courses/get/:courseId/chapter/:chapterId"
+            element={<SlidesDisplay />}
+          />
+          <Route path="/sabbathSchool" element={<SabbathSchool />} />
+          <Route path="/sabbathSchool/:quarter" element={<SSLQuarter />} />
+          <Route
+            path="/sabbathSchool/:quarter/lessons/:id"
+            element={<SSLDay />}
+          >
+            <Route path="days/:day/read" element={<DisplaySSLLesson />} />
+          </Route>
+          <Route path="/devotion" element={<Devotion />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
+          <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateUserRoute>
+                <UserProfile />
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/profile/settings"
+            element={
+              <PrivateUserRoute>
+                <ProfileSettings />
+              </PrivateUserRoute>
+            }
+          />
 
-        {/* Protected Routes */}
-        <Route
-          path="/admin/*"
-          element={
-            <PrivateAdminRoute>
-              <AdminDashboard />
-            </PrivateAdminRoute>
-          }
-        />
+          {/* Protected Routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateAdminRoute>
+                <AdminDashboard />
+              </PrivateAdminRoute>
+            }
+          />
 
-        {/* Public Routes (Redirect if logged in) */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          }
-        />
+          {/* Public Routes (Redirect if logged in) */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
 
-        {/* Not Found Route */}
-        <Route path="*" element={<NotMatch />} />
-      </Routes>
+          {/* Not Found Route */}
+          <Route path="*" element={<NotMatch />} />
+        </Routes>
+      </Suspense>
       {!isAdmin && <Footer />}
     </BrowserRouter>
   );
