@@ -1,29 +1,38 @@
 // App.jsx
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, setAuthReady } from "./redux/authSlice";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/user/Home";
-import SabbathSchool from "@/pages/user/SabbathSchool";
-import UserProfile from "@/pages/user/UserProfile";
-import ProfileSettings from "@/pages/user/ProfileSettings";
-import Devotion from "@/pages/user/Devotion";
-import AboutUs from "@/pages/user/AboutUs";
-import ContactUs from "@/pages/user/ContactUs";
-import NotMatch from "@/pages/user/NotMatch";
-import Login from "@/pages/user/Login";
-import Signup from "@/pages/user/Signup";
 import Footer from "./components/Footer";
-import AdminDashboard from "@/pages/admin/AdminDashboard";
-import ChaptersDisplay from "@/features/courses/user/ChaptersDisplay";
-import SlidesDisplay from "@/features/courses/user/SlidesDisplay";
-import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
-import SSLDay from "@/features/sabbathSchool/SSLDay";
-import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
+import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
-import Courses from "./pages/user/Courses";
+import LoadingPage from "./pages/user/LoadingPage";
+
+// using React.lazy for dynamic imports
+const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
+const UserProfile = lazy(() => import("@/pages/user/UserProfile"));
+const ProfileSettings = lazy(() => import("@/pages/user/ProfileSettings"));
+const Devotion = lazy(() => import("@/pages/user/Devotion"));
+const AboutUs = lazy(() => import("@/pages/user/AboutUs"));
+const ContactUs = lazy(() => import("@/pages/user/ContactUs"));
+const Login = lazy(() => import("@/pages/user/Login"));
+const Signup = lazy(() => import("@/pages/user/Signup"));
+const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+const ChaptersDisplay = lazy(
+  () => import("@/features/courses/user/ChaptersDisplay")
+);
+const SlidesDisplay = lazy(
+  () => import("@/features/courses/user/SlidesDisplay")
+);
+const SSLQuarter = lazy(() => import("@/features/sabbathSchool/SSLQuarter"));
+const SSLDay = lazy(() => import("@/features/sabbathSchool/SSLDay"));
+const DisplaySSLLesson = lazy(
+  () => import("@/features/sabbathSchool/DisplaySSLLesson")
+);
+const Courses = lazy(() => import("./pages/user/Courses"));
 
 function App() {
   const dispatch = useDispatch();
@@ -86,71 +95,77 @@ function App() {
   return (
     <BrowserRouter>
       {!isAdmin && <Header />}
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
-        <Route
-          path="/courses/get/:courseId/chapter/:chapterId"
-          element={<SlidesDisplay />}
-        />
-        <Route path="/sabbathSchool" element={<SabbathSchool />} />
-        <Route path="/sabbathSchool/:quarter" element={<SSLQuarter />} />
-        <Route path="/sabbathSchool/:quarter/lessons/:id" element={<SSLDay />}>
-          <Route path="days/:day/read" element={<DisplaySSLLesson />} />
-        </Route>
-        <Route path="/devotion" element={<Devotion />} />
-        <Route path="/aboutUs" element={<AboutUs />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route
-          path="/profile"
-          element={
-            <PrivateUserRoute>
-              <UserProfile />
-            </PrivateUserRoute>
-          }
-        />
-        <Route
-          path="/profile/settings"
-          element={
-            <PrivateUserRoute>
-              <ProfileSettings />
-            </PrivateUserRoute>
-          }
-        />
+      {/* Wrap Routes in Suspense for React lazy loading */}
+      <Suspense fallback={<LoadingPage />}>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
+          <Route
+            path="/courses/get/:courseId/chapter/:chapterId"
+            element={<SlidesDisplay />}
+          />
+          <Route path="/sabbathSchool" element={<SabbathSchool />} />
+          <Route path="/sabbathSchool/:quarter" element={<SSLQuarter />} />
+          <Route
+            path="/sabbathSchool/:quarter/lessons/:id"
+            element={<SSLDay />}
+          >
+            <Route path="days/:day/read" element={<DisplaySSLLesson />} />
+          </Route>
+          <Route path="/devotion" element={<Devotion />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
+          <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateUserRoute>
+                <UserProfile />
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/profile/settings"
+            element={
+              <PrivateUserRoute>
+                <ProfileSettings />
+              </PrivateUserRoute>
+            }
+          />
 
-        {/* Protected Routes */}
-        <Route
-          path="/admin/*"
-          element={
-            <PrivateAdminRoute>
-              <AdminDashboard />
-            </PrivateAdminRoute>
-          }
-        />
+          {/* Protected Routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateAdminRoute>
+                <AdminDashboard />
+              </PrivateAdminRoute>
+            }
+          />
 
-        {/* Public Routes (Redirect if logged in) */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          }
-        />
+          {/* Public Routes (Redirect if logged in) */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
 
-        {/* Not Found Route */}
-        <Route path="*" element={<NotMatch />} />
-      </Routes>
+          {/* Not Found Route */}
+          <Route path="*" element={<NotMatch />} />
+        </Routes>
+      </Suspense>
       {!isAdmin && <Footer />}
     </BrowserRouter>
   );
