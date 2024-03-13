@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // must use eye slash icon here
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "@/redux/store";
 import mehari from "@/assets/mehari.jpg";
 
@@ -183,13 +181,14 @@ const ProfileSettings = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-secondary-10 leading-tight focus:outline-none focus:shadow-outline pr-10"
               />
               <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                className="absolute inset-y-0 right-0 pt-8 pr-3 flex items-center cursor-pointer text-accent-8"
                 onClick={toggleShowPassword}
               >
-                <FontAwesomeIcon
-                  icon={showPassword ? EyeSlash : Eye}
-                  className="text-secondary-10 mt-8"
-                />
+                {showPassword ? (
+                  <EyeSlash size={18} weight="fill" />
+                ) : (
+                  <Eye size={18} weight="fill" />
+                )}
               </div>
             </div>
             <div className="flex items-center justify-between">
