@@ -1,13 +1,16 @@
 import { useState, useEffect, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // must use eye slash icon here
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "@/redux/store";
 import mehari from "@/assets/mehari.jpg";
 
 const ProfileSettings = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   // Fetch the current user details (assuming the useGetUserQuery hook is available)
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -96,8 +99,19 @@ const ProfileSettings = () => {
     }
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="container mx-10 my-20 p-20 bg-accent-1 rounded-lg shadow-lg">
+    <div className="container mx-8 my-20 p-10 bg-accent-1 rounded-lg shadow-lg">
+      <button
+        onClick={goBack}
+        className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+      >
+        <ArrowLeft size={25} />
+        Back
+      </button>
       <div className="md:flex md:items-start md:space-x-10">
         <div className="md:w-1/3 text-center mb-6 md:mb-0">
           <img
@@ -173,7 +187,7 @@ const ProfileSettings = () => {
                 onClick={toggleShowPassword}
               >
                 <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
+                  icon={showPassword ? EyeSlash : Eye}
                   className="text-secondary-10 mt-8"
                 />
               </div>
