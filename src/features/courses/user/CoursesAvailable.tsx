@@ -12,7 +12,7 @@ const gridContainerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.2,
     },
   },
 };
@@ -95,7 +95,19 @@ function CoursesAvailable() {
       // Error is a `SerializedError`
       errorMessage = `Error: ${error.error}`;
     }
-    return <div>{errorMessage}</div>;
+    return (
+      <div className="h-screen flex flex-col justify-center items-center">
+        <h1 className="text-3xl font-nokia-bold text-secondary-10 pb-3">
+          {errorMessage}
+        </h1>
+        <Link
+          to="/"
+          className="text-white text-xl font-nokia-bold bg-black hover:bg-gray-900 px-3 py-1 rounded-3xl transition-all"
+        >
+          back to home
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -272,9 +284,8 @@ function CoursesAvailable() {
                 <motion.div
                   variants={gridSquareVariants}
                   whileHover={{
-                    scale: 0.9,
+                    scale: 1.03,
                   }}
-                  whileTap={{ scale: 0.9 }}
                   transition={{
                     bounceDamping: 10,
                     bounceStiffness: 600,

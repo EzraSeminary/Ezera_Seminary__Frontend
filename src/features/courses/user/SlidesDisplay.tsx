@@ -1,11 +1,8 @@
 import { useState, useRef } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { CaretCircleLeft } from "@phosphor-icons/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-// import "@splidejs/react-splide/css/sea-green";
-// import "@splidejs/react-splide/css/core";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import BeatLoader from "react-spinners/BeatLoader";
 import {
@@ -14,10 +11,10 @@ import {
   Circle,
   XCircle,
   ArrowRight,
+  CaretCircleLeft,
+  CheckFat,
 } from "@phosphor-icons/react";
-// import {  } from "phosphor-react";
 import logo from "../../../assets/ezra-logo.svg";
-import bibleImage from "../../../assets/bible2.jpeg";
 
 function SlidesDisplay() {
   const [open, setOpen] = useState<boolean>(true);
@@ -26,6 +23,9 @@ function SlidesDisplay() {
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+
+  //show quiz result
+  const [showQuizResult, setShowQuizResult] = useState(false);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -66,6 +66,7 @@ function SlidesDisplay() {
   const data = chapter.slides;
   // console.log(data);
 
+  //Slide changing functionality
   const updateIndex = (newIndex: number) => {
     if (newIndex < 0) {
       newIndex = 0;
@@ -78,6 +79,7 @@ function SlidesDisplay() {
     }
 
     setActiveIndex(newIndex);
+    setShowQuizResult(false); // Reset the showQuizResult state
   };
 
   // slide number
@@ -99,16 +101,19 @@ function SlidesDisplay() {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     setIsAnswerCorrect(choiceValue === elementCorrectAnswer);
+    setShowQuizResult(false); // Reset showResult when a new answer is selected
   };
 
   //isCorrect switch
   const renderQuizResult = () => {
-    if (isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
+    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
     if (isAnswerCorrect) {
-      return <p className="text-green-800 font-bold text-xl">Correct!</p>;
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
     } else {
-      return <p className="text-red-700 font-bold text-xl">Wrong!</p>;
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
   };
 
@@ -169,8 +174,10 @@ function SlidesDisplay() {
         {/* Bible image container*/}
         <div className="w-[100%] ">
           <img
-            src={bibleImage}
-            alt="Bible image"
+            src={
+              `https://ezra-seminary.mybese.tech/images/` + courseData?.image
+            }
+            alt=""
             className="w-full rounded-t-lg"
           />
         </div>
@@ -229,7 +236,7 @@ function SlidesDisplay() {
                       {slides.slide}
                     </h2>
                     <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
-                      15/15 Slides
+                      {index + 1}/{totalDataNumber} Slides
                     </p>
                   </div>
                   {unlocked ? (
@@ -290,7 +297,7 @@ function SlidesDisplay() {
                   <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                     {slides.slide}
                   </h1>
-                  <div className="flex flex-col justify-center items-center h-auto overflow-y-auto py-2">
+                  <div className="flex flex-col justify-center items-center h-auto overflow-y-auto scrollbar-thin py-2">
                     {slides.elements.map((element) => {
                       if (element.type === "title") {
                         return (
@@ -355,7 +362,7 @@ function SlidesDisplay() {
                           (listItem: string, index: number) => (
                             <SplideSlide
                               key={index}
-                              className="  flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide  text-xs1 md:text-xs "
+                              className="flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide text-xs1 md:text-xs "
                             >
                               {listItem}
                             </SplideSlide>
@@ -391,7 +398,7 @@ function SlidesDisplay() {
                             className="flex flex-col justify-center items-center mb-4"
                           >
                             {/* Questions */}
-                            <p className="text-white font-nokia-bold text-2xl">
+                            <p className="text-white font-nokia-bold text-sm lg:text-xl">
                               {element.value.question}
                             </p>
                             {/* Choices */}
@@ -421,7 +428,7 @@ function SlidesDisplay() {
                                             )
                                           }
                                         />
-                                        <span className="text-white font-nokia-bold text-lg ml-2">
+                                        <span className="text-white font-nokia-bold text-xs lg:text-lg ml-2">
                                           {choice.text}
                                         </span>
                                       </label>
@@ -431,7 +438,15 @@ function SlidesDisplay() {
                               </div>
                             )}
                             {/* Correct Answer */}
-                            {renderQuizResult()}
+                            <div className="flex mt-2">
+                              <button
+                                className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                onClick={() => setShowQuizResult(true)}
+                              >
+                                Check Answer
+                              </button>
+                              {renderQuizResult()}
+                            </div>
                           </div>
                         );
                       } else {
