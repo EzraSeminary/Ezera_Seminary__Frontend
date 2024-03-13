@@ -18,6 +18,7 @@ const ProfileSettings = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [updateUserMutation] = useUpdateUserMutation();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -82,8 +83,11 @@ const ProfileSettings = () => {
 
         // Set the success message
         setSuccessMessage("Profile updated successfully!");
+        setErrorMessage("");
       } catch (error) {
         // Handle the error, perhaps show a message to the user
+        setErrorMessage("Failed to update profile. Please try again.");
+        setSuccessMessage("");
       }
     }
   };
@@ -110,6 +114,7 @@ const ProfileSettings = () => {
             </label>
           </div>
           {successMessage && <div>{successMessage}</div>}
+          {errorMessage && <div className="error">{errorMessage}</div>}
         </div>
         <div className="md:w-2/3">
           <h2 className="text-2xl font-bold text-secondary-10 mb-6">
