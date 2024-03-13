@@ -17,6 +17,7 @@ const ProfileSettings = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [updateUserMutation] = useUpdateUserMutation();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -78,6 +79,9 @@ const ProfileSettings = () => {
 
         // Dispatch an action to update the user in the store
         dispatch(updateUser(updatedUser));
+
+        // Set the success message
+        setSuccessMessage("Profile updated successfully!");
       } catch (error) {
         // Handle the error, perhaps show a message to the user
       }
@@ -105,6 +109,7 @@ const ProfileSettings = () => {
               {/* Implement handleAvatarUpload */}
             </label>
           </div>
+          {successMessage && <div>{successMessage}</div>}
         </div>
         <div className="md:w-2/3">
           <h2 className="text-2xl font-bold text-secondary-10 mb-6">

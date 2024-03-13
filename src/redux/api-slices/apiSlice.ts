@@ -41,7 +41,7 @@ export const apiSlice = createApi({
       query: (userUpdateData) => {
         const formData = new FormData();
         Object.entries(userUpdateData).forEach(([key, value]) => {
-          formData.append(key, value);
+          formData.append(key, value); // ❗❗❗ i will use value as string later
         });
 
         return {
