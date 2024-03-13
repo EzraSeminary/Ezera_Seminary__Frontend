@@ -57,9 +57,8 @@ const ProfileSettings = () => {
   };
 
   return (
-    <>
-      <div className="container mx-auto my-10 p-6 bg-white rounded-lg shadow-md"></div>
-      <div className="md:flex md:items-start md:space-x-6">
+    <div className="container mx-10 my-20 p-20 bg-accent-1 rounded-lg shadow-lg">
+      <div className="md:flex md:items-start md:space-x-10">
         <div className="md:w-1/3 text-center mb-6 md:mb-0">
           <img
             // src={currentUser.avatar || "default-avatar.png"} // Replace with your default avatar image path
@@ -73,8 +72,8 @@ const ProfileSettings = () => {
               <input
                 type="file"
                 className="hidden"
-                // onChange={handleAvatarUpload}
-              />{" "}
+                onChange={handleAvatarUpload}
+              />
               {/* Implement handleAvatarUpload */}
             </label>
           </div>
@@ -148,7 +147,7 @@ const ProfileSettings = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
