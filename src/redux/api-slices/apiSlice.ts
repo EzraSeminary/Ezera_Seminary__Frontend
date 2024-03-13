@@ -37,21 +37,19 @@ export const apiSlice = createApi({
         body: JSON.stringify({ firstName, lastName, email, password }),
       }),
     }),
+    // apiSlice.ts
     updateUser: builder.mutation({
-      query: ({ firstName, lastName, email, password }) => ({
-        url: `/users/profile`,
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password,
-          avatar: "",
-        }),
-      }),
+      query: (userDetails) => {
+        const formData = new FormData();
+        Object.entries(userDetails).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        return {
+          url: `/users/profile`,
+          method: "PUT",
+          body: formData,
+        };
+      },
     }),
     getCourses: builder.query({
       query: () => "course/getall",

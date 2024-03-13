@@ -54,12 +54,11 @@ const ProfileSettings = () => {
     setShowPassword(!showPassword);
   };
 
+  // ProfileSettings
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // Add a type guard to ensure currentUser is not undefined
     if (currentUser) {
-      // Also check if a new avatar has been selected
       if (
         firstName !== currentUser.firstName ||
         lastName !== currentUser.lastName ||
@@ -68,28 +67,33 @@ const ProfileSettings = () => {
         selectedFile
       ) {
         try {
-          const payload = {
-            firstName,
-            lastName,
-            email,
-            ...(password && { password }),
-            avatar: selectedFile as unknown as string, // Type casting for avatar property
-          };
+          const formData = new FormData();
+          formData.append("firstName", firstName);
+          formData.append("lastName", lastName);
+          formData.append("email", email);
+          if (password) {
+            formData.append("password", password);
+          }
+          if (selectedFile) {
+            formData.append("avatar", selectedFile);
+          }
 
-          // if (selectedFile) {
-          //   payload.avatar = selectedFile;
-          // }
-          // Call the mutation and pass the JSON payload
-          const updatedUser = await updateUserMutation(payload).unwrap();
+          console.log(selectedFile);
+          console.log(formData.get("avatar"));
 
-          // Dispatch an action to update the user in the store
+          const updatedUser = await updateUserMutation(formData).unwrap();
+
+          // Update the avatar in the currentUser object
+          if (selectedFile) {
+            updatedUser.avatar = URL.createObjectURL(selectedFile);
+          }
+          console.log(updatedUser, formData);
           dispatch(updateUser(updatedUser));
+          // console.log(updatedUser, formData);
 
-          // Set the success message
           setSuccessMessage("Profile updated successfully!");
           setErrorMessage("");
         } catch (error) {
-          // Handle the error, perhaps show a message to the user
           setErrorMessage("Failed to update profile. Please try again.");
           setSuccessMessage("");
         }

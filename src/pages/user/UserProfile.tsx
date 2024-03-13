@@ -6,10 +6,6 @@ import { RootState } from "@/redux/store";
 import { ArrowLeft } from "@phosphor-icons/react";
 import mehari from "@/assets/mehari.jpg";
 
-// const goBack = () => {
-//   window.history.back();
-// };
-
 const UserProfile = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -46,7 +42,7 @@ const UserProfile = () => {
         {/* User Avatar and Email */}
         <div className="flex flex-col items-center mb-4">
           <img
-            src={avatarPreview}
+            src={avatarPreview || ""}
             alt="User Avatar"
             className="w-[25vmin] rounded-full mx-auto"
           />
