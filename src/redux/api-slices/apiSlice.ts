@@ -38,14 +38,18 @@ export const apiSlice = createApi({
       }),
     }),
     updateUser: builder.mutation({
-      query: ({ firstName, lastName, email, password }) => ({
-        url: `/users/profile`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ firstName, lastName, email, password }),
-      }),
+      query: (userUpdateData) => {
+        const formData = new FormData();
+        Object.entries(userUpdateData).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+
+        return {
+          url: `/users/profile`,
+          method: "POST",
+          body: formData, // use FormData instead of JSON
+        };
+      },
     }),
     getCourses: builder.query({
       query: () => "course/getall",
@@ -79,7 +83,8 @@ export const apiSlice = createApi({
     }),
     updateDevotion: builder.mutation<
       void,
-      { id: string; updatedDevotion: FormData }> ({
+      { id: string; updatedDevotion: FormData }
+    >({
       query: ({ id, updatedDevotion }) => {
         const formData = new FormData();
         Object.entries(updatedDevotion).forEach(([key, value]) => {
