@@ -5,9 +5,10 @@ interface User {
   role: string | null;
   firstName: string | null;
   lastName: string | null;
-  email: string | null; // Add this line
-  password: string | null; // Add this line
+  email: string | null;
+  password: string | null;
   token: string | null;
+  avatar: string | null; // Add this line
 }
 
 export interface AuthState {
