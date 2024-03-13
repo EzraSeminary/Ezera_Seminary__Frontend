@@ -24,9 +24,9 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Netlify
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        run: npm install netlify-cli -g && netlify deploy --prod --dir=dist
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
