@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTitle,
@@ -12,6 +12,7 @@ import { CourseState } from "../../redux/courseSlice";
 
 function CreateCourse() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { title, description } = useSelector(
     (state: { course: CourseState }) => state.course
   );
@@ -29,6 +30,16 @@ function CreateCourse() {
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
     }
+  };
+
+  const toNextPage = () => {
+    // Perform form validation
+    if (!title.trim() || !description.trim()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    //navigate to create chapters
+    navigate("/admin/courses/create/chapters");
   };
 
   console.log(course);
@@ -90,9 +101,7 @@ function CreateCourse() {
           />
         </div>
         <div className="col-span-12">
-          <Button>
-            <Link to="/admin/courses/create/chapters">Create</Link>
-          </Button>
+          <Button onClick={toNextPage}>Create</Button>
         </div>
       </form>
     </div>
