@@ -19,6 +19,7 @@ function CreateCourse() {
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [errors, setErrors] = useState({ title: false, description: false });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -34,12 +35,24 @@ function CreateCourse() {
 
   const toNextPage = () => {
     // Perform form validation
-    if (!title.trim() || !description.trim()) {
-      alert("Please fill in all required fields.");
-      return;
+    let hasErrors = false;
+    if (!title.trim()) {
+      // Set title error
+      setErrors((prevErrors) => ({ ...prevErrors, title: true }));
+      hasErrors = true;
     }
-    //navigate to create chapters
-    navigate("/admin/courses/create/chapters");
+
+    if (!description.trim()) {
+      // Set description error
+      setErrors((prevErrors) => ({ ...prevErrors, description: true }));
+      hasErrors = true;
+    }
+
+    // If there are no errors, then proceed with the submit logic (e.g., navigate or submit form)
+    if (!hasErrors) {
+      //navigate to create chapters
+      navigate("/admin/courses/create/chapters");
+    }
   };
 
   console.log(course);
@@ -78,14 +91,23 @@ function CreateCourse() {
           <label className="block text-accent-6">Course Title</label>
           <input
             type="text"
-            className="w-full px-3 py-2 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2"
+            className={`w-full px-3 py-2 text-accent-6 leading-tight border ${
+              errors.title ? "border-red-500" : "border-orange-300"
+            } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2`}
             name="title"
             placeholder="Untitled Course"
             autoComplete="off"
             value={title}
-            onChange={(e) => dispatch(setTitle(e.target.value))}
+            onChange={(e) => {
+              dispatch(setTitle(e.target.value));
+              setErrors((prevErrors) => ({ ...prevErrors, title: false }));
+            }}
             required
           />
+          {/* Conditionally render an error message */}
+          {errors.title && (
+            <p className="text-red-500 text-xs italic">Please enter a title.</p>
+          )}
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Description</label>
