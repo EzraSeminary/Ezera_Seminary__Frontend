@@ -77,7 +77,7 @@ const LatestCourses = () => {
             <motion.div
               variants={gridSquareVariants}
               whileHover={{
-                scale: 0.9,
+                scale: 1.06,
               }}
               whileTap={{ scale: 0.9 }}
               transition={{
@@ -85,7 +85,7 @@ const LatestCourses = () => {
                 bounceStiffness: 600,
               }}
               key={index}
-              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold"
+              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold cursor-pointer"
             >
               <img
                 src={`https://ezra-seminary.mybese.tech/images/${course.image}`}
