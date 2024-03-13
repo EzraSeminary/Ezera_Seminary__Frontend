@@ -1,9 +1,17 @@
 // Yet to be fixed ❗❗❗
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { logout } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
+import { ArrowLeft } from "@phosphor-icons/react";
+import mehari from "@/assets/mehari.jpg";
+
+// const goBack = () => {
+//   window.history.back();
+// };
 
 const UserProfile = () => {
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -17,17 +25,30 @@ const UserProfile = () => {
     return <p>Loading...</p>;
   }
 
+  const avatarPreview = mehari || user?.avatar;
+
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="bg-gray-100 container mx-auto p-4 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+        <button
+          onClick={goBack}
+          className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+        >
+          <ArrowLeft size={25} />
+          Back
+        </button>
         <h1 className="text-2xl font-bold text-center mb-4">My Profile</h1>
 
         {/* User Avatar and Email */}
         <div className="flex flex-col items-center mb-4">
           <img
-            src="@/assets/ezra-logo.svg" // Will be Replaced with the actual avatar URL from the backend later
+            src={avatarPreview}
             alt="User Avatar"
-            className="rounded-full w-24 h-24"
+            className="w-[25vmin] rounded-full mx-auto"
           />
           <span className="text-lg font-medium mt-2">{user?.email}</span>
         </div>
