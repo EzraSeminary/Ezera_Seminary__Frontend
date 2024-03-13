@@ -21,6 +21,10 @@ const ProfileSettings = () => {
   const [updateUserMutation] = useUpdateUserMutation();
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const avatarPreview = selectedFile
+    ? URL.createObjectURL(selectedFile)
+    : currentUser.avatar || "default-avatar.png";
+
   // Effect to set the form fields with current user details when they are available
   useEffect(() => {
     if (currentUser) {
@@ -31,7 +35,9 @@ const ProfileSettings = () => {
     }
   }, [currentUser]);
 
-  const handleAvatarUpload = (event: { target: { files: SetStateAction<null>[]; }; }) => {
+  const handleAvatarUpload = (event: {
+    target: { files: SetStateAction<null>[] };
+  }) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
     }
@@ -68,7 +74,7 @@ const ProfileSettings = () => {
       <div className="md:flex md:items-start md:space-x-10">
         <div className="md:w-1/3 text-center mb-6 md:mb-0">
           <img
-            // src={currentUser.avatar || "default-avatar.png"} // Replace with your default avatar image path
+            src={avatarPreview}
             alt="User Avatar"
             className="w-24 h-24 rounded-full mx-auto"
           />
