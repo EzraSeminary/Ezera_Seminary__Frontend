@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
@@ -19,6 +19,7 @@ const ProfileSettings = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [updateUserMutation] = useUpdateUserMutation();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   // Effect to set the form fields with current user details when they are available
   useEffect(() => {
@@ -29,6 +30,12 @@ const ProfileSettings = () => {
       setPassword(currentUser.password || "");
     }
   }, [currentUser]);
+
+  const handleAvatarUpload = (event: { target: { files: SetStateAction<null>[]; }; }) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
