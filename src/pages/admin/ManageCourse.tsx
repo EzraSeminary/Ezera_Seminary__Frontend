@@ -141,10 +141,7 @@ function ManageCourse() {
                 >
                   <div className="w-full p-2">
                     <img
-                      src={
-                        `https://ezra-seminary.mybese.tech/images/` +
-                        course.image
-                      }
+                      src={`http://localhost:5100/images/` + course.image}
                       // src={`http://localhost:5100/images/` + course.image}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"
                       alt=""

@@ -4,7 +4,7 @@ import { Devotion } from "@/redux/types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech",
+    baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -41,7 +41,7 @@ export const apiSlice = createApi({
       query: (userUpdateData) => {
         const formData = new FormData();
         Object.entries(userUpdateData).forEach(([key, value]) => {
-          formData.append(key, value); // ❗❗❗ i will use value as string later
+          formData.append(key, value as string); // Cast value to string
         });
 
         return {

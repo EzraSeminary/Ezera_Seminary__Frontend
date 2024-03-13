@@ -25,7 +25,7 @@ const ProfileSettings = () => {
 
   const avatarPreview = selectedFile
     ? URL.createObjectURL(selectedFile)
-    : currentUser.avatar || "default-avatar.png";
+    : currentUser?.avatar || "default-avatar.jpg";
 
   // Effect to set the form fields with current user details when they are available
   useEffect(() => {
@@ -43,6 +43,7 @@ const ProfileSettings = () => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
     }
+    console.log(selectedFile);
   };
 
   const toggleShowPassword = () => {
@@ -63,7 +64,7 @@ const ProfileSettings = () => {
       try {
         // Create a FormData instance
         const formData = new FormData();
-
+        console.log(currentUser.avatar);
         // Append the updated user information to the FormData instance
         formData.append("firstName", firstName);
         formData.append("lastName", lastName);
@@ -75,6 +76,13 @@ const ProfileSettings = () => {
           formData.append("avatar", selectedFile);
         }
 
+        for (const pair of formData.entries()) {
+          if (pair[0] === "avatar") {
+            console.log(pair[1]);
+          } else {
+            console.log(pair[0] + ", " + pair[1]);
+          }
+        }
         // Call the mutation and pass the FormData instance
         const updatedUser = await updateUserMutation(formData).unwrap();
 
