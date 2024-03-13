@@ -15,7 +15,7 @@ const Testimonials = () => {
         <hr className="border-accent-5 border-1 w-[90%] pb-3 mx-auto" />
 
         {/*Container for the Testimonials contents */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6 w-[90%] mx-auto">
 
           {/* Testimonial 1 */}
           <div className="flex flex-col w-full mt-3">
@@ -26,7 +26,7 @@ const Testimonials = () => {
               <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">
                 ፓ/ር መልዓክ አለማየሁ (ዶ/ር)
               </h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4">
+              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
               </p>
@@ -40,7 +40,7 @@ const Testimonials = () => {
             </div>
             <div className="text-center py-4 font-nokia-bold">
               <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ውብገነት ቦጋለ (ጃኔት)</h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4">
+              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
               </p>
@@ -54,7 +54,7 @@ const Testimonials = () => {
             </div>
             <div className="text-center py-4 font-nokia-bold">
               <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ዳዊት መሃሪ</h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4">
+              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
               </p>
