@@ -38,18 +38,20 @@ export const apiSlice = createApi({
       }),
     }),
     updateUser: builder.mutation({
-      query: (userUpdateData) => {
-        const formData = new FormData();
-        Object.entries(userUpdateData).forEach(([key, value]) => {
-          formData.append(key, value as string); // Cast value to string
-        });
-
-        return {
-          url: `/users/profile`,
-          method: "POST",
-          body: formData, // use FormData instead of JSON
-        };
-      },
+      query: ({ firstName, lastName, email, password }) => ({
+        url: `/users/profile`,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          password,
+          avatar: "",
+        }),
+      }),
     }),
     getCourses: builder.query({
       query: () => "course/getall",

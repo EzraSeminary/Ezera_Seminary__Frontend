@@ -5,6 +5,7 @@ import { updateUser } from "@/redux/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "@/redux/store";
+import mehari from "@/assets/mehari.jpg";
 
 const ProfileSettings = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,9 @@ const ProfileSettings = () => {
 
   const avatarPreview = selectedFile
     ? URL.createObjectURL(selectedFile)
-    : currentUser?.avatar || "default-avatar.jpg";
+    : currentUser?.avatar
+    ? currentUser?.avatar
+    : mehari;
 
   // Effect to set the form fields with current user details when they are available
   useEffect(() => {
@@ -42,8 +45,8 @@ const ProfileSettings = () => {
   }) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
+      console.log(event.target.files[0]); // log the file directly from the event
     }
-    console.log(selectedFile);
   };
 
   const toggleShowPassword = () => {
@@ -53,49 +56,42 @@ const ProfileSettings = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (
-      currentUser &&
-      (firstName !== currentUser.firstName ||
+    // Add a type guard to ensure currentUser is not undefined
+    if (currentUser) {
+      // Also check if a new avatar has been selected
+      if (
+        firstName !== currentUser.firstName ||
         lastName !== currentUser.lastName ||
         email !== currentUser.email ||
         password ||
-        selectedFile) // Also check if a new avatar has been selected
-    ) {
-      try {
-        // Create a FormData instance
-        const formData = new FormData();
-        console.log(currentUser.avatar);
-        // Append the updated user information to the FormData instance
-        formData.append("firstName", firstName);
-        formData.append("lastName", lastName);
-        formData.append("email", email);
-        if (password) {
-          formData.append("password", password);
-        }
-        if (selectedFile) {
-          formData.append("avatar", selectedFile);
-        }
+        selectedFile
+      ) {
+        try {
+          const payload = {
+            firstName,
+            lastName,
+            email,
+            ...(password && { password }),
+            avatar: selectedFile as unknown as string, // Type casting for avatar property
+          };
 
-        for (const pair of formData.entries()) {
-          if (pair[0] === "avatar") {
-            console.log(pair[1]);
-          } else {
-            console.log(pair[0] + ", " + pair[1]);
-          }
+          // if (selectedFile) {
+          //   payload.avatar = selectedFile;
+          // }
+          // Call the mutation and pass the JSON payload
+          const updatedUser = await updateUserMutation(payload).unwrap();
+
+          // Dispatch an action to update the user in the store
+          dispatch(updateUser(updatedUser));
+
+          // Set the success message
+          setSuccessMessage("Profile updated successfully!");
+          setErrorMessage("");
+        } catch (error) {
+          // Handle the error, perhaps show a message to the user
+          setErrorMessage("Failed to update profile. Please try again.");
+          setSuccessMessage("");
         }
-        // Call the mutation and pass the FormData instance
-        const updatedUser = await updateUserMutation(formData).unwrap();
-
-        // Dispatch an action to update the user in the store
-        dispatch(updateUser(updatedUser));
-
-        // Set the success message
-        setSuccessMessage("Profile updated successfully!");
-        setErrorMessage("");
-      } catch (error) {
-        // Handle the error, perhaps show a message to the user
-        setErrorMessage("Failed to update profile. Please try again.");
-        setSuccessMessage("");
       }
     }
   };
@@ -107,7 +103,7 @@ const ProfileSettings = () => {
           <img
             src={avatarPreview}
             alt="User Avatar"
-            className="w-24 h-24 rounded-full mx-auto"
+            className="w-[25vmin] rounded-full mx-auto"
           />
           <div className="mt-4">
             <h3 className="text-lg font-semibold">{`${firstName} ${lastName}`}</h3>
