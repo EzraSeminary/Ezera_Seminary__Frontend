@@ -47,24 +47,39 @@ const ProfileSettings = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // Add a type guard to ensure currentUser is not undefined
-    if (currentUser) {
-      // Check if there's any change in the form fields
-      if (
-        firstName !== currentUser.firstName ||
+    if (
+      currentUser &&
+      (firstName !== currentUser.firstName ||
         lastName !== currentUser.lastName ||
         email !== currentUser.email ||
-        password !== currentUser.password
-      ) {
-        updateUserMutation({ firstName, lastName, email, password })
-          .unwrap()
-          .then((updatedUser) => {
-            // Dispatch an action to update the user in the store, if necessary
-            dispatch(updateUser(updatedUser));
-          });
+        password ||
+        selectedFile) // Also check if a new avatar has been selected
+    ) {
+      try {
+        // Create a FormData instance
+        const formData = new FormData();
+
+        // Append the updated user information to the FormData instance
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
+        formData.append("email", email);
+        if (password) {
+          formData.append("password", password);
+        }
+        if (selectedFile) {
+          formData.append("avatar", selectedFile);
+        }
+
+        // Call the mutation and pass the FormData instance
+        const updatedUser = await updateUserMutation(formData).unwrap();
+
+        // Dispatch an action to update the user in the store
+        dispatch(updateUser(updatedUser));
+      } catch (error) {
+        // Handle the error, perhaps show a message to the user
       }
     }
   };
