@@ -85,7 +85,7 @@ const Header: React.FC = () => {
               alt="Background"
             /> */}
             {/* Navigation and Logo */}
-            <div className="absolute top-[34%]  w-full md:top-[28%] lg:top-[20%]">
+            <div className="absolute top-[34%]  w-full md:top-[28%] lg:top-[23.3%]">
               <div className="  flex justify-between items-center  w-[90%] md:w-[90%] lg:w-[85%] mx-auto ">
                 <div className=" z-30 h-full flex justify-center items-center gap-1 cursor-pointer ">
                   <div className="rounded-md bg-secondary-6 ">
