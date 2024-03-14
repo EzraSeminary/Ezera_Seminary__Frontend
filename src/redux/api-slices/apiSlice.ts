@@ -39,17 +39,14 @@ export const apiSlice = createApi({
     }),
     // apiSlice.ts
     updateUser: builder.mutation({
-      query: (userDetails) => {
-        const formData = new FormData();
-        Object.entries(userDetails).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        return {
-          url: `/users/profile`,
-          method: "PUT",
-          body: formData,
-        };
-      },
+      query: (formData) => ({
+        url: `/users/profile`,
+        method: "PUT",
+        headers: {
+          // Don't set the "Content-Type" header, as it will be set automatically by the browser
+        },
+        body: formData,
+      }),
     }),
     getCourses: builder.query({
       query: () => "course/getall",

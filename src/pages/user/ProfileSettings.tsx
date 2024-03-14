@@ -25,11 +25,9 @@ const ProfileSettings = () => {
   const [updateUserMutation] = useUpdateUserMutation();
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const avatarPreview = selectedFile
-    ? URL.createObjectURL(selectedFile)
-    : currentUser?.avatar
-    ? currentUser?.avatar
-    : mehari;
+  const [avatarPreview, setAvatarPreview] = useState(
+    currentUser?.avatar ? currentUser.avatar : mehari
+  );
 
   // Effect to set the form fields with current user details when they are available
   useEffect(() => {
@@ -78,23 +76,19 @@ const ProfileSettings = () => {
             formData.append("avatar", selectedFile);
           }
 
-          console.log(selectedFile);
-          console.log(formData.get("avatar"));
-
           const updatedUser = await updateUserMutation(formData).unwrap();
-
-          // Update the avatar in the currentUser object
-          if (selectedFile) {
-            updatedUser.avatar = URL.createObjectURL(selectedFile);
-          }
-          console.log(updatedUser, formData);
           dispatch(updateUser(updatedUser));
-          // console.log(updatedUser, formData);
-
           setSuccessMessage("Profile updated successfully!");
           setErrorMessage("");
         } catch (error) {
-          setErrorMessage("Failed to update profile. Please try again.");
+          if (
+            error.status === 400 &&
+            error.data.message === "Error uploading avatar"
+          ) {
+            setErrorMessage("Failed to upload avatar. Please try again.");
+          } else {
+            setErrorMessage("Failed to update profile. Please try again.");
+          }
           setSuccessMessage("");
         }
       }
