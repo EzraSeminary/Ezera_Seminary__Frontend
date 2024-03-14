@@ -39,9 +39,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex w-[95%] md:w-[70%] rounded-xl border-2 border-accent-6 mx-auto my-20">
+    
+    <div className="flex w-[95%] md:w-[80%] rounded-xl border-2 border-accent-6 mx-auto mt-20 mb-12 xl:mt-28 xl:mb-16  ">
       <div
-        className="md:flex flex-col bg-coming-soon bg-cover hidden lg:w-[40%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
+        className="md:flex flex-col coming-soon bg-cover hidden  md:w-[50%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
         style={{ backgroundPositionX: "-80px" }}
       >
         <div className="flex space-x-3 cursor-pointer text-white ">
@@ -50,29 +51,29 @@ const Signup = () => {
             <span className="font-Lato-Bold">EZRA</span> Seminary
           </h3>
         </div>
-        <p className="text-3xl">
+        <p className="text-xl lg:text-3xl w-max">
           መጽሃፍ ቅዱስ እግዚአብሔርን
           <br />
-          <span className="text-4xl text-accent-6">በግላችን የምናውቅበት</span>
+          <span className="text-3xl lg:text-4xl text-accent-6">በግላችን የምናውቅበት</span>
           <br />
           ዋነኛው መንገድ ነው።
           <br />
         </p>
       </div>
       <form
-        className="flex flex-col font-nokia-bold px-7 py-8 text-accent-6 w-[100%] sm:w-[10em] md:w-[20em] lg:w-[60%]"
+        className="flex flex-col font-nokia-bold px-7 py-8 text-accent-6 w-[100%]  md:w-[70%] lg:w-[40%]"
         onSubmit={handleSubmit}
       >
-        <h3 className="text-3xl">
+        <h3 className="text-3xl  xl:text-4xl">
           <span className="text-secondary-6">Create </span>Account
         </h3>
-        <div className="mt-10 flex flex-col gap-2 text-xs">
-          <div className="flex flex-row gap-4">
+        <div className="mt-10 flex flex-col gap-2 text-xs  xl:text-xl ">
+          <div className="flex flex-row gap-4 ">
             <div className="flex flex-col flex-auto gap-2">
               <label>First Name</label>
               <input
                 type="text"
-                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 md:w-168"
+                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full   xl:text-sm"
                 placeholder="Abebe"
                 required
                 value={firstName}
@@ -83,7 +84,7 @@ const Signup = () => {
               <label>Last Name</label>
               <input
                 type="text"
-                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 md:w-168"
+                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full   xl:text-sm"
                 placeholder="Kebede"
                 required
                 value={lastName}
@@ -94,7 +95,7 @@ const Signup = () => {
           <label>Email</label>
           <input
             type="email"
-            className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 w-[50%]"
+            className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 w-full lg:w-[50%]  xl:text-sm"
             placeholder="AbebeKebede@gmail.com"
             required
             value={email}
@@ -105,7 +106,7 @@ const Signup = () => {
               <label>Password</label>
               <input
                 type="password"
-                className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 "
+                className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 w-full  xl:text-sm"
                 placeholder="********"
                 required
                 value={password}
@@ -116,7 +117,7 @@ const Signup = () => {
               <label>Confirm Password</label>
               <input
                 type="password"
-                className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 "
+                className="border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 w-full  xl:text-sm"
                 placeholder="********"
                 required
                 value={confirmPassword}
@@ -129,19 +130,19 @@ const Signup = () => {
               type="checkbox"
               className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
             />
-            <label className="text-xs">
+            <label className="text-xs  xl:text-xl">
               I accept the terms and conditions.
             </label>
           </div>
         </div>
-        <div className="w-[100%] mt-4 flex flex-col sm:flex sm:flex-row gap-2">
+        <div className="w-[100%] mt-4 flex flex-col  xl:flex-row lg:w-full gap-2 xl:gap-4  xl:text-xl">
           <button
             disabled={isLoading}
-            className="md:w-[30%] lg:w-[50%] bg-accent-6 text-white px-16 py-1 rounded-sm hover:bg-accent-7 hover:cursor-pointer transition-all"
+            className="w-[35%] px-2 md:w-[50%]  bg-accent-6 text-white xl:w-[70%]  py-1 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"
           >
             Sign Up
           </button>
-          <p className="flex item-center">
+          <p className="flex item-center gap-2 xl:w-[90%] xl:flex-col xl:gap-0">
             Already have an account?
             <Link
               className="text-secondary-6 hover:text-secondary-3 transition-all cursor-pointer"
@@ -153,9 +154,9 @@ const Signup = () => {
           </p>
         </div>
         {error && 'message' in error && <div className="error">{error.message}</div>}
-        <div className="text-xs mt-4">
+        <div className="text-xs mt-4  xl:text-xl">
           <p>Or signup with</p>
-          <div className="flex mt-2 text-2xl text-white gap-2">
+          <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl">
             <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"></GoogleLogo>
             <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>
           </div>
