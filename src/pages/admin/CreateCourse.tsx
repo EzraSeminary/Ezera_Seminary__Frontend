@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTitle,
@@ -12,12 +12,19 @@ import { CourseState } from "../../redux/courseSlice";
 
 function CreateCourse() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { title, description } = useSelector(
     (state: { course: CourseState }) => state.course
   );
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  // form validation error
+  const [validationErrors, setValidationErrors] = useState({
+    title: false,
+    description: false,
+    image: false,
+  });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -26,8 +33,43 @@ function CreateCourse() {
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
         setImagePreviewUrl(fileReader.result as string);
+        setValidationErrors((prevErrors) => ({ ...prevErrors, image: false }));
       };
       fileReader.readAsDataURL(file); // Generate a URL for preview
+    } else {
+      // Set the image error if no file is selected
+      setValidationErrors((prevErrors) => ({ ...prevErrors, image: true }));
+    }
+  };
+
+  const toNextPage = () => {
+    // Perform form validation
+    let hasErrors = false;
+    if (!title.trim()) {
+      // Set title error
+      setValidationErrors((prevErrors) => ({ ...prevErrors, title: true }));
+      hasErrors = true;
+    }
+
+    if (!description.trim()) {
+      // Set description error
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        description: true,
+      }));
+      hasErrors = true;
+    }
+
+    // Validation for image
+    if (!imagePreviewUrl) {
+      setValidationErrors((prevErrors) => ({ ...prevErrors, image: true }));
+      hasErrors = true;
+    }
+
+    // If there are no validationErrors, then proceed with the navigate logic.
+    if (!hasErrors) {
+      //navigate to create chapters
+      navigate("/admin/courses/create/chapters");
     }
   };
 
@@ -39,7 +81,11 @@ function CreateCourse() {
         Create Course
       </h2>
       <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
-        <div className="relative col-span-12 mx-auto h-72 w-[100%]">
+        <div
+          className={`relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border ${
+            validationErrors.image ? "border-red-500" : "border-orange-300"
+          }`}
+        >
           {imagePreviewUrl && (
             <img
               src={imagePreviewUrl}
@@ -62,37 +108,67 @@ function CreateCourse() {
             onChange={handleImageChange}
             required
           />
+          {validationErrors.image && (
+            <p className="text-red-500 text-xs italic text-center">
+              Please provide an image.
+            </p>
+          )}
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Course Title</label>
           <input
             type="text"
-            className="w-full px-3 py-2 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2"
+            className={`w-full px-3 py-2 text-accent-6 leading-tight border ${
+              validationErrors.title ? "border-red-500" : "border-orange-300"
+            } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2`}
             name="title"
             placeholder="Untitled Course"
             autoComplete="off"
             value={title}
-            onChange={(e) => dispatch(setTitle(e.target.value))}
+            onChange={(e) => {
+              dispatch(setTitle(e.target.value));
+              setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                title: false,
+              }));
+            }}
             required
           />
+          {/* Conditionally render an error message */}
+          {validationErrors.title && (
+            <p className="text-red-500 text-xs italic">Please enter a title.</p>
+          )}
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Description</label>
           <input
             type="text"
-            className="w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2"
+            className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border ${
+              validationErrors.description
+                ? "border-red-500"
+                : "border-orange-300"
+            } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2`}
             name="description"
             placeholder="Add a description"
             autoComplete="off"
             value={description}
-            onChange={(e) => dispatch(setDescription(e.target.value))}
+            onChange={(e) => {
+              dispatch(setDescription(e.target.value));
+              setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                description: false,
+              }));
+            }}
             required
           />
+          {validationErrors.description && (
+            <p className="text-red-500 text-xs italic">
+              Please enter a description.
+            </p>
+          )}
         </div>
         <div className="col-span-12">
-          <Button>
-            <Link to="/admin/courses/create/chapters">Create</Link>
-          </Button>
+          <Button onClick={toNextPage}>Create</Button>
         </div>
       </form>
     </div>
