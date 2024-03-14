@@ -10,10 +10,8 @@ import mehari from "@/assets/mehari.jpg";
 const ProfileSettings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // Fetch the current user details (assuming the useGetUserQuery hook is available)
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  // Local state for form fields initialized with current user details
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,19 +21,20 @@ const ProfileSettings = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [updateUserMutation] = useUpdateUserMutation();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
-  const [avatarPreview, setAvatarPreview] = useState(
-    currentUser?.avatar ? currentUser.avatar : mehari
-  );
-
-  // Effect to set the form fields with current user details when they are available
   useEffect(() => {
     if (currentUser) {
       setFirstName(currentUser.firstName || "");
       setLastName(currentUser.lastName || "");
       setEmail(currentUser.email || "");
       setPassword(currentUser.password || "");
+      setAvatarPreview(
+        currentUser.avatar
+          ? `http://localhost:5100/images/${currentUser.avatar}`
+          : null
+      );
     }
   }, [currentUser]);
 
@@ -44,7 +43,7 @@ const ProfileSettings = () => {
   }) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
-      console.log(event.target.files[0]); // log the file directly from the event
+      setAvatarPreview(URL.createObjectURL(event.target.files[0]));
     }
   };
 
@@ -52,7 +51,6 @@ const ProfileSettings = () => {
     setShowPassword(!showPassword);
   };
 
-  // ProfileSettings
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -80,6 +78,16 @@ const ProfileSettings = () => {
           dispatch(updateUser(updatedUser));
           setSuccessMessage("Profile updated successfully!");
           setErrorMessage("");
+          setFirstName(updatedUser.firstName);
+          setLastName(updatedUser.lastName);
+          setEmail(updatedUser.email);
+          setPassword(updatedUser.password);
+          setAvatarPreview(
+            updatedUser.avatar
+              ? `http://localhost:5100/images/${updatedUser.avatar}`
+              : null
+          );
+          setSelectedFile(null);
         } catch (error) {
           if (
             error.status === 400 &&
@@ -111,7 +119,13 @@ const ProfileSettings = () => {
       <div className="md:flex md:items-start md:space-x-10">
         <div className="md:w-1/3 text-center mb-6 md:mb-0">
           <img
-            src={avatarPreview}
+            src={
+              avatarPreview
+                ? avatarPreview
+                : currentUser?.avatar
+                ? `http://localhost:5100/images/${currentUser.avatar}`
+                : mehari
+            }
             alt="User Avatar"
             className="w-[25vmin] rounded-full mx-auto"
           />
@@ -124,12 +138,12 @@ const ProfileSettings = () => {
                 className="hidden"
                 onChange={handleAvatarUpload}
               />
-              {/* Implement handleAvatarUpload */}
             </label>
           </div>
           {successMessage && <div>{successMessage}</div>}
           {errorMessage && <div className="error">{errorMessage}</div>}
         </div>
+        {/* Second Section - Edit Profile Form */}
         <div className="md:w-2/3">
           <h2 className="text-2xl font-bold text-secondary-10 mb-6">
             Edit Profile
