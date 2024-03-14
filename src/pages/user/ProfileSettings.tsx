@@ -88,6 +88,9 @@ const ProfileSettings = () => {
               : null
           );
           setSelectedFile(null);
+
+          // Save the updated user information to local storage
+          localStorage.setItem("user", JSON.stringify(updatedUser));
         } catch (error) {
           if (
             error.status === 400 &&

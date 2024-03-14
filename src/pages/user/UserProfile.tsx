@@ -17,11 +17,16 @@ const UserProfile = () => {
     window.location.href = "/login";
   };
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
+  // Retrieve the user information from local storage if it's not available in the Redux store
+  const storedUser = localStorage.getItem("user");
+  const initialUser = storedUser ? JSON.parse(storedUser) : null;
 
-  const avatarPreview = mehari || user?.avatar;
+  // Use the user information from the Redux store or local storage
+  const currentUser = user || initialUser;
+
+  const avatarPreview = currentUser?.avatar
+    ? `http://localhost:5100/images/${currentUser.avatar}`
+    : mehari;
 
   const goBack = () => {
     navigate(-1);
@@ -42,7 +47,7 @@ const UserProfile = () => {
         {/* User Avatar and Email */}
         <div className="flex flex-col items-center mb-4">
           <img
-            src={avatarPreview || ""}
+            src={avatarPreview}
             alt="User Avatar"
             className="w-[25vmin] rounded-full mx-auto"
           />
