@@ -67,7 +67,7 @@ const Header: React.FC = () => {
   return (
     <header className="relative max-w-screen mb-8">
       {/* Header Background Image */}
-      <div className="absolute top-0 z-0 w-full h-16  lg:h-[4.5rem] xl:h-[6.2rem] shadow-xl">
+      <div className="absolute top-0 z-0 w-full h-16  lg:h-[4.2rem] xl:h-[4.8rem] shadow-xl">
         <img
           src={bgImage}
           className="w-full h-full  object-cover"
@@ -87,20 +87,18 @@ const Header: React.FC = () => {
             {/* Navigation and Logo */}
             <div className="absolute top-[34%]  w-full md:top-[28%] lg:top-[23.3%]">
               <div className="  flex justify-between items-center  w-[90%] md:w-[90%] lg:w-[85%] mx-auto ">
-                <div className=" z-30 h-full flex justify-center items-center gap-1 cursor-pointer ">
-                  <div className="rounded-md bg-secondary-6 ">
-                    <img
-                      src="src/assets/ezra-logo.svg"
-                      className="w-6 h-5  md:h-6 lg:h-7 xl:h-9 z-30 object-contain  p-1"
-                      alt=""
-                    />
-                  </div>
-                  <NavLink to="/" onClick={closeMenu}>
-                    <h3 className="text-secondary-6 font-nokia-bold text-xs md:text-sm lg:text-xl xl:text-2xl tracking-wider">
-                      <strong>Ezra</strong> Seminary
-                    </h3>
-                  </NavLink>
-                </div>
+              <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
+              <img
+                src="src/assets/Dark Logo Ion.png"
+                className="w-4  md:w-5  lg:w-6  xl:w-7 "
+                alt=""
+              />
+              <NavLink to="/" onClick={closeMenu}>
+                <h3 className="text-xs md:text-sm lg:text-lg xl:text-2xl tracking-wide">
+                  <strong>Ezra</strong> Seminary
+                </h3>
+              </NavLink>
+            </div>
                 {/* MenuBar */}
                 <div className="md:hidden flex">
                   <button
@@ -128,32 +126,32 @@ const Header: React.FC = () => {
                       : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
                   }`}
                 >
-                  <li className="  hover:text-accent-6 tracking-wider">
+                  <li className="  hover:text-accent-6 tracking-wide">
                     <NavLink to="/" onClick={closeMenu}>
                       Home
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wider">
+                  <li className="hover:text-accent-6 tracking-wide">
                     <NavLink to="/courses" onClick={closeMenu}>
                       Courses
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wider">
+                  <li className="hover:text-accent-6 tracking-wide">
                     <NavLink to="/sabbathSchool" onClick={closeMenu}>
                       Sabbath School
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wider">
+                  <li className="hover:text-accent-6 tracking-wide">
                     <NavLink to="/devotion" onClick={closeMenu}>
                       Devotion
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wider">
+                  <li className="hover:text-accent-6 tracking-wide">
                     <NavLink to="/aboutUs" onClick={closeMenu}>
                       About Us
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wider">
+                  <li className="hover:text-accent-6 tracking-wide">
                     <NavLink to="/contactUs" onClick={closeMenu}>
                       Contact Us
                     </NavLink>
@@ -165,23 +163,23 @@ const Header: React.FC = () => {
                         onClick={handleAccountClick}
                       >
                         <UserCircle size={24} className="text-primary-1" />
-                        <div className="text-xs  xl:text-lg font-medium text-primary-1 tracking-wider">
+                        <div className="text-xs  xl:text-lg font-medium text-primary-1 tracking-wide">
                           {user.firstName}
                         </div>
                       </div>
                       {showAccountModal && (
                         <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10">
-                          <div className="px-4 py-2 border-b tracking-wider">
+                          <div className="px-4 py-2 border-b tracking-wide">
                             Logged in as: {user.email}
                           </div>
-                          <div className="px-4 py-2 border-b tracking-wider">
+                          <div className="px-4 py-2 border-b tracking-wide">
                             Role: {user.role}
                           </div>
-                          <div className="px-4 py-2 border-b tracking-wider">
+                          <div className="px-4 py-2 border-b tracking-wide">
                             <NavLink to="/profile">Profile Settings</NavLink>
                           </div>
                           {user.role === "Admin" && (
-                            <div className="px-4 py-2 border-b tracking-wider">
+                            <div className="px-4 py-2 border-b tracking-wide">
                               <NavLink to="/admin">Dashboard</NavLink>
                             </div>
                           )}
@@ -193,12 +191,12 @@ const Header: React.FC = () => {
                     </li>
                   ) : (
                     <>
-                      <li className="hover:text-gray-400 tracking-wider">
+                      <li className="hover:text-gray-400 tracking-wide">
                         <NavLink to="/logIn">Log In</NavLink>
                       </li>
                       <li className="hover:text-gray-400 text-base ">
                         <NavLink to="/signup">
-                        <button type="button" className=" bg-accent-6 tracking-wider rounded-full text-xs w-auto px-2 py-1 lg:py-2 lg:px-3 lg:text-lg xl:py-3 xl:px-4 xl:text-xl hover:bg-accent-7 cursor-pointer transition-all text-primary-1">
+                        <button type="button" className=" bg-accent-6 tracking-wide rounded-full  w-auto px-2 py-1  lg:px-3 lg:text-lg xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all text-primary-1">
                           Create Account
                         </button>
                           {/* <Button
@@ -219,17 +217,17 @@ const Header: React.FC = () => {
       </div>
       {/* Header when the scroll is below 20  */}
       <div className="relative z-30 py-2">
-        <div className="absolute top-[0.4rem] md:top-0 lg:top-0 xl:top-[0.4rem] w-full ">
+        <div className="absolute top-[0.4rem] md:top-0 xl:top-1   w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[90%] lg:w-[85%] mx-auto">
             {/* Logo */}
-            <div className="flex justify-center items-start  md:space-x-0   xl:space-x-1 cursor-pointer ">
+            <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
               <img
-                src="src/assets/ezra-logo.svg"
-                className="w-8 h-5 md:w-10 md:h-6 lg:w-10 lg:h-7 xl:w-12 xl:h-9"
+                src="src/assets/Logo Ion.png"
+                className="w-4  md:w-5  lg:w-6  xl:w-7 "
                 alt=""
               />
               <NavLink to="/" onClick={closeMenu}>
-                <h3 className="text-xs md:text-sm lg:text-xl xl:text-2xl tracking-wider">
+                <h3 className="text-xs md:text-sm lg:text-lg xl:text-2xl tracking-wide">
                   <strong>Ezra</strong> Seminary
                 </h3>
               </NavLink>
@@ -263,32 +261,32 @@ const Header: React.FC = () => {
                     : "hidden font-Lato-Regular  cursor-pointer  md:flex md:items-center md:justify-end md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  "
                 }`}
               >
-                <li className="hover:text-accent-6 tracking-widest">
+                <li className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/" onClick={closeMenu}>
                     Home
                   </NavLink>
                 </li>
-                <li className="hover:text-accent- tracking-wider">
+                <li className="hover:text-accent- tracking-wide">
                   <NavLink to="/courses" onClick={closeMenu}>
                     Courses
                   </NavLink>
                 </li>
-                <li className="hover:text-accent-6 tracking-wider">
+                <li className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/sabbathSchool" onClick={closeMenu}>
                     Sabbath School
                   </NavLink>
                 </li>
-                <li className="hover:text-accent-6 tracking-wider">
+                <li className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/devotion" onClick={closeMenu}>
                     Devotion
                   </NavLink>
                 </li>
-                <li className="hover:text-accent-6 tracking-wider">
+                <li className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/aboutUs" onClick={closeMenu}>
                     About Us
                   </NavLink>
                 </li>
-                <li className="hover:text-accent-6 tracking-wider">
+                <li className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/contactUs" onClick={closeMenu}>
                     Contact Us
                   </NavLink>
@@ -300,7 +298,7 @@ const Header: React.FC = () => {
                       onClick={handleAccountClick}
                     >
                       <UserCircle size={25} />
-                      <div className="text-xs  xl:text-lg font-medium text-white tracking-wider">
+                      <div className="text-xs  xl:text-lg font-medium text-white tracking-wide">
                         {user.firstName}
                       </div>
                     </div>
@@ -308,17 +306,17 @@ const Header: React.FC = () => {
                       <div 
                       className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10"
                       >
-                        <div className="px-4 py-2 border-b tracking-wider">
+                        <div className="px-4 py-2 border-b tracking-wide">
                           Logged in as: {user.email}
                         </div>
-                        <div className="px-4 py-2 border-b tracking-wider">
+                        <div className="px-4 py-2 border-b tracking-wide">
                           Role: {user.role}
                         </div>
-                        <div className="px-4 py-2 border-b tracking-wider">
+                        <div className="px-4 py-2 border-b tracking-wide">
                           <NavLink to="/profile">Profile Settings</NavLink>
                         </div>
                         {user.role === "Admin" && (
-                          <div className="px-4 py-2 border-b tracking-wider">
+                          <div className="px-4 py-2 border-b tracking-wide">
                             <NavLink to="/admin">Dashboard</NavLink>
                           </div>
                         )}
@@ -330,12 +328,12 @@ const Header: React.FC = () => {
                   </li>
                 ) : (
                   <>
-                    <li className="hover:text-gray-400 tracking-wider">
+                    <li className="hover:text-accent-7 tracking-wide">
                       <NavLink to="/logIn">Log In</NavLink>
                     </li>
-                    <li className="hover:text-gray-400 text-base ">
+                    <li className="hover:text-primary-6 text-base ">
                       <NavLink to="/signup">
-                        <button type="button" className=" bg-accent-6 tracking-wider rounded-full font-nokia-bold text-xs w-auto px-2 py-1 lg:py-2 lg:px-3 lg:text-lg xl:py-3 xl:px-4 xl:text-xl hover:bg-accent-7 cursor-pointer transition-all">
+                        <button type="button" className=" bg-accent-6 tracking-wide rounded-full font-nokia-bold  w-auto px-2 py-1  lg:px-3 lg:text-lg xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all">
                           Create Account
                         </button>
                         {/* <Button
