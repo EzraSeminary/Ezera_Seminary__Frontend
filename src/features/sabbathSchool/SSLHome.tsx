@@ -8,8 +8,8 @@ const SSLHome = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="mt-12 pt-12">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    // <div className="">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
         {(ssl ?? []).map((item, index) => (
           <Link
             key={index}
@@ -19,19 +19,19 @@ const SSLHome = () => {
             <img
               src={(item as { cover: string, title: string }).cover}
               alt={(item as { title: string }).title}
-              className="rounded-md h-42 w-1/2"
+              className="rounded-md  w-1/2 object-fit"
             />
-            <div className="flex flex-col gap-1" style={{ maxHeight: "300px" }}>
+            <div className="flex flex-col py-2 h-full space-y-1" style={{ maxHeight: "300px" }}>
               <p className="text-accent-6 text-sm">{(item as { human_date: string }).human_date}</p>
-              <h2 className="text-2xl text-secondary-6 mb-2 ">{(item as { title: string }).title}</h2>
-              <p className="text-secondary-5 text-sm overflow-hidden overflow-ellipsis">
+              <h2 className="text-xl md:text-xl text-secondary-6  ">{(item as { title: string }).title}</h2>
+              <p className="text-secondary-5 text-xs overflow-hidden overflow-ellipsis text-justify px-1">
                 {(item as { description: string }).description}
               </p>
             </div>
           </Link>
         ))}
       </div>
-    </div>
+    // </div>
   );
 };
 

@@ -131,7 +131,7 @@ function DisplaySSLLesson() {
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />
-          <div className="text-3xl text-primary-0">{lessonDetails.title}</div>
+          <div className="text-3xl text-primary-0 ">{lessonDetails.title}</div>
         </div>
       </div>
       {isModalOpen && (
@@ -143,7 +143,7 @@ function DisplaySSLLesson() {
           {parse(selectedVerse, { trim: true })}
         </Modal>
       )}
-      <div className="text-secondary-6 text-justify wrapper my-4">
+      <div className="text-secondary-6 text-justify wrapper my-4 ">
         {modifyContentForDisplay(lessonDetails.content)}
       </div>
     </div>
