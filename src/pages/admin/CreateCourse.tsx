@@ -81,7 +81,11 @@ function CreateCourse() {
         Create Course
       </h2>
       <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
-        <div className="relative col-span-12 mx-auto h-72 w-[100%]">
+        <div
+          className={`relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border ${
+            validationErrors.image ? "border-red-500" : "border-orange-300"
+          }`}
+        >
           {imagePreviewUrl && (
             <img
               src={imagePreviewUrl}
@@ -105,7 +109,7 @@ function CreateCourse() {
             required
           />
           {validationErrors.image && (
-            <p className="text-red-500 text-xs italic">
+            <p className="text-red-500 text-xs italic text-center">
               Please provide an image.
             </p>
           )}
