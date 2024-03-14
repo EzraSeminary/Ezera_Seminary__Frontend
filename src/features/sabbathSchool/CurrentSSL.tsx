@@ -36,9 +36,9 @@ function CurrentSSL() {
 
   return (
     <div className="shadow-lg">
-      <div className="flex gap-4 w-full border border-accent-6 p-2 rounded-xl">
+      <div className="flex flex-col lg:flex-row gap-4 w-full border border-accent-6 p-2 rounded-xl">
         <div
-          className="flex rounded-md w-[35%] h-48 text-primary-1 p-4 items-end"
+          className="flex rounded-md w-full lg:w-[35%] h-48 text-primary-1 p-4 items-end"
           style={{
             backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(234,146,21,0.8) 100%), url(${backgroundImage})`,
             backgroundSize: "cover",
@@ -57,13 +57,13 @@ function CurrentSSL() {
             )}
           </div>
         </div>
-        <div className="flex flex-col w-[65%]">
+        <div className="flex flex-col w-full lg:w-[65%]">
           <div className="flex w-full justify-between">
-            <div className="">
+            <div className="w-full">
               <p className="text-lg text-accent-6">
                 {quarterDetails.quarterly.title}
               </p>
-              <p className="text-3xl text-secondary-6 leading-8">
+              <p className="text-lg md:text-3xl text-secondary-6 ">
                 {lessonDetails.lesson.title}
               </p>
               <p className="text-xs text-accent-6 mt-2">
@@ -71,7 +71,7 @@ function CurrentSSL() {
               </p>
               <div className="border border-b-accent-6 my-2" />
             </div>
-            <div className="flex flex-col gap-2 items-end">
+            <div className="flex flex-col gap-2 items-end w-[45%] space-y-1">
               <Link
                 className="px-4 py-1 bg-accent-6 text-primary-1 rounded-full text-xs hover:bg-accent-7 transition-all"
                 to={{
@@ -84,8 +84,8 @@ function CurrentSSL() {
               >
                 ትምህርቱን ክፈት
               </Link>
-              <button className="px-2 border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
-                Watch on YouTube <YoutubeLogo size={24} weight="fill" />
+              <button className="w-max leading-snug md:leading-none md:w-auto px-2 border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
+                Watch on YouTube <YoutubeLogo  weight="fill" className="text-lg md:text-xl"/>
               </button>
             </div>
           </div>
