@@ -246,7 +246,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
             <img
-              src={`http://localhost:5100/images/${
+              src={`https://ezra-seminary.mybese.tech/images/${
                 devotionToDisplay && devotionToDisplay.image
               }`}
               alt="Devotion Image"

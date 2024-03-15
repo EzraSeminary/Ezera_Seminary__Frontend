@@ -7,8 +7,8 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
-// axios.defaults.baseURL = "http://localhost:5100";
-axios.defaults.baseURL = "http://localhost:5100";
+// axios.defaults.baseURL = "https://ezra-seminary.mybese.tech";
+axios.defaults.baseURL = "https://ezra-seminary.mybese.tech";
 axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
