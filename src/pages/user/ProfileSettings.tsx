@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
@@ -33,15 +33,13 @@ const ProfileSettings = () => {
       setAvatarPreview(
         currentUser.avatar
           ? `http://localhost:5100/images/${currentUser.avatar}`
-          : null
+          : mehari
       );
     }
   }, [currentUser]);
 
-  const handleAvatarUpload = (event: {
-    target: { files: SetStateAction<null>[] };
-  }) => {
-    if (event.target.files && event.target.files[0]) {
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
       setAvatarPreview(URL.createObjectURL(event.target.files[0]));
     }
@@ -91,14 +89,29 @@ const ProfileSettings = () => {
 
           // Save the updated user information to local storage
           localStorage.setItem("user", JSON.stringify(updatedUser));
-        } catch (error) {
+        } catch (error: unknown) {
           if (
-            error.status === 400 &&
-            error.data.message === "Error uploading avatar"
+            typeof error === "object" &&
+            error !== null &&
+            "status" in error &&
+            "data" in error
           ) {
-            setErrorMessage("Failed to upload avatar. Please try again.");
+            const apiError = error as {
+              status: number;
+              data: {
+                message: string;
+              };
+            };
+            if (
+              apiError.status === 400 &&
+              apiError.data.message === "Error uploading avatar"
+            ) {
+              setErrorMessage("Failed to upload avatar. Please try again.");
+            } else {
+              setErrorMessage("Failed to update profile. Please try again.");
+            }
           } else {
-            setErrorMessage("Failed to update profile. Please try again.");
+            setErrorMessage("An unknown error occurred. Please try again.");
           }
           setSuccessMessage("");
         }

@@ -58,7 +58,7 @@ const UserProfile = () => {
           {/* User Info */}
           <div className="flex items-start space-x-2 mb-4 py-2">
             <div className="font-bold text-lg text-accent-6">Name:</div>
-            <div className="text-lg">{user.firstName}</div>
+            <div className="text-lg">{user?.firstName}</div>
           </div>
 
           {/* Achievements */}
