@@ -25,7 +25,7 @@ const UserProfile = () => {
   const currentUser = user || initialUser;
 
   const avatarPreview = currentUser?.avatar
-    ? `http://localhost:5100/images/${currentUser.avatar}`
+    ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
     : mehari;
 
   const goBack = () => {
@@ -58,7 +58,7 @@ const UserProfile = () => {
           {/* User Info */}
           <div className="flex items-start space-x-2 mb-4 py-2">
             <div className="font-bold text-lg text-accent-6">Name:</div>
-            <div className="text-lg">{user.firstName}</div>
+            <div className="text-lg">{user?.firstName}</div>
           </div>
 
           {/* Achievements */}

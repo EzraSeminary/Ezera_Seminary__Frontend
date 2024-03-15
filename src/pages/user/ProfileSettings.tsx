@@ -1,10 +1,12 @@
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import mehari from "@/assets/mehari.jpg";
 
 const ProfileSettings = () => {
@@ -17,8 +19,6 @@ const ProfileSettings = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [updateUserMutation] = useUpdateUserMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -32,16 +32,14 @@ const ProfileSettings = () => {
       setPassword(currentUser.password || "");
       setAvatarPreview(
         currentUser.avatar
-          ? `http://localhost:5100/images/${currentUser.avatar}`
-          : null
+          ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
+          : mehari
       );
     }
   }, [currentUser]);
 
-  const handleAvatarUpload = (event: {
-    target: { files: SetStateAction<null>[] };
-  }) => {
-    if (event.target.files && event.target.files[0]) {
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
       setAvatarPreview(URL.createObjectURL(event.target.files[0]));
     }
@@ -76,31 +74,44 @@ const ProfileSettings = () => {
 
           const updatedUser = await updateUserMutation(formData).unwrap();
           dispatch(updateUser(updatedUser));
-          setSuccessMessage("Profile updated successfully!");
-          setErrorMessage("");
           setFirstName(updatedUser.firstName);
           setLastName(updatedUser.lastName);
           setEmail(updatedUser.email);
           setPassword(updatedUser.password);
           setAvatarPreview(
             updatedUser.avatar
-              ? `http://localhost:5100/images/${updatedUser.avatar}`
+              ? `https://ezra-seminary.mybese.tech/images/${updatedUser.avatar}`
               : null
           );
           setSelectedFile(null);
 
           // Save the updated user information to local storage
           localStorage.setItem("user", JSON.stringify(updatedUser));
-        } catch (error) {
+          toast.success("Profile updated successfully!");
+        } catch (error: unknown) {
           if (
-            error.status === 400 &&
-            error.data.message === "Error uploading avatar"
+            typeof error === "object" &&
+            error !== null &&
+            "status" in error &&
+            "data" in error
           ) {
-            setErrorMessage("Failed to upload avatar. Please try again.");
+            const apiError = error as {
+              status: number;
+              data: {
+                message: string;
+              };
+            };
+            if (
+              apiError.status === 400 &&
+              apiError.data.message === "Error uploading avatar"
+            ) {
+              toast.error("Failed to upload avatar. Please try again.");
+            } else {
+              toast.error("Failed to update profile. Please try again.");
+            }
           } else {
-            setErrorMessage("Failed to update profile. Please try again.");
+            toast.error("An unknown error occurred. Please try again.");
           }
-          setSuccessMessage("");
         }
       }
     }
@@ -112,6 +123,7 @@ const ProfileSettings = () => {
 
   return (
     <div className="container mx-8 my-20 p-10 bg-accent-1 rounded-lg shadow-lg">
+      <ToastContainer />
       <button
         onClick={goBack}
         className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
@@ -126,7 +138,7 @@ const ProfileSettings = () => {
               avatarPreview
                 ? avatarPreview
                 : currentUser?.avatar
-                ? `http://localhost:5100/images/${currentUser.avatar}`
+                ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
                 : mehari
             }
             alt="User Avatar"
@@ -143,8 +155,6 @@ const ProfileSettings = () => {
               />
             </label>
           </div>
-          {successMessage && <div>{successMessage}</div>}
-          {errorMessage && <div className="error">{errorMessage}</div>}
         </div>
         {/* Second Section - Edit Profile Form */}
         <div className="md:w-2/3">
