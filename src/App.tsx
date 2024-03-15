@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
 import LoadingPage from "./pages/user/LoadingPage";
+import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -53,19 +54,6 @@ function App() {
     return <div>Loading...</div>; // Or a  loading spinner
   }
 
-  // Private Route for Admin
-  const PrivateAdminRoute = ({ children }: { children: React.ReactNode }) => {
-    if (user && user.role === "Admin") {
-      return children;
-    } else {
-      return <Navigate to="/" replace={true} />;
-    }
-  };
-
-  PrivateAdminRoute.propTypes = {
-    children: PropTypes.node.isRequired,
-  };
-
   const PrivateUserRoute = ({ children }: { children: React.ReactNode }) => {
     if (user) {
       return children;
@@ -99,7 +87,12 @@ function App() {
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              isAdmin ? <Navigate to="/admin" replace={true} /> : <Home />
+            }
+          />
           <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
           <Route
             path="/courses/get/:courseId/chapter/:chapterId"
@@ -138,9 +131,9 @@ function App() {
           <Route
             path="/admin/*"
             element={
-              <PrivateAdminRoute>
+              <ProtectedAdminRoute>
                 <AdminDashboard />
-              </PrivateAdminRoute>
+              </ProtectedAdminRoute>
             }
           />
 
