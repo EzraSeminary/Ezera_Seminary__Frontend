@@ -8,28 +8,28 @@ const sampleData = [
       title: 'Devotion 1',
       month: 'January',
       day: '1',
-      image: 'image1.jpg'
+      image: bible
     },
     {
       _id: '2',
       title: 'Devotion 2',
       month: 'February',
       day: '15',
-      image: 'image2.jpg'
+      image: bible
     },
     {
       _id: '3',
       title: 'Devotion 3',
       month: 'March',
       day: '22',
-      image: 'image3.jpg'
+      image: bible
     },
     {
       _id: '4',
       title: 'Devotion 4',
       month: 'April',
       day: '10',
-      image: 'image4.jpg'
+      image: bible
     }
   ];
 
@@ -147,11 +147,23 @@ const LoggedInHome = () => {
     </div>
   </div>
 </div>
+<div className="flex flex-row justify-between items-center">
+  <h2 className="font-nokia-bold text-lg text-secondary-4">
+    Discover Devotionals
+  </h2>
+  <button
+    className="border border-accent-6 px-4 py-1 rounded-lg"
+  >
+    <span className="font-nokia-bold text-accent-6 text-sm">
+      All Devotionals
+    </span>
+  </button>
+</div>
 <div className="flex flex-row flex-wrap justify-between mt-4">
   {sampleData.slice(0, 4).map((item, index) => (
     <div
       key={index}
-      className="w-[47.5%] h-35 mb-4 rounded-2 overflow-hidden relative"
+      className="w-[47.5%] h-45 mb-4 rounded-2 overflow-hidden relative"
     >
       <img
         src={item.image}
@@ -162,7 +174,6 @@ const LoggedInHome = () => {
         <ArrowSquareUpRight
           size={32}
           weight="fill"
-          style={{ color: '#F8F8F8' }}
           className="text-white self-end m-2"
         />
         <div className="absolute bottom-0 left-0 my-2">
