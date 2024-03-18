@@ -53,13 +53,20 @@ const Login = () => {
       } catch (err) {
         console.error(err);
         // Show error toast
-        toast.error("Login failed. Please try again.");
+        if (err.status === 400) {
+          toast.error("Invalid email or password. Please try again.");
+        } else {
+          toast.error(
+            "An error occurred during login. Please try again later."
+          );
+        }
       }
     },
   });
 
   return (
     <div className="flex h-screen items-center justify-center">
+      <ToastContainer />
       <div className="flex w-[90%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-[80%]  rounded-xl md:border-2 md:border-accent-6 mx-auto   md:shadow-xl ">
         <div
           className="md:flex flex-col coming-soon bg-cover hidden lg:w-[58%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
@@ -167,7 +174,6 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };
