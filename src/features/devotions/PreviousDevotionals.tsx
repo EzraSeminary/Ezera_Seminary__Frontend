@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
-import  { useState } from 'react'; // Import the useState function from the 'react' package
+import { useState } from "react"; // Import the useState function from the 'react' package
 import { Button } from "@/components/ui/button";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
@@ -29,8 +29,6 @@ const PreviousDevotionals = ({
   previousDevotions: Devotion[];
   setSelectedDevotion: (devotion: Devotion) => void;
 }) => {
-
- 
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showAllDevotions, setShowAllDevotions] = useState(false);
@@ -133,113 +131,122 @@ const PreviousDevotionals = ({
 
       {/* cards */}
       {isSmallScreen ? (
-      <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-3 w-[90%]  mx-auto pb-4">
-        {filteredData
-            .slice(0, showAllDevotions ? filteredData.length : 4).map((devotion, index: number) => (
-          <div key={index} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
-            {/* devotion Images */}
-              <div className="h-full w-full">
-                <img
-                  src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
-                  alt="Devotion Image"
-                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
-                  onClick={() => {
-                    // open the devotion on click
-                    // console.log("clicked");
-                    setSelectedDevotion(devotion);
-                  }}
-                />
-              </div>
-              {/* devotion title and button */}
-              <div className="w-[90%] mx-auto flex justify-between items-center ">
-                <div className="w-[80%] flex flex-col items-start justify-start pt-2">
-                  <h1 className="font-customBold text-lg text-left mt-2">
-                    {devotion.title}
-                  </h1>
-
-                  <h2 className="font-customBold text-sm text-[#EA9215]">
-                    {/* {devotion.chapter} */}
-                    {devotion.month} {devotion.day}
-                  </h2>
-                </div>
-                <div className="w-[20%]">
-                  <Button
-                    type="button"
-                    className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
-                    size="devotion"
-                    onClick={() => {
-                      // open the devotion on click
-                      // console.log("clicked");
-                      setSelectedDevotion(devotion);
-                    }}
-                  >
-                    ክፈት
-                  </Button>
-                </div>
-              </div>
-          </div>
-        ))}
-      </div>
-       ) : isMediumScreen ? (
         <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-3 w-[90%]  mx-auto pb-4">
-        {filteredData
-            .slice(0, showAllDevotions ? filteredData.length : 6).map((devotion, index: number) => (
-          <div key={index} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
-            {/* devotion Images */}
-              <div className="h-full w-full">
-                <img
-                  src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
-                  alt="Devotion Image"
-                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
-                  onClick={() => {
-                    // open the devotion on click
-                    // console.log("clicked");
-                    setSelectedDevotion(devotion);
-                  }}
-                />
-              </div>
-              {/* devotion title and button */}
-              <div className="w-[90%] mx-auto flex justify-between items-center ">
-                <div className="w-[80%] flex flex-col items-start justify-start pt-2">
-                  <h1 className="font-customBold text-lg text-left mt-2">
-                    {devotion.title}
-                  </h1>
-
-                  <h2 className="font-customBold text-sm text-[#EA9215]">
-                    {/* {devotion.chapter} */}
-                    {devotion.month} {devotion.day}
-                  </h2>
-                </div>
-                <div className="w-[20%]">
-                  <Button
-                    type="button"
-                    className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
-                    size="devotion"
+          {filteredData
+            .slice(0, showAllDevotions ? filteredData.length : 4)
+            .map((devotion, index: number) => (
+              <div
+                key={index}
+                className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+              >
+                {/* devotion Images */}
+                <div className="h-full w-full">
+                  <img
+                    src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
+                    alt="Devotion Image"
+                    className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                     onClick={() => {
                       // open the devotion on click
                       // console.log("clicked");
                       setSelectedDevotion(devotion);
                     }}
-                  >
-                    ክፈት
-                  </Button>
+                  />
+                </div>
+                {/* devotion title and button */}
+                <div className="w-[90%] mx-auto flex justify-between items-center ">
+                  <div className="w-[80%] flex flex-col items-start justify-start pt-2">
+                    <h1 className="font-customBold text-lg text-left mt-2">
+                      {devotion.title}
+                    </h1>
+
+                    <h2 className="font-customBold text-sm text-[#EA9215]">
+                      {/* {devotion.chapter} */}
+                      {devotion.month} {devotion.day}
+                    </h2>
+                  </div>
+                  <div className="w-[20%]">
+                    <Button
+                      type="button"
+                      className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
+                      size="devotion"
+                      onClick={() => {
+                        // open the devotion on click
+                        // console.log("clicked");
+                        setSelectedDevotion(devotion);
+                      }}
+                    >
+                      ክፈት
+                    </Button>
+                  </div>
                 </div>
               </div>
-          </div>
-        ))}
-      </div>
+            ))}
+        </div>
+      ) : isMediumScreen ? (
+        <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-3 w-[90%]  mx-auto pb-4">
+          {filteredData
+            .slice(0, showAllDevotions ? filteredData.length : 6)
+            .map((devotion, index: number) => (
+              <div
+                key={index}
+                className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+              >
+                {/* devotion Images */}
+                <div className="h-full w-full">
+                  <img
+                    src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
+                    alt="Devotion Image"
+                    className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
+                    onClick={() => {
+                      // open the devotion on click
+                      // console.log("clicked");
+                      setSelectedDevotion(devotion);
+                    }}
+                  />
+                </div>
+                {/* devotion title and button */}
+                <div className="w-[90%] mx-auto flex justify-between items-center ">
+                  <div className="w-[80%] flex flex-col items-start justify-start pt-2">
+                    <h1 className="font-customBold text-lg text-left mt-2">
+                      {devotion.title}
+                    </h1>
+
+                    <h2 className="font-customBold text-sm text-[#EA9215]">
+                      {/* {devotion.chapter} */}
+                      {devotion.month} {devotion.day}
+                    </h2>
+                  </div>
+                  <div className="w-[20%]">
+                    <Button
+                      type="button"
+                      className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
+                      size="devotion"
+                      onClick={() => {
+                        // open the devotion on click
+                        // console.log("clicked");
+                        setSelectedDevotion(devotion);
+                      }}
+                    >
+                      ክፈት
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
       ) : (
         <motion.div
-        variants={gridContainerVariants} 
-        initial= "hidden"
-        animate="show"
-                 className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-5 w-[90%]  mx-auto pb-4">
-        {filteredData
-            .slice(0, showAllDevotions ? filteredData.length : 8).map((devotion, index: number) => (
+          variants={gridContainerVariants}
+          initial="hidden"
+          animate="show"
+          className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-5 w-[90%]  mx-auto pb-4"
+        >
+          {filteredData
+            .slice(0, showAllDevotions ? filteredData.length : 8)
+            .map((devotion, index: number) => (
               <motion.div
-                variants={gridSquareVariants
-                }
-                whileHover={{ 
+                variants={gridSquareVariants}
+                whileHover={{
                   scale: 1.1,
                 }}
                 whileTap={{ scale: 0.9 }}
@@ -247,35 +254,37 @@ const PreviousDevotionals = ({
                   bounceDamping: 10,
                   bounceStiffness: 600,
                 }}
-               key={index} className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold">
-            {/* devotion Images */}
-              <div className="h-full w-full">
-                <img
-                  src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
-                  alt="Devotion Image"
-                  className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
-                  onClick={() => {
-                    // open the devotion on click
-                    // console.log("clicked");
-                    setSelectedDevotion(devotion);
-                  }}
-                />
-              </div>
-              {/* devotion title and button */}
-              <div className="w-[90%] mx-auto flex justify-between items-center ">
-                <div className="w-[80%] flex flex-col items-start justify-start pt-2">
-                  <h1 className="font-customBold text-lg text-left mt-2">
-                    {devotion.title}
-                  </h1>
-
-                  <h2 className="font-customBold text-sm text-[#EA9215]">
-                    {/* {devotion.chapter} */}
-                    {devotion.month} {devotion.day}
-                  </h2>
+                key={index}
+                className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+              >
+                {/* devotion Images */}
+                <div className="h-full w-full">
+                  <img
+                    src={`https://ezra-seminary.mybese.tech/images/${devotion.image}`}
+                    alt="Devotion Image"
+                    className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
+                    onClick={() => {
+                      // open the devotion on click
+                      // console.log("clicked");
+                      setSelectedDevotion(devotion);
+                    }}
+                  />
                 </div>
-                <div className="w-[20%]">
-                <motion.button 
-                      whileHover={{ 
+                {/* devotion title and button */}
+                <div className="w-[90%] mx-auto flex justify-between items-center ">
+                  <div className="w-[80%] flex flex-col items-start justify-start pt-2">
+                    <h1 className="font-customBold text-lg text-left mt-2">
+                      {devotion.title}
+                    </h1>
+
+                    <h2 className="font-customBold text-sm text-[#EA9215]">
+                      {/* {devotion.chapter} */}
+                      {devotion.month} {devotion.day}
+                    </h2>
+                  </div>
+                  <div className="w-[20%]">
+                    <motion.button
+                      whileHover={{
                         scale: 1.1,
                         // backgroundColor:  "#C77C12",
                       }}
@@ -284,26 +293,26 @@ const PreviousDevotionals = ({
                         bounceDamping: 10,
                         bounceStiffness: 600,
                       }}
-                    type="button"
-                    className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
-                    // size="devotion"
-                    onClick={() => {
-                      // open the devotion on click
-                      // console.log("clicked");
-                      setSelectedDevotion(devotion);
-                    }}
-                  >
-                    ክፈት
-                  </motion.button>
+                      type="button"
+                      className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
+                      // size="devotion"
+                      onClick={() => {
+                        // open the devotion on click
+                        // console.log("clicked");
+                        setSelectedDevotion(devotion);
+                      }}
+                    >
+                      ክፈት
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-          </motion.div>
-        ))}
-      </motion.div>
+              </motion.div>
+            ))}
+        </motion.div>
       )}
 
-       {/* Button to view all courses */}
-       {showAllDevotions ? (
+      {/* Button to view all courses */}
+      {showAllDevotions ? (
         <div
           className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 md:ml-9"
           onClick={handleViewAllDevotionsClick}

@@ -9,7 +9,7 @@ import store from "./redux/store";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "./pages/user/ErrorPage.js";
 
-// axios.defaults.baseURL = "http://localhost:5100";
+// axios.defaults.baseURL = "https://ezra-seminary.mybese.tech";
 axios.defaults.baseURL = "https://ezra-seminary.mybese.tech";
 axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 

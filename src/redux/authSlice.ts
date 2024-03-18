@@ -5,9 +5,10 @@ interface User {
   role: string | null;
   firstName: string | null;
   lastName: string | null;
-  email: string | null; // Add this line
-  password: string | null; // Add this line
+  email: string | null;
+  password: string | null;
   token: string | null;
+  avatar: string | null; // Add this line
 }
 
 export interface AuthState {
@@ -30,12 +31,21 @@ const authSlice = createSlice({
 
       // Store the token in localStorage
       localStorage.setItem("token", action.payload.token || "");
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
     signup: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+
+      // Assuming the token is part of the payload, update it in local storage as well
+      if (action.payload.token) {
+        localStorage.setItem("token", action.payload.token);
+      }
+
+      // Update the user details in local storage
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.user = null;

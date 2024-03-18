@@ -45,7 +45,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   useEffect(() => {
     if (devotions && devotions.length > 0) {
       const today = new Date();
-      console.log("Today:", today); // Add this line
+      // console.log("Today:", today); // Add this line
 
       const ethiopianDate = toEthiopian(
         today.getFullYear(),
@@ -53,7 +53,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
         today.getDate()
       ); // convert to Ethiopian date
 
-      console.log("Ethiopian date:", ethiopianDate); // Add this line
+      // console.log("Ethiopian date:", ethiopianDate); // Add this line
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [, month, day] = ethiopianDate;
