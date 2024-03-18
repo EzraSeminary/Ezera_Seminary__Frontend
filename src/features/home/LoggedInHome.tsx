@@ -1,4 +1,5 @@
 import { BookOpenText } from "@phosphor-icons/react";
+import bible from "../../assets/bible.png";
 
 const LoggedInHome = () => {
     return (
@@ -42,6 +43,28 @@ const LoggedInHome = () => {
                   All Courses
                 </p>
               </button>
+          </div>
+          <div className="border border-accent-6 mt-4 rounded-lg p-2">
+            <div className="h-48">
+              <img
+                src={bible}
+                className="w-full h-full rounded-lg"
+              />
+            </div>
+            <p className="font-nokia-bold text-accent-6 text-xl mt-2 leading-tight">
+              የአጠናን ዘዴዎች
+            </p>
+            <p
+              className=" text-2xl mt-2 leading-tight">
+              ፍሬያማ የመጽሃፍ ቅዱስ አጠናን ዘዴዎች
+            </p>
+            <button
+              className="bg-accent-6 px-4 py-2 rounded-full w-36 mt-2">
+              <p
+                className="text-primary-1 font-nokia-bold text-sm text-center">
+                ኮርሱን ክፈት
+              </p>
+            </button>
           </div>
         </div>
     )
