@@ -10,6 +10,13 @@ import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+interface APIError extends Error {
+  status: number;
+  data: {
+    error: string;
+  };
+}
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation(); // use the hook
@@ -53,7 +60,7 @@ const Login = () => {
       } catch (err) {
         console.error(err);
         // Show error toast
-        if (err.status === 400) {
+        if ((err as APIError).status === 400) {
           toast.error("Invalid email or password. Please try again.");
         } else {
           toast.error(
@@ -130,7 +137,7 @@ const Login = () => {
             )}
             {error && "data" in error && (
               <div className="text-red-500 text-xl xl:text-sm">
-                {error.data.error}
+                {(error as APIError).data.error}
               </div>
             )}
             <div className="mt-4 flex justify-between gap-7">
