@@ -128,6 +128,11 @@ const Login = () => {
                 {formik.errors.password}
               </div>
             )}
+            {error && "data" in error && (
+              <div className="text-red-500 text-xl xl:text-sm">
+                {error.data.error}
+              </div>
+            )}
             <div className="mt-4 flex justify-between gap-7">
               <div className=" flex gap-2">
                 <input
@@ -164,7 +169,6 @@ const Login = () => {
               <p>Sign Up</p>
             </Link>
           </div>
-          {error && <>{error}</>}
           <div className="text-xs mt-4  xl:text-xl">
             <p>Or signup with</p>
             <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
