@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { UserCircle, XCircle, List } from "@phosphor-icons/react";
@@ -67,7 +68,8 @@ const Header: React.FC = () => {
   return (
     <header className="relative max-w-screen mb-8">
       {/* Header Background Image */}
-      <div className="absolute top-0 z-0 w-full h-16  lg:h-[4.2rem] xl:h-[4.8rem] shadow-xl">
+      <div
+       className="absolute top-0 z-0 w-full h-16  lg:h-[4.2rem] xl:h-[4.8rem] shadow-xl">
         <img
           src={bgImage}
           className="w-full h-full  object-cover"
@@ -77,7 +79,11 @@ const Header: React.FC = () => {
       {/* Header when the scroll is above 20  */}
       <div className="relative z-50 py-2">
         {show && (
-          <div className="fixed top-0  z-0 w-full h-16 lg:h-[4.5rem] xl:h-[5.5rem]   bg-white shadow-xl">
+          <motion.div
+          initial={{ opacity: 0, y: 1 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease:"easeOut", delay: 0.1}}
+           className="fixed top-0  z-0 w-full h-16 lg:h-[4.5rem] xl:h-[5.5rem]   bg-white shadow-xl">
             {/* Header Background Image */}
             {/* <img
               src={bgImage}
@@ -212,7 +218,7 @@ const Header: React.FC = () => {
                 </ul>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
       {/* Header when the scroll is below 20  */}
@@ -220,7 +226,11 @@ const Header: React.FC = () => {
         <div className="absolute top-[0.4rem] md:top-0 xl:top-1   w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[90%] lg:w-[85%] mx-auto">
             {/* Logo */}
-            <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
+            <motion.div
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.2}}
+             className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
               <img
                 src="src/assets/Logo Ion.png"
                 className="w-4  md:w-5  lg:w-6  xl:w-7 "
@@ -231,7 +241,7 @@ const Header: React.FC = () => {
                   <strong>Ezra</strong> Seminary
                 </h3>
               </NavLink>
-            </div>
+            </motion.div>
             {/* Navigation and Logo */}
             <nav>
               {/* MenuBar */}
@@ -261,44 +271,74 @@ const Header: React.FC = () => {
                     : "hidden font-Lato-Regular  cursor-pointer  md:flex md:items-center md:justify-end md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  "
                 }`}
               >
-                <li className="hover:text-accent-6 tracking-wide">
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.3}}
+                 className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/" onClick={closeMenu}>
                     Home
                   </NavLink>
-                </li>
-                <li className="hover:text-accent- tracking-wide">
+                </motion.li>
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.4}}
+                 className="hover:text-accent- tracking-wide">
                   <NavLink to="/courses" onClick={closeMenu}>
                     Courses
                   </NavLink>
-                </li>
-                <li className="hover:text-accent-6 tracking-wide">
+                </motion.li>
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.5}}
+                className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/sabbathSchool" onClick={closeMenu}>
                     Sabbath School
                   </NavLink>
-                </li>
-                <li className="hover:text-accent-6 tracking-wide">
+                </motion.li>
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.6}}
+                className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/devotion" onClick={closeMenu}>
                     Devotion
                   </NavLink>
-                </li>
-                <li className="hover:text-accent-6 tracking-wide">
+                </motion.li>
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
+                className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/aboutUs" onClick={closeMenu}>
                     About Us
                   </NavLink>
-                </li>
-                <li className="hover:text-accent-6 tracking-wide">
+                </motion.li>
+                <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.8}} 
+                
+                className="hover:text-accent-6 tracking-wide">
                   <NavLink to="/contactUs" onClick={closeMenu}>
                     Contact Us
                   </NavLink>
-                </li>
+                </motion.li>
                 {user ? (
-                  <li ref={ref} className="relative">
+                  <motion.li
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease:"easeOut", delay: 0.9}}
+                   ref={ref} className="relative">
                     <div
                       className="flex items-center space-x-2 bg-accent-6 rounded-full px-2 py-1 text-xs1  hover:bg-accent-7 cursor-pointer"
                       onClick={handleAccountClick}
                     >
                       <UserCircle size={25} />
-                      <div className="text-xs  xl:text-lg font-medium text-white tracking-wide">
+                      <div
+                      className="text-xs  xl:text-lg font-medium text-white tracking-wide">
                         {user.firstName}
                       </div>
                     </div>
@@ -325,13 +365,21 @@ const Header: React.FC = () => {
                         </div>
                       </div>
                     )}
-                  </li>
+                  </motion.li>
                 ) : (
                   <>
-                    <li className="hover:text-accent-7 tracking-wide">
+                    <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.9}}
+                     className="hover:text-accent-7 tracking-wide">
                       <NavLink to="/logIn">Log In</NavLink>
-                    </li>
-                    <li className="hover:text-primary-6 text-base ">
+                    </motion.li>
+                    <motion.li
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.95}}
+                      className="hover:text-primary-6 text-base ">
                       <NavLink to="/signup">
                         <button type="button" className=" bg-accent-6 tracking-wide rounded-full font-nokia-bold  w-auto px-2 py-1  lg:px-3 lg:text-lg xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all">
                           Create Account
@@ -343,7 +391,7 @@ const Header: React.FC = () => {
                           Create Account
                         </Button> */}
                       </NavLink>
-                    </li>
+                    </motion.li>
                   </>
                 )}
               </ul>

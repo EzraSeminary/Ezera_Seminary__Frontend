@@ -1,5 +1,6 @@
 import { useState } from 'react';
 // import YouTube from 'react-youtube';
+import { motion } from 'framer-motion';
 import introVideo from "../../videos/Tsegaw-Melak-1.mp4";
 import introVideoTumb from "../../assets/Tsegaw-Melak-2.png";
 import { PlayCircle } from "@phosphor-icons/react";
@@ -58,11 +59,23 @@ const Intro = () => {
           }
         </div>
         <div className="space-y-6 md:w-1/2 text-secondary-6 text-center md:items-center md:p-8">
-          <h2 className="font-nokia-bold text-2xl md:text-3xl   :text-4xl">
+        <motion.h2
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.4}} 
+          className="font-nokia-bold text-2xl md:text-3xl   :text-4xl">
             የእግዚአብሔር ቃል <span className="text-accent-5">የሕይወት እንጀራ</span> ነው!
-          </h2>
-          <hr className="border-accent-5  my-4 w-full md:hidden  lg:block lg:mx-auto lg:w-4/5" />
-          <p className=" font-nokia-light text-xs sm:text-sm lg:text-lg xl:text-2xl md:hidden lg:block">
+          </motion.h2>
+          <motion.hr 
+             initial={{ opacity: 0, y: 100 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, ease:"easeOut", delay: 0.5}} 
+           className="border-accent-5  my-4 w-full md:hidden  lg:block lg:mx-auto lg:w-4/5" />
+             <motion.p 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.6}} 
+          className=" font-nokia-light text-xs sm:text-sm lg:text-lg xl:text-2xl md:hidden lg:block">
             “ልጄ ሆይ፥{" "}
             <span className="text-accent-5 font-nokia-bold">ቃሌን ጠብቅ</span>{" "}
             ትእዛዜንም በአንተ ዘንድ ሸሽግ። ትእዛዜን ጠብቅ{" "}
@@ -70,9 +83,13 @@ const Intro = () => {
             ሕጌንም{" "}
             <span className="font-nokia-bold "> እንደ ዓይንህ ብሌን ጠብቅ፤</span>{" "}
             በጣቶችህ እሰራቸው፤ በልብህ ጽላት ጻፋቸው።” ምሳሌ 7:1-3
-          </p>
+          </motion.p>
         </div>
-        <p className="hidden  pt-4 font-nokia-light w-[70%] mx-auto text-center md:block lg:hidden md:text-sm ">
+        <motion.p 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.7}}  
+        className="hidden  pt-4 font-nokia-light w-[70%] mx-auto text-center md:block lg:hidden md:text-sm ">
           “ልጄ ሆይ፥{" "}
           <span className="text-accent-5 font-nokia-bold">ቃሌን ጠብቅ</span>{" "}
           ትእዛዜንም በአንተ ዘንድ ሸሽግ። ትእዛዜን ጠብቅ{" "}
@@ -80,16 +97,20 @@ const Intro = () => {
           ሕጌንም{" "}
           <span className="font-nokia-bold text-[]"> እንደ ዓይንህ ብሌን ጠብቅ፤</span>{" "}
           በጣቶችህ እሰራቸው፤ በልብህ ጽላት ጻፋቸው።” ምሳሌ 7:1-3
-        </p>
+        </motion.p>
       </div>
-      <div className="hidden  md:block lg:mt-10 text-center">
+      <motion.div 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease:"easeOut", delay: 0.7}}  
+      className="hidden  md:block lg:mt-10 text-center">
         <hr className="border-accent-5 border-2 my-8 mx-auto w-[10%] lg:hidden" />
         <p className=" font-nokia-light text-xs md:text-sm lg:text-lg xl:text-xl text-secondary-6">
           በየዕለቱ <span className="font-nokia-bold"> መጽሃፍ ቅዱስን ለማጥናት </span> ይህንን
           መተግበሪያ <span className="font-nokia-bold text-[]"> በስልክዎት ላይ </span>{" "}
           ይጫኑ እና ይጠቀሙ።
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };
