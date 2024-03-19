@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
@@ -27,6 +28,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [signupMutation, { isLoading, error }] = useSignupMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -144,7 +146,7 @@ const Signup = () => {
             <div className="flex flex-col flex-auto gap-2">
               <label>Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm ${
                   formik.touched.password && formik.errors.password
                     ? "border-red-500"
@@ -162,7 +164,7 @@ const Signup = () => {
             <div className="flex flex-col flex-auto gap-2">
               <label>Confirm Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm ${
                   formik.touched.confirmPassword &&
                   formik.errors.confirmPassword
@@ -179,6 +181,15 @@ const Signup = () => {
                   </div>
                 )}
             </div>
+          </div>
+          <div className=" flex gap-2">
+            <input
+              type="checkbox"
+              className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
+              checked={showPassword}
+              onChange={(e) => setShowPassword(e.target.checked)} // toggle showPassword state when checkbox is clicked
+            />
+            <label>Show Password</label>
           </div>
           <div className="flex gap-2 mt-2">
             <input
