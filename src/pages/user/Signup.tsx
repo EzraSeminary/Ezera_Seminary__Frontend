@@ -3,31 +3,33 @@ import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the u
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
 import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import * as Yup from "yup";
 import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters"),
+  lastName: Yup.string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .test("confirmPassword", "Passwords must match", (value, context) => {
+      return value === context.parent.password;
+    })
+    .required("Confirm password is required"),
+});
 
 const Signup = () => {
   const [signupMutation, { isLoading, error }] = useSignupMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .required("First name is required")
-      .min(2, "First name must be at least 2 characters"),
-    lastName: Yup.string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("Confirm password is required"),
-  });
 
   const formik = useFormik({
     initialValues: {
