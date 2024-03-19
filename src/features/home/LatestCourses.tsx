@@ -97,7 +97,7 @@ const LatestCourses = () => {
               </h2>
               <Link
                 to={`/courses/get/${course._id}`}
-                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:text-white transition-all w-max mx-auto block md:mx-6"
+                className=" text-accent-6 hover:bg-accent-6  font-nokia-bold border-2 border-accent-6 border-opacity-80 rounded-full px-7 py-1 text-xs hover:text-white transition-all w-max mx-auto block md:mx-6"
               >
                 <button type="button">ኮርሱን ክፈት</button>
               </Link>
