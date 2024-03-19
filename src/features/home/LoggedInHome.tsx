@@ -62,7 +62,7 @@ const LoggedInHome = () => {
             <div className="border-b border-accent-6 mt-2 mb-1" />
             <div>
               <p
-                className="text-lg">
+                className="text-sm">
                 ”ስምህ እግዚአብሔር የሆነው አንተ ብቻ፣ በምድር ሁሉ ላይ ልዑል እንደ ሆንህ ይወቁ።“ መዝሙር 83:18
               </p>
             </div>
@@ -83,11 +83,11 @@ const LoggedInHome = () => {
                 className="w-full h-full rounded-lg"
               />
             </div>
-            <p className="font-nokia-bold text-accent-6 text-xl mt-2 leading-tight">
+            <p className="font-nokia-bold text-accent-6 text-lg mt-2 leading-tight">
               የአጠናን ዘዴዎች
             </p>
             <p
-              className=" text-2xl leading-tight">
+              className=" text-xl leading-tight">
               ፍሬያማ የመጽሃፍ ቅዱስ አጠናን ዘዴዎች
             </p>
             <button
@@ -127,7 +127,7 @@ const LoggedInHome = () => {
       መጨረሻ የለሌው አምልኮ
       </h2>
       <div className="border-b border-accent-6 mt-1" />
-      <p className="font-nokia-bold text-xs mt-2 text-secondary-5">
+      <p className="font-nokia-bold text-xs text-secondary-5">
         <div className="flex flex-row items-center">
           {/* <DateConverter
             gregorianDate="2023-05-01"
@@ -147,12 +147,12 @@ const LoggedInHome = () => {
     </div>
   </div>
 </div>
-<div className="flex flex-row justify-between items-center">
+<div className="flex flex-row justify-between items-center mt-4">
   <h2 className="font-nokia-bold text-lg text-secondary-4">
     Discover Devotionals
   </h2>
   <button
-    className="border border-accent-6 px-4 py-1 rounded-lg"
+    className="border border-accent-6 px-4 py-1 rounded-full"
   >
     <span className="font-nokia-bold text-accent-6 text-sm">
       All Devotionals
