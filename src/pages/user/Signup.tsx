@@ -4,42 +4,54 @@ import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the u
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
 import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [signupMutation, { isLoading, error }] = useSignupMutation(); // Use the useSignupMutation hook
-  const dispatch = useDispatch(); // Use useDispatch
-  const navigate = useNavigate(); // Use useNavigate
+  const [signupMutation, { isLoading, error }] = useSignupMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .required("First name is required")
+      .min(2, "First name must be at least 2 characters"),
+    lastName: Yup.string()
+      .required("Last name is required")
+      .min(2, "Last name must be at least 2 characters"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm password is required"),
+  });
 
-    try {
-      const result = await signupMutation({
-        firstName,
-        lastName,
-        email,
-        password,
-      }).unwrap();
-
-      // save the user to local storage
-      localStorage.setItem("user", JSON.stringify(result));
-
-      // update the auth context
-      dispatch(signupAction(result)); // Dispatch the signup action
-
-      navigate("/"); // Navigate to the home page
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const result = await signupMutation(values).unwrap();
+        localStorage.setItem("user", JSON.stringify(result));
+        dispatch(signupAction(result));
+        navigate("/");
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  });
 
   return (
-    
     <div className="flex w-[95%] md:w-[80%] rounded-xl border-2 border-accent-6 mx-auto mt-20 mb-12 xl:mt-28 xl:mb-16  ">
       <div
         className="md:flex flex-col coming-soon bg-cover hidden  md:w-[50%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
@@ -54,7 +66,9 @@ const Signup = () => {
         <p className="text-xl lg:text-3xl w-max">
           መጽሃፍ ቅዱስ እግዚአብሔርን
           <br />
-          <span className="text-3xl lg:text-4xl text-accent-6">በግላችን የምናውቅበት</span>
+          <span className="text-3xl lg:text-4xl text-accent-6">
+            በግላችን የምናውቅበት
+          </span>
           <br />
           ዋነኛው መንገድ ነው።
           <br />
@@ -153,7 +167,9 @@ const Signup = () => {
             </Link>
           </p>
         </div>
-        {error && 'message' in error && <div className="error">{error.message}</div>}
+        {error && "message" in error && (
+          <div className="error">{error.message}</div>
+        )}
         <div className="text-xs mt-4  xl:text-xl">
           <p>Or signup with</p>
           <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl">
