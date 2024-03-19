@@ -68,7 +68,7 @@ const LoggedInHome = () => {
             </div>
           </div>
           <div className="flex flex-row justify-between items-center mt-4 border-t border-secondary-3 pt-4">
-            <p>Continue Studying</p>
+            <p className="text-lg">Continue Studying</p>
             <button
                 className="border border-accent-6 px-4 py-1 rounded-full">
                 <p className="text-accent-6 text-sm">
@@ -80,10 +80,10 @@ const LoggedInHome = () => {
             <div className="h-48">
               <img
                 src={bible}
-                className="w-full h-full rounded-lg"
+                className="w-full h-full object-cover rounded-lg"
               />
             </div>
-            <p className="font-nokia-bold text-accent-6 text-lg mt-2 leading-tight">
+            <p className=" text-accent-6 text-lg mt-2 leading-tight">
               የአጠናን ዘዴዎች
             </p>
             <p
@@ -100,12 +100,12 @@ const LoggedInHome = () => {
           </div>
           <div className="flex flex-row justify-between items-center mt-4">
             <p
-              className="font-nokia-bold text-secondary-4 text-lg">
+              className=" text-secondary-4 text-lg">
               Study this week's SSL
             </p>
             <button
               className="border border-accent-6 px-4 py-1 rounded-full">
-              <p className="font-nokia-bold text-accent-6 text-sm">
+              <p className=" text-accent-6 text-sm">
                 All SSLs
               </p>
             </button>
@@ -116,18 +116,18 @@ const LoggedInHome = () => {
       <img
         src={bible}
         alt="Background"
-        className="w-full h-full rounded-lg"
+        className="w-full h-full object-cover rounded-lg"
       />
     </div>
     <div className="w-65%">
-      <h3 className="font-nokia-bold text-accent-6 text-sm leading-tight">
+      <h3 className=" text-accent-6 text-sm leading-tight">
       መጽሐፈ መዝሙረ ዳዊት
       </h3>
-      <h2 className="font-nokia-bold text-lg leading-tight text-secondary-6">
+      <h2 className=" text-lg leading-tight">
       መጨረሻ የለሌው አምልኮ
       </h2>
       <div className="border-b border-accent-6 mt-1" />
-      <p className="font-nokia-bold text-xs text-secondary-5">
+      <p className="text-xs text-secondary-5">
         <div className="flex flex-row items-center">
           {/* <DateConverter
             gregorianDate="2023-05-01"
@@ -140,7 +140,7 @@ const LoggedInHome = () => {
         </div>
       </p>
       <button className="bg-accent-6 px-4 py-1 rounded-full w-36 mt-1">
-        <span className="text-primary-1 font-nokia-bold text-sm text-center">
+        <span className="text-primary-1 text-sm text-center">
           ትምህርቱን ክፈት
         </span>
       </button>
@@ -148,22 +148,21 @@ const LoggedInHome = () => {
   </div>
 </div>
 <div className="flex flex-row justify-between items-center mt-4">
-  <h2 className="font-nokia-bold text-lg text-secondary-4">
+  <h2 className="text-lg text-secondary-4">
     Discover Devotionals
   </h2>
   <button
     className="border border-accent-6 px-4 py-1 rounded-full"
   >
-    <span className="font-nokia-bold text-accent-6 text-sm">
+    <span className=" text-accent-6 text-sm">
       All Devotionals
     </span>
   </button>
-</div>
-<div className="flex flex-row flex-wrap justify-between mt-4">
+</div><div className="flex flex-row flex-wrap justify-between mt-4">
   {sampleData.slice(0, 4).map((item, index) => (
     <div
       key={index}
-      className="w-[47.5%] h-45 mb-4 rounded-2 overflow-hidden relative"
+      className="w-[47.5%] mb-4 rounded-2 overflow-hidden relative aspect-square"
     >
       <img
         src={item.image}
@@ -174,13 +173,13 @@ const LoggedInHome = () => {
         <ArrowSquareUpRight
           size={32}
           weight="fill"
-          className="text-white self-end m-2"
+          className="text-primary-1 absolute top-0 right-0 m-2"
         />
         <div className="absolute bottom-0 left-0 my-2">
-          <h3 className="font-nokia-bold text-white text-lg mx-2">
+          <h3 className=" text-primary-1 text-lg mx-2">
             {item.title}
           </h3>
-          <p className="font-nokia-bold text-sm mx-2 text-accent-2">
+          <p className="text-sm mx-2 text-accent-2">
             {item.month} {item.day}
           </p>
         </div>
