@@ -88,6 +88,7 @@ const Signup = () => {
               <label>First Name</label>
               <input
                 type="text"
+                maxLength={30}
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm ${
                   formik.touched.firstName && formik.errors.firstName
                     ? "border-red-500"
@@ -106,6 +107,7 @@ const Signup = () => {
               <label>Last Name</label>
               <input
                 type="text"
+                maxLength={30}
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm ${
                   formik.touched.lastName && formik.errors.lastName
                     ? "border-red-500"
