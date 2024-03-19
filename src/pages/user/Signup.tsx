@@ -126,6 +126,7 @@ const Signup = () => {
           <label>Email</label>
           <input
             type="email"
+            maxLength={35}
             className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full lg:w-[50%] xl:text-sm ${
               formik.touched.email && formik.errors.email
                 ? "border-red-500"
