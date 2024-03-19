@@ -11,6 +11,7 @@ import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
 import LoadingPage from "./pages/user/LoadingPage";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
+import LoggedInHome from "./features/home/LoggedInHome";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -87,10 +88,18 @@ function App() {
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {/* Public Routes */}
+
+
           <Route
             path="/"
             element={
-              isAdmin ? <Navigate to="/admin" replace={true} /> : <Home />
+              isAdmin ? (
+                <Navigate to="/admin" replace={true} />
+              ) : user ? (
+                <LoggedInHome /> // Render LoggedInHome if user is logged in
+              ) : (
+                <Home /> // Render Home if user is not logged in
+              )
             }
           />
           <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
