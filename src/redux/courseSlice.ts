@@ -109,6 +109,9 @@ export const courseSlice = createSlice({
     setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
     },
+    togglePublished: (state) => {
+      state.published = !state.published;
+    },
     addChapter: (state) => {
       state.chapters.push({
         chapter: "",
@@ -290,6 +293,7 @@ export const {
   setTitle,
   setDescription,
   setImage,
+  togglePublished,
   addChapter,
   updateChapter,
 

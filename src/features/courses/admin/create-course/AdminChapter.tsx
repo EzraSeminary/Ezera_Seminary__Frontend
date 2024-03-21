@@ -2,7 +2,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ChaptersAdd from "./ChaptersAdd";
-import { selectCourse } from "../../../../redux/courseSlice";
+import { selectCourse, togglePublished } from "../../../../redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -87,8 +87,7 @@ function AdminChapter() {
           </div>
           <div className="flex">
             <button
-              onClick={handleSubmit}
-              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
               style={{ padding: "10px" }}
             >
               <span>Publish</span>
@@ -100,7 +99,7 @@ function AdminChapter() {
             </button>
             <button
               onClick={handleSubmit}
-              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 ml-1 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
               style={{ padding: "10px" }}
             >
               <span>Save</span>
