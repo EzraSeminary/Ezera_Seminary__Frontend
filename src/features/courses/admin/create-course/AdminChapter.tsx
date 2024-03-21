@@ -20,7 +20,7 @@ function AdminChapter() {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", image);
-    formData.append("published", published);
+    formData.append("published", String(published));
     formData.append("chapters", JSON.stringify(chapters));
 
     course.chapters.forEach((chapter, chapterIndex) => {

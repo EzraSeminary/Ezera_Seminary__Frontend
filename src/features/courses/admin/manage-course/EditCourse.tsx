@@ -2,7 +2,7 @@ import useAxiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { selectCourse, setCourse } from "@/redux/courseSlice";
+import { selectCourse, setCourse, togglePublished } from "@/redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
@@ -61,7 +61,7 @@ function EditCourse() {
       formData.append("image", course.image, course.image.name);
     }
     formData.append("chapters", JSON.stringify(course.chapters)); // Convert chapters to JSON string and append it to formData
-    formData.append("published", course.published);
+    formData.append("published", String(course.published));
 
     // Loop through the chapters and slides to append any image files
     course.chapters.forEach((chapter, chapterIndex) => {
@@ -114,6 +114,11 @@ function EditCourse() {
     setShowComponent(true);
   };
 
+  const handlePublish = () => {
+    dispatch(togglePublished());
+    // handleSubmit()
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-full">
@@ -150,8 +155,29 @@ function EditCourse() {
               </p>
               <Pen size={24} className="text-accent-6" />
             </button>
+            {course.published ? (
+              <p className="text-green-700 font-nokia-bold text-sm pl-4">
+                Published
+              </p>
+            ) : (
+              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+                Draft
+              </p>
+            )}
           </div>
-          <div>
+          <div className="flex">
+            <button
+              onClick={handlePublish}
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
+              style={{ padding: "10px" }}
+            >
+              <span>Publish</span>
+              <ArrowSquareOut
+                size={22}
+                weight="fill"
+                className="self-centered text-accent-6"
+              />
+            </button>
             <button
               onClick={handleSubmit}
               className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
