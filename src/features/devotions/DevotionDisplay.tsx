@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
@@ -28,22 +28,25 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   // Explicitly type the useState hook to use Devotion | null
   const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery(); // Fix the argument type
 
-  const ethiopianMonths = [
-    "", // There is no month 0
-    "መስከረም",
-    "ጥቅምት",
-    "ህዳር",
-    "ታህሳስ",
-    "ጥር",
-    "የካቲት",
-    "መጋቢት",
-    "ሚያዝያ",
-    "ግንቦት",
-    "ሰኔ",
-    "ሐምሌ",
-    "ነሐሴ",
-    "ጳጉሜ", // 13th month
-  ];
+  const ethiopianMonths = useMemo(
+    () => [
+      "", // There is no month 0
+      "መስከረም",
+      "ጥቅምት",
+      "ህዳር",
+      "ታህሳስ",
+      "ጥር",
+      "የካቲት",
+      "መጋቢት",
+      "ሚያዝያ",
+      "ግንቦት",
+      "ሰኔ",
+      "ሐምሌ",
+      "ነሐሴ",
+      "ጳጉሜ", // 13th month
+    ],
+    []
+  );
 
   useEffect(() => {
     if (selectedDevotionFromHome) {
