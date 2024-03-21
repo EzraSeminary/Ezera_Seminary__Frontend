@@ -8,7 +8,7 @@ import {
   QuizElement,
   Slide ,
 } from "../../../../redux/courseSlice";
-import AccordionItem from "./Elements/AccordionItem";
+import AccordionItemDisplay from "./Elements/AccordionItemDisplay";
 import { RootState } from "../../../../redux/store";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -242,7 +242,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                 } else if (element.type === "accordion") {
                   const accordionItemsComponent = element.value.map(
                     (accordionItem, index) => (
-                      <AccordionItem
+                      <AccordionItemDisplay
                         key={`${uniqueKey}-accordion-${index}`}
                         title={accordionItem.title}
                         content={accordionItem.content}
