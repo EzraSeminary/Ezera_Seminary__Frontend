@@ -13,12 +13,13 @@ function AdminChapter() {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { title, description, image, chapters } = course;
+    const { title, description, image, chapters, published } = course;
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", image);
+    formData.append("published", published);
     formData.append("chapters", JSON.stringify(chapters));
 
     course.chapters.forEach((chapter, chapterIndex) => {
@@ -75,7 +76,7 @@ function AdminChapter() {
               className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
               style={{ padding: "10px" }}
             >
-              <span>Publish</span>
+              <span>Save</span>
               <ArrowSquareOut
                 size={22}
                 weight="fill"
