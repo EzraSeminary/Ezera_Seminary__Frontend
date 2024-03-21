@@ -44,6 +44,9 @@ const LoggedInHome = () => {
       devotion.month === ethiopianMonth && Number(devotion.day) === day
   );
 
+  // If there's no devotion for today, use the most recent one
+  const latestDevotion = todaysDevotion || devotions[devotions.length - 1];
+
   return (
     <div className="w-90% p-4 font-nokia-bold text-secondary-6">
       <p className="text-2xl  text-accent-6 border-b border-accent-6 pb-2">
