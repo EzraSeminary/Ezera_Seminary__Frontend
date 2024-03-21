@@ -5,37 +5,6 @@ import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
 
-const sampleData = [
-  {
-    _id: "1",
-    title: "Devotion 1",
-    month: "January",
-    day: "1",
-    image: bible,
-  },
-  {
-    _id: "2",
-    title: "Devotion 2",
-    month: "February",
-    day: "15",
-    image: bible,
-  },
-  {
-    _id: "3",
-    title: "Devotion 3",
-    month: "March",
-    day: "22",
-    image: bible,
-  },
-  {
-    _id: "4",
-    title: "Devotion 4",
-    month: "April",
-    day: "10",
-    image: bible,
-  },
-];
-
 const LoggedInHome = () => {
   return (
     <div className="w-90% p-4 font-nokia-bold text-secondary-6">
