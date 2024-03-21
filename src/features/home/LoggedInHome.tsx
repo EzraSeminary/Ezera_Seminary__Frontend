@@ -1,5 +1,5 @@
 // import DateConverter from "../sabbathSchool/DateConverter";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import bible from "../../assets/bible.png";
@@ -52,6 +52,10 @@ const LoggedInHome = () => {
 
   const handleOpenDevotion = () => {
     navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
+  };
+
+  const handleViewDevotion = (devotion: Devotion) => {
+    navigate("/devotion", { state: { selectedDevotion: devotion } });
   };
 
   return (
