@@ -85,7 +85,19 @@ function AdminChapter() {
               </p>
             )}
           </div>
-          <div>
+          <div className="flex">
+            <button
+              onClick={handleSubmit}
+              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
+              style={{ padding: "10px" }}
+            >
+              <span>Publish</span>
+              <ArrowSquareOut
+                size={22}
+                weight="fill"
+                className="self-centered text-accent-6"
+              />
+            </button>
             <button
               onClick={handleSubmit}
               className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
