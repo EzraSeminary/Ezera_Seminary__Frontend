@@ -6,8 +6,9 @@ import {
   Chapter,
   CustomElement,
   QuizElement,
-  Slide,
+  Slide ,
 } from "../../../../redux/courseSlice";
+import AccordionItem from "./Elements/AccordionItem";
 import { RootState } from "../../../../redux/store";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -237,6 +238,22 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                       alt={altText}
                       className="w-[40%] mx-auto"
                     />
+                  );
+                } else if (element.type === "accordion") {
+                  const accordionItemsComponent = element.value.map(
+                    (accordionItem, index) => (
+                      <AccordionItem
+                        key={`${uniqueKey}-accordion-${index}`}
+                        title={accordionItem.title}
+                        content={accordionItem.content}
+                      />
+                    )
+                  );
+                
+                  elementComponent = (
+                    <div className="flex flex-col justify-center items-center w-full">
+                      {accordionItemsComponent}
+                    </div>
                   );
                 }
 

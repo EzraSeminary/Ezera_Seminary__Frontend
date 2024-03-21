@@ -27,6 +27,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const [currentListItem, setCurrentListItem] = useState<string>("");
   const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
   const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
+  const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
+  const [accordionContents, setAccordionContents] = useState<string[]>([]);
 
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
@@ -104,6 +106,46 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setListItems(updatedList);
   };
 
+  const handleAccordionTitleChange = (index: number, text: string) => {
+    setAccordionTitles(
+      accordionTitles.map((title, i) => (i === index ? text : title))
+    );
+  };
+  
+  const handleAccordionContentChange = (index: number, text: string) => {
+    setAccordionContents(
+      accordionContents.map((content, i) => (i === index ? text : content))
+    );
+  };
+  
+  const handleAddAccordionItem = () => {
+    setAccordionTitles([...accordionTitles, '']);
+    setAccordionContents([...accordionContents, '']);
+  };
+
+  const saveAccordionToRedux = () => {
+    if (accordionTitles.length > 0 && accordionContents.length > 0) {
+      const accordionItems = accordionTitles.map((title, index) => ({
+        title,
+        content: accordionContents[index],
+      }));
+  
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: 'accordion',
+          value: accordionItems,
+        })
+      );
+  
+      // Reset accordion state
+      setAccordionTitles([]);
+      setAccordionContents([]);
+    }
+    setCurrentElement('');
+  };
+
   const renderListForm = () => (
     <div className="mt-2">
       <div className="flex flex-row items-center w-[100%] gap-1">
@@ -142,6 +184,50 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           </li>
         ))}
       </ul>
+    </div>
+  );
+  const renderAccordionForm = () => (
+    <div className="mt-2">
+      <div className="flex flex-row items-center w-[100%] gap-1">
+        <PlusCircle
+          onClick={handleAddAccordionItem}
+          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
+          size={24}
+          weight="fill"
+        />
+        <File
+          onClick={saveAccordionToRedux}
+          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
+          size={24}
+          weight="fill"
+        />
+      </div>
+      {accordionTitles.map((title, index) => (
+        <div key={index} className="flex flex-col ">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => handleAccordionTitleChange(index, e.target.value)}
+            placeholder={`Title ${index + 1}`}
+            className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"
+          />
+          <textarea
+            value={accordionContents[index]}
+            onChange={(e) => handleAccordionContentChange(index, e.target.value)}
+            placeholder={`Content ${index + 1}`}
+            className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"
+          />
+          <Trash
+            onClick={() => {
+              setAccordionTitles(accordionTitles.filter((_, i) => i !== index));
+              setAccordionContents(accordionContents.filter((_, i) => i !== index));
+            }}
+            className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1"
+            weight="fill"
+            size={22}
+          />
+        </div>
+      ))}
     </div>
   );
   const renderSlideForm = () => (
@@ -367,6 +453,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           <option value="img">Image</option>
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
+          <option value="accordion">Accordion</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -379,6 +466,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
+      {currentElement === "accordion" && renderAccordionForm()}
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
