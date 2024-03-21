@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ChaptersAdd from "./ChaptersAdd";
 import { selectCourse, togglePublished } from "../../../../redux/courseSlice";
@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function AdminChapter() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const course = useSelector(selectCourse);
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,6 +57,11 @@ function AdminChapter() {
       });
   };
 
+  const handlePublish = () => {
+    dispatch(togglePublished());
+    // handleSubmit()
+  };
+
   return (
     <>
       <ToastContainer />
@@ -87,6 +93,7 @@ function AdminChapter() {
           </div>
           <div className="flex">
             <button
+              onClick={handlePublish}
               className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
               style={{ padding: "10px" }}
             >
