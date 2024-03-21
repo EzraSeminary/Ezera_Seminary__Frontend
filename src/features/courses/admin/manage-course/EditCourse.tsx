@@ -33,6 +33,7 @@ function EditCourse() {
               description: res.data.description,
               image: res.data.image,
               chapters: res.data.chapters,
+              published: res.data.published,
             })
           );
           console.log(res.data);
@@ -60,6 +61,7 @@ function EditCourse() {
       formData.append("image", course.image, course.image.name);
     }
     formData.append("chapters", JSON.stringify(course.chapters)); // Convert chapters to JSON string and append it to formData
+    formData.append("published", course.published);
 
     // Loop through the chapters and slides to append any image files
     course.chapters.forEach((chapter, chapterIndex) => {
