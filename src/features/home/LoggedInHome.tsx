@@ -6,6 +6,44 @@ import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
 
 const LoggedInHome = () => {
+  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+  const ethiopianMonths = [
+    "", // There is no month 0
+    "መስከረም",
+    "ጥቅምት",
+    "ህዳር",
+    "ታህሳስ",
+    "ጥር",
+    "የካቲት",
+    "መጋቢት",
+    "ሚያዝያ",
+    "ግንቦት",
+    "ሰኔ",
+    "ሐምሌ",
+    "ነሐሴ",
+    "ጳጉሜ", // 13th month
+  ];
+
+  if (isLoading) return "Loading...";
+  if (error) return `Error: ${(error as Error).message}`;
+
+  if (!devotions || devotions.length === 0) {
+    return <div>No devotions available</div>;
+  }
+
+  const today = new Date();
+  const ethiopianDate = toEthiopian(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    today.getDate()
+  );
+  const [, month, day] = ethiopianDate;
+  const ethiopianMonth = ethiopianMonths[month];
+  const todaysDevotion = devotions.find(
+    (devotion) =>
+      devotion.month === ethiopianMonth && Number(devotion.day) === day
+  );
+
   return (
     <div className="w-90% p-4 font-nokia-bold text-secondary-6">
       <p className="text-2xl  text-accent-6 border-b border-accent-6 pb-2">
