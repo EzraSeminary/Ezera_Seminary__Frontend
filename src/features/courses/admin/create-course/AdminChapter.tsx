@@ -61,15 +61,30 @@ function AdminChapter() {
       <ToastContainer />
       <div className="w-full">
         <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
-          <button className="font-nokia-bold text-accent-6 flex flex-row gap-2 hover:text-accent-7 transition-all">
+          <div className="flex items-center">
             <Link
               to="/admin/courses/create"
-              className="flex flex-row gap-2 items-center justify-center mt-3"
+              className="ml-3 flex items-center bg-gray-200 rounded-3xl px-4 py-1 border hover:border-gray-400 transition-all"
             >
-              <ArrowCircleLeft weight="fill" size={24} />{" "}
-              <span>Back to course</span>
+              <ArrowCircleLeft
+                weight="fill"
+                size={24}
+                className="text-accent-6"
+              />{" "}
+              <p className="text-accent-6 font-nokia-bold text-sm pl-4">
+                {course.title}
+              </p>
             </Link>
-          </button>
+            {course.published ? (
+              <p className="text-green-700 font-nokia-bold text-sm pl-4">
+                Published
+              </p>
+            ) : (
+              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+                Draft
+              </p>
+            )}
+          </div>
           <div>
             <button
               onClick={handleSubmit}
