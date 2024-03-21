@@ -60,11 +60,11 @@ const LoggedInHome = () => {
           </button>
         </div>
         <div className="border-b border-accent-6 mt-2 mb-1" />
-        <div>
-          <p className="text-sm">
-            ”ስምህ እግዚአብሔር የሆነው አንተ ብቻ፣ በምድር ሁሉ ላይ ልዑል እንደ ሆንህ ይወቁ።“ መዝሙር 83:18
-          </p>
-        </div>
+        {todaysDevotion && (
+          <div>
+            <p className="text-sm">{todaysDevotion.verse}</p>
+          </div>
+        )}
       </div>
       <div className="flex flex-row justify-between items-center mt-4 border-t border-secondary-3 pt-4">
         <p className="text-lg">Continue Studying</p>
@@ -132,7 +132,7 @@ const LoggedInHome = () => {
         </button>
       </div>
       <div className="flex flex-row flex-wrap justify-between mt-4">
-        {sampleData.slice(0, 4).map((item, index) => (
+        {devotions.slice(0, 4).map((item, index) => (
           <div
             key={index}
             className="w-[47.5%] mb-4 rounded-2 overflow-hidden relative aspect-square"
