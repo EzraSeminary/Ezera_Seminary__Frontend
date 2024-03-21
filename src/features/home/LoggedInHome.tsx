@@ -1,6 +1,6 @@
 // import DateConverter from "../sabbathSchool/DateConverter";
 // import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import bible from "../../assets/bible.png";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
@@ -27,7 +27,6 @@ const LoggedInHome = () => {
   ];
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   if (isLoading) return "Loading...";
   if (error) return `Error: ${(error as Error).message}`;
