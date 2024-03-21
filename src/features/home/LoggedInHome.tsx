@@ -2,7 +2,6 @@
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import bible from "../../assets/bible.png";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
 
 const LoggedInHome = () => {
