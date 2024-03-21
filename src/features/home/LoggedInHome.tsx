@@ -25,6 +25,8 @@ const LoggedInHome = () => {
     "ጳጉሜ", // 13th month
   ];
 
+  const navigate = useNavigate();
+
   if (isLoading) return "Loading...";
   if (error) return `Error: ${(error as Error).message}`;
 
@@ -48,6 +50,10 @@ const LoggedInHome = () => {
   // If there's no devotion for today, use the most recent one
   const latestDevotion = todaysDevotion || devotions[0];
 
+  const handleOpenDevotion = () => {
+    navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
+  };
+
   return (
     <div className="w-90% p-4 font-nokia-bold text-secondary-6">
       <p className="text-2xl  text-accent-6 border-b border-accent-6 pb-2">
@@ -59,7 +65,10 @@ const LoggedInHome = () => {
             <BookOpenText size={32} weight="bold" className="text-accent-6" />
             <p className=" font-nokia-bold text-lg">የዕለቱ ጥቅስ</p>
           </div>
-          <button className="bg-accent-6 px-4 py-1 rounded-full">
+          <button
+            className="bg-accent-6 px-4 py-1 rounded-full"
+            onClick={handleOpenDevotion}
+          >
             <p className="text-primary-1 text-sm">Open</p>
           </button>
         </div>
