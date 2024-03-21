@@ -1,10 +1,11 @@
 // import DateConverter from "../sabbathSchool/DateConverter";
 // import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import bible from "../../assets/bible.png";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
+import { Devotion } from "@/redux/types";
 
 const LoggedInHome = () => {
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
@@ -26,6 +27,7 @@ const LoggedInHome = () => {
   ];
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   if (isLoading) return "Loading...";
   if (error) return `Error: ${(error as Error).message}`;
@@ -142,17 +144,12 @@ const LoggedInHome = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between items-center mt-4">
-        <h2 className="text-lg text-secondary-4">Discover Devotionals</h2>
-        <button className="border border-accent-6 px-4 py-1 rounded-full">
-          <span className=" text-accent-6 text-sm">All Devotionals</span>
-        </button>
-      </div>
       <div className="flex flex-row flex-wrap justify-between mt-4">
         {devotions.slice(0, 4).map((devotion, index) => (
           <div
             key={index}
             className="w-[47.5%] mb-4 rounded-2 overflow-hidden relative aspect-square"
+            onClick={() => handleViewDevotion(devotion)}
           >
             <img
               src={
