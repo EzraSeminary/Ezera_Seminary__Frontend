@@ -135,14 +135,17 @@ const LoggedInHome = () => {
         </button>
       </div>
       <div className="flex flex-row flex-wrap justify-between mt-4">
-        {devotions.slice(0, 4).map((item, index) => (
+        {devotions.slice(0, 4).map((devotion, index) => (
           <div
             key={index}
             className="w-[47.5%] mb-4 rounded-2 overflow-hidden relative aspect-square"
           >
             <img
-              src={item.image}
-              alt={item.title}
+              src={
+                `https://ezra-seminary.mybese.tech/images/${devotion.image}` ||
+                `${bible}`
+              }
+              alt={devotion.title}
               className="w-full h-full object-cover rounded-lg"
             />
             <div className="absolute inset-0 bg-accent-10 bg-opacity-60 rounded-lg">
@@ -152,9 +155,11 @@ const LoggedInHome = () => {
                 className="text-primary-1 absolute top-0 right-0 m-2"
               />
               <div className="absolute bottom-0 left-0 my-2">
-                <h3 className=" text-primary-1 text-lg mx-2">{item.title}</h3>
+                <h3 className=" text-primary-1 text-lg mx-2">
+                  {devotion.title}
+                </h3>
                 <p className="text-sm mx-2 text-accent-2">
-                  {item.month} {item.day}
+                  {devotion.month} {devotion.day}
                 </p>
               </div>
             </div>
