@@ -45,7 +45,7 @@ const LoggedInHome = () => {
   );
 
   // If there's no devotion for today, use the most recent one
-  const latestDevotion = todaysDevotion || devotions[devotions.length - 1];
+  const latestDevotion = todaysDevotion || devotions[0];
 
   return (
     <div className="w-90% p-4 font-nokia-bold text-secondary-6">
@@ -63,9 +63,9 @@ const LoggedInHome = () => {
           </button>
         </div>
         <div className="border-b border-accent-6 mt-2 mb-1" />
-        {todaysDevotion && (
+        {latestDevotion && (
           <div>
-            <p className="text-sm">{todaysDevotion.verse}</p>
+            <p className="text-lg">{latestDevotion.verse}</p>
           </div>
         )}
       </div>
