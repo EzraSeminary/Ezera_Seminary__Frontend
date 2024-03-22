@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
 import Categories from "../../features/courses/user/Categories";
@@ -11,9 +12,7 @@ import { toEthiopian } from "ethiopian-date";
 export interface DevotionDisplayProps {
   showControls: boolean;
   devotions: Devotion[] | undefined; // Add this line
-  selectedDevotion: Devotion | null;
   toggleForm: () => void; // Add this line
-  setSelectedDevotion: React.Dispatch<React.SetStateAction<Devotion | null>>;
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
@@ -23,42 +22,43 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
   );
+  const location = useLocation();
+  const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
+
+  // Explicitly type the useState hook to use Devotion | null
   const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery(); // Fix the argument type
 
-  const ethiopianMonths = [
-    "", // There is no month 0
-    "መስከረም",
-    "ጥቅምት",
-    "ህዳር",
-    "ታህሳስ",
-    "ጥር",
-    "የካቲት",
-    "መጋቢት",
-    "ሚያዝያ",
-    "ግንቦት",
-    "ሰኔ",
-    "ሐምሌ",
-    "ነሐሴ",
-    "ጳጉሜ", // 13th month
-  ];
+  const ethiopianMonths = useMemo(
+    () => [
+      "", // There is no month 0
+      "መስከረም",
+      "ጥቅምት",
+      "ህዳር",
+      "ታህሳስ",
+      "ጥር",
+      "የካቲት",
+      "መጋቢት",
+      "ሚያዝያ",
+      "ግንቦት",
+      "ሰኔ",
+      "ሐምሌ",
+      "ነሐሴ",
+      "ጳጉሜ", // 13th month
+    ],
+    []
+  );
 
   useEffect(() => {
-    if (devotions && devotions.length > 0) {
+    if (selectedDevotionFromHome) {
+      setSelectedDevotion(selectedDevotionFromHome);
+    } else if (devotions && devotions.length > 0) {
       const today = new Date();
-      // console.log("Today:", today); // Add this line
-
       const ethiopianDate = toEthiopian(
         today.getFullYear(),
         today.getMonth() + 1,
         today.getDate()
-      ); // convert to Ethiopian date
-
-      // console.log("Ethiopian date:", ethiopianDate); // Add this line
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      );
       const [, month, day] = ethiopianDate;
-
-      // Convert the month number to its Ethiopian name
       const ethiopianMonth = ethiopianMonths[month];
 
       // Find today's devotion
@@ -70,7 +70,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       // If there's no devotion for today, use the most recent one
       setSelectedDevotion(todaysDevotion || devotions[0]);
     }
-  }, [devotions]);
+  }, [devotions, selectedDevotionFromHome, ethiopianMonths]);
 
   useEffect(() => {
     refetch();

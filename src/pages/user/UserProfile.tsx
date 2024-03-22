@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import { ArrowLeft } from "@phosphor-icons/react";
-import mehari from "@/assets/mehari.jpg";
+import mehari from "@/assets/avatar.png";
 
 const UserProfile = () => {
   const navigate = useNavigate();

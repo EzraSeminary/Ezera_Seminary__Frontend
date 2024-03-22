@@ -20,10 +20,6 @@ const ManageDevotion = () => {
       <DevotionDisplay
         showControls={true}
         devotions={undefined}
-        selectedDevotion={null}
-        setSelectedDevotion={function (): void {
-          throw new Error("Function not implemented.");
-        }}
         toggleForm={toggleForm} // pass the toggleForm function as a prop
       />
       {showForm && <DevotionForm />}

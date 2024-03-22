@@ -176,6 +176,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.title}
               onChange={handleChange}
               required
+              maxLength={30}
             />
           </div>
           <div className="space-y-1 text-sm text-accent-6">
@@ -188,6 +189,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.chapter}
               onChange={handleChange}
               required
+              maxLength={30}
             />
           </div>
           <div className="space-y-1 text-sm text-accent-6">
@@ -200,6 +202,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.verse}
               onChange={handleChange}
               required
+              maxLength={150}
             />
           </div>
           <AddParagraph
@@ -216,6 +219,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.prayer}
               onChange={handleChange}
               required
+              maxLength={250}
             />
           </div>
           <div className="flex justify-between items-center">
