@@ -57,7 +57,7 @@ function AdminChapter() {
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    handleSubmit();
+    // handleSubmit();
   };
 
   return (
