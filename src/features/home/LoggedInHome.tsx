@@ -1,3 +1,6 @@
+// import DateConverter from "../sabbathSchool/DateConverter";
+// import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import bible from "../../assets/bible.png";
@@ -138,6 +141,7 @@ const LoggedInHome = () => {
             መጋቢት 6 - መጋቢት 12
             {/* <div className="flex flex-row items-center"> */}
             {/* <DateConverter
+
             gregorianDate="2023-05-01"
           />
           <span className="font-nokia-bold text-secondary-5"> - </span>
@@ -207,6 +211,7 @@ const LoggedInHome = () => {
           </motion.div>
         ))}
       </motion.div>
+
     </div>
   );
 };

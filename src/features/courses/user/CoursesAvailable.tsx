@@ -59,7 +59,10 @@ function CoursesAvailable() {
     /* Filter the data based on the search term */
   }
   const filteredData = reversedCourses.filter((course) => {
-    return course.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return (
+      course.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      course.published // Only include courses where published is true
+    );
   });
 
   {

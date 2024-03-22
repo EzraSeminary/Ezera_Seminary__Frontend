@@ -7,7 +7,7 @@ import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import mehari from "@/assets/mehari.jpg";
+import mehari from "@/assets/avatar.png";
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
