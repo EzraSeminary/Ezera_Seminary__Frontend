@@ -1,24 +1,26 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ChaptersAdd from "./ChaptersAdd";
-import { selectCourse } from "../../../../redux/courseSlice";
+import { selectCourse, togglePublished } from "../../../../redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function AdminChapter() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const course = useSelector(selectCourse);
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const { title, description, image, chapters } = course;
+  const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+    event?.preventDefault();
+    const { title, description, image, chapters, published } = course;
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", image);
+    formData.append("published", String(published));
     formData.append("chapters", JSON.stringify(chapters));
 
     course.chapters.forEach((chapter, chapterIndex) => {
@@ -35,8 +37,6 @@ function AdminChapter() {
       });
     });
 
-    toast.success(`Course "${course.title}" has been created!`);
-
     axios
       .post("/course/create", formData, {
         headers: {
@@ -45,14 +45,19 @@ function AdminChapter() {
       })
       .then((res) => {
         console.log(res);
-        toast.success("Course published successfully!");
+        toast.success(`Course "${course.title}" has been created!`);
         navigate("/admin/course/edit");
         window.location.reload();
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Course publication failed. Please try again.");
+        toast.error("Course creation failed. Please try again.");
       });
+  };
+
+  const handlePublish = () => {
+    dispatch(togglePublished());
+    // handleSubmit();
   };
 
   return (
@@ -60,22 +65,53 @@ function AdminChapter() {
       <ToastContainer />
       <div className="w-full">
         <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
-          <button className="font-nokia-bold text-accent-6 flex flex-row gap-2 hover:text-accent-7 transition-all">
+          <div className="flex items-center">
             <Link
               to="/admin/courses/create"
-              className="flex flex-row gap-2 items-center justify-center mt-3"
+              className="ml-3 flex items-center bg-gray-200 rounded-3xl px-4 py-1 border hover:border-gray-400 transition-all"
             >
-              <ArrowCircleLeft weight="fill" size={24} />{" "}
-              <span>Back to course</span>
+              <ArrowCircleLeft
+                weight="fill"
+                size={24}
+                className="text-accent-6"
+              />{" "}
+              <p className="text-accent-6 font-nokia-bold text-sm pl-4">
+                {course.title}
+              </p>
             </Link>
-          </button>
-          <div>
+            {course.published ? (
+              <p className="text-green-700 font-nokia-bold text-sm pl-4">
+                Published
+              </p>
+            ) : (
+              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+                Draft
+              </p>
+            )}
+          </div>
+          <div className="flex">
             <button
-              onClick={handleSubmit}
-              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
+              onClick={handlePublish}
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
               style={{ padding: "10px" }}
             >
-              <span>Publish</span>
+              {!course.published ? (
+                <span>Publish</span>
+              ) : (
+                <span>Unpublish</span>
+              )}
+              <ArrowSquareOut
+                size={22}
+                weight="fill"
+                className="self-centered text-accent-6"
+              />
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 ml-1 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
+              style={{ padding: "10px" }}
+            >
+              <span>Save</span>
               <ArrowSquareOut
                 size={22}
                 weight="fill"

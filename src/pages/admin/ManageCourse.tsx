@@ -154,9 +154,23 @@ function ManageCourse() {
                     <h2 className="text-secondary-6 text-xl font-nokia-bold w-[90%] truncate">
                       {course.title}
                     </h2>
-                    <p className="text-secondary-5 text-xs font-nokia-bold   w-[100%]  line-clamp-3  text-justify">
+                    <p className="text-secondary-5 text-xs font-nokia-bold w-[100%] line-clamp-3 text-justify">
                       {course.description}
                     </p>
+                    <div className="flex justify-between">
+                      <p className="text-secondary-6 text-xs font-nokia-bold line-clamp-3">
+                        {course.chapters.length} Chapter
+                      </p>
+                      {course.published ? (
+                        <p className="text-green-700 font-nokia-bold text-xs bg-secondary-1 rounded-3xl px-2">
+                          Published
+                        </p>
+                      ) : (
+                        <p className="text-secondary-6 font-nokia-bold text-xs bg-secondary-2 rounded-3xl px-2">
+                          Draft
+                        </p>
+                      )}
+                    </div>
                     <hr className="border-accent-5 border-1 w-[100%] " />
                     <div className="flex justify-between">
                       <Link
