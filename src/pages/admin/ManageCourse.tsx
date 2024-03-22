@@ -162,11 +162,11 @@ function ManageCourse() {
                         {course.chapters.length} Chapter
                       </p>
                       {course.published ? (
-                        <p className="text-green-700 font-nokia-bold text-xs">
+                        <p className="text-green-700 font-nokia-bold text-xs bg-secondary-1 rounded-3xl px-2">
                           Published
                         </p>
                       ) : (
-                        <p className="text-secondary-6 font-nokia-bold text-xs">
+                        <p className="text-secondary-6 font-nokia-bold text-xs bg-secondary-2 rounded-3xl px-2">
                           Draft
                         </p>
                       )}
