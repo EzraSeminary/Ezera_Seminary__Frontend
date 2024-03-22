@@ -12,8 +12,8 @@ function AdminChapter() {
   const dispatch = useDispatch();
   const course = useSelector(selectCourse);
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+    event?.preventDefault();
     const { title, description, image, chapters, published } = course;
 
     const formData = new FormData();
@@ -37,8 +37,6 @@ function AdminChapter() {
       });
     });
 
-    toast.success(`Course "${course.title}" has been created!`);
-
     axios
       .post("/course/create", formData, {
         headers: {
@@ -47,19 +45,19 @@ function AdminChapter() {
       })
       .then((res) => {
         console.log(res);
-        toast.success("Course published successfully!");
+        toast.success(`Course "${course.title}" has been created!`);
         navigate("/admin/course/edit");
         window.location.reload();
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Course publication failed. Please try again.");
+        toast.error("Course creation failed. Please try again.");
       });
   };
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    // handleSubmit()
+    handleSubmit();
   };
 
   return (
