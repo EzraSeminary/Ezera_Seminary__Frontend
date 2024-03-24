@@ -1,10 +1,11 @@
-// import DateConverter from "../sabbathSchool/DateConverter";
-// import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import bible from "../../assets/bible.png";
 import bibleNew from "../../assets/about-img.jpg";
+import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { toEthiopian } from "ethiopian-date";
+import { Devotion } from "@/redux/types";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -21,38 +22,57 @@ const gridSquareVariants = {
   show: { opacity: 1 },
 };
 
-const sampleData = [
-  {
-    _id: "1",
-    title: "Devotion 1",
-    month: "January",
-    day: "1",
-    image: bible,
-  },
-  {
-    _id: "2",
-    title: "Devotion 2",
-    month: "February",
-    day: "15",
-    image: bible,
-  },
-  {
-    _id: "3",
-    title: "Devotion 3",
-    month: "March",
-    day: "22",
-    image: bible,
-  },
-  {
-    _id: "4",
-    title: "Devotion 4",
-    month: "April",
-    day: "10",
-    image: bible,
-  },
-];
-
 const LoggedInHome = () => {
+  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+  const ethiopianMonths = [
+    "", // There is no month 0
+    "መስከረም",
+    "ጥቅምት",
+    "ህዳር",
+    "ታህሳስ",
+    "ጥር",
+    "የካቲት",
+    "መጋቢት",
+    "ሚያዝያ",
+    "ግንቦት",
+    "ሰኔ",
+    "ሐምሌ",
+    "ነሐሴ",
+    "ጳጉሜ", // 13th month
+  ];
+
+  const navigate = useNavigate();
+
+  if (isLoading) return "Loading...";
+  if (error) return `Error: ${(error as Error).message}`;
+
+  if (!devotions || devotions.length === 0) {
+    return <div>No devotions available</div>;
+  }
+
+  const today = new Date();
+  const ethiopianDate = toEthiopian(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    today.getDate()
+  );
+  const [, month, day] = ethiopianDate;
+  const ethiopianMonth = ethiopianMonths[month];
+  const todaysDevotion = devotions.find(
+    (devotion) =>
+      devotion.month === ethiopianMonth && Number(devotion.day) === day
+  );
+
+  // If there's no devotion for today, use the most recent one
+  const latestDevotion = todaysDevotion || devotions[0];
+
+  const handleOpenDevotion = () => {
+    navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
+  };
+
+  const handleViewDevotion = (devotion: Devotion) => {
+    navigate("/devotion", { state: { selectedDevotion: devotion } });
+  };
   return (
     <div className="w-[90%] py-12 space-y-6 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%]">
       <p className="text-xl lg:text-3xl  text-accent-6 border-b border-accent-6 pb-2">
@@ -211,7 +231,6 @@ const LoggedInHome = () => {
           </motion.div>
         ))}
       </motion.div>
-
     </div>
   );
 };
