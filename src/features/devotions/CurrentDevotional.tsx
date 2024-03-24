@@ -291,7 +291,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
                 className="flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
-                // onClick={handleDownload}
+                onClick={handleDownload}
               >
                 ምስሉን አውርድ
                 <DownloadSimple
