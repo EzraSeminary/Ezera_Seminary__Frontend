@@ -1,10 +1,11 @@
-// import DateConverter from "../sabbathSchool/DateConverter";
-// import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import bible from "../../assets/bible.png";
 import bibleNew from "../../assets/about-img.jpg";
+import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { toEthiopian } from "ethiopian-date";
+import { Devotion } from "@/redux/types";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -21,38 +22,58 @@ const gridSquareVariants = {
   show: { opacity: 1 },
 };
 
-const sampleData = [
-  {
-    _id: "1",
-    title: "Devotion 1",
-    month: "January",
-    day: "1",
-    image: bible,
-  },
-  {
-    _id: "2",
-    title: "Devotion 2",
-    month: "February",
-    day: "15",
-    image: bible,
-  },
-  {
-    _id: "3",
-    title: "Devotion 3",
-    month: "March",
-    day: "22",
-    image: bible,
-  },
-  {
-    _id: "4",
-    title: "Devotion 4",
-    month: "April",
-    day: "10",
-    image: bible,
-  },
-];
-
 const LoggedInHome = () => {
+  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+  const ethiopianMonths = [
+    "", // There is no month 0
+    "መስከረም",
+    "ጥቅምት",
+    "ህዳር",
+    "ታህሳስ",
+    "ጥር",
+    "የካቲት",
+    "መጋቢት",
+    "ሚያዝያ",
+    "ግንቦት",
+    "ሰኔ",
+    "ሐምሌ",
+    "ነሐሴ",
+    "ጳጉሜ", // 13th month
+  ];
+
+  const navigate = useNavigate();
+
+  if (isLoading) return "Loading...";
+  if (error) return `Error: ${(error as Error).message}`;
+
+  if (!devotions || devotions.length === 0) {
+    return <div>No devotions available</div>;
+  }
+
+  const today = new Date();
+  const ethiopianDate = toEthiopian(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    today.getDate()
+  );
+  const [, month, day] = ethiopianDate;
+  const ethiopianMonth = ethiopianMonths[month];
+  const todaysDevotion = devotions.find(
+    (devotion) =>
+      devotion.month === ethiopianMonth && Number(devotion.day) === day
+  );
+
+  // If there's no devotion for today, use the most recent one
+  const latestDevotion = todaysDevotion || devotions[0];
+
+  const handleOpenDevotion = () => {
+    navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
+  };
+
+  const handleViewDevotion = (devotion: Devotion) => {
+    navigate("/devotion", { state: { selectedDevotion: devotion } });
+  };
+
   return (
     <div className="w-[90%] py-12 space-y-6 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%]">
       <p className="text-xl lg:text-3xl  text-accent-6 border-b border-accent-6 pb-2">
@@ -69,15 +90,16 @@ const LoggedInHome = () => {
               <BookOpenText size={32} weight="bold" className="text-accent-6" />
               <p className=" font-nokia-bold text-lg xl:text-xl">የዕለቱ ጥቅስ</p>
             </div>
-            <button className="bg-accent-6 px-4 py-1 rounded-full">
+            <button
+              className="bg-accent-6 px-4 py-1 rounded-full"
+              onClick={handleOpenDevotion}
+            >
               <p className="text-primary-1 text-sm xl:text-lg">Open</p>
             </button>
           </div>
           <div className="border-b border-accent-6 mt-2 mb-1" />
           <div>
-            <p className="text-sm xl:text-lg">
-              ”ስምህ እግዚአብሔር የሆነው አንተ ብቻ፣ በምድር ሁሉ ላይ ልዑል እንደ ሆንህ ይወቁ።“ መዝሙር 83:18
-            </p>
+            <p className="text-sm xl:text-lg">{latestDevotion.verse}</p>
           </div>
         </div>
       </div>
@@ -121,8 +143,6 @@ const LoggedInHome = () => {
           <p className=" text-accent-6 text-sm">All SSLs</p>
         </button>
       </div>
-      {/* <div className="rounded-2 overflow-hidden"> */}
-      {/* contensts */}
       <div className="flex flex-row shadow-2xl border border-accent-6 mt-4 rounded-lg p-4 gap-4 lg:gap-6  lg:w-[90%] mx-auto">
         <div className="h-auto w-32 md:w-[35%] lg:h-52  xl:h-64 ">
           <img
@@ -139,33 +159,27 @@ const LoggedInHome = () => {
           <div className="border-b border-accent-6" />
           <p className="text-xs xl:text-sm text-secondary-5">
             መጋቢት 6 - መጋቢት 12
-            {/* <div className="flex flex-row items-center"> */}
-            {/* <DateConverter
-
-            gregorianDate="2023-05-01"
-          />
-          <span className="font-nokia-bold text-secondary-5"> - </span>
-          <DateConverter
-            gregorianDate="2023-05-07"
-          /> */}
-            {/* <p>መጋቢት 6 - መጋቢት 12</p>
-            </div> */}
           </p>
-          <button className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36">
+          <button
+            className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36"
+            onClick={() => handleViewDevotion(devotions[0])}
+          >
             <span className="text-primary-1 text-sm  text-center">
               ትምህርቱን ክፈት
             </span>
           </button>
         </div>
       </div>
-      {/* </div> */}
 
       {/* Discover Devotionals */}
       <div className="flex flex-row justify-between items-center mt-4">
         <h2 className=" text-secondary-6 text-lg lg:text-xl xl:text-2xl">
           Discover Devotionals
         </h2>
-        <button className="border border-accent-6 px-4 py-1 rounded-full">
+        <button
+          className="border border-accent-6 px-4 py-1 rounded-full"
+          onClick={() => handleViewDevotion(devotions[0])}
+        >
           <span className=" text-accent-6 text-sm">All Devotionals</span>
         </button>
       </div>
@@ -175,7 +189,7 @@ const LoggedInHome = () => {
         animate="show"
         className="flex flex-row flex-wrap justify-between mt-4 lg:w-[90%] mx-auto"
       >
-        {sampleData.slice(0, 4).map((item, index) => (
+        {devotions.slice(0, 4).map((devotion, index) => (
           <motion.div
             variants={gridSquareVariants}
             whileHover={{
@@ -188,10 +202,14 @@ const LoggedInHome = () => {
             }}
             key={index}
             className=" shadow-2xl w-[48%] gap-2 md:w-[49%] md:gap-3 lg:w-[32.5%] lg:gap-2 xl:gap-3 xl:w-[32.5%] mb-4 rounded-2 overflow-hidden relative cursor-pointer"
+            onClick={() => handleViewDevotion(devotion)}
           >
             <img
-              src={item.image}
-              alt={item.title}
+              src={
+                `https://ezra-seminary.mybese.tech/images/${devotion.image}` ||
+                `${bible}`
+              }
+              alt={devotion.title}
               className="w-full h-full md:h-auto lg:h-48 xl:h-64 object-cover rounded-lg"
             />
             <div className="absolute inset-0 h-full bg-accent-10 bg-opacity-60 rounded-lg">
@@ -201,17 +219,16 @@ const LoggedInHome = () => {
               />
               <div className="absolute bottom-0 left-0 my-2 md:top-[65%] lg:top-[70%] xl:top-[73%]">
                 <h3 className=" text-primary-1 text-sm xl:text-lg mx-2">
-                  {item.title}
+                  {devotion.title}
                 </h3>
                 <p className="text-xs xl:text-sm mx-2 text-accent-2">
-                  {item.month} {item.day}
+                  {devotion.month} {devotion.day}
                 </p>
               </div>
             </div>
           </motion.div>
         ))}
       </motion.div>
-
     </div>
   );
 };
