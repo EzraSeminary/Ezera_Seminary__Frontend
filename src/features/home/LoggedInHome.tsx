@@ -73,6 +73,7 @@ const LoggedInHome = () => {
   const handleViewDevotion = (devotion: Devotion) => {
     navigate("/devotion", { state: { selectedDevotion: devotion } });
   };
+
   return (
     <div className="w-[90%] py-12 space-y-6 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%]">
       <p className="text-xl lg:text-3xl  text-accent-6 border-b border-accent-6 pb-2">
@@ -229,4 +230,7 @@ const LoggedInHome = () => {
         ))}
       </motion.div>
     </div>
+  );
+};
+
 export default LoggedInHome;
