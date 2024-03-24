@@ -82,7 +82,13 @@ const LoggedInHome = () => {
       {/* Today's verse */}
       <div className=" w-full mx-auto flex flex-col border-2 border-accent-6 mt-6 rounded-lg bg-primary-2 shadow-2xl p-4  space-y-6 lg:flex-row lg:items-start lg:gap-6 lg:justify-between lg:w-[90%]">
         <div className="h-48 md:w-[35%] lg:h-52  xl:h-64">
-          <img src={bible} className="w-full  h-full object-cover rounded-lg" />
+          <img
+            src={
+              `https://ezra-seminary.mybese.tech/images/${latestDevotion.image}` ||
+              `${bible}`
+            }
+            className="w-full  h-full object-cover rounded-lg"
+          />
         </div>
         <div className="lg:w-[65%] lg:space-y-3">
           <div className="flex flex-row w-[100%] justify-between items-center">
@@ -160,10 +166,7 @@ const LoggedInHome = () => {
           <p className="text-xs xl:text-sm text-secondary-5">
             መጋቢት 6 - መጋቢት 12
           </p>
-          <button
-            className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36"
-            onClick={() => handleViewDevotion(devotions[0])}
-          >
+          <button className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36">
             <span className="text-primary-1 text-sm  text-center">
               ትምህርቱን ክፈት
             </span>
