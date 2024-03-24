@@ -59,6 +59,27 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     toogleForm();
   };
 
+  const handleDownload = () => {
+    if (devotionToDisplay && devotionToDisplay.image) {
+      const imageUrl = `https://ezra-seminary.mybese.tech/images/${devotionToDisplay.image}`;
+      fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${devotionToDisplay.title}.jpg`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error("Error downloading image:", error);
+        });
+    }
+  };
+
   return (
     <>
       <ToastContainer />
