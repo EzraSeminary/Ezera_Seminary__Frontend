@@ -61,7 +61,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   const handleDownload = () => {
     if (devotionToDisplay && devotionToDisplay.image) {
-      const imageUrl = `https://ezra-seminary.mybese.tech/images/${devotionToDisplay.image}`;
+      const imageUrl = `https://ezra-seminary.mybese.tech/download/${devotionToDisplay.image}`;
       fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
