@@ -166,10 +166,7 @@ const LoggedInHome = () => {
           <p className="text-xs xl:text-sm text-secondary-5">
             መጋቢት 6 - መጋቢት 12
           </p>
-          <button
-            className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36"
-            onClick={() => handleViewDevotion(devotions[0])}
-          >
+          <button className="bg-accent-6 px-4 py-1 xl:py-2 rounded-full w-36">
             <span className="text-primary-1 text-sm  text-center">
               ትምህርቱን ክፈት
             </span>
