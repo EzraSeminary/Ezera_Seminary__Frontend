@@ -82,7 +82,13 @@ const LoggedInHome = () => {
       {/* Today's verse */}
       <div className=" w-full mx-auto flex flex-col border-2 border-accent-6 mt-6 rounded-lg bg-primary-2 shadow-2xl p-4  space-y-6 lg:flex-row lg:items-start lg:gap-6 lg:justify-between lg:w-[90%]">
         <div className="h-48 md:w-[35%] lg:h-52  xl:h-64">
-          <img src={bible} className="w-full  h-full object-cover rounded-lg" />
+          <img
+            src={
+              `https://ezra-seminary.mybese.tech/images/${latestDevotion.image}` ||
+              `${bible}`
+            }
+            className="w-full  h-full object-cover rounded-lg"
+          />
         </div>
         <div className="lg:w-[65%] lg:space-y-3">
           <div className="flex flex-row w-[100%] justify-between items-center">
