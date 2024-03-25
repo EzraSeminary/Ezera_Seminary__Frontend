@@ -18,6 +18,8 @@ function EditCourse() {
   const course = useSelector(selectCourse);
 
   const [loading, setLoading] = useState(true);
+  // New state to track when the publish button has been clicked
+  const [isPublishClicked, setIsPublishClicked] = useState(false);
 
   //get a single course
   useEffect(() => {
@@ -47,8 +49,17 @@ function EditCourse() {
     }
   }, [id, dispatch]);
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  useEffect(() => {
+    // When 'published' state changes and the publish button was clicked, handle the submission
+    if (isPublishClicked) {
+      handleSubmit();
+      setIsPublishClicked(false); // Reset the publish click tracker
+    }
+    // Add isPublishClicked to the dependency array if your linter requires it
+  }, [course.published, isPublishClicked]);
+
+  const handleSubmit = (event?: FormEvent) => {
+    event?.preventDefault();
 
     // console.log("Chapters data:", chapters);
 
@@ -116,7 +127,7 @@ function EditCourse() {
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    // handleSubmit()
+    setIsPublishClicked(true); // Indicate that publish was clicked
   };
 
   if (loading)
@@ -170,7 +181,11 @@ function EditCourse() {
               className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
               style={{ padding: "10px" }}
             >
-              <span>Publish</span>
+              {!course.published ? (
+                <span>Publish</span>
+              ) : (
+                <span>Unpublish</span>
+              )}
               <ArrowSquareOut
                 size={22}
                 weight="fill"
