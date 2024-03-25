@@ -148,11 +148,17 @@ function AdminCourseDisplay({
                   const altText =
                     element.value instanceof File
                       ? element.value.name
-                      : "image";
+                      : "no image";
+
+                  // display new image or previous image
+                  const srcValue =
+                    imagePreviewUrl ||
+                    `https://ezra-seminary.mybese.tech/images/` + element.value;
+
                   elementComponent = (
                     <img
                       key={element.type}
-                      src={imagePreviewUrl}
+                      src={srcValue}
                       alt={altText}
                       className="w-[40%] mx-auto"
                     />
