@@ -48,11 +48,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
         Edit Course
       </h2>
       <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
-        <div
-          className={`relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border ${
-            validationErrors.image ? "border-red-500" : "border-orange-300"
-          }`}
-        >
+        <div className="relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border border-orange-300">
           {imagePreviewUrl && (
             <img
               src={imagePreviewUrl}
@@ -75,7 +71,6 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
             onChange={handleImageChange}
             required
           />
-          <div className="absolute inset-0 rounded-md bg-accent-8 opacity-60"></div>
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Course Title</label>
