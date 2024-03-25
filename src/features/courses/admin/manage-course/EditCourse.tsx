@@ -47,8 +47,8 @@ function EditCourse() {
     }
   }, [id, dispatch]);
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = (event?: FormEvent) => {
+    event?.preventDefault();
 
     // console.log("Chapters data:", chapters);
 
@@ -116,7 +116,7 @@ function EditCourse() {
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    // handleSubmit()
+    // handleSubmit();
   };
 
   if (loading)
@@ -170,7 +170,11 @@ function EditCourse() {
               className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
               style={{ padding: "10px" }}
             >
-              <span>Publish</span>
+              {!course.published ? (
+                <span>Publish</span>
+              ) : (
+                <span>Unpublish</span>
+              )}
               <ArrowSquareOut
                 size={22}
                 weight="fill"
