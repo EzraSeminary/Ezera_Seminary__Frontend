@@ -141,8 +141,7 @@ function CreateCourse() {
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Description</label>
-          <input
-            type="text"
+          <textarea
             className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border ${
               validationErrors.description
                 ? "border-red-500"
