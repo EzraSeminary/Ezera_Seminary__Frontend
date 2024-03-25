@@ -150,10 +150,12 @@ function AdminCourseDisplay({
                       ? element.value.name
                       : "no image";
 
-                  // display new image or previous image
+                  // display new image from redux or previous image from server
                   const srcValue =
                     imagePreviewUrl ||
-                    `https://ezra-seminary.mybese.tech/images/` + element.value;
+                    (element.value &&
+                      `https://ezra-seminary.mybese.tech/images/` +
+                        element.value);
 
                   elementComponent = (
                     <img

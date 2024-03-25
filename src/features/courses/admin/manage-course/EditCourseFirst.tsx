@@ -49,7 +49,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
       </h2>
       <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
         <div className="relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border border-orange-300">
-          {/* Display new image */}
+          {/* Display new image from redux */}
           {imagePreviewUrl ? (
             <img
               src={imagePreviewUrl}
@@ -57,7 +57,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
               className="absolute inset-0 w-full h-full object-cover rounded-md"
             />
           ) : (
-            // Display previous image
+            // Display previous image from server
             image && (
               <img
                 src={`https://ezra-seminary.mybese.tech/images/` + image}
