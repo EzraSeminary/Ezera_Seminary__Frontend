@@ -95,7 +95,7 @@ function EditCourse() {
     const payload = Object.fromEntries(formData);
     console.log("payload" + payload);
 
-    toast.success(`Course "${course.title}" has been updated!`);
+    toast.success(`Updating "${course.title}" course !`);
 
     //update course
     instance

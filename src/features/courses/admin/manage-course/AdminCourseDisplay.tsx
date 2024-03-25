@@ -148,11 +148,19 @@ function AdminCourseDisplay({
                   const altText =
                     element.value instanceof File
                       ? element.value.name
-                      : "image";
+                      : "no image";
+
+                  // display new image from redux or previous image from server
+                  const srcValue =
+                    imagePreviewUrl ||
+                    (element.value &&
+                      `https://ezra-seminary.mybese.tech/images/` +
+                        element.value);
+
                   elementComponent = (
                     <img
                       key={element.type}
-                      src={imagePreviewUrl}
+                      src={srcValue}
                       alt={altText}
                       className="w-[40%] mx-auto"
                     />

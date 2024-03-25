@@ -16,7 +16,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
   setShowComponent,
 }) => {
   const dispatch = useDispatch();
-  const { title, description } = useSelector(selectCourse);
+  const { title, description, image } = useSelector(selectCourse);
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
@@ -47,21 +47,30 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
       <h2 className="text-accent-6 text-2xl border-b border-primary-8 pb-1">
         Edit Course
       </h2>
-      <div className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
-        <div className="relative col-span-12 mx-auto h-72 w-[100%]">
-          {imagePreviewUrl && (
+      <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
+        <div className="relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border border-orange-300">
+          {/* Display new image from redux */}
+          {imagePreviewUrl ? (
             <img
               src={imagePreviewUrl}
-              alt="Preview"
+              alt=""
               className="absolute inset-0 w-full h-full object-cover rounded-md"
             />
+          ) : (
+            // Display previous image from server
+            image && (
+              <img
+                src={`https://ezra-seminary.mybese.tech/images/` + image}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover rounded-md"
+              />
+            )
           )}
 
           <input
             type="file"
-            className="relative z-10 w-[100%]
-            lg:px-[30%] lg:py-[25%]
-            md:px-[20%] md:py-[20%]
+            className="relative z-10 w-[100%] lg:px-[40%] lg:py-[20%]
+            md:px-[30%] md:py-[30%]
             file:mr-4 file:py-2 file:px-4
             file:rounded-md file:border-0
             file:text-sm file:font-semibold
@@ -70,8 +79,8 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
             onChange={handleImageChange}
+            required
           />
-          <div className="absolute inset-0 rounded-md bg-accent-8 opacity-60"></div>
         </div>
         <div className="col-span-12">
           <label className="block text-accent-6">Course Title</label>
@@ -100,7 +109,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
         <div className="col-span-12">
           <Button onClick={handleGoBack}>OK</Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
