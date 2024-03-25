@@ -59,6 +59,27 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     toogleForm();
   };
 
+  const handleDownload = () => {
+    if (devotionToDisplay && devotionToDisplay.image) {
+      const imageUrl = `https://ezra-seminary.mybese.tech/download/${devotionToDisplay.image}`;
+      fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${devotionToDisplay.title}.jpg`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error("Error downloading image:", error);
+        });
+    }
+  };
+
   return (
     <>
       <ToastContainer />
@@ -270,7 +291,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
                 className="flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
-                // onClick={handleDownload}
+                onClick={handleDownload}
               >
                 ምስሉን አውርድ
                 <DownloadSimple

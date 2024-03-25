@@ -6,11 +6,24 @@ import { selectCourse, togglePublished } from "../../../../redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
 
 function AdminChapter() {
+  // New state to track when the publish button has been clicked
+  const [isPublishClicked, setIsPublishClicked] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const course = useSelector(selectCourse);
+
+  useEffect(() => {
+    // When 'published' state changes and the publish button was clicked, handle the submission
+    if (isPublishClicked) {
+      handleSubmit();
+      setIsPublishClicked(false); // Reset the publish click tracker
+    }
+    // Add isPublishClicked to the dependency array if your linter requires it
+  }, [course.published]);
 
   const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
     event?.preventDefault();
@@ -57,7 +70,7 @@ function AdminChapter() {
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    // handleSubmit();
+    setIsPublishClicked(true); // Indicate that publish was clicked
   };
 
   return (
