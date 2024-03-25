@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 
 function AdminChapter() {
+  // New state to track when the publish button has been clicked
   const [isPublishClicked, setIsPublishClicked] = useState(false);
 
   const navigate = useNavigate();

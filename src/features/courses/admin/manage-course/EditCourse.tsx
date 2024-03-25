@@ -18,6 +18,8 @@ function EditCourse() {
   const course = useSelector(selectCourse);
 
   const [loading, setLoading] = useState(true);
+  // New state to track when the publish button has been clicked
+  const [isPublishClicked, setIsPublishClicked] = useState(false);
 
   //get a single course
   useEffect(() => {
@@ -46,6 +48,15 @@ function EditCourse() {
       console.log("Course ID is undefined");
     }
   }, [id, dispatch]);
+
+  useEffect(() => {
+    // When 'published' state changes and the publish button was clicked, handle the submission
+    if (isPublishClicked) {
+      handleSubmit();
+      setIsPublishClicked(false); // Reset the publish click tracker
+    }
+    // Add isPublishClicked to the dependency array if your linter requires it
+  }, [course.published, isPublishClicked]);
 
   const handleSubmit = (event?: FormEvent) => {
     event?.preventDefault();
@@ -116,7 +127,7 @@ function EditCourse() {
 
   const handlePublish = () => {
     dispatch(togglePublished());
-    // handleSubmit();
+    setIsPublishClicked(true); // Indicate that publish was clicked
   };
 
   if (loading)
