@@ -6,6 +6,7 @@ export interface CourseState {
   description: string;
   image: string | File;
   chapters: Chapter[];
+  published: boolean;
   currentChapterIndex?: number;
   currentSlideIndex?: number;
 }
@@ -94,6 +95,7 @@ const initialState: CourseState = {
   description: "",
   image: "",
   chapters: [],
+  published: false,
 };
 
 export const courseSlice = createSlice({
@@ -115,6 +117,9 @@ export const courseSlice = createSlice({
     },
     setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
+    },
+    togglePublished: (state) => {
+      state.published = !state.published;
     },
     addChapter: (state) => {
       state.chapters.push({
@@ -295,6 +300,7 @@ export const courseSlice = createSlice({
         description: "",
         image: "",
         chapters: [],
+        published: false,
       };
     },
   },
@@ -305,6 +311,7 @@ export const {
   setTitle,
   setDescription,
   setImage,
+  togglePublished,
   addChapter,
   updateChapter,
 

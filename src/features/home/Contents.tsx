@@ -46,7 +46,9 @@ const Contents = () => {
       <div className=" flex flex-col items-center justify-center space-y-4 ">
 
         {/* Title of the page */}
-        <h1 className="text-3xl font-nokia-bold text-secondary-6 text-center">
+        
+       <h1
+        className="text-3xl font-nokia-bold text-secondary-6 text-center">
           Our Contents
         </h1>
         <hr className="border-accent-5 border-1 w-[90%] pb-3" />
@@ -98,7 +100,7 @@ const Contents = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
-              className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
+              className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleCourseClick}
             >
               See More
@@ -146,7 +148,7 @@ const Contents = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
-              className="bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
+              className="bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleSabathSchoolClick}
             >
               See More
@@ -193,7 +195,7 @@ const Contents = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
               type="button"
-              className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs1 hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
+              className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleDevotionClick}
             >
               See More

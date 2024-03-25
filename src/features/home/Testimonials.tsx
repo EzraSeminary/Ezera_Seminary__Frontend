@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import melak from "../../assets/melak.svg";
 import janet from "../../assets/janet.svg";
 import dawit from "../../assets/dawit.webp";
@@ -23,13 +24,21 @@ const Testimonials = () => {
               <img className="rounded-full border p-1 border-accent-6" src={melak} alt="melak" />
             </div>
             <div className="text-center py-4 font-nokia-bold">
-              <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">
+            <motion.h2
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.3}} 
+               className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">
                 ፓ/ር መልዓክ አለማየሁ (ዶ/ር)
-              </h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
+              </motion.h2>
+              <motion.p
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.4}} 
+               className="text-secondary-4 font-nokia-Regular text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
-              </p>
+              </motion.p>
             </div>
           </div>
 
@@ -39,11 +48,19 @@ const Testimonials = () => {
               <img className="rounded-full border p-1 border-accent-6" src={janet} alt="janet" />
             </div>
             <div className="text-center py-4 font-nokia-bold">
-              <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ውብገነት ቦጋለ (ጃኔት)</h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
+            <motion.h2 
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.3}} 
+              className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ውብገነት ቦጋለ (ጃኔት)</motion.h2>
+                  <motion.p 
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.4}} 
+               className="text-secondary-4 font-nokia-Regular text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
-              </p>
+              </motion.p>
             </div>
           </div>
 
@@ -53,11 +70,19 @@ const Testimonials = () => {
               <img className="rounded-full border p-1 border-accent-6" src={dawit} alt="dawit" />
             </div>
             <div className="text-center py-4 font-nokia-bold">
-              <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ዳዊት መሃሪ</h2>
-              <p className="text-secondary-6 font-nokia-light text-sm xl:text-lg mb-4 px-8">
+            <motion.h2 
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.3}} 
+               className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">ዳዊት መሃሪ</motion.h2>
+                  <motion.p 
+           initial={{ opacity: 0, y: 100 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease:"easeOut", delay: 0.4}} 
+               className="text-secondary-4 font-nokia-Regular text-sm xl:text-lg mb-4 px-8">
                 “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
                 ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
-              </p>
+              </motion.p>
             </div>
           </div>
         </div>

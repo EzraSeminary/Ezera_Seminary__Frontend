@@ -2,7 +2,7 @@ import useAxiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { selectCourse, setCourse } from "@/redux/courseSlice";
+import { selectCourse, setCourse, togglePublished } from "@/redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
@@ -33,6 +33,7 @@ function EditCourse() {
               description: res.data.description,
               image: res.data.image,
               chapters: res.data.chapters,
+              published: res.data.published,
             })
           );
           console.log(res.data);
@@ -60,6 +61,7 @@ function EditCourse() {
       formData.append("image", course.image, course.image.name);
     }
     formData.append("chapters", JSON.stringify(course.chapters)); // Convert chapters to JSON string and append it to formData
+    formData.append("published", String(course.published));
 
     // Loop through the chapters and slides to append any image files
     course.chapters.forEach((chapter, chapterIndex) => {
@@ -112,6 +114,11 @@ function EditCourse() {
     setShowComponent(true);
   };
 
+  const handlePublish = () => {
+    dispatch(togglePublished());
+    // handleSubmit()
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-full">
@@ -131,28 +138,48 @@ function EditCourse() {
       <div className="w-full">
         <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
           <div className="flex justify-center items-center my-auto">
-            <button className="font-nokia-bold text-accent-6 flex flex-row gap-2 hover:text-accent-7 transition-all pr-3 border-r border-accent-6">
-              <Link
-                to="/admin/course/edit"
-                className="flex flex-row gap-2 items-center justify-center mt-3"
-              >
-                <ArrowCircleLeft weight="fill" size={24} />
-              </Link>
-            </button>
+            <Link to="/admin/course/edit" className="flex items-center">
+              <ArrowCircleLeft
+                weight="fill"
+                size={32}
+                className="text-accent-6 hover:text-accent-7 transition-all"
+              />
+            </Link>{" "}
             <button
               onClick={handleButtonClick}
-              className="ml-3 flex items-center bg-gray-200 rounded-xl px-4 py-1 border hover:border-gray-400 transition-all"
+              className="ml-3 flex items-center bg-gray-200 rounded-3xl px-4 py-1 border hover:border-gray-400 transition-all"
             >
               <p className="text-accent-6 font-nokia-bold text-sm pr-4">
                 {course.title}
               </p>
-              <Pen size={24} className="text-accent-6" />
+              <Pen size={22} className="text-accent-6" />
             </button>
+            {course.published ? (
+              <p className="text-green-700 font-nokia-bold text-sm pl-4">
+                Published
+              </p>
+            ) : (
+              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+                Draft
+              </p>
+            )}
           </div>
-          <div>
+          <div className="flex">
+            <button
+              onClick={handlePublish}
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
+              style={{ padding: "10px" }}
+            >
+              <span>Publish</span>
+              <ArrowSquareOut
+                size={22}
+                weight="fill"
+                className="self-centered text-accent-6"
+              />
+            </button>
             <button
               onClick={handleSubmit}
-              className="h-[45px] w-[120px] flex justify-center gap-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
+              className="h-[40px] w-[120px] flex justify-center items-center gap-2 ml-1 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
               style={{ padding: "10px" }}
             >
               <span>Update</span>
