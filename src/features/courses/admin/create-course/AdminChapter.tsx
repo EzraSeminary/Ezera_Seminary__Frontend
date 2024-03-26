@@ -69,8 +69,10 @@ function AdminChapter() {
         });
       })
       .catch((err) => {
+        toast.error(
+          `Course creation failed. "${err.message}" Please try again.`
+        );
         console.log(err);
-        toast.error("Course creation failed. Please try again.");
       });
   };
 

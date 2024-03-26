@@ -116,7 +116,7 @@ function EditCourse() {
       })
       .catch((err) => {
         toast.error(
-          "Error updating course: Could not update the course. Please try again."
+          `Error updating course: "${err.message}". Please try again.`
         );
         console.log(err);
       });
