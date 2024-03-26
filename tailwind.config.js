@@ -36,19 +36,19 @@ export default {
     //   "6xl": ["80px", { lineHeight: "94px", letterSpacing: "0" }],
     //   "7xl": ["96px", { lineHeight: "110px", letterSpacing: "-0.02em" }],
     // },
-	fontSize: {
-		xs1: ["10px", { lineHeight: "18px", letterSpacing: "0" }],
-		xs: ["12px", { lineHeight: "20px", letterSpacing: "0" }],
-		sm: ["14px", { lineHeight: "22px", letterSpacing: "0" }],
-		lg: ["16px", { lineHeight: "26px", letterSpacing: "0" }],
-		xl: ["18px", { lineHeight: "28px", letterSpacing: "0" }],
-		"2xl": ["22px", { lineHeight: "32px", letterSpacing: "0" }],
-		"3xl": ["28px", { lineHeight: "44px", letterSpacing: "0" }],
-		"4xl": ["40px", { lineHeight: "56px", letterSpacing: "0" }],
-		"5xl": ["56px", { lineHeight: "72px", letterSpacing: "0" }],
-		"6xl": ["72px", { lineHeight: "84px", letterSpacing: "0" }],
-		"7xl": ["86px", { lineHeight: "100px", letterSpacing: "-0.02em" }],
-	  },
+    fontSize: {
+      xs1: ["10px", { lineHeight: "18px", letterSpacing: "0" }],
+      xs: ["12px", { lineHeight: "20px", letterSpacing: "0" }],
+      sm: ["14px", { lineHeight: "22px", letterSpacing: "0" }],
+      lg: ["16px", { lineHeight: "26px", letterSpacing: "0" }],
+      xl: ["18px", { lineHeight: "28px", letterSpacing: "0" }],
+      "2xl": ["22px", { lineHeight: "32px", letterSpacing: "0" }],
+      "3xl": ["28px", { lineHeight: "44px", letterSpacing: "0" }],
+      "4xl": ["40px", { lineHeight: "56px", letterSpacing: "0" }],
+      "5xl": ["56px", { lineHeight: "72px", letterSpacing: "0" }],
+      "6xl": ["72px", { lineHeight: "84px", letterSpacing: "0" }],
+      "7xl": ["86px", { lineHeight: "100px", letterSpacing: "-0.02em" }],
+    },
     extend: {
       truncate: {
         lines: {

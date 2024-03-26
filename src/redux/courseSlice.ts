@@ -30,7 +30,8 @@ export type CustomElement =
   | ImgElement
   | ListElement
   | SlideElement
-  | QuizElement;
+  | QuizElement
+  | AccordionElement;
 
 // export interface Element {
 //   type: string;
@@ -79,7 +80,15 @@ export type QuizElementValue = {
   choices: { text: string }[];
   correctAnswer: string;
 };
+export interface AccordionElement extends Omit<Element, "value"> {
+  type: "accordion";
+  value: AccordionElementValue[];
+}
 
+export type AccordionElementValue = {
+  title: string;
+  content: string;
+};
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
   title: "",
@@ -169,7 +178,7 @@ export const courseSlice = createSlice({
         chapterIndex: number;
         slideIndex: number;
         elementType: string;
-        value: string | string[] | File | QuizElementValue | null;
+        value: string | string[] | File | QuizElementValue | AccordionElementValue[] | null;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
@@ -226,6 +235,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as QuizElementValue; // Cast value to QuizElementValue for quiz element
           break;
+        case "accordion":
+          newElement.type = elementType;
+          newElement.value = value as AccordionElementValue[]; // Cast value to AccordionElementValue array for accordion element
+          break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -240,14 +253,19 @@ export const courseSlice = createSlice({
         chapterIndex: number;
         slideIndex: number;
         elementId: string;
-        value: string | string[] | File | QuizElementValue | null;
+        value: string | string[] | File | QuizElementValue | AccordionElementValue[] | null;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);
       if (elementIndex !== -1) {
-        elements[elementIndex].value = value as CustomElement["value"];
+        const element = elements[elementIndex];
+        if (element.type === "accordion") {
+          element.value = value as AccordionElementValue[];
+        } else {
+          element.value = value as CustomElement["value"];
+        }
       }
     },
 
