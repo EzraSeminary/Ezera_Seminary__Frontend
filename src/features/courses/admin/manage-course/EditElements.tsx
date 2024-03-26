@@ -59,6 +59,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     );
     setListItems(updatedLists);
   };
+  
 
   const renderListForm = () => (
     <div className="mt-4">

@@ -15,6 +15,7 @@ import {
   CheckFat,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
+import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
 
 function SlidesDisplay() {
   const [open, setOpen] = useState<boolean>(true);
@@ -81,6 +82,11 @@ function SlidesDisplay() {
     setActiveIndex(newIndex);
     setShowQuizResult(false); // Reset the showQuizResult state
   };
+
+  interface AccordionItem {
+    title: string;
+    content: string;
+  }
 
   // slide number
   const currentDataNumber = activeIndex + 1;
@@ -449,7 +455,25 @@ function SlidesDisplay() {
                             </div>
                           </div>
                         );
-                      } else {
+                      } 
+                      else if (element.type === "accordion") {
+                        const accordionItemsComponent = element.value.map(
+                          (accordionItem: AccordionItem, index: number) => (
+                            <AccordionItemDisplay
+                              key={`$accordion-${index}`}
+                              title={accordionItem.title}
+                              content={accordionItem.content}
+                            />
+                          )
+                        );
+                
+                  return(
+                    <div className="flex flex-col justify-center items-center w-full">
+                      {accordionItemsComponent}
+                    </div>
+                  );
+                }
+                      else {
                         return null;
                       }
                     })}
