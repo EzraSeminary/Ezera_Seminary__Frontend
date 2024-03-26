@@ -47,6 +47,7 @@ function EditCourse() {
     } else {
       console.log("Course ID is undefined");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -55,8 +56,8 @@ function EditCourse() {
       handleSubmit();
       setIsPublishClicked(false); // Reset the publish click tracker
     }
-    // Add isPublishClicked to the dependency array if your linter requires it
-  }, [course.published, isPublishClicked]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course.published, isPublishClicked]); // Add isPublishClicked to the dependency array if your linter requires it
 
   const handleSubmit = (event?: FormEvent) => {
     event?.preventDefault();

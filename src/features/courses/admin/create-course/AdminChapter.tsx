@@ -22,8 +22,8 @@ function AdminChapter() {
       handleSubmit();
       setIsPublishClicked(false); // Reset the publish click tracker
     }
-    // Add isPublishClicked to the dependency array if your linter requires it
-  }, [course.published]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course.published]); // Add isPublishClicked to the dependency array if your linter requires it
 
   const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
     event?.preventDefault();
