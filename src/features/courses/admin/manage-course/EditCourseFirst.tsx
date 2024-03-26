@@ -42,6 +42,10 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
     setShowComponent(false);
   };
 
+  // display new image from redux or previous image from server
+  const srcValue =
+    imagePreviewUrl || `https://ezra-seminary.mybese.tech/images/` + image;
+
   return (
     <div className="w-[80%] mx-auto pt-9 font-nokia-bold">
       <h2 className="text-accent-6 text-2xl border-b border-primary-8 pb-1">
@@ -49,23 +53,12 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
       </h2>
       <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
         <div className="relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border border-orange-300">
-          {/* Display new image from redux */}
-          {imagePreviewUrl ? (
-            <img
-              src={imagePreviewUrl}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover rounded-md"
-            />
-          ) : (
-            // Display previous image from server
-            image && (
-              <img
-                src={`https://ezra-seminary.mybese.tech/images/` + image}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover rounded-md"
-              />
-            )
-          )}
+          {/* display new image from redux or previous image from server */}
+          <img
+            src={srcValue}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover rounded-md"
+          />
 
           <input
             type="file"

@@ -22,8 +22,8 @@ function AdminChapter() {
       handleSubmit();
       setIsPublishClicked(false); // Reset the publish click tracker
     }
-    // Add isPublishClicked to the dependency array if your linter requires it
-  }, [course.published]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course.published]); // Add isPublishClicked to the dependency array if your linter requires it
 
   const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
     event?.preventDefault();
@@ -58,13 +58,21 @@ function AdminChapter() {
       })
       .then((res) => {
         console.log(res);
-        toast.success(`Course "${course.title}" has been created!`);
-        navigate("/admin/course/edit");
-        window.location.reload();
+        toast.success(`Creating "${course.title}"!`, {
+          onClose: () => {
+            navigate("/admin/course/edit");
+            // Delay the reload to allow user to see the message
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000); // Adjust the timing as needed
+          },
+        });
       })
       .catch((err) => {
+        toast.error(
+          `Course creation failed. "${err.message}" Please try again.`
+        );
         console.log(err);
-        toast.error("Course creation failed. Please try again.");
       });
   };
 

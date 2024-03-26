@@ -47,6 +47,7 @@ function EditCourse() {
     } else {
       console.log("Course ID is undefined");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -55,8 +56,8 @@ function EditCourse() {
       handleSubmit();
       setIsPublishClicked(false); // Reset the publish click tracker
     }
-    // Add isPublishClicked to the dependency array if your linter requires it
-  }, [course.published, isPublishClicked]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course.published, isPublishClicked]); // Add isPublishClicked to the dependency array if your linter requires it
 
   const handleSubmit = (event?: FormEvent) => {
     event?.preventDefault();
@@ -95,8 +96,6 @@ function EditCourse() {
     const payload = Object.fromEntries(formData);
     console.log("payload" + payload);
 
-    toast.success(`Updating "${course.title}" course !`);
-
     //update course
     instance
       .put("/course/update/" + id, formData, {
@@ -105,14 +104,20 @@ function EditCourse() {
         },
       })
       .then((res) => {
-        toast.success("Course updated successfully!");
         console.log(res);
-        navigate("/admin/course/edit");
-        window.location.reload();
+        toast.success(`Updating "${course.title}"!`, {
+          onClose: () => {
+            navigate("/admin/course/edit");
+            // Delay the reload to allow user to see the message
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000); // Adjust the timing as needed
+          },
+        });
       })
       .catch((err) => {
         toast.error(
-          "Error updating course: Could not update the course. Please try again."
+          `Error updating course: "${err.message}". Please try again.`
         );
         console.log(err);
       });
