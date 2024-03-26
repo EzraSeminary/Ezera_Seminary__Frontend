@@ -408,7 +408,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 value={
                   element.type === "quiz"
                     ? element.value.question
-                    : element.value
+                    :  element.type === "accordion" ? element.value.title : element.value
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"
