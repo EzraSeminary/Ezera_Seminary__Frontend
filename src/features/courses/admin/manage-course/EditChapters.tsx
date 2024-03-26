@@ -135,10 +135,10 @@ function EditChapters() {
                 />
               </div>
               {isSelected && (
-                <div className="ml-14 pl-1 border-l-2 border-secondary-2">
+                <div className="ml-7 pl-1 border-l-2 border-secondary-2">
                   {slides.map((slide, slideIndex) => (
                     <div key={slideIndex} className="flex flex-col ">
-                      <div className="flex px-4">
+                      <div className="flex px-2 items-center">
                         <p className="flex items-center font-nokia-bold text-secondary-6 text-xs lg:text-sm pr-1">
                           {slideIndex + 1}
                         </p>
@@ -147,7 +147,7 @@ function EditChapters() {
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
                           autoComplete="off"
-                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1"
+                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1 border-b border-t px-2 mt-2"
                           value={slide.slide}
                           onChange={(e) =>
                             updateSlideHandler(
