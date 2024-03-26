@@ -95,8 +95,6 @@ function EditCourse() {
     const payload = Object.fromEntries(formData);
     console.log("payload" + payload);
 
-    toast.success(`Updating "${course.title}" course !`);
-
     //update course
     instance
       .put("/course/update/" + id, formData, {
@@ -105,10 +103,16 @@ function EditCourse() {
         },
       })
       .then((res) => {
-        toast.success("Course updated successfully!");
         console.log(res);
-        navigate("/admin/course/edit");
-        window.location.reload();
+        toast.success(`Updating "${course.title}"!`, {
+          onClose: () => {
+            navigate("/admin/course/edit");
+            // Delay the reload to allow user to see the message
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000); // Adjust the timing as needed
+          },
+        });
       })
       .catch((err) => {
         toast.error(

@@ -58,9 +58,15 @@ function AdminChapter() {
       })
       .then((res) => {
         console.log(res);
-        toast.success(`Course "${course.title}" has been created!`);
-        navigate("/admin/course/edit");
-        window.location.reload();
+        toast.success(`Creating "${course.title}"!`, {
+          onClose: () => {
+            navigate("/admin/course/edit");
+            // Delay the reload to allow user to see the message
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000); // Adjust the timing as needed
+          },
+        });
       })
       .catch((err) => {
         console.log(err);
