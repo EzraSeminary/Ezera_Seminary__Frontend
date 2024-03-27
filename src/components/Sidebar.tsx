@@ -12,6 +12,7 @@ import {
   UserCircle,
   Graph,
   IconProps,
+  BookBookmark,
 } from "@phosphor-icons/react";
 import LogoutButton from "./LogoutButton";
 import { resetCourse } from "@/redux/courseSlice";
@@ -169,7 +170,10 @@ const Sidebar: React.FC = () => {
       }}
     >
       <div className="relative">
-        <h1 className="text-center py-4">Dashboard</h1>
+      <div className="flex justify-center items-center py-4 my-4">
+        <BookBookmark className="text-primary-1" size={24} weight="fill" />
+        {!isCollapsed && <h1 className="ml-2">Dashboard</h1>}
+      </div>
         <div
           className="absolute top-2 right-4 transform translate-x-full"
           onClick={() => setIsCollapsed(!isCollapsed)}
