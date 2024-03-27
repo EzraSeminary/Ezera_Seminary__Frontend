@@ -334,12 +334,14 @@ function SlidesDisplay() {
                         );
                       } else if (element.type === "img") {
                         return (
-                          <img
-                            key={element._id}
-                            src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
-                            alt="no image"
-                            className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
-                          />
+                          <div className="w-full h-full">
+                            <img
+                              key={element._id}
+                              src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                              alt=""
+                              className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl"
+                            />
+                          </div>
                         );
                       } else if (element.type === "list") {
                         const listItemsComponent = element.value.map(
