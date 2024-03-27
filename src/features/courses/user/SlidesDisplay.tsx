@@ -298,12 +298,12 @@ function SlidesDisplay() {
               return (
                 <div
                   key={index}
-                  className="flex flex-col justify-center items-center  w-[80%] mx-auto h-full overflow-y-hidden"
+                  className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                 >
-                  <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
-                    {slides.slide}
-                  </h1>
                   <div className="flex flex-col justify-center items-center h-auto overflow-y-auto scrollbar-thin py-2">
+                    <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
+                      {slides.slide}
+                    </h1>
                     {slides.elements.map((element) => {
                       if (element.type === "title") {
                         return (
@@ -455,8 +455,7 @@ function SlidesDisplay() {
                             </div>
                           </div>
                         );
-                      } 
-                      else if (element.type === "accordion") {
+                      } else if (element.type === "accordion") {
                         const accordionItemsComponent = element.value.map(
                           (accordionItem: AccordionItem, index: number) => (
                             <AccordionItemDisplay
@@ -466,14 +465,13 @@ function SlidesDisplay() {
                             />
                           )
                         );
-                
-                  return(
-                    <div className="flex flex-col justify-center items-center w-full">
-                      {accordionItemsComponent}
-                    </div>
-                  );
-                }
-                      else {
+
+                        return (
+                          <div className="flex flex-col justify-center items-center w-full">
+                            {accordionItemsComponent}
+                          </div>
+                        );
+                      } else {
                         return null;
                       }
                     })}
