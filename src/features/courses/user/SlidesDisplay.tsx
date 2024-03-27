@@ -298,12 +298,12 @@ function SlidesDisplay() {
               return (
                 <div
                   key={index}
-                  className="flex flex-col justify-center items-center  w-[80%] mx-auto h-full overflow-y-hidden"
+                  className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                 >
-                  <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
-                    {slides.slide}
-                  </h1>
                   <div className="flex flex-col justify-center items-center h-auto overflow-y-auto scrollbar-thin py-2">
+                    <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
+                      {slides.slide}
+                    </h1>
                     {slides.elements.map((element) => {
                       if (element.type === "title") {
                         return (
@@ -334,12 +334,14 @@ function SlidesDisplay() {
                         );
                       } else if (element.type === "img") {
                         return (
-                          <img
-                            key={element._id}
-                            src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
-                            alt={element._id}
-                            className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
-                          />
+                          <div className="w-full h-full">
+                            <img
+                              key={element._id}
+                              src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                              alt="no image"
+                              className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
+                            />
+                          </div>
                         );
                       } else if (element.type === "list") {
                         const listItemsComponent = element.value.map(
@@ -455,8 +457,7 @@ function SlidesDisplay() {
                             </div>
                           </div>
                         );
-                      } 
-                      else if (element.type === "accordion") {
+                      } else if (element.type === "accordion") {
                         const accordionItemsComponent = element.value.map(
                           (accordionItem: AccordionItem, index: number) => (
                             <AccordionItemDisplay
@@ -466,14 +467,13 @@ function SlidesDisplay() {
                             />
                           )
                         );
-                
-                  return(
-                    <div className="flex flex-col justify-center items-center w-full">
-                      {accordionItemsComponent}
-                    </div>
-                  );
-                }
-                      else {
+
+                        return (
+                          <div className="flex flex-col justify-center items-center w-full">
+                            {accordionItemsComponent}
+                          </div>
+                        );
+                      } else {
                         return null;
                       }
                     })}
