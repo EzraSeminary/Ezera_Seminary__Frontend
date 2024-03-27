@@ -1,15 +1,22 @@
 const Footer = () => {
   return (
-    <div className=" ">
-      <div className="flex-1 w-full flex flex-col mx-auto ">
+    <footer className="w-full ">
+      <div className="flex-1 w-full flex flex-col mx-auto mt-auto">
         <div className="flex flex-col bg-secondary-6 justify-center items-center py-8 space-y-4">
           <div className="flex flex-row justify-center items-center space-x-3">
             <div>
-              <img src="src/assets/Logo Ion.png" alt="" className="w-7 lg:w-9 xl:w-11" />
+              <img
+                src="src/assets/Logo Ion.png"
+                alt=""
+                className="w-7 lg:w-9 xl:w-11"
+              />
             </div>
             <div className="flex flex-col">
               <h1 className="text-[#fff] xl:text-xl">
-                <strong className="text-lg lg:text-2xl xl:text-3xl">Ezra</strong> Seminary
+                <strong className="text-lg lg:text-2xl xl:text-3xl">
+                  Ezra
+                </strong>{" "}
+                Seminary
               </h1>
               <p className="text-accent-5 text-sm xl:text-xl -mt-1 lg:text-base font-nokia-light">
                 Spreading the Gospel
@@ -21,13 +28,17 @@ const Footer = () => {
               <div>
                 <img src="../assets/message-icon.svg" alt="" />
               </div>
-              <p className="font-nokia-light text-sm xl:text-xl">ezraseminary@gmail.com</p>
+              <p className="font-nokia-light text-sm xl:text-xl">
+                ezraseminary@gmail.com
+              </p>
             </div>
             <div className="flex flex-row space-x-2 justify-center items-center">
               <div>
                 <img src="../assets/phone-icon.svg" alt="" />
               </div>
-              <p className="font-nokia-light text-sm xl:text-xl ">+251 911 12 13 14</p>
+              <p className="font-nokia-light text-sm xl:text-xl ">
+                +251 911 12 13 14
+              </p>
             </div>
           </div>
         </div>
@@ -62,7 +73,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

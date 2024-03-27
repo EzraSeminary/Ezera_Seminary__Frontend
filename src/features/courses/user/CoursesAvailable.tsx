@@ -121,9 +121,6 @@ function CoursesAvailable() {
       <div className="flex justify-between items-end">
         {/* Title of the page */}
         <div className="w-full tracking-wide ">
-          <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
-            Courses Available
-          </h1>
           <h3 className="text-accent-6 text-xs font-Lato-Regular md:text-sm ">
             Explore Programs and Courses
           </h3>
