@@ -96,12 +96,12 @@ const Sidebar: React.FC = () => {
   }) => {
     return (
       <div
-        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center ${
+        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5 ${
           active ? "bg-accent-6" : ""
         }`}
         onClick={onClick}
       >
-        <div className={`flex ${!isCollapsed ? "gap-2" : ""}`}>
+        <div className={`flex my-2 ${!isCollapsed ? "gap-2" : ""}`}>
           <Icon className="text-primary-1" size={24} weight="fill" />
           {!isCollapsed && <span>{label}</span>}
         </div>
