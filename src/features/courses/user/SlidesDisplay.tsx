@@ -337,7 +337,7 @@ function SlidesDisplay() {
                           <img
                             key={element._id}
                             src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
-                            alt={element._id}
+                            alt="no image"
                             className="w-[30%] mx-auto border border-accent-6 shadow-xl padding mt-2"
                           />
                         );
