@@ -84,11 +84,6 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     <>
       <ToastContainer />
       <div className="h-auto border shadow-lg rounded-2xl p-6 md:w-[90%] mx-auto border-accent-6">
-        <div>
-          <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
-            Daily Devotional - የዕለቱ ጥቅስ
-          </h1>
-        </div>
         <div className="flex flex-col justify-center lg:flex-row  lg:space-x-12">
           {/* Replace latestDevotion with devotionToDisplay */}
           <Modal

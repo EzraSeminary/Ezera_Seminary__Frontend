@@ -104,6 +104,25 @@
   font-family: "Lato-Thin";
   src: url(/fonts/Lato-Thin.ttf) format("truetype");
 }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+footer {
+  margin-top: auto;
+}
+
+
 .home-page-img {
   background-image: url("./assets/home-page-img.webp");
   background-size: cover;
@@ -123,8 +142,48 @@
   width: 100%;
 }
 
-.about-img {
+.loggedIn-img {
   background-image: url("./assets/about-img.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  width: 100%;
+}
+
+.course-img {
+  background-image: url("./assets/course-img-1.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  width: 100%;
+}
+
+.sabbath-img {
+  background-image: url("./assets/sabbath-img.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position: top ;
+  width: 100%;
+}
+
+.devotion-img {
+  background-image: url("./assets/devotion-img.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+}
+
+.about-img {
+  background-image: url("./assets/About-img-2.jpg");
+  background-size: fill;
+  background-repeat: no-repeat;
+  background-position:  center;
+  width: 100%;
+}
+
+.contact-img {
+  background-image: url("./assets/About-img-1.jpg");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: bottom center;

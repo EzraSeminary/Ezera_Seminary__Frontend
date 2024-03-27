@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
+import Footer from "@/components/Footer";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
@@ -90,19 +91,22 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   );
 
   return (
-    <div className="w-[100%] h-full font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12 flex-1 flex-grow">
-      <CurrentDevotional
-        devotionToDisplay={devotionToDisplay}
-        showControls={showControls}
-        toogleForm={toggleForm} // Add this line
-      />
-      <PreviousDevotionals
-        previousDevotions={previousDevotions}
-        setSelectedDevotion={(devotion: Devotion) =>
-          setSelectedDevotion(devotion)
-        }
-      />
-      <Categories title="Lessons Available" />
+    <div className="flex flex-col min-h-screen">
+      <div className="w-[100%] h-full font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12 flex-1">
+        <CurrentDevotional
+          devotionToDisplay={devotionToDisplay}
+          showControls={showControls}
+          toogleForm={toggleForm} // Add this line
+        />
+        <PreviousDevotionals
+          previousDevotions={previousDevotions}
+          setSelectedDevotion={(devotion: Devotion) =>
+            setSelectedDevotion(devotion)
+          }
+        />
+        <Categories title="Lessons Available" />
+      </div>
+      <Footer />
     </div>
   );
 };
