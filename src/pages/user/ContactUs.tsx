@@ -169,7 +169,7 @@ const ContactUs = () => {
               </button>
             </div>
             <div className="text-xs mt-4  xl:text-xl">
-              <p>Or signup with</p>
+              <p>Or Connect using</p>
               <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
                 <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"></GoogleLogo>
                 <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>

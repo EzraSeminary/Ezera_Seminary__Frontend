@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
+import Footer from "@/components/Footer";
 // import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
@@ -17,7 +18,7 @@ const Devotion = () => {
   if (error) return `Error: ${(error as Error).message}`;
 
   return (
-    <div className="absolute top-0">
+    <div className="absolute top-0 w-full">
       <div className="devotion-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">
@@ -30,7 +31,7 @@ const Devotion = () => {
         </div>
       </div>
 
-      <div className=" flex h-full  pt-12  mx-auto">
+      <div className=" flex h-full  pt-12  mx-auto flex-1">
         <DevotionDisplay
           devotions={devotions}
           // selectedDevotion={selectedDevotion}
@@ -41,6 +42,7 @@ const Devotion = () => {
           }}
         />
       </div>
+      <Footer />
     </div>
   );
 };
