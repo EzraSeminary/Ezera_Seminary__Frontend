@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 const Courses = () => {
   return (
-    <div className="flex flex-col min-h-screen absolute top-0">
+    <div className="flex flex-col min-h-screen absolute top-0 w-full">
       <div className="course-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">

@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
@@ -106,7 +106,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
         />
         <Categories title="Lessons Available" />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

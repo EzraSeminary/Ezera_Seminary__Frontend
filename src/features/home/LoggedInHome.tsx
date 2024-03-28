@@ -7,6 +7,7 @@ import bibleNew from "../../assets/about-img.jpg";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
+import Footer from "@/components/Footer";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -108,7 +109,7 @@ const LoggedInHome = () => {
 
   // Render other content once data is loaded
   return (
-    <div className="absolute top-0">
+    <div className="absolute top-0 w-full">
       <div className="loggedIn-img bg-cover  w-full py-14  md:py-20 lg lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">
@@ -118,7 +119,7 @@ const LoggedInHome = () => {
         </div>
       </div>
 
-      <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24 ">
+      <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24 flex-1">
         {/*daily devotions and course */}
         <div className="grid grid-cols-1 space-y-6  items-start justify-start w-full gap-2 md:grid-cols-2 md:space-y-0  lg:w-[85%] xl:w-[90%] mx-auto">
           {/* daily devotionals conatiner*/}
@@ -343,6 +344,7 @@ const LoggedInHome = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
