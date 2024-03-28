@@ -52,7 +52,7 @@ function SSLDay() {
               />
             )}
             {quarterDetails && quarterDetails.quarterly && (
-              <div className="flex text-sm text-secondary-3 justify-end">
+              <div className="flex text-sm xl:text-lg text-secondary-3 justify-end">
                 <DateConverter
                   gregorianDate={lessonDetails.lesson.start_date}
                 />
@@ -77,12 +77,12 @@ function SSLDay() {
                 to={`/sabbathSchool/${quarter}/lessons/${id}/days/${item.id}/read`}
                 onClick={() => setSelectedDayId(item.id)}
               >
-                <p className="flex flex-row text-secondary-3 text-xs justify-end">
+                <p className="flex flex-row text-secondary-3 text-xs xl:text-sm justify-end">
                   {daysOfWeek[(index as number) % 7]}፣&nbsp;&nbsp;
                   <DateConverter gregorianDate={item.date} />
                 </p>
 
-                <p className="block mb-2 text-lg">{item.title}</p>
+                <p className="block mb-2 text-lg xl:text-xl">{item.title}</p>
               </Link>
             ))}
           </div>

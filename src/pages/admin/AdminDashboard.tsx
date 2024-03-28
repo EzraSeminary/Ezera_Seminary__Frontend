@@ -23,7 +23,7 @@ const AdminDashboard = () => {
   const [showComponent, setShowComponent] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex bg-gray-100">
       <div
         // Make the sidebar fixed to be visible on vertical scroll...!!
         className={`sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
         <Sidebar />
       </div>
       <div
-        className={`flex-grow bg-gray-100 transition-all duration-500 ease-in-out pl-4`}
+        className={`flex-grow  transition-all duration-500 ease-in-out pl-4 mx-8`}
       >
         <AdminHeader />
         <Routes>
