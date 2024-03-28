@@ -8,7 +8,15 @@ interface User {
   email: string | null;
   password: string | null;
   token: string | null;
-  avatar: string | null; // Add this line
+  avatar: string | null;
+  progress: Progress[];
+  achievement: number;
+}
+
+interface Progress {
+  courseId: string;
+  currentChapter: number;
+  currentSlide: number;
 }
 
 export interface AuthState {
