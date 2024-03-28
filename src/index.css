@@ -143,31 +143,32 @@ footer {
 }
 
 .loggedIn-img {
-  background-image: url("./assets/about-img.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("./assets/about-img.jpg");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: bottom;
   width: 100%;
+  position: relative;
 }
 
 .course-img {
-  background-image: url("./assets/course-img-1.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url("./assets/course-img-1.jpg");
   background-size: fill;
+  background-color: rgba(0, 0, 0, 0.8);
   background-repeat: no-repeat;
   background-position: bottom;
   width: 100%;
 }
-
 .sabbath-img {
-  background-image: url("./assets/sabbath-img.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url("./assets/sabbath-img.jpg");
   background-size: fill;
   background-repeat: no-repeat;
-  background-position: top ;
+  background-position: center ;
   width: 100%;
 }
 
 .devotion-img {
-  background-image: url("./assets/devotion-img.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/devotion-img.jpg");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: center center;
@@ -175,7 +176,7 @@ footer {
 }
 
 .about-img {
-  background-image: url("./assets/About-img-2.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-2.jpg");
   background-size: fill;
   background-repeat: no-repeat;
   background-position:  center;
@@ -183,7 +184,7 @@ footer {
 }
 
 .contact-img {
-  background-image: url("./assets/About-img-1.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-1.jpg");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: bottom center;

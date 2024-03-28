@@ -65,7 +65,7 @@ const ContactUs = () => {
     },
   });
   return (
-    <div className="flex flex-col min-h-screen absolute top-0 w-full">
+    <div className="flex flex-col min-h-screen absolute top-0 w-full font-nokia-bold">
       <div className="contact-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">

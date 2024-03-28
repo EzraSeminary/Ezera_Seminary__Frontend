@@ -91,7 +91,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen mx-auto">
       <div className="w-[100%] h-full font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12 flex-1">
         <CurrentDevotional
           devotionToDisplay={devotionToDisplay}
