@@ -12,6 +12,7 @@
     
 .wrapper p {
         text-indent: 20px; 
+        margin-top: 10px;
       }
 .wrapper a {
         text-decoration: underline;
