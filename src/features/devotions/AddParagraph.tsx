@@ -76,7 +76,7 @@ const AddParagraph: FC<AddParagraphProps> = ({
                 className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg text-accent-6 px-2 py-1 placeholder-accent-4"
                 value={para}
                 onChange={(e) => handleParaChange(e, paragraphIndex)}
-                maxLength={250}
+                maxLength={350}
               />
               <Trash
                 size={25}
