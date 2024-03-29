@@ -48,6 +48,9 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
+    getUserById: builder.query({
+      query: (id) => `user/get/${id}`,
+    }), 
     getCourses: builder.query({
       query: () => "course/getall",
     }),
