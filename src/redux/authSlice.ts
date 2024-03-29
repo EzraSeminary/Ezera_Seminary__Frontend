@@ -9,14 +9,14 @@ interface User {
   password: string | null;
   token: string | null;
   avatar: string | null;
-  progress: Progress[];
-  achievement: number;
+  progress?: Progress[];
+  achievement?: number;
 }
 
 interface Progress {
-  courseId: string;
-  currentChapter: number;
-  currentSlide: number;
+  courseId?: string;
+  currentChapter?: number;
+  currentSlide?: number;
 }
 
 export interface AuthState {

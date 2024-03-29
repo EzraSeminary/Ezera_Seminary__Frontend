@@ -89,7 +89,7 @@ function SlidesDisplay() {
   }
 
   // slide number
-  const currentDataNumber = activeIndex + 1;
+  const currentSlideNumber = activeIndex + 1;
   const totalDataNumber = data.length;
   const isLastSlide = activeIndex === totalDataNumber - 1;
 
@@ -215,7 +215,7 @@ function SlidesDisplay() {
           {/* Header */}
           <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
             <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
-              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+              ትምህርት {currentSlideNumber}/{totalDataNumber}
             </h1>
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>
@@ -256,7 +256,10 @@ function SlidesDisplay() {
           </div>
           <NavLink to={`/courses/get/${courseId}`}>
             <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
+              <button
+                className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
+                // onClick={}
+              >
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
