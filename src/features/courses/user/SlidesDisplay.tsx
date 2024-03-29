@@ -18,6 +18,7 @@ import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
 import { useDispatch } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
+import { useGetUserByIdQuery } from "@/redux/api-slices/apiSlice";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -48,9 +49,10 @@ function SlidesDisplay() {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  const { courseId, chapterId } = useParams<{
+  const { courseId, chapterId, userId } = useParams<{
     courseId: string;
     chapterId: string;
+    userId: string;
   }>();
 
   //get single course
@@ -59,6 +61,9 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
+
+  //get the user
+  const { data: userData } = useGetUserByIdQuery(userId as string);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -160,6 +165,8 @@ function SlidesDisplay() {
     );
 
   if (error) return <div>Something went wrong.</div>;
+
+  console.log(userData);
 
   return (
     // <div className="flex justify-center items-center w-[80%] mx-auto">
