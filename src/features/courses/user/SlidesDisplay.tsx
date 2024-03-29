@@ -16,8 +16,11 @@ import {
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
+import { useDispatch } from "react-redux";
+import { setProgress } from "@/redux/authSlice";
 
 function SlidesDisplay() {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState<boolean>(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
@@ -59,6 +62,9 @@ function SlidesDisplay() {
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
+  const chapterIndex = courseData?.chapters.findIndex(
+    (chap) => chap._id === chapterId
+  );
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
@@ -81,6 +87,7 @@ function SlidesDisplay() {
 
     setActiveIndex(newIndex);
     setShowQuizResult(false); // Reset the showQuizResult state
+    updateProgress();
   };
 
   interface AccordionItem {
@@ -120,6 +127,22 @@ function SlidesDisplay() {
       );
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+  };
+
+  const updateProgress = (
+    courseId: string,
+    currentChapter: number,
+    currentSlide: number
+  ) => {
+    if (chapterIndex !== undefined && chapterIndex !== -1) {
+      dispatch(
+        setProgress({
+          courseId,
+          currentChapter: chapterIndex,
+          currentSlide: activeIndex,
+        })
+      );
     }
   };
 
