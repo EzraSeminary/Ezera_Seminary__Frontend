@@ -61,6 +61,12 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}`,
+        method: "DELETE",
+      }),
+    }),
     getCourses: builder.query({
       query: () => "course/getall",
     }),
@@ -123,6 +129,7 @@ export const {
   useGetUsersQuery,
   useLoginMutation,
   useUpdateUserMutation,
+  useDeleteUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
@@ -12,6 +13,18 @@ const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
   const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
+  const [deleteUserMutation] = useDeleteUserMutation();
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      await deleteUserMutation(userId).unwrap();
+      toast.success("User deleted successfully!");
+      // Refetch the user list to update the UI
+      await refetch();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Error deleting user. Please try again.");
+    }
+  };
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
