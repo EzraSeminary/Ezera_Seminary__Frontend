@@ -32,6 +32,7 @@ function SlidesDisplay() {
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
+  //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   {
@@ -133,6 +134,9 @@ function SlidesDisplay() {
     }
   };
 
+  // Check if courseData and courseData._id are not undefined
+  const courseId = courseData && courseData._id ? courseData._id : "";
+
   const updateProgress = (
     courseId: string,
     currentChapter: number,
@@ -141,7 +145,7 @@ function SlidesDisplay() {
     if (chapterIndex !== undefined && chapterIndex !== -1) {
       dispatch(
         setProgress({
-          courseId,
+          courseId: courseId,
           currentChapter: chapterIndex,
           currentSlide: activeIndex,
         })
