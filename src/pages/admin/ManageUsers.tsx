@@ -43,7 +43,10 @@ const ManageUsers: React.FC = () => {
         if (editingUser.password) {
           formData.append("password", editingUser.password);
         }
-        await updateUserMutation(formData).unwrap();
+        await updateUserMutation({
+          id: editingUser._id,
+          updatedUser: formData,
+        }).unwrap();
         toast.success("User updated successfully!");
         setEditingUser(null);
         setSelectedAvatar(null);
