@@ -9,7 +9,7 @@ import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
-  const { data: users, isLoading, isError } = useGetUsersQuery();
+  const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -17,8 +17,10 @@ const ManageUsers: React.FC = () => {
   useEffect(() => {
     if (isError) {
       toast.error("Error fetching users. Please try again.");
+    } else if (users && users.length === 0) {
+      toast.info("No users found.");
     }
-  }, [isError]);
+  }, [isError, users]);
 
   const handleEditUser = (user: any) => {
     setEditingUser(user);

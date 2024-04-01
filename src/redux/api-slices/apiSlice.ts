@@ -49,7 +49,7 @@ export const apiSlice = createApi({
     }),
     getUsers: builder.query({
       query: () => "/users",
-      providesTags: ["Users"],
+      providesTags: ["Devotions"],
     }),
     updateUser: builder.mutation({
       query: (formData) => ({
