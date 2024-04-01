@@ -16,7 +16,7 @@ import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
 import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
 import CreateUser from "./CreateUser";
-import ManageUser from "./ManageUser";
+import ManageUser from "./ManageUsers";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
