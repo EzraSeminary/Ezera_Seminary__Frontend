@@ -66,8 +66,12 @@ const ManageUsers: React.FC = () => {
       // Refetch the user list to update the UI
       await refetch();
     } catch (error) {
-      console.error("Error deleting user:", error);
-      toast.error("Error deleting user. Please try again.");
+      if (error.status === 404) {
+        toast.error("User not found. Unable to delete.");
+      } else {
+        console.error("Error deleting user:", error);
+        toast.error("Error deleting user. Please try again.");
+      }
     }
   };
 
