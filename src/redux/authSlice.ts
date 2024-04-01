@@ -11,6 +11,7 @@ interface User {
   avatar: string | null;
   progress?: Progress[];
   achievement?: number;
+  _id?: string;
 }
 
 interface Progress {

@@ -19,6 +19,7 @@ import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemD
 import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
+import axios from "axios";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -135,7 +136,7 @@ function SlidesDisplay() {
   };
 
   // Check if courseData and courseData._id are not undefined
-  const courseId = courseData && courseData._id ? courseData._id : "";
+  const courseID = courseData && courseData._id ? courseData._id : "";
 
   const updateProgress = (
     courseId: string,
@@ -145,11 +146,39 @@ function SlidesDisplay() {
     if (chapterIndex !== undefined && chapterIndex !== -1) {
       dispatch(
         setProgress({
-          courseId: courseId,
+          courseId: courseID,
           currentChapter: chapterIndex,
           currentSlide: activeIndex,
         })
       );
+    }
+  };
+
+  const submitProgress = () => {
+    if (currentUser && currentUser.progress) {
+      axios
+        .post(
+          "/users/profile",
+          {
+            userId: currentUser._id, // Make sure you have a field to identify the user, like _id
+            progress: currentUser.progress,
+          },
+          {
+            headers: {
+              // Add headers if needed, for example authorization token
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Progress updated successfully:", res.data);
+        })
+        .catch((err) => {
+          console.error(
+            "Error updating progress:",
+            err.response ? err.response.data : err.message
+          );
+        });
     }
   };
 
@@ -519,7 +548,10 @@ function SlidesDisplay() {
                       to={`/courses/get/${courseId}`}
                       className="flex justify-center items-center mx-auto"
                     >
-                      <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1">
+                      <button
+                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
+                        onClick={submitProgress}
+                      >
                         ዘግተህ ውጣ
                       </button>
                     </NavLink>
