@@ -7,6 +7,8 @@ import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { Progress } from "@/components/ui/progress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -29,6 +31,9 @@ function CoursesAvailable() {
   const [showInput, setShowInput] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  //get the current user from the Root State
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   {
     /* function to handle search input */
@@ -203,6 +208,9 @@ function CoursesAvailable() {
                     />
                   </div>
 
+                  {/* progress bar */}
+                  <Progress value={progress} className="w-[60%]" />
+
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
                     <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
@@ -317,6 +325,9 @@ function CoursesAvailable() {
                       alt=""
                     />
                   </motion.div>
+
+                  {/* progress bar */}
+                  <Progress value={progress} className="w-[60%]" />
 
                   {/* Title, Description and button */}
                   <motion.div
