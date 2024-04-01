@@ -6,6 +6,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+import { Progress } from "@/components/ui/progress";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -27,6 +28,7 @@ function CoursesAvailable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   {
     /* function to handle search input */
@@ -250,6 +252,9 @@ function CoursesAvailable() {
                       alt=""
                     />
                   </div>
+
+                  {/* progress bar */}
+                  <Progress value={progress} className="w-[60%]" />
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
