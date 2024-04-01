@@ -16,9 +16,9 @@ import {
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
-import { useGetUserByIdQuery } from "@/redux/api-slices/apiSlice";
+import { RootState } from "@/redux/store";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -31,6 +31,8 @@ function SlidesDisplay() {
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -49,10 +51,9 @@ function SlidesDisplay() {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  const { courseId, chapterId, userId } = useParams<{
+  const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
-    userId: string;
   }>();
 
   //get single course
@@ -61,9 +62,6 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
-
-  //get the user
-  const { data: userData } = useGetUserByIdQuery(userId as string);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -166,7 +164,7 @@ function SlidesDisplay() {
 
   if (error) return <div>Something went wrong.</div>;
 
-  console.log(userData);
+  console.log(currentUser);
 
   return (
     // <div className="flex justify-center items-center w-[80%] mx-auto">
