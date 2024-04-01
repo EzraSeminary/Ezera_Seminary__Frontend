@@ -14,17 +14,6 @@ const ManageUsers: React.FC = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
   const [deleteUserMutation] = useDeleteUserMutation();
-  const handleDeleteUser = async (userId: string) => {
-    try {
-      await deleteUserMutation(userId).unwrap();
-      toast.success("User deleted successfully!");
-      // Refetch the user list to update the UI
-      await refetch();
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      toast.error("Error deleting user. Please try again.");
-    }
-  };
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
@@ -71,8 +60,15 @@ const ManageUsers: React.FC = () => {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    // Implement user deletion logic here
-    console.log("Deleting user:", userId);
+    try {
+      await deleteUserMutation(userId).unwrap();
+      toast.success("User deleted successfully!");
+      // Refetch the user list to update the UI
+      await refetch();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Error deleting user. Please try again.");
+    }
   };
 
   const toggleShowPassword = () => {
