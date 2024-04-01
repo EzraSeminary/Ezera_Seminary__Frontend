@@ -30,7 +30,7 @@ function CoursesAvailable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(50);
 
   {
     /* function to handle search input */
@@ -77,19 +77,28 @@ function CoursesAvailable() {
   };
 
   // //progress
+  // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const userCourseId = currentUser?.progress?.map(
-    (progres) => progres.courseId
-  );
-  const courseCourseId = filteredData.map((course) => course._id);
 
-  const studiedChapter = currentUser?.progress?.map(
-    (progres) => progres.currentChapter
-  );
-  const totalChapter = filteredData.map((course) => course.chapters.length);
-  const progressDecimal = studiedChapter / totalChapter;
-  const userProgress = progressDecimal * 100;
-  setProgress(userProgress);
+  // Function to calculate the progress value for a given course ID
+  const getProgressValue = (courseId: string): number | undefined => {
+    const userProgress = currentUser?.progress?.find(
+      (p) => p.courseId === courseId
+    );
+
+    // Assuming you have logic to calculate progress percentage correctly
+    if (
+      userProgress &&
+      userProgress.currentChapter &&
+      userProgress.currentSlide
+    ) {
+      const progressDecimal =
+        userProgress.currentChapter /
+        totalChapter[userCourseId.indexOf(courseId)];
+      setProgress(progressDecimal * 100);
+    }
+    return undefined;
+  };
 
   {
     /* Loading spinner */
@@ -221,7 +230,7 @@ function CoursesAvailable() {
                   </div>
 
                   {/* progress bar */}
-                  <Progress value={progress} className="w-[60%]" />
+                  <Progress value={progress} className="w-[90%] mx-auto" />
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
@@ -274,7 +283,7 @@ function CoursesAvailable() {
                   </div>
 
                   {/* progress bar */}
-                  <Progress value={progress} className="w-[60%]" />
+                  <Progress value={progress} className="w-[90%] mx-auto" />
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
@@ -308,6 +317,8 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -338,8 +349,10 @@ function CoursesAvailable() {
                     />
                   </motion.div>
 
-                  {/* progress bar */}
-                  <Progress value={progress} className="w-[60%]" />
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress value={progress} className="w-[90%] mx-auto" />
+                  )}
 
                   {/* Title, Description and button */}
                   <motion.div
