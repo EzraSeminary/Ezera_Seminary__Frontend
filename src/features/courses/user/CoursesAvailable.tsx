@@ -32,9 +32,6 @@ function CoursesAvailable() {
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  //get the current user from the Root State
-  const currentUser = useSelector((state: RootState) => state.auth.user);
-
   {
     /* function to handle search input */
   }
@@ -78,6 +75,21 @@ function CoursesAvailable() {
   const handleViewAllCoursesClick = () => {
     setShowAllCourses(!showAllCourses);
   };
+
+  // //progress
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const userCourseId = currentUser?.progress?.map(
+    (progres) => progres.courseId
+  );
+  const courseCourseId = filteredData.map((course) => course._id);
+
+  const studiedChapter = currentUser?.progress?.map(
+    (progres) => progres.currentChapter
+  );
+  const totalChapter = filteredData.map((course) => course.chapters.length);
+  const progressDecimal = studiedChapter / totalChapter;
+  const userProgress = progressDecimal * 100;
+  setProgress(userProgress);
 
   {
     /* Loading spinner */
