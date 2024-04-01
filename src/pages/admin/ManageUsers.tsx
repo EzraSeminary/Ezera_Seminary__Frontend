@@ -5,7 +5,8 @@ import {
   useUpdateUserMutation,
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
-import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
+import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
+// import mehari from "@/assets/avatar.png"; //use default image mehari for blank avatar image for now
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const ManageUsers: React.FC = () => {
   const [updateUserMutation] = useUpdateUserMutation();
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
 
   useEffect(() => {
     if (isError) {
@@ -24,14 +26,27 @@ const ManageUsers: React.FC = () => {
 
   const handleEditUser = (user: any) => {
     setEditingUser(user);
+    setSelectedAvatar(null);
   };
 
   const handleUpdateUser = async () => {
     if (editingUser) {
       try {
-        await updateUserMutation(editingUser).unwrap();
+        const formData = new FormData();
+        formData.append("firstName", editingUser.firstName);
+        formData.append("lastName", editingUser.lastName);
+        formData.append("email", editingUser.email);
+        formData.append("role", editingUser.role);
+        if (selectedAvatar) {
+          formData.append("avatar", selectedAvatar);
+        }
+        if (editingUser.password) {
+          formData.append("password", editingUser.password);
+        }
+        await updateUserMutation(formData).unwrap();
         toast.success("User updated successfully!");
         setEditingUser(null);
+        setSelectedAvatar(null);
       } catch (error) {
         console.error("Error updating user:", error);
         toast.error("Error updating user. Please try again.");
@@ -78,74 +93,100 @@ const ManageUsers: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users && users.length > 0 ? (
-            users.map((user) => (
-              <tr
-                key={user._id}
-                className={`border-b ${
-                  editingUser?._id === user._id ? "bg-gray-100" : ""
-                }`}
-              >
-                <td className="px-4 py-2">
-                  <img
-                    src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
-                    alt={`${user.firstName} ${user.lastName}`}
-                    className="w-12 h-12 rounded-full"
-                  />
-                </td>
-                <td className="px-4 py-2">{user.firstName}</td>
-                <td className="px-4 py-2">{user.lastName}</td>
-                <td className="px-4 py-2">{user.email}</td>
-                <td className="px-4 py-2">{user.role}</td>
-                <td className="px-4 py-2">
-                  {editingUser?._id === user._id ? (
-                    <>
-                      <button
-                        onClick={handleUpdateUser}
-                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingUser(null)}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleEditUser(user)}
-                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(user._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6} className="px-4 py-2 text-center">
-                No users found.
+          {users?.map((user) => (
+            <tr
+              key={user._id}
+              className={`border-b ${
+                editingUser?._id === user._id ? "bg-gray-100" : ""
+              }`}
+            >
+              <td className="px-4 py-2">
+                <img
+                  src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
+                  alt={`${user.firstName} ${user.lastName}`}
+                  className="w-12 h-12 rounded-full"
+                />
+              </td>
+              <td className="px-4 py-2">{user.firstName}</td>
+              <td className="px-4 py-2">{user.lastName}</td>
+              <td className="px-4 py-2">{user.email}</td>
+              <td className="px-4 py-2">{user.role}</td>
+              <td className="px-4 py-2">
+                {editingUser?._id === user._id ? (
+                  <>
+                    <button
+                      onClick={handleUpdateUser}
+                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditingUser(null)}
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py -1 px-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleEditUser(user)}
+                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
       {editingUser && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h3 className="text-xl font-bold mb-4">Edit User</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Edit User</h3>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <XCircle size={24} weight="bold" />
+              </button>
+            </div>
             <form>
+              <div className="mb-4 flex items-center">
+                <img
+                  src={
+                    selectedAvatar
+                      ? URL.createObjectURL(selectedAvatar)
+                      : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
+                  }
+                  alt={`${editingUser.firstName} ${editingUser.lastName}`}
+                  className="w-20 h-20 rounded-full mr-4"
+                />
+                <div>
+                  <label htmlFor="avatar" className="block font-medium mb-1">
+                    Avatar
+                  </label>
+                  <input
+                    type="file"
+                    id="avatar"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        setSelectedAvatar(e.target.files[0]);
+                      }
+                    }}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                  />
+                </div>
+              </div>
               <div className="mb-4">
                 <label htmlFor="firstName" className="block font-medium mb-1">
                   First Name
@@ -198,7 +239,7 @@ const ManageUsers: React.FC = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  value={editingUser.password}
+                  value={editingUser.password || ""}
                   onChange={(e) =>
                     setEditingUser({ ...editingUser, password: e.target.value })
                   }
@@ -230,6 +271,22 @@ const ManageUsers: React.FC = () => {
                   <option value="Learner">Learner</option>
                   <option value="Admin">Admin</option>
                 </select>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleUpdateUser}
+                  className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </div>
