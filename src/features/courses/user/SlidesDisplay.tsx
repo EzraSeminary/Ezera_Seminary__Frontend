@@ -157,7 +157,7 @@ function SlidesDisplay() {
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
       axios
-        .post(
+        .put(
           "/users/profile",
           {
             userId: currentUser._id, // Make sure you have a field to identify the user, like _id
