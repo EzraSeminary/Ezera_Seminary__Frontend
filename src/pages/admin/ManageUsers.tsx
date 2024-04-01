@@ -14,6 +14,7 @@ const ManageUsers: React.FC = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
   const [deleteUserMutation] = useDeleteUserMutation();
+  const { refetch } = useGetUsersQuery(undefined, {});
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
@@ -66,7 +67,7 @@ const ManageUsers: React.FC = () => {
       // Refetch the user list to update the UI
       await refetch();
     } catch (error) {
-      if (error.status === 404) {
+      if ((error as any)?.data?.message === "User not found") {
         toast.error("User not found. Unable to delete.");
       } else {
         console.error("Error deleting user:", error);
