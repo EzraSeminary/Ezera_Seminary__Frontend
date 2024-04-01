@@ -224,7 +224,7 @@ function CoursesAvailable() {
                         `https://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </div>
@@ -277,7 +277,7 @@ function CoursesAvailable() {
                         `https://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </div>
@@ -344,15 +344,15 @@ function CoursesAvailable() {
                         `http://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </motion.div>
 
                   {/* Conditionally render the progress bar if progress exists */}
-                  {progressValue !== undefined && (
-                    <Progress value={progress} className="w-[90%] mx-auto" />
-                  )}
+                  {/* {progressValue !== undefined && ( */}
+                  <Progress value={progress} className="w-[90%] mx-auto" />
+                  {/* // )} */}
 
                   {/* Title, Description and button */}
                   <motion.div
