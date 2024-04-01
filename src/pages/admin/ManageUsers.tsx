@@ -78,59 +78,67 @@ const ManageUsers: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => (
-            <tr
-              key={user._id}
-              className={`border-b ${
-                editingUser?._id === user._id ? "bg-gray-100" : ""
-              }`}
-            >
-              <td className="px-4 py-2">
-                <img
-                  src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
-                  alt={`${user.firstName} ${user.lastName}`}
-                  className="w-12 h-12 rounded-full"
-                />
-              </td>
-              <td className="px-4 py-2">{user.firstName}</td>
-              <td className="px-4 py-2">{user.lastName}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.role}</td>
-              <td className="px-4 py-2">
-                {editingUser?._id === user._id ? (
-                  <>
-                    <button
-                      onClick={handleUpdateUser}
-                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingUser(null)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleEditUser(user)}
-                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteUser(user._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Delete
-                    </button>
-                  </>
-                )}
+          {users && users.length > 0 ? (
+            users.map((user) => (
+              <tr
+                key={user._id}
+                className={`border-b ${
+                  editingUser?._id === user._id ? "bg-gray-100" : ""
+                }`}
+              >
+                <td className="px-4 py-2">
+                  <img
+                    src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
+                    alt={`${user.firstName} ${user.lastName}`}
+                    className="w-12 h-12 rounded-full"
+                  />
+                </td>
+                <td className="px-4 py-2">{user.firstName}</td>
+                <td className="px-4 py-2">{user.lastName}</td>
+                <td className="px-4 py-2">{user.email}</td>
+                <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2">
+                  {editingUser?._id === user._id ? (
+                    <>
+                      <button
+                        onClick={handleUpdateUser}
+                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingUser(null)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEditUser(user)}
+                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(user._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} className="px-4 py-2 text-center">
+                No users found.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       {editingUser && (
