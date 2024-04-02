@@ -75,27 +75,20 @@ function ChaptersDisplay() {
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const userCourseId =
-    currentUser?.progress?.map((progres) => progres.courseId) ?? [];
-
-  // Function to calculate the progress value for a given course ID
-  const getProgressValue = () => {
+  const progressValue = () => {
     const userProgress = currentUser?.progress?.find(
-      (p) => p.courseId === courseData?._id
+      (p) => p.courseId === courseId
     );
 
-    // Assuming you have logic to calculate progress percentage correctly
-    if (
-      userProgress &&
-      userProgress.currentChapter &&
-      userProgress.currentSlide
-    ) {
-      const progressDecimal =
-        userProgress.currentChapter /
-        totalDataNumber[userCourseId.indexOf(courseData?._id)];
-      return progressDecimal * 100;
+    if (userProgress && userProgress.currentChapter !== undefined) {
+      // the progressPercent should be calculated based on the index of chapter
+      // (adding 1 because index are zero-based) and the total number of chapters
+      const progressPercent =
+        ((userProgress.currentChapter + 1) / totalDataNumber) * 100;
+      // convert it to a fixed string to avoid too many decimals
+      return progressPercent.toFixed();
     }
-    return undefined;
+    return "0"; // if there's no progress, return 0
   };
 
   {
@@ -175,7 +168,9 @@ function ChaptersDisplay() {
             }`}
           >
             <div className="p-1 bg-accent-6 rounded">
-              <p className="font-Lato-Bold text-primary-1 ">10%</p>
+              <p className="font-Lato-Bold text-primary-1 ">
+                {progressValue()}%
+              </p>
             </div>
             <p className="font-Lato-Bold text-secondary-6 leading-none">
               Pass 100% of your lessons to complete this course
