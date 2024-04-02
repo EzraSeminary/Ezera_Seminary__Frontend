@@ -11,6 +11,8 @@ import {
   ArrowRight,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 function ChaptersDisplay() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,6 +70,13 @@ function ChaptersDisplay() {
   const isSlideUnlocked = (index: number) => {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
+
+  //progress
+  // Retrieves the current user from Redux state
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  const userCourseId =
+    currentUser?.progress?.map((progres) => progres.courseId) ?? [];
 
   {
     /* Loading state */

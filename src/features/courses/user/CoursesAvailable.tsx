@@ -75,8 +75,8 @@ function CoursesAvailable() {
     setShowAllCourses(!showAllCourses);
   };
 
-  // // //progress
-  // // Retrieves the current user from Redux state
+  //progress
+  // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const userCourseId =
