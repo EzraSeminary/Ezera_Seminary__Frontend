@@ -30,7 +30,6 @@ function CoursesAvailable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
-  const [progress, setProgress] = useState(50);
 
   {
     /* function to handle search input */
@@ -76,22 +75,21 @@ function CoursesAvailable() {
     setShowAllCourses(!showAllCourses);
   };
 
-  // //progress
-  // Retrieves the current user from Redux state
+  // // //progress
+  // // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  console.log(currentUser);
 
   const userCourseId = currentUser?.progress?.map(
     (progres) => progres.courseId
   );
+
+  const totalChapter = filteredData.map((course) => course.chapters.length);
 
   // Function to calculate the progress value for a given course ID
   const getProgressValue = (courseId: string): number | undefined => {
     const userProgress = currentUser?.progress?.find(
       (p) => p.courseId === courseId
     );
-
-    const totalChapter = filteredData.map((course) => course.chapters.length);
 
     // Assuming you have logic to calculate progress percentage correctly
     if (
@@ -102,7 +100,7 @@ function CoursesAvailable() {
       const progressDecimal =
         userProgress.currentChapter /
         totalChapter[userCourseId.indexOf(courseId)];
-      setProgress(progressDecimal * 100);
+      return progressDecimal * 100;
     }
     return undefined;
   };
@@ -326,6 +324,7 @@ function CoursesAvailable() {
             .map((course, index: number) => {
               // Get the progress value for this course, if it exists
               const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -357,9 +356,12 @@ function CoursesAvailable() {
                   </motion.div>
 
                   {/* Conditionally render the progress bar if progress exists */}
-                  {/* {progressValue !== undefined && ( */}
-                  <Progress value={progress} className="w-[90%] mx-auto" />
-                  {/* // )} */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <motion.div
