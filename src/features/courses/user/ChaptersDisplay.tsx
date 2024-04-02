@@ -78,6 +78,26 @@ function ChaptersDisplay() {
   const userCourseId =
     currentUser?.progress?.map((progres) => progres.courseId) ?? [];
 
+  // Function to calculate the progress value for a given course ID
+  const getProgressValue = () => {
+    const userProgress = currentUser?.progress?.find(
+      (p) => p.courseId === courseData?._id
+    );
+
+    // Assuming you have logic to calculate progress percentage correctly
+    if (
+      userProgress &&
+      userProgress.currentChapter &&
+      userProgress.currentSlide
+    ) {
+      const progressDecimal =
+        userProgress.currentChapter /
+        totalDataNumber[userCourseId.indexOf(courseData?._id)];
+      return progressDecimal * 100;
+    }
+    return undefined;
+  };
+
   {
     /* Loading state */
   }
