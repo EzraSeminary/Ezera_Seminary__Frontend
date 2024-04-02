@@ -79,12 +79,19 @@ function CoursesAvailable() {
   // //progress
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  console.log(currentUser);
+
+  const userCourseId = currentUser?.progress?.map(
+    (progres) => progres.courseId
+  );
 
   // Function to calculate the progress value for a given course ID
   const getProgressValue = (courseId: string): number | undefined => {
     const userProgress = currentUser?.progress?.find(
       (p) => p.courseId === courseId
     );
+
+    const totalChapter = filteredData.map((course) => course.chapters.length);
 
     // Assuming you have logic to calculate progress percentage correctly
     if (
