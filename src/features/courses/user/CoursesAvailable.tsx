@@ -79,9 +79,8 @@ function CoursesAvailable() {
   // // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const userCourseId = currentUser?.progress?.map(
-    (progres) => progres.courseId
-  );
+  const userCourseId =
+    currentUser?.progress?.map((progres) => progres.courseId) ?? [];
 
   const totalChapter = filteredData.map((course) => course.chapters.length);
 
@@ -216,6 +215,9 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -234,8 +236,13 @@ function CoursesAvailable() {
                     />
                   </div>
 
-                  {/* progress bar */}
-                  <Progress value={progress} className="w-[90%] mx-auto" />
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
@@ -269,6 +276,9 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -287,8 +297,13 @@ function CoursesAvailable() {
                     />
                   </div>
 
-                  {/* progress bar */}
-                  <Progress value={progress} className="w-[90%] mx-auto" />
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
