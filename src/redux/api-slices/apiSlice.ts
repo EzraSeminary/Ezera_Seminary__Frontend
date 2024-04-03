@@ -51,12 +51,15 @@ export const apiSlice = createApi({
     }),
     getUserById: builder.query({
       query: (id) => `/users/get/${id}`,
+    }),
+    getCurrentUser: builder.query({
+      query: () => "/users/current",
     }), 
     getCourses: builder.query({
-      query: () => "course/getall",
+      query: () => "/course/getall",
     }),
     getCourseById: builder.query({
-      query: (id) => `course/get/${id}`,
+      query: (id) => `/course/get/${id}`,
     }),
     getDevotions: builder.query<Devotion[], void>({
       // Provide types here
