@@ -75,11 +75,11 @@ function ChaptersDisplay() {
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const progressValue = () => {
-    const userProgress = currentUser?.progress?.find(
-      (p) => p.courseId === courseId
-    );
+  const userProgress = currentUser?.progress?.find(
+    (p) => p.courseId === courseId
+  );
 
+  const progressValue = () => {
     if (userProgress && userProgress.currentChapter !== undefined) {
       // the progressPercent should be calculated based on the index of chapter
       // (adding 1 because index are zero-based) and the total number of chapters
@@ -89,6 +89,26 @@ function ChaptersDisplay() {
       return progressPercent.toFixed();
     }
     return "0"; // if there's no progress, return 0
+  };
+
+  // Check the status of the chapter
+  const getChapterStatus = (chapterIndex: number): string => {
+    if (userProgress) {
+      const { currentChapter } = userProgress;
+
+      // Check if the chapter is completed
+      if (currentChapter > chapterIndex) {
+        return "completed";
+      }
+
+      // Check if the current chapter is the ongoing chapter
+      if (currentChapter === chapterIndex) {
+        return "started";
+      }
+    }
+
+    // Default to not started if no user progress is found
+    return "not_started";
   };
 
   {
@@ -233,7 +253,7 @@ function ChaptersDisplay() {
         </div>
 
         {/* Chapter display window*/}
-        <div className=" lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg ">
+        <div className=" lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
@@ -263,38 +283,42 @@ function ChaptersDisplay() {
 
             {/* Chapter content */}
             {data.map((chapter, index) => {
+              const chapterStatus = getChapterStatus(index);
               if (index === activeIndex) {
                 return (
-                  <div
-                    key={index}
-                    className="flex flex-col justify-center h-52 flex-grow"
-                  >
-                    <h1 className="text-lg lg:text-xl text-[#fff] text-center font-nokia-bold">
-                      {chapter.chapter}
-                    </h1>
-                    <button className="text-white text-center font-nokia-bold  py-1 px-2 bg-accent-6 hover:bg-accent-7 w-auto lg:px-4 lg:py-2  rounded-3xl mx-auto lg:mt-2 text-xs1 lg:text-sm ">
-                      <NavLink
-                        to={`/courses/get/${courseId}/chapter/${chapter._id}`}
-                      >
-                        ትምህርቱን ጀምር
-                      </NavLink>
-                    </button>
-                  </div>
+                  <>
+                    <div
+                      key={index}
+                      className="flex flex-col justify-center h-52 flex-grow"
+                    >
+                      <h1 className="text-lg lg:text-xl text-[#fff] text-center font-nokia-bold">
+                        {chapter.chapter}
+                      </h1>
+                      <button className="text-white text-center font-nokia-bold  py-1 px-2 bg-accent-6 hover:bg-accent-7 w-auto lg:px-4 lg:py-2  rounded-3xl mx-auto lg:mt-2 text-xs1 lg:text-sm ">
+                        <NavLink
+                          to={`/courses/get/${courseId}/chapter/${chapter._id}`}
+                        >
+                          ትምህርቱን ጀምር
+                        </NavLink>
+                      </button>
+                    </div>
+                    <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs1 lg:text-xs">
+                      <div className="p-1 bg-accent-6 rounded">
+                        <p className="font-Lato-Bold text-primary-1">
+                          slide percent%
+                        </p>
+                      </div>
+                      <p className="font-Lato-Bold text-secondary-6 leading-none">
+                        {chapterStatus}
+                      </p>
+                    </div>
+                    ;
+                  </>
                 );
               } else {
                 return null; // Hide the chapter if it doesn't match the activeIndex
               }
             })}
-
-            {/* Footer */}
-            <div className="pl-2 py-1 bg-primary-7 gap-2 justify-center items-center w-full text-xs1  lg:text-xs flex">
-              <div className="p-1 bg-accent-6 rounded">
-                <p className="font-Lato-Bold text-primary-1 ">slide percent%</p>
-              </div>
-              <p className="font-Lato-Bold text-secondary-6 leading-none">
-                Pass 100% of your slides to complete this lesson
-              </p>
-            </div>
           </div>
         </div>
       </div>
