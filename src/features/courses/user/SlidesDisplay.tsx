@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import axios from "axios";
+import { PuffLoader } from "react-spinners";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function SlidesDisplay() {
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const [progressLoading, setProgressLoading] = useState(false);
 
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -155,7 +156,7 @@ function SlidesDisplay() {
 
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
-      setLoading(true);
+      setProgressLoading(true);
       axios
         .put(
           "/users/profile",
@@ -172,7 +173,7 @@ function SlidesDisplay() {
         )
         .then((res) => {
           console.log("Progress updated successfully:", res.data);
-          setLoading(false);
+          setProgressLoading(false);
           navigate(`/courses/get/${courseId}`);
         })
         .catch((err) => {
@@ -180,21 +181,22 @@ function SlidesDisplay() {
             "Error updating progress:",
             err.response ? err.response.data : err.message
           );
-          setLoading(false);
+          setProgressLoading(false);
         });
     }
   };
 
-  if (loading)
+  if (progressLoading)
     return (
-      <div className="h-full flex justify-center items-center">
-        <BeatLoader
+      <div className="h-screen flex justify-center items-center">
+        <PuffLoader
           color={"#707070"}
           loading
-          size={15}
+          size={80}
           aria-label="Loading Spinner"
           data-testid="loader"
         />
+        <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
       </div>
     );
 
