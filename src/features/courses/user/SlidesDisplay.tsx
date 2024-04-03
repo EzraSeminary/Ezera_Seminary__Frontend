@@ -138,11 +138,7 @@ function SlidesDisplay() {
   // Check if courseData and courseData._id are not undefined
   const courseID = courseData && courseData._id ? courseData._id : "";
 
-  const updateProgress = (
-    courseId: string,
-    currentChapter: number,
-    currentSlide: number
-  ) => {
+  const updateProgress = () => {
     if (chapterIndex !== undefined && chapterIndex !== -1) {
       dispatch(
         setProgress({
