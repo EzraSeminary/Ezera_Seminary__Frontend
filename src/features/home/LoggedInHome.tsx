@@ -9,6 +9,8 @@ import {
 } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
+import { setUser } from "@/redux/authSlice";
+import { useDispatch } from "react-redux";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -26,7 +28,13 @@ const gridSquareVariants = {
 };
 
 const LoggedInHome = () => {
+  const dispatch = useDispatch();
+
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+
+  const { data: userData } = useGetCurrentUserQuery({});
+  dispatch(setUser(userData));
+
   const ethiopianMonths = [
     "", // There is no month 0
     "መስከረም",
@@ -76,8 +84,6 @@ const LoggedInHome = () => {
   const handleViewDevotion = (devotion: Devotion) => {
     navigate("/devotion", { state: { selectedDevotion: devotion } });
   };
-
-  const { data: user, userError, userLoading } = useGetCurrentUserQuery();
 
   return (
     <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24">
