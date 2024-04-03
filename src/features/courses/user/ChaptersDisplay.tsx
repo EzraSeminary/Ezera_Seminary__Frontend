@@ -21,6 +21,18 @@ function ChaptersDisplay() {
     /* State to control account modal  */
   }
 
+  // Retrieves the current user from Redux state
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  console.log(currentUser);
+
+  //find matching courseId from the user progress array
+  const userProgress = currentUser?.progress?.find(
+    (p) => p.courseId === courseId
+  );
+
+  // Get current chapter index from the user's progress
+  const currentChapterIndex = userProgress?.currentChapter ?? 0;
+
   const [activeIndex, setActiveIndex] = useState<number>(currentChapterIndex);
   const [unlockedIndex, setUnlockedIndex] =
     useState<number>(currentChapterIndex); // New state variable to track the unlocked index
@@ -50,6 +62,7 @@ function ChaptersDisplay() {
   const { chapters } = courseData || {};
   const data = chapters || [];
 
+  //function for next & previous buttons
   const updateIndex = (newIndex: number) => {
     if (newIndex < 0) {
       newIndex = 0;
@@ -73,13 +86,6 @@ function ChaptersDisplay() {
   };
 
   //progress
-  // Retrieves the current user from Redux state
-  const currentUser = useSelector((state: RootState) => state.auth.user);
-  console.log(currentUser);
-
-  const userProgress = currentUser?.progress?.find(
-    (p) => p.courseId === courseId
-  );
 
   const progressValue = () => {
     if (userProgress && userProgress.currentChapter !== undefined) {
@@ -126,9 +132,6 @@ function ChaptersDisplay() {
   };
 
   //Resume chapter
-  // Get current chapter index from the user's progress
-  const currentChapterIndex = userProgress?.currentChapter ?? 0;
-
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
     if (userProgress?.currentChapter !== undefined) {
