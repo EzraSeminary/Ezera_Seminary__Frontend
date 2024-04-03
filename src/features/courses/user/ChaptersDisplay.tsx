@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
@@ -21,8 +21,9 @@ function ChaptersDisplay() {
     /* State to control account modal  */
   }
 
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
+  const [activeIndex, setActiveIndex] = useState<number>(currentChapterIndex);
+  const [unlockedIndex, setUnlockedIndex] =
+    useState<number>(currentChapterIndex); // New state variable to track the unlocked index
 
   {
     /* Function to open the chapters sidebar modal */
@@ -99,7 +100,7 @@ function ChaptersDisplay() {
 
       // Check if the chapter is completed
       if (currentChapter && currentChapter > chapterIndex) {
-        return "completed";
+        return "Completed";
       }
 
       // Check if the current chapter is the ongoing chapter
@@ -115,7 +116,7 @@ function ChaptersDisplay() {
   // Helper function to calculate the progress percent based on chapter status
   const calculateProgressPercent = (chapterStatus: string) => {
     switch (chapterStatus) {
-      case "completed":
+      case "Completed":
         return "100%";
       case "In Progress":
         return "";
@@ -123,6 +124,21 @@ function ChaptersDisplay() {
         return "0%";
     }
   };
+
+  //Resume chapter
+  // Get current chapter index from the user's progress
+  const currentChapterIndex = userProgress?.currentChapter ?? 0;
+
+  // When component did mount or userProgress has changed, update the activeIndex
+  useEffect(() => {
+    if (userProgress?.currentChapter !== undefined) {
+      const newActiveIndex = userProgress.currentChapter - 1; // Subtract 1 for zero-based index
+      setActiveIndex(newActiveIndex);
+      if (newActiveIndex > unlockedIndex) {
+        setUnlockedIndex(newActiveIndex);
+      }
+    }
+  }, [userProgress, unlockedIndex]);
 
   {
     /* Loading state */
@@ -266,9 +282,9 @@ function ChaptersDisplay() {
         </div>
 
         {/* Chapter display window*/}
-        <div className=" lg:w-[92%] flex justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+        <div className="lg:w-[92%] flex justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
           {/* Chapter display container */}
-          <div className="flex flex-col justify-between w-full h-full">
+          <div className="flex flex-col justify-between w-full h-full relative">
             {/* Header */}
             <>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
@@ -318,7 +334,7 @@ function ChaptersDisplay() {
                       </button>
                     </div>
                     {/* footer */}
-                    <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs1 lg:text-xs">
+                    <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs lg:text-sm absolute bottom-0">
                       <div className="p-1 bg-accent-6 rounded">
                         <p className="font-Lato-Bold text-primary-1">
                           {progressPercent}
