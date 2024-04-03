@@ -287,8 +287,13 @@ function ChaptersDisplay() {
             })}
 
             {/* Footer */}
-            <div>
-              <hr className="border-accent-5 border-1 w-[90%] mx-auto mb-8" />
+            <div className="pl-2 py-1 bg-primary-7 gap-2 justify-center items-center w-full text-xs1  lg:text-xs flex">
+              <div className="p-1 bg-accent-6 rounded">
+                <p className="font-Lato-Bold text-primary-1 ">slide percent%</p>
+              </div>
+              <p className="font-Lato-Bold text-secondary-6 leading-none">
+                Pass 100% of your slides to complete this lesson
+              </p>
             </div>
           </div>
         </div>

@@ -97,8 +97,8 @@ function CoursesAvailable() {
       userProgress.currentSlide
     ) {
       const progressDecimal =
-        userProgress.currentChapter +
-        1 / totalChapter[userCourseId.indexOf(courseId)];
+        (userProgress.currentChapter + 1) /
+        totalChapter[userCourseId.indexOf(courseId)];
       return progressDecimal * 100;
     }
     return undefined;
