@@ -74,6 +74,7 @@ function ChaptersDisplay() {
   //progress
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  console.log(currentUser);
 
   const userProgress = currentUser?.progress?.find(
     (p) => p.courseId === courseId
@@ -97,18 +98,30 @@ function ChaptersDisplay() {
       const { currentChapter } = userProgress;
 
       // Check if the chapter is completed
-      if (currentChapter > chapterIndex) {
+      if (currentChapter && currentChapter > chapterIndex) {
         return "completed";
       }
 
       // Check if the current chapter is the ongoing chapter
       if (currentChapter === chapterIndex) {
-        return "started";
+        return "In Progress";
       }
     }
 
     // Default to not started if no user progress is found
-    return "not_started";
+    return "Finish all slides to complete this lesson";
+  };
+
+  // Helper function to calculate the progress percent based on chapter status
+  const calculateProgressPercent = (chapterStatus: string) => {
+    switch (chapterStatus) {
+      case "completed":
+        return "100%";
+      case "In Progress":
+        return "";
+      default:
+        return "0%";
+    }
   };
 
   {
@@ -253,13 +266,13 @@ function ChaptersDisplay() {
         </div>
 
         {/* Chapter display window*/}
-        <div className=" lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+        <div className=" lg:w-[92%] flex justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
           {/* Chapter display container */}
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col justify-between w-full h-full">
             {/* Header */}
-            <div>
+            <>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+                <div className=" z-30 h-full flex justify-center items-center md:space-x-0 xl:space-x-1 cursor-pointer ">
                   <img
                     src={logo}
                     className="w-8 h-5 md:w-10 md:h-6  z-30"
@@ -279,17 +292,19 @@ function ChaptersDisplay() {
                 </NavLink>
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
-            </div>
+            </>
 
             {/* Chapter content */}
             {data.map((chapter, index) => {
               const chapterStatus = getChapterStatus(index);
+              const progressPercent = calculateProgressPercent(chapterStatus);
+
               if (index === activeIndex) {
                 return (
                   <>
                     <div
                       key={index}
-                      className="flex flex-col justify-center h-52 flex-grow"
+                      className="flex flex-col w-full justify-center h-52 flex-grow"
                     >
                       <h1 className="text-lg lg:text-xl text-[#fff] text-center font-nokia-bold">
                         {chapter.chapter}
@@ -302,10 +317,11 @@ function ChaptersDisplay() {
                         </NavLink>
                       </button>
                     </div>
+                    {/* footer */}
                     <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs1 lg:text-xs">
                       <div className="p-1 bg-accent-6 rounded">
                         <p className="font-Lato-Bold text-primary-1">
-                          slide percent%
+                          {progressPercent}
                         </p>
                       </div>
                       <p className="font-Lato-Bold text-secondary-6 leading-none">
