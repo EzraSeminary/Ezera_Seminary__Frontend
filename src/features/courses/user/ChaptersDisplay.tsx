@@ -21,6 +21,16 @@ function ChaptersDisplay() {
     /* State to control account modal  */
   }
 
+  //get courseId from the route
+  const { courseId } = useParams<{ courseId: string }>();
+
+  //get single course
+  const {
+    data: courseData,
+    error,
+    isLoading,
+  } = useGetCourseByIdQuery(courseId as string);
+
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
   console.log(currentUser);
@@ -50,17 +60,20 @@ function ChaptersDisplay() {
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, open, () => setOpen(false));
 
-  const { courseId } = useParams<{ courseId: string }>();
-
-  //get single course
-  const {
-    data: courseData,
-    error,
-    isLoading,
-  } = useGetCourseByIdQuery(courseId as string);
-
   const { chapters } = courseData || {};
   const data = chapters || [];
+
+  //Resume chapter
+  // When component did mount or userProgress has changed, update the activeIndex
+  useEffect(() => {
+    if (userProgress?.currentChapter !== undefined) {
+      const newActiveIndex = userProgress.currentChapter;
+      setActiveIndex(newActiveIndex);
+      if (newActiveIndex > unlockedIndex) {
+        setUnlockedIndex(newActiveIndex);
+      }
+    }
+  }, [userProgress, unlockedIndex]);
 
   //function for next & previous buttons
   const updateIndex = (newIndex: number) => {
@@ -77,13 +90,13 @@ function ChaptersDisplay() {
     setActiveIndex(newIndex);
   };
 
-  // slide number
-  const currentDataNumber = activeIndex + 1;
-  const totalDataNumber = data.length;
-
   const isSlideUnlocked = (index: number) => {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
+
+  // slide number
+  const currentDataNumber = activeIndex + 1;
+  const totalDataNumber = data.length;
 
   //progress
 
@@ -130,18 +143,6 @@ function ChaptersDisplay() {
         return "0%";
     }
   };
-
-  //Resume chapter
-  // When component did mount or userProgress has changed, update the activeIndex
-  useEffect(() => {
-    if (userProgress?.currentChapter !== undefined) {
-      const newActiveIndex = userProgress.currentChapter - 1; // Subtract 1 for zero-based index
-      setActiveIndex(newActiveIndex);
-      if (newActiveIndex > unlockedIndex) {
-        setUnlockedIndex(newActiveIndex);
-      }
-    }
-  }, [userProgress, unlockedIndex]);
 
   {
     /* Loading state */
@@ -266,7 +267,6 @@ function ChaptersDisplay() {
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
-                        {/* <Text>ID</Text> {courseId} */}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
                         {index + 1}/{totalDataNumber} Chapters
