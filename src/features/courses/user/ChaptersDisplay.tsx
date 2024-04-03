@@ -318,6 +318,18 @@ function ChaptersDisplay() {
               const chapterStatus = getChapterStatus(index);
               const progressPercent = calculateProgressPercent(chapterStatus);
 
+              let buttonText = "ትምህርቱን ጀምር";
+              switch (chapterStatus) {
+                case "In Progress":
+                  buttonText = "Resume Lesson";
+                  break;
+                case "Completed":
+                  buttonText = "Restart Lesson";
+                  break;
+                default:
+                  buttonText = "ትምህርቱን ጀምር";
+              }
+
               if (index === activeIndex) {
                 return (
                   <>
@@ -332,7 +344,7 @@ function ChaptersDisplay() {
                         <NavLink
                           to={`/courses/get/${courseId}/chapter/${chapter._id}`}
                         >
-                          ትምህርቱን ጀምር
+                          {buttonText}
                         </NavLink>
                       </button>
                     </div>
