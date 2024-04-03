@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -23,6 +23,7 @@ import axios from "axios";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
@@ -32,6 +33,8 @@ function SlidesDisplay() {
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -152,6 +155,7 @@ function SlidesDisplay() {
 
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
+      setLoading(true);
       axios
         .put(
           "/users/profile",
@@ -168,15 +172,31 @@ function SlidesDisplay() {
         )
         .then((res) => {
           console.log("Progress updated successfully:", res.data);
+          setLoading(false);
+          navigate(`/courses/get/${courseId}`);
         })
         .catch((err) => {
           console.error(
             "Error updating progress:",
             err.response ? err.response.data : err.message
           );
+          setLoading(false);
         });
     }
   };
+
+  if (loading)
+    return (
+      <div className="h-full flex justify-center items-center">
+        <BeatLoader
+          color={"#707070"}
+          loading
+          size={15}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
 
   if (isLoading)
     return (
@@ -540,17 +560,12 @@ function SlidesDisplay() {
                   </div>
 
                   {isLastSlide && (
-                    <NavLink
-                      to={`/courses/get/${courseId}`}
-                      className="flex justify-center items-center mx-auto"
+                    <button
+                      className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
+                      onClick={submitProgress}
                     >
-                      <button
-                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
-                        onClick={submitProgress}
-                      >
-                        ዘግተህ ውጣ
-                      </button>
-                    </NavLink>
+                      ዘግተህ ውጣ
+                    </button>
                   )}
                 </div>
               );
