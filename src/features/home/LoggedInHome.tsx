@@ -3,7 +3,10 @@ import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import bible from "../../assets/bible.png";
 import bibleNew from "../../assets/about-img.jpg";
-import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import {
+  useGetDevotionsQuery,
+  useGetCurrentUserQuery,
+} from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
 
@@ -73,6 +76,8 @@ const LoggedInHome = () => {
   const handleViewDevotion = (devotion: Devotion) => {
     navigate("/devotion", { state: { selectedDevotion: devotion } });
   };
+
+  const { data: user, userError, userLoading } = useGetCurrentUserQuery();
 
   return (
     <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24">

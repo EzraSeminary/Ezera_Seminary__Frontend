@@ -122,4 +122,5 @@ export const {
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
+  useGetCurrentUserQuery,
 } = apiSlice;
