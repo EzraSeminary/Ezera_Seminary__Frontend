@@ -88,10 +88,18 @@ const authSlice = createSlice({
         state.user.progress = [{ courseId, currentChapter, currentSlide }];
       }
     },
+
+    setUser: (state, action: PayloadAction<AuthState>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+
   },
 });
 
-export const { login, signup, updateUser, logout, setAuthReady, setProgress } =
+export const { login, signup, updateUser, logout, setAuthReady, setProgress, setUser } =
   authSlice.actions;
 
 export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
