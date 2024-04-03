@@ -3,14 +3,9 @@ import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import bible from "../../assets/bible.png";
 import bibleNew from "../../assets/about-img.jpg";
-import {
-  useGetDevotionsQuery,
-  useGetCurrentUserQuery,
-} from "../../redux/api-slices/apiSlice";
+import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
-import { setUser } from "@/redux/authSlice";
-import { useDispatch } from "react-redux";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -28,12 +23,7 @@ const gridSquareVariants = {
 };
 
 const LoggedInHome = () => {
-  const dispatch = useDispatch();
-
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
-
-  const { data: userData } = useGetCurrentUserQuery({});
-  dispatch(setUser(userData));
 
   const ethiopianMonths = [
     "", // There is no month 0
