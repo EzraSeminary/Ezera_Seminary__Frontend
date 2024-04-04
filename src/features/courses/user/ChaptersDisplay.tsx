@@ -23,7 +23,11 @@ function ChaptersDisplay() {
   const { data: userData } = useGetCurrentUserQuery({});
 
   //save user data to redux
-  dispatch(setUser(userData));
+  useEffect(() => {
+    if (userData) {
+      dispatch(setUser(userData));
+    }
+  }, [userData, dispatch]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState<boolean>(true);
