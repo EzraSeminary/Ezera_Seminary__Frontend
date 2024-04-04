@@ -154,10 +154,12 @@ function SlidesDisplay() {
     }
   };
 
+  const token = localStorage.getItem("token");
+
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
       setProgressLoading(true);
-      console.log("CurrentUser Token:", currentUser.token);
+      console.log("CurrentUser Token:", token);
       axios
         .put(
           "/users/progress",
@@ -168,7 +170,7 @@ function SlidesDisplay() {
           {
             headers: {
               // Add headers if needed, for example authorization token
-              Authorization: `Bearer ${currentUser.token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         )
