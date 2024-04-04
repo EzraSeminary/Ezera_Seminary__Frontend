@@ -15,6 +15,8 @@ import SabbathSchool from "@/pages/user/SabbathSchool";
 import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
 import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
+import CreateUser from "./CreateUser";
+import ManageUser from "./ManageUsers";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -56,6 +58,8 @@ const AdminDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="users/create" element={<CreateUser />} />
+          <Route path="users/manage" element={<ManageUser />} />
         </Routes>
       </div>
     </div>
