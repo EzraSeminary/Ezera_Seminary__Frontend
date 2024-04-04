@@ -2,10 +2,11 @@ import { useState, ChangeEvent } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
-import BeatLoader from "react-spinners/BeatLoader";
+// import BeatLoader from "react-spinners/BeatLoader";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+import CoursesSkeleton from "@/skeletons/CoursesSkeleton";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -75,18 +76,18 @@ function CoursesAvailable() {
   {
     /* Loading spinner */
   }
-  if (isLoading)
-    return (
-      <div className="h-full flex justify-center items-center">
-        <BeatLoader
-          color={"#707070"}
-          loading
-          size={15}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
+  if (isLoading) return <CoursesSkeleton />;
+  // (
+  //     <div className="h-full flex justify-center items-center">
+  //       <BeatLoader
+  //         color={"#707070"}
+  //         loading
+  //         size={15}
+  //         aria-label="Loading Spinner"
+  //         data-testid="loader"
+  //       />
+  //     </div>
+  //   );
 
   if (error) {
     let errorMessage = "An unknown error occurred";
@@ -112,6 +113,8 @@ function CoursesAvailable() {
       </div>
     );
   }
+
+  //Skeletons loading
 
   return (
     // Courses Available Section
