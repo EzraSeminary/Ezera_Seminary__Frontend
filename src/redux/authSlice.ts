@@ -91,6 +91,10 @@ const authSlice = createSlice({
 
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+
+      // Store the token in localStorage
+      localStorage.setItem("token", action.payload.token || "");
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
 
   },

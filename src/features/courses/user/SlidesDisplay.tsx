@@ -157,6 +157,7 @@ function SlidesDisplay() {
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
       setProgressLoading(true);
+      console.log("CurrentUser Token:", currentUser.token);
       axios
         .put(
           "/users/progress",
