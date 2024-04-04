@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
@@ -18,7 +18,7 @@ import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
 
 function SlidesDisplay() {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
 
@@ -51,11 +51,7 @@ function SlidesDisplay() {
   }>();
 
   //get single course
-  const {
-    data: courseData,
-    error,
-    isLoading,
-  } = useGetCourseByIdQuery(courseId as string);
+  const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -123,11 +119,18 @@ function SlidesDisplay() {
     }
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   if (isLoading)
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center min-h-screen">
         <BeatLoader
-          color={"#707070"}
+          color={"#EA9215"}
           loading
           size={15}
           aria-label="Loading Spinner"
@@ -140,7 +143,7 @@ function SlidesDisplay() {
 
   return (
     // <div className="flex justify-center items-center w-[80%] mx-auto">
-    <div className="flex flex-col mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative">
+    <div className="flex  mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
       {/* Back button */}
       <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
         <NavLink
@@ -157,11 +160,13 @@ function SlidesDisplay() {
         </NavLink>
       </div>
 
-      {/* Slides side bar*/}
+      {/* Slides side bar for mobile and tablet*/}
       <div
         ref={ref}
-        className={`absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center ${
-          open ? "w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]" : "w-0 h-0"
+        className={`lg:hidden ${
+          open
+            ? "absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]"
+            : "w-0 h-0"
         }`}
         style={{ transition: "width 0.3s" }}
       >
@@ -173,7 +178,7 @@ function SlidesDisplay() {
         ) : (
           <ArrowRight
             onClick={handleArrowClick}
-            className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -right-3 xl:-right-4 top-14 cursor-pointer"
+            className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -left-3  top-36 md:top-44 cursor-pointer"
           />
         )}
 
@@ -203,7 +208,7 @@ function SlidesDisplay() {
         </div>
 
         {/* Course title and description*/}
-        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg h-full ">
+        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
           <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
             {courseData?.title}
           </h1>
@@ -264,8 +269,81 @@ function SlidesDisplay() {
           </NavLink>
         </div>
       </div>
+      {/* Slides side bar for mdesktop*/}
+      <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
+        {/* Short information*/}
+        <div className="flex  px-4 py-2 bg-secondary-5  gap-12 justify-between items-center w-full text-xs1  lg:text-xs z-50">
+          <NavLink to={`/courses/get/${courseId}`}>
+            <ArrowLeft
+              onClick={handleArrowClick}
+              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg  cursor-pointer "
+            />{" "}
+          </NavLink>
+          <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm flex-grow  items-center ">
+            {courseData?.title}
+          </h1>
+        </div>
+
+        {/* Course title and description*/}
+        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
+          <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+            {courseData?.description}
+          </p>
+
+          {/* Header */}
+          <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
+            <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
+              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+            </h1>
+            <hr className="border-accent-5 border-b-2 w-[30%] " />
+          </div>
+          {/* slide list */}
+          <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
+            {data.map((slides, index) => {
+              const unlocked = isSlideUnlocked(index);
+              return (
+                <button
+                  key={index}
+                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
+                    unlocked ? "text-black" : "text-gray-500"
+                  }  ${index === activeIndex && "font-bold "}
+
+                    `}
+                  onClick={() => {
+                    updateIndex(index);
+                    handleArrowClick();
+                  }}
+                  disabled={!unlocked} // Disable the button if the slide is locked
+                >
+                  <div className="flex flex-col items-start justify-start w-[80%] text-justify">
+                    <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm  ">
+                      {slides.slide}
+                    </h2>
+                    <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
+                      {index + 1}/{totalDataNumber} Slides
+                    </p>
+                  </div>
+                  {unlocked ? (
+                    <CheckCircle size={16} weight="fill" color={"#EA9215"} />
+                  ) : (
+                    <Circle size={16} color={"#EA9215"} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <NavLink to={`/courses/get/${courseId}`}>
+            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
+              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
+                ዘግተህ ውጣ
+              </button>
+              <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
+            </div>
+          </NavLink>
+        </div>
+      </div>
       {/* slides display window*/}
-      <div className="  lg:w-[92%] justify-start items-center mx-auto h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg ">
+      <div className="  lg:w-[70%]   items-center  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full">
         {/* Chapter display container */}
         <div className="flex flex-col justify-between h-full">
           {/* Header */}
