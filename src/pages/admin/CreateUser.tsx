@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
+import defaultAvatar from "@/assets/avatar.png"; // Import a default avatar image
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 const CreateUser: React.FC = () => {
   const navigate = useNavigate();
@@ -10,7 +12,17 @@ const CreateUser: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("Learner");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState("");
+
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+      setAvatarPreview(URL.createObjectURL(event.target.files[0]));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +34,7 @@ const CreateUser: React.FC = () => {
         email,
         password,
         role,
+        avatar: selectedFile,
       }).unwrap();
       toast.success("User created successfully!");
       navigate("/admin/users/manage");
@@ -31,10 +44,38 @@ const CreateUser: React.FC = () => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Create User</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-4">
+          <label htmlFor="avatar" className="block font-medium mb-1">
+            Avatar
+          </label>
+          <div className="flex items-center">
+            <img
+              src={avatarPreview || defaultAvatar}
+              alt="Avatar Preview"
+              className="w-16 h-16 rounded-full mr-4"
+            />
+            <label
+              htmlFor="avatar-input"
+              className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md cursor-pointer"
+            >
+              <span>Upload Avatar</span>
+              <input
+                type="file"
+                id="avatar-input"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+            </label>
+          </div>
+        </div>
         <div>
           <label htmlFor="firstName" className="block font-medium mb-1">
             First Name
@@ -74,18 +115,28 @@ const CreateUser: React.FC = () => {
             required
           />
         </div>
-        <div>
+        <div className="mb-4 relative">
           <label htmlFor="password" className="block font-medium mb-1">
             Password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 pr-10"
             required
           />
+          <div
+            className="absolute inset-y-0 right-0 pt-8 pr-3 flex items-center cursor-pointer text-accent-8"
+            onClick={toggleShowPassword}
+          >
+            {showPassword ? (
+              <EyeSlash size={18} weight="fill" />
+            ) : (
+              <Eye size={18} weight="fill" />
+            )}
+          </div>
         </div>
         <div>
           <label htmlFor="role" className="block font-medium mb-1">

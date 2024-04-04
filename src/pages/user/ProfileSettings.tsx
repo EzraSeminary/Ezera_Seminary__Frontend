@@ -7,7 +7,7 @@ import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import mehari from "@/assets/avatar.png";
+import defaultAvatar from "@/assets/avatar.png"; // Import a default avatar image
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
@@ -32,8 +32,8 @@ const ProfileSettings = () => {
       setPassword(currentUser.password || "");
       setAvatarPreview(
         currentUser.avatar
-          ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
-          : mehari
+          ? `http://localhost:5100/images/${currentUser.avatar}`
+          : defaultAvatar
       );
     }
   }, [currentUser]);
@@ -82,7 +82,7 @@ const ProfileSettings = () => {
           setPassword(updatedUser.password);
           setAvatarPreview(
             updatedUser.avatar
-              ? `https://ezra-seminary.mybese.tech/images/${updatedUser.avatar}`
+              ? `http://localhost:5100/images/${updatedUser.avatar}`
               : null
           );
           setSelectedFile(null);
@@ -143,8 +143,8 @@ const ProfileSettings = () => {
                 avatarPreview
                   ? avatarPreview
                   : currentUser?.avatar
-                  ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
-                  : mehari
+                  ? `http://localhost:5100/images/${currentUser.avatar}`
+                  : defaultAvatar
               }
               alt="User Avatar"
               className="w-[25vmin] rounded-full mx-auto"

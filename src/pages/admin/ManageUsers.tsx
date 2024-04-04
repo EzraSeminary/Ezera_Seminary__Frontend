@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useGetUsersQuery,
@@ -7,7 +7,6 @@ import {
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
-// import mehari from "@/assets/avatar.png"; //use default image mehari for blank avatar image for now
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +17,9 @@ const ManageUsers: React.FC = () => {
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
+  const editingUserRef = useRef<any>(null);
+
+  useImperativeHandle(editingUserRef, () => editingUser, [editingUser]);
 
   useEffect(() => {
     if (isError) {
@@ -28,31 +30,34 @@ const ManageUsers: React.FC = () => {
   }, [isError, users]);
 
   const handleEditUser = (user: any) => {
-    setEditingUser(user);
+    setEditingUser({ ...user });
     setSelectedAvatar(null);
   };
 
   const handleUpdateUser = async () => {
-    if (editingUser) {
+    if (editingUserRef.current) {
       try {
         const formData = new FormData();
-        formData.append("firstName", editingUser.firstName);
-        formData.append("lastName", editingUser.lastName);
-        formData.append("email", editingUser.email);
-        formData.append("role", editingUser.role);
+        Object.entries(editingUserRef.current).forEach(([key, value]) => {
+          if (key !== "_id") {
+            formData.append(key, value);
+          }
+        });
+
         if (selectedAvatar) {
           formData.append("avatar", selectedAvatar);
         }
-        if (editingUser.password) {
-          formData.append("password", editingUser.password);
-        }
+
         await updateUserMutation({
-          id: editingUser._id,
+          id: editingUserRef.current._id,
           updatedUser: formData,
         }).unwrap();
+
+        console.log("Submitted formData:", formData);
         toast.success("User updated successfully!");
         setEditingUser(null);
         setSelectedAvatar(null);
+        await refetch();
       } catch (error) {
         console.error("Error updating user:", error);
         toast.error("Error updating user. Please try again.");
@@ -64,7 +69,6 @@ const ManageUsers: React.FC = () => {
     try {
       await deleteUserMutation(userId).unwrap();
       toast.success("User deleted successfully!");
-      // Refetch the user list to update the UI
       await refetch();
     } catch (error) {
       if ((error as any)?.data?.message === "User not found") {
@@ -119,7 +123,7 @@ const ManageUsers: React.FC = () => {
             >
               <td className="px-4 py-2">
                 <img
-                  src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
+                  src={`http://localhost:5100/images/${user.avatar}`}
                   alt={`${user.firstName} ${user.lastName}`}
                   className="w-12 h-12 rounded-full"
                 />
@@ -139,7 +143,7 @@ const ManageUsers: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setEditingUser(null)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py -1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                     >
                       Cancel
                     </button>
@@ -183,7 +187,7 @@ const ManageUsers: React.FC = () => {
                   src={
                     selectedAvatar
                       ? URL.createObjectURL(selectedAvatar)
-                      : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
+                      : `http://localhost:5100/images/${editingUser.avatar}`
                   }
                   alt={`${editingUser.firstName} ${editingUser.lastName}`}
                   className="w-20 h-20 rounded-full mr-4"
@@ -211,26 +215,12 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="text"
                   id="firstName"
-                  value={editingUser.firstName}
+                  value={editingUserRef.current?.firstName || ""}
                   onChange={(e) =>
-                    setEditingUser({
-                      ...editingUser,
+                    (editingUserRef.current = {
+                      ...editingUserRef.current,
                       firstName: e.target.value,
                     })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="lastName" className="block font-medium mb-1">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={editingUser.lastName}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, lastName: e.target.value })
                   }
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
                 />

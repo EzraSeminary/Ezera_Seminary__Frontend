@@ -4,7 +4,7 @@ import { Devotion } from "@/redux/types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech",
+    baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -38,15 +38,25 @@ export const apiSlice = createApi({
       }),
     }),
     createUser: builder.mutation({
-      query: ({ firstName, lastName, email, password, role }) => ({
-        url: "/users/signup",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ firstName, lastName, email, password, role }),
-      }),
+      query: (userData) => {
+        const formData = new FormData();
+        formData.append("firstName", userData.firstName);
+        formData.append("lastName", userData.lastName);
+        formData.append("email", userData.email);
+        formData.append("password", userData.password);
+        formData.append("role", userData.role);
+        if (userData.avatar) {
+          formData.append("avatar", userData.avatar);
+        }
+
+        return {
+          url: "/users/signup",
+          method: "POST",
+          body: formData,
+        };
+      },
     }),
+
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Devotions"],
