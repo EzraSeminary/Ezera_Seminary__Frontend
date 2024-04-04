@@ -159,7 +159,7 @@ function SlidesDisplay() {
       setProgressLoading(true);
       axios
         .put(
-          "/users/profile",
+          "/users/progress",
           {
             userId: currentUser._id, // Make sure you have a field to identify the user, like _id
             progress: currentUser.progress,

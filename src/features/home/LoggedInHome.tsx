@@ -33,8 +33,9 @@ const LoggedInHome = () => {
 
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
+  //fetch user data
   const { data: userData } = useGetCurrentUserQuery({});
-
+  //save user data to redux
   useEffect(() => {
     if (userData) {
       dispatch(setUser(userData));
