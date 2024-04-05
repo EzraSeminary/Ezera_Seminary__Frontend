@@ -68,8 +68,7 @@ const Header: React.FC = () => {
   return (
     <header className="relative max-w-screen mb-8">
       {/* Header Background Image */}
-      <div
-       className="absolute top-0 z-0 w-full h-16  lg:h-[4.2rem] xl:h-[4.8rem] shadow-xl">
+      <div className="absolute top-0 z-0 w-full h-16  lg:h-[4.2rem] xl:h-[4.8rem] shadow-xl">
         <img
           src={bgImage}
           className="w-full h-full  object-cover"
@@ -80,10 +79,11 @@ const Header: React.FC = () => {
       <div className="relative z-50 py-2">
         {show && (
           <motion.div
-          initial={{ opacity: 0, y: 1 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease:"easeOut", delay: 0.1}}
-           className="fixed top-0  z-0 w-full h-16 lg:h-[4.5rem] xl:h-[5.5rem]   bg-white shadow-xl">
+            initial={{ opacity: 0, y: 1 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+            className="fixed top-0  z-0 w-full h-16 lg:h-[4.5rem] xl:h-[5.5rem]   bg-white shadow-xl"
+          >
             {/* Header Background Image */}
             {/* <img
               src={bgImage}
@@ -91,20 +91,20 @@ const Header: React.FC = () => {
               alt="Background"
             /> */}
             {/* Navigation and Logo */}
-            <div className="absolute top-[34%]  w-full md:top-[28%] lg:top-[23.3%]">
+            <div className="absolute top-[34%]  w-full md:top-[28%] lg:top-[26.3%]">
               <div className="  flex justify-between items-center  w-[90%] md:w-[90%] lg:w-[85%] mx-auto ">
-              <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
-              <img
-                src="src/assets/Dark Logo Ion.png"
-                className="w-4  md:w-5  lg:w-6  xl:w-7 "
-                alt=""
-              />
-              <NavLink to="/" onClick={closeMenu}>
-                <h3 className="text-xs md:text-sm lg:text-lg xl:text-2xl tracking-wide">
-                  <strong>Ezra</strong> Seminary
-                </h3>
-              </NavLink>
-            </div>
+                <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
+                  <img
+                    src="src/assets/Dark Logo Ion.png"
+                    className="w-4  md:w-5  lg:w-6  xl:w-7 "
+                    alt=""
+                  />
+                  <NavLink to="/" onClick={closeMenu}>
+                    <h3 className="text-xs md:text-sm lg:text-lg xl:text-2xl tracking-wide">
+                      <strong>Ezra</strong> Seminary
+                    </h3>
+                  </NavLink>
+                </div>
                 {/* MenuBar */}
                 <div className="md:hidden flex">
                   <button
@@ -202,9 +202,12 @@ const Header: React.FC = () => {
                       </li>
                       <li className="hover:text-gray-400 text-base ">
                         <NavLink to="/signup">
-                        <button type="button" className=" bg-accent-6 tracking-wide rounded-full  w-auto px-2 py-1  lg:px-3 lg:text-lg xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all text-primary-1">
-                          Create Account
-                        </button>
+                          <button
+                            type="button"
+                            className=" bg-accent-6 tracking-wide rounded-full  w-auto px-2 py-1  lg:px-3 lg:text-sm xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all text-primary-1"
+                          >
+                            Create Account
+                          </button>
                           {/* <Button
                             size="round"
                             // className=" bg-accent-6 rounded-full  px-2 py-0 lg:px-3 lg:py-1 text-xs xl:text-lg  hover:bg-accent-7 cursor-pointer transition-all"
@@ -223,14 +226,15 @@ const Header: React.FC = () => {
       </div>
       {/* Header when the scroll is below 20  */}
       <div className="relative z-30 py-2">
-        <div className="absolute top-[0.4rem] md:top-0 xl:top-1   w-full ">
+        <div className="absolute top-[0.4rem] md:top-0  lg:top-1 xl:top-0   w-full ">
           <div className=" flex justify-between items-center text-white font-nokia-bold w-[90%] md:w-[90%] lg:w-[85%] mx-auto">
             {/* Logo */}
             <motion.div
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.2}}
-             className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+              className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer "
+            >
               <img
                 src="src/assets/Logo Ion.png"
                 className="w-4  md:w-5  lg:w-6  xl:w-7 "
@@ -272,80 +276,84 @@ const Header: React.FC = () => {
                 }`}
               >
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.3}}
-                 className="hover:text-accent-6 tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+                  className="hover:text-accent-6 tracking-wide"
+                >
                   <NavLink to="/" onClick={closeMenu}>
                     Home
                   </NavLink>
                 </motion.li>
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.4}}
-                 className="hover:text-accent- tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+                  className="hover:text-accent- tracking-wide"
+                >
                   <NavLink to="/courses" onClick={closeMenu}>
                     Courses
                   </NavLink>
                 </motion.li>
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.5}}
-                className="hover:text-accent-6 tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
+                  className="hover:text-accent-6 tracking-wide"
+                >
                   <NavLink to="/sabbathSchool" onClick={closeMenu}>
                     Sabbath School
                   </NavLink>
                 </motion.li>
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.6}}
-                className="hover:text-accent-6 tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
+                  className="hover:text-accent-6 tracking-wide"
+                >
                   <NavLink to="/devotion" onClick={closeMenu}>
                     Devotion
                   </NavLink>
                 </motion.li>
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.7}}
-                className="hover:text-accent-6 tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.7 }}
+                  className="hover:text-accent-6 tracking-wide"
+                >
                   <NavLink to="/aboutUs" onClick={closeMenu}>
                     About Us
                   </NavLink>
                 </motion.li>
                 <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.8}} 
-                
-                className="hover:text-accent-6 tracking-wide">
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
+                  className="hover:text-accent-6 tracking-wide"
+                >
                   <NavLink to="/contactUs" onClick={closeMenu}>
                     Contact Us
                   </NavLink>
                 </motion.li>
                 {user ? (
                   <motion.li
-                  initial={{ opacity: 0, y: 100 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, ease:"easeOut", delay: 0.9}}
-                   ref={ref} className="relative">
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut", delay: 0.9 }}
+                    ref={ref}
+                    className="relative"
+                  >
                     <div
                       className="flex items-center space-x-2 bg-accent-6 rounded-full px-2 py-1 text-xs1  hover:bg-accent-7 cursor-pointer"
                       onClick={handleAccountClick}
                     >
                       <UserCircle size={25} />
-                      <div
-                      className="text-xs  xl:text-lg font-medium text-white tracking-wide">
+                      <div className="text-xs  xl:text-lg font-medium text-white tracking-wide">
                         {user.firstName}
                       </div>
                     </div>
                     {showAccountModal && (
-                      <div 
-                      className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10"
-                      >
+                      <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10">
                         <div className="px-4 py-2 border-b tracking-wide">
                           Logged in as: {user.email}
                         </div>
@@ -369,19 +377,24 @@ const Header: React.FC = () => {
                 ) : (
                   <>
                     <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.9}}
-                     className="hover:text-accent-7 tracking-wide">
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, ease: "easeOut", delay: 0.9 }}
+                      className="hover:text-accent-7 tracking-wide"
+                    >
                       <NavLink to="/logIn">Log In</NavLink>
                     </motion.li>
                     <motion.li
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease:"easeOut", delay: 0.95}}
-                      className="hover:text-primary-6 text-base ">
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, ease: "easeOut", delay: 0.95 }}
+                      className="hover:text-primary-6 text-base "
+                    >
                       <NavLink to="/signup">
-                        <button type="button" className=" bg-accent-6 tracking-wide rounded-full font-nokia-bold  w-auto px-2 py-1  lg:px-3 lg:text-lg xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all">
+                        <button
+                          type="button"
+                          className=" bg-accent-6 tracking-wide rounded-full font-nokia-bold  w-auto px-2 py-1  lg:px-3 lg:text-sm xl:py-2 xl:px-4 text-xs  xl:text-xl hover:bg-accent-7 cursor-pointer transition-all"
+                        >
                           Create Account
                         </button>
                         {/* <Button

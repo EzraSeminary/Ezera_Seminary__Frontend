@@ -2,7 +2,14 @@ export interface User {
   role: string;
   firstName: string;
   token: string;
-  // add other properties of a user object
+  progress: Progress[];
+  achievement: number;
+}
+
+export interface Progress {
+  courseId: string;
+  currentChapter: number;
+  currentSlide: number;
 }
 
 export interface AuthState {

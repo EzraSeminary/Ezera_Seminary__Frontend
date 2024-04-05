@@ -7,8 +7,6 @@ export interface CourseState {
   image: string | File;
   chapters: Chapter[];
   published: boolean;
-  currentChapterIndex?: number;
-  currentSlideIndex?: number;
 }
 
 // Define a type for the Chapter
@@ -269,18 +267,6 @@ export const courseSlice = createSlice({
       }
     },
 
-    setCurrentChapter: (state, action: PayloadAction<number>) => {
-      state.currentChapterIndex = action.payload;
-    },
-    setCurrentSlide: (
-      state,
-      action: PayloadAction<{ chapterIndex: number; slideIndex: number }>
-    ) => {
-      const { chapterIndex, slideIndex } = action.payload;
-      state.currentChapterIndex = chapterIndex;
-      state.currentSlideIndex = slideIndex;
-    },
-
     deleteChapter: (state, action: PayloadAction<{ chapterIndex: number }>) => {
       const { chapterIndex } = action.payload;
       state.chapters.splice(chapterIndex, 1);
@@ -323,8 +309,6 @@ export const {
   deleteChapter,
   deleteSlide,
 
-  setCurrentChapter,
-  setCurrentSlide,
   resetCourse,
 } = courseSlice.actions;
 

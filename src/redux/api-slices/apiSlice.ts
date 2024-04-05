@@ -5,6 +5,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://ezra-seminary.mybese.tech",
+    // baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -71,7 +72,12 @@ export const apiSlice = createApi({
         body: updatedUser,
       }),
     }),
-
+    getUserById: builder.query({
+      query: (id) => `/users/get/${id}`,
+    }),
+    getCurrentUser: builder.query({
+      query: () => "/users/current",
+    }), 
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `/users/${userId}`,
@@ -79,10 +85,10 @@ export const apiSlice = createApi({
       }),
     }),
     getCourses: builder.query({
-      query: () => "course/getall",
+      query: () => "/course/getall",
     }),
     getCourseById: builder.query({
-      query: (id) => `course/get/${id}`,
+      query: (id) => `/course/get/${id}`,
     }),
     getDevotions: builder.query<Devotion[], void>({
       // Provide types here
@@ -140,6 +146,7 @@ export const {
   useGetUsersQuery,
   useLoginMutation,
   useUpdateUserMutation,
+  useGetUserByIdQuery,
   useDeleteUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
@@ -147,4 +154,5 @@ export const {
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
+  useGetCurrentUserQuery,
 } = apiSlice;

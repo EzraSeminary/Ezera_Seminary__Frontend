@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { BookOpenText, ArrowSquareUpRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { SkeletonCard } from "@/components/ui/SkeletonCard";
+import LoadingSkeleton from "@/skeletons/LoggedInHomeSkeleton";
 import bible from "../../assets/bible.png";
 import bibleNew from "../../assets/about-img.jpg";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
@@ -26,6 +26,7 @@ const gridSquareVariants = {
 
 const LoggedInHome = () => {
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+
   const ethiopianMonths = [
     "", // There is no month 0
     "መስከረም",
@@ -45,11 +46,12 @@ const LoggedInHome = () => {
 
   const navigate = useNavigate();
 
-  if (isLoading) return "Loading...";
+  //Skeleton loading
+  if (isLoading) return <LoadingSkeleton />;
   if (error) return `Error: ${(error as Error).message}`;
 
   if (!devotions || devotions.length === 0) {
-    return <div>No devotions available</div>;
+    return <LoadingSkeleton />;
   }
 
   const today = new Date();
@@ -76,42 +78,10 @@ const LoggedInHome = () => {
     navigate("/devotion", { state: { selectedDevotion: devotion } });
   };
 
-  if (isLoading) {
-    // If data is still loading, render skeleton
-    return (
-      <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24">
-        {/*daily devotions and course */}
-        <div className="grid grid-cols-1 space-y-6 items-start justify-start w-full gap-2 md:grid-cols-2 md:space-y-0 lg:w-[85%] xl:w-[90%] mx-auto">
-          {/* Daily devotionals container */}
-          <div className="w-[90%] mx-auto">
-            <p className="text-lg lg:text-xl xl:text-3xl text-accent-6 border-b border-accent-6 pb-2 lg:w-[50%]">
-              Daily<span className="text-secondary-6"> Devotionals</span>
-            </p>
-            <SkeletonCard />
-          </div>
-
-          {/* Discover Courses Container*/}
-          <div className="w-[90%] mx-auto">
-            <div className="flex flex-row justify-between items-center border-b border-accent-6 pb-1">
-              <p className="text-lg lg:text-xl xl:text-3xl">
-                <span className="text-accent-6">Continue</span> Studying
-              </p>
-              <button className="border border-accent-6 text-accent-6 text-xs xl:text-sm hover:text-primary-1 hover:bg-accent-6 px-2 xl:px-3 xl:py-1 xl:mb-1 mb-2 rounded-full">
-                All Courses
-              </button>
-            </div>
-            <SkeletonCard />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Render other content once data is loaded
   return (
     <div className="absolute top-0 w-full">
       <div className="loggedIn-img bg-cover  w-full py-14  md:py-20 lg lg:py-28  flex  justify-center items-center pointer-events-none">
-        <div className=" z-10 text-primary-1 align-middle font-bold text-center">
+        <div className=" z-10 text-primary-1 align-middle  font-nokia-bold text-center">
           <div className=" text-2xl md:text-5xl">
             Welcome <span className="text-accent-6">Back</span>
           </div>
@@ -121,13 +91,14 @@ const LoggedInHome = () => {
 
       <div className="w-[90%]  space-y-12 py-12 font-nokia-bold text-secondary-6 mx-auto lg:w-[90%] lg:space-y-20 lg:py-16 xl:py-24 flex-1">
         {/*daily devotions and course */}
-        <div className="grid grid-cols-1 space-y-6  items-start justify-start w-full gap-2 md:grid-cols-2 md:space-y-0  lg:w-[85%] xl:w-[90%] mx-auto">
+        <div className="flex flex-col space-y-6 h-auto  items-start justify-start w-full gap-2 md:flex-row  md:space-y-0  lg:w-[85%] xl:w-[90%] mx-auto">
           {/* daily devotionals conatiner*/}
-          <div className="w-[90%] mx-auto ">
+          <div className="w-[90%] mx-auto flex-grow flex-shrink h-full">
             <p className="text-lg lg:text-xl xl:text-3xl  text-accent-6 border-b border-accent-6 pb-2 lg:w-[50%]">
               Daily<span className="text-secondary-6"> Devotionals</span>
             </p>
             {/* Today's verse */}
+
             <motion.div
               variants={gridSquareVariants}
               whileHover={{
@@ -138,7 +109,7 @@ const LoggedInHome = () => {
                 bounceDamping: 10,
                 bounceStiffness: 600,
               }}
-              className=" w-[90%] mx-auto flex flex-col h-full border border-accent-6 mt-6 rounded-lg bg-primary-2 shadow-2xl p-4  space-y-4 cursor-pointer"
+              className=" w-[90%]  mx-auto flex flex-col  border border-accent-6 mt-6 rounded-lg bg-primary-2 shadow-2xl p-4  space-y-4 cursor-pointer"
             >
               <div className="h-48  lg:h-52  xl:h-64">
                 <img
@@ -146,10 +117,10 @@ const LoggedInHome = () => {
                     `https://ezra-seminary.mybese.tech/images/${latestDevotion.image}` ||
                     `${bible}`
                   }
-                  className="w-full  h-full object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               </div>
-              <div className="space-y-2 lg:space-y-3 h-full">
+              <div className="space-y-2 lg:space-y-3 ">
                 <div className="flex flex-row w-[100%] justify-between items-center">
                   <div className="flex flex-row items-center gap-2">
                     <BookOpenText
@@ -181,7 +152,7 @@ const LoggedInHome = () => {
           </div>
 
           {/* Discover Courses Container*/}
-          <div className="w-[90%] mx-auto ">
+          <div className="w-[90%] mx-auto flex-grow flex-shrink h-full">
             {/* Continue studying */}
             <div className="flex flex-row justify-between items-center border-b border-accent-6 pb-1">
               <p className="text-lg lg:text-xl xl:text-3xl">
@@ -202,7 +173,8 @@ const LoggedInHome = () => {
                 bounceDamping: 10,
                 bounceStiffness: 600,
               }}
-              className="w-[90%] mx-auto h-full  flex flex-col shadow-2xl   border border-accent-6 mt-6 rounded-lg p-4  space-y-4 cursor-pointer"
+              className="w-[90%] mx-auto flex flex-col  shadow-2xl   border border-accent-6 mt-6 rounded-lg p-4 pb-6 space-y-4 cursor-pointer"
+              style={{ alignSelf: "stretch" }}
             >
               <div className="h-48  lg:h-52  xl:h-64 ">
                 <img
@@ -210,15 +182,15 @@ const LoggedInHome = () => {
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>
-              <div className="space-y-2 lg:space-y-3 xl:space-y-2 h-full ">
-                <p className=" text-accent-6 text-sm lg:text-lg xl:text-2xl leading-tight md:leading-none md:mt-2 lg:mt-0 xl:mt-1">
+              <div className="space-y-2 ">
+                <p className=" text-accent-6 text-sm lg:text-sm xl:text-2xl leading-tight md:leading-none md:mt-2 lg:mt-0 xl:mt-1">
                   የአጠናን ዘዴዎች
                 </p>
-                <p className="text-xs lg:text-sm xl:text-xl  leading-tight  lg:leading-none md:pb-2">
+                <p className="text-xs lg:text-lg xl:text-xl  leading-tight  lg:leading-none md:pb-2">
                   ፍሬያማ የመጽሃፍ ቅዱስ አጠናን ዘዴዎች
                 </p>
-                <button className="bg-accent-6 px-4 lg:py-1  rounded-full w-max ">
-                  <p className="text-primary-1 font-nokia-bold text-xs lg:text-sm text-center">
+                <button className="bg-accent-6 px-4 lg:py-1   rounded-full w-max ">
+                  <p className="text-primary-1 font-nokia-bold text-xs xl:text-sm text-center">
                     ኮርሱን ክፈት
                   </p>
                 </button>
