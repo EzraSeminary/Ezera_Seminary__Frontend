@@ -84,11 +84,6 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     <>
       <ToastContainer />
       <div className="h-auto border shadow-lg rounded-2xl p-6 md:w-[90%] mx-auto border-accent-6">
-        <div>
-          <h1 className="text-accent-6 text-xl font-nokia-bold md:text-3xl ">
-            Daily Devotional - የዕለቱ ጥቅስ
-          </h1>
-        </div>
         <div className="flex flex-col justify-center lg:flex-row  lg:space-x-12">
           {/* Replace latestDevotion with devotionToDisplay */}
           <Modal
@@ -198,7 +193,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           <div className="font-nokia-bold flex flex-col w-[90%] lg:w-[50%] space-y-2 mt-8 mx-auto">
             {/* devotion titles */}
             <div className="flex width: 100% space-x-12">
-              <h1 className="md:text-2xl text-justify text-secondary-6">
+              <h1 className="md:text-5xl xl:text-6xl text-justify text-secondary-6">
                 {devotionToDisplay && devotionToDisplay.title}
               </h1>
               {role === "Admin" && showControls && (
@@ -222,22 +217,22 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
             {/* devotion chapter */}
 
-            <h4 className="flex gap-2 text-1xl text-secondary-6 w-full">
-              የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል-
+            <h4 className="flex gap-2 text-xl xl:text-2xl text-secondary-6 w-full">
+              የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               <span>
-                <h2 className=" text-sm text-accent-5">
+                <h2 className="text-lg xl:text-2xl text-accent-6">
                   {devotionToDisplay && devotionToDisplay.chapter}
                 </h2>
               </span>
             </h4>
 
             {/* devotion verse */}
-            <p className=" text-xs text-accent-5">
+            <p className=" text-lg xl:text-xl text-accent-6">
               {devotionToDisplay && devotionToDisplay.verse}
             </p>
 
             {devotionToDisplay && devotionToDisplay.chapter !== "" ? (
-              <hr className="border-accent-5" />
+              <hr className="border-accent-6" />
             ) : (
               <hr className="hidden border-secondary-6" />
             )}
@@ -246,7 +241,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             {devotionToDisplay &&
               devotionToDisplay.body.map((paragraph, paragraphIndex) => (
                 <p
-                  className=" font-nokia-bold text-sm text-justify text-secondary-6 space-y-3"
+                  className=" font-nokia-bold text-sm xl:text-lg text-justify text-secondary-6 space-y-3"
                   key={paragraphIndex}
                 >
                   {paragraph}

@@ -45,7 +45,7 @@ function CurrentSSL() {
           }}
         >
           <div className="">
-            <p>የዚህ ሳምንት ትምህርት</p>
+            <p className="xl:text-xl">የዚህ ሳምንት ትምህርት</p>
             {quarterDetails && quarterDetails.quarterly && (
               <div className="flex text-2xl text-primary-3">
                 <DateConverter
@@ -60,20 +60,20 @@ function CurrentSSL() {
         <div className="flex flex-col w-full lg:w-[65%]">
           <div className="flex w-full justify-between">
             <div className="w-full">
-              <p className="text-lg text-accent-6">
+              <p className="text-lg xl:text-xl text-accent-6">
                 {quarterDetails.quarterly.title}
               </p>
-              <p className="text-lg md:text-3xl text-secondary-6 ">
+              <p className="text-lg xl:text-4xl md:text-3xl text-secondary-6 ">
                 {lessonDetails.lesson.title}
               </p>
-              <p className="text-xs text-accent-6 mt-2">
+              <p className="text-xs xl:text-lg text-accent-6 mt-2">
                 {quarterDetails.quarterly.human_date}
               </p>
               <div className="border border-b-accent-6 my-2" />
             </div>
             <div className="flex flex-col gap-2 items-end w-[45%] space-y-1">
               <Link
-                className="px-4 py-1 bg-accent-6 text-primary-1 rounded-full text-xs hover:bg-accent-7 transition-all"
+                className="px-4 py-1 bg-accent-6 text-primary-1 rounded-full text-xs xl:text-lg hover:bg-accent-7 transition-all"
                 to={{
                   pathname: `/sabbathSchool/${quarter}/lessons/${week}`,
                   state: {
@@ -84,12 +84,12 @@ function CurrentSSL() {
               >
                 ትምህርቱን ክፈት
               </Link>
-              <button className="w-max leading-snug md:leading-none md:w-auto px-2 border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
+              <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
                 Watch on YouTube <YoutubeLogo  weight="fill" className="text-lg md:text-xl"/>
               </button>
             </div>
           </div>
-          <p className="text-xs">{quarterDetails.quarterly.description}</p>
+          <p className="text-xs xl:text-sm">{quarterDetails.quarterly.description}</p>
         </div>
       </div>
     </div>

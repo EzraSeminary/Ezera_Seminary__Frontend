@@ -15,6 +15,8 @@ import SabbathSchool from "@/pages/user/SabbathSchool";
 import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
 import SSLDay from "@/features/sabbathSchool/SSLDay";
 import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
+import CreateUser from "./CreateUser";
+import ManageUser from "./ManageUsers";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -23,7 +25,7 @@ const AdminDashboard = () => {
   const [showComponent, setShowComponent] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex bg-gray-100">
       <div
         // Make the sidebar fixed to be visible on vertical scroll...!!
         className={`sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
@@ -31,7 +33,7 @@ const AdminDashboard = () => {
         <Sidebar />
       </div>
       <div
-        className={`flex-grow bg-gray-100 transition-all duration-500 ease-in-out pl-4`}
+        className={`flex-grow  transition-all duration-500 ease-in-out pl-4 mx-8`}
       >
         <AdminHeader />
         <Routes>
@@ -56,6 +58,8 @@ const AdminDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="users/create" element={<CreateUser />} />
+          <Route path="users/manage" element={<ManageUser />} />
         </Routes>
       </div>
     </div>

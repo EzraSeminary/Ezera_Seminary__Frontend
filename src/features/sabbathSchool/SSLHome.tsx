@@ -22,9 +22,9 @@ const SSLHome = () => {
               className="rounded-md  w-1/2 object-fit"
             />
             <div className="flex flex-col py-2 h-full space-y-1" style={{ maxHeight: "300px" }}>
-              <p className="text-accent-6 text-sm">{(item as { human_date: string }).human_date}</p>
-              <h2 className="text-xl md:text-xl text-secondary-6  ">{(item as { title: string }).title}</h2>
-              <p className="text-secondary-5 text-xs overflow-hidden overflow-ellipsis text-justify px-1">
+              <p className="text-accent-6 text-sm xl:text-lg">{(item as { human_date: string }).human_date}</p>
+              <h2 className="text-xl md:text-xl xl:text-2xl text-secondary-6  ">{(item as { title: string }).title}</h2>
+              <p className="text-secondary-5 text-xs xl:text-sm overflow-hidden overflow-ellipsis text-justify px-1">
                 {(item as { description: string }).description}
               </p>
             </div>

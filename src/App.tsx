@@ -6,7 +6,7 @@ import { login, setAuthReady } from "./redux/authSlice";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/user/Home";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
 import LoadingPage from "./pages/user/LoadingPage";
@@ -172,7 +172,7 @@ function App() {
           <Route path="*" element={<NotMatch />} />
         </Routes>
       </Suspense>
-      {!isAdmin && <Footer />}
+      {/* {!isAdmin && <Footer />} */}
     </BrowserRouter>
   );
 }

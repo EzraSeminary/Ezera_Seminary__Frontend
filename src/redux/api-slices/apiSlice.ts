@@ -38,7 +38,20 @@ export const apiSlice = createApi({
         body: JSON.stringify({ firstName, lastName, email, password }),
       }),
     }),
-    // apiSlice.ts
+    createUser: builder.mutation({
+      query: ({ firstName, lastName, email, password, role }) => ({
+        url: "/users/signup",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstName, lastName, email, password, role }),
+      }),
+    }),
+    getUsers: builder.query({
+      query: () => "/users",
+      providesTags: ["Devotions"],
+    }),
     updateUser: builder.mutation({
       query: (formData) => ({
         url: `/users/profile`,
@@ -55,6 +68,12 @@ export const apiSlice = createApi({
     getCurrentUser: builder.query({
       query: () => "/users/current",
     }), 
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}`,
+        method: "DELETE",
+      }),
+    }),
     getCourses: builder.query({
       query: () => "/course/getall",
     }),
@@ -113,9 +132,12 @@ export const apiSlice = createApi({
 
 export const {
   useSignupMutation,
+  useCreateUserMutation,
+  useGetUsersQuery,
   useLoginMutation,
   useUpdateUserMutation,
   useGetUserByIdQuery,
+  useDeleteUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,
