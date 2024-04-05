@@ -275,20 +275,6 @@ function SlidesDisplay() {
           />
         </div>
 
-        {/* Short information*/}
-        <div
-          className={`  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center  w-full text-xs1  lg:text-xs ${
-            open ? "flex" : "hidden"
-          }`}
-        >
-          <div className="p-1 bg-accent-6 rounded">
-            <p className="font-Lato-Bold text-primary-1 ">10%</p>
-          </div>
-          <p className="font-Lato-Bold text-secondary-6 leading-none">
-            Pass 100% of your lessons to complete this course
-          </p>
-        </div>
-
         {/* Course title and description*/}
         <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
           <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
@@ -370,7 +356,7 @@ function SlidesDisplay() {
         </div>
 
         {/* Course title and description*/}
-        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
+        <div className="flex flex-col w-full h-full bg-white opacity-90 pb-3 rounded-b-lg">
           <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
             {courseData?.description}
           </p>
@@ -383,7 +369,7 @@ function SlidesDisplay() {
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>
           {/* slide list */}
-          <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
+          <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
               const unlocked = isSlideUnlocked(index);
               return (
@@ -417,14 +403,16 @@ function SlidesDisplay() {
               );
             })}
           </div>
-          <NavLink to={`/courses/get/${courseId}`}>
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
-            </div>
-          </NavLink>
+
+          <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
+            <button
+              className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
+              onClick={submitProgress}
+            >
+              ዘግተህ ውጣ
+            </button>
+            <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
+          </div>
         </div>
       </div>
       {/* slides display window*/}
