@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateUserMutation } from "@/redux/api-slices/apiSlice";
+import {
+  useGetUsersQuery,
+  useUpdateUserMutation,
+} from "@/redux/api-slices/apiSlice";
 import { updateUser } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import mehari from "@/assets/avatar.png";
+import defaultAvatar from "@/assets/avatar.png"; // Import a default avatar image
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { data: users } = useGetUsersQuery(undefined, {});
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const [firstName, setFirstName] = useState("");
@@ -33,7 +37,7 @@ const ProfileSettings = () => {
       setAvatarPreview(
         currentUser.avatar
           ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
-          : mehari
+          : defaultAvatar
       );
     }
   }, [currentUser]);
@@ -52,11 +56,15 @@ const ProfileSettings = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (currentUser) {
+    const currentUserData = users?.find(
+      (user) => user.email === currentUser?.email
+    );
+
+    if (currentUserData) {
       if (
-        firstName !== currentUser.firstName ||
-        lastName !== currentUser.lastName ||
-        email !== currentUser.email ||
+        firstName !== currentUserData.firstName ||
+        lastName !== currentUserData.lastName ||
+        email !== currentUserData.email ||
         password ||
         selectedFile
       ) {
@@ -72,9 +80,11 @@ const ProfileSettings = () => {
             formData.append("avatar", selectedFile);
           }
 
-          const updatedUser = await updateUserMutation(formData).unwrap();
+          const updatedUser = await updateUserMutation({
+            id: currentUserData._id,
+            updatedUser: formData,
+          }).unwrap();
           toast.success("Profile updated successfully!");
-          // console.log("Mutation successful, updatedUser:", updatedUser);
           dispatch(updateUser(updatedUser));
           setFirstName(updatedUser.firstName);
           setLastName(updatedUser.lastName);
@@ -144,7 +154,7 @@ const ProfileSettings = () => {
                   ? avatarPreview
                   : currentUser?.avatar
                   ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
-                  : mehari
+                  : defaultAvatar
               }
               alt="User Avatar"
               className="w-[25vmin] rounded-full mx-auto"

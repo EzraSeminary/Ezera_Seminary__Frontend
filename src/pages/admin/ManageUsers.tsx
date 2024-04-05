@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useGetUsersQuery,
@@ -7,14 +7,18 @@ import {
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
-// import mehari from "@/assets/avatar.png"; //use default image mehari for blank avatar image for now
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
-  const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
+  const {
+    data: users,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
+  const [role, setRole] = useState("Learner");
   const [deleteUserMutation] = useDeleteUserMutation();
-  const { refetch } = useGetUsersQuery(undefined, {});
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
@@ -27,25 +31,53 @@ const ManageUsers: React.FC = () => {
     }
   }, [isError, users]);
 
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedAvatar(event.target.files[0]);
+    }
+  };
+
   const handleEditUser = (user: any) => {
-    setEditingUser(user);
+    setEditingUser({ ...user });
     setSelectedAvatar(null);
   };
 
   const handleUpdateUser = async () => {
-    if (editingUser) {
-      try {
+    try {
+      // Check if any of the user details have changed
+      const currentUser = users.find((user) => user._id === editingUser._id);
+      if (
+        currentUser &&
+        (currentUser.firstName !== editingUser.firstName ||
+          currentUser.lastName !== editingUser.lastName ||
+          currentUser.email !== editingUser.email ||
+          editingUser.password ||
+          selectedAvatar)
+      ) {
+        const existingUser = users.find(
+          (user) =>
+            user.email === editingUser.email && user._id !== editingUser._id
+        );
+
+        // If the email exists and it's not the same user being edited, throw an error
+        if (existingUser) {
+          throw new Error("Email already in use");
+        }
+
         const formData = new FormData();
         formData.append("firstName", editingUser.firstName);
         formData.append("lastName", editingUser.lastName);
         formData.append("email", editingUser.email);
-        formData.append("role", editingUser.role);
+
+        // Only add the password field if it's not an empty string
+        if (editingUser.password && editingUser.password.trim() !== "") {
+          formData.append("password", editingUser.password);
+        }
+
         if (selectedAvatar) {
           formData.append("avatar", selectedAvatar);
         }
-        if (editingUser.password) {
-          formData.append("password", editingUser.password);
-        }
+
         await updateUserMutation({
           id: editingUser._id,
           updatedUser: formData,
@@ -53,7 +85,14 @@ const ManageUsers: React.FC = () => {
         toast.success("User updated successfully!");
         setEditingUser(null);
         setSelectedAvatar(null);
-      } catch (error) {
+        await refetch();
+      } else {
+        toast.info("No changes made to the user details.");
+      }
+    } catch (error) {
+      if ((error as any)?.data?.message === "E11000 duplicate key error") {
+        toast.error("Email already in use. Please use a different email.");
+      } else {
         console.error("Error updating user:", error);
         toast.error("Error updating user. Please try again.");
       }
@@ -64,7 +103,6 @@ const ManageUsers: React.FC = () => {
     try {
       await deleteUserMutation(userId).unwrap();
       toast.success("User deleted successfully!");
-      // Refetch the user list to update the UI
       await refetch();
     } catch (error) {
       if ((error as any)?.data?.message === "User not found") {
@@ -77,7 +115,7 @@ const ManageUsers: React.FC = () => {
   };
 
   const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prevState) => !prevState);
   };
 
   const goBack = () => {
@@ -139,7 +177,7 @@ const ManageUsers: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setEditingUser(null)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py -1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                     >
                       Cancel
                     </button>
@@ -153,7 +191,7 @@ const ManageUsers: React.FC = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={() => handleDeleteUser(user._id as string)}
                       className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                     >
                       Delete
@@ -195,11 +233,7 @@ const ManageUsers: React.FC = () => {
                   <input
                     type="file"
                     id="avatar"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        setSelectedAvatar(e.target.files[0]);
-                      }
-                    }}
+                    onChange={handleAvatarUpload}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
                   />
                 </div>
@@ -211,7 +245,7 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="text"
                   id="firstName"
-                  value={editingUser.firstName}
+                  value={editingUser.firstName || ""}
                   onChange={(e) =>
                     setEditingUser({
                       ...editingUser,
@@ -228,7 +262,7 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="text"
                   id="lastName"
-                  value={editingUser.lastName}
+                  value={editingUser.lastName || ""}
                   onChange={(e) =>
                     setEditingUser({ ...editingUser, lastName: e.target.value })
                   }
@@ -242,7 +276,7 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  value={editingUser.email}
+                  value={editingUser.email || ""}
                   onChange={(e) =>
                     setEditingUser({ ...editingUser, email: e.target.value })
                   }
@@ -273,17 +307,16 @@ const ManageUsers: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="mb-4">
+              <div className="mb-5">
                 <label htmlFor="role" className="block font-medium mb-1">
                   Role
                 </label>
                 <select
                   id="role"
-                  value={editingUser.role}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, role: e.target.value })
-                  }
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                  required
                 >
                   <option value="Learner">Learner</option>
                   <option value="Admin">Admin</option>

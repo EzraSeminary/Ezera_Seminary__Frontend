@@ -39,27 +39,37 @@ export const apiSlice = createApi({
       }),
     }),
     createUser: builder.mutation({
-      query: ({ firstName, lastName, email, password, role }) => ({
-        url: "/users/signup",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ firstName, lastName, email, password, role }),
-      }),
+      query: (userData) => {
+        const formData = new FormData();
+        formData.append("firstName", userData.firstName);
+        formData.append("lastName", userData.lastName);
+        formData.append("email", userData.email);
+        formData.append("password", userData.password);
+        formData.append("role", userData.role);
+        if (userData.avatar) {
+          formData.append("avatar", userData.avatar);
+        }
+
+        return {
+          url: "/users/signup",
+          method: "POST",
+          body: formData,
+        };
+      },
     }),
+
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Devotions"],
     }),
     updateUser: builder.mutation({
-      query: (formData) => ({
-        url: `/users/profile`,
+      query: ({ id, updatedUser }) => ({
+        url: `/users/profile/${id}`,
         method: "PUT",
         headers: {
           // Don't set the "Content-Type" header, as it will be set automatically by the browser
         },
-        body: formData,
+        body: updatedUser,
       }),
     }),
     getUserById: builder.query({
