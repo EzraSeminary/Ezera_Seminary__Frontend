@@ -12,6 +12,7 @@ import { RootState } from "@/redux/store";
 import LoadingPage from "./pages/user/LoadingPage";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import LoggedInHome from "./features/home/LoggedInHome";
+import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -40,16 +41,18 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const isAuthReady = useSelector((state: RootState) => state.auth.isAuthReady);
+  //fetch user data
+  const { data: userData } = useGetCurrentUserQuery({});
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") as string); // Add type assertion to treat the value as a string
+    // const user = JSON.parse(localStorage.getItem("user") as string);
 
-    if (user) {
-      dispatch(login(user)); // Dispatch the login action
+    if (userData) {
+      dispatch(login(userData)); // Dispatch the login action
     }
 
     dispatch(setAuthReady(true)); // Dispatch the setAuthReady action
-  }, [dispatch]);
+  }, [dispatch, userData]);
 
   if (!isAuthReady) {
     return <div>Loading...</div>; // Or a  loading spinner
@@ -88,7 +91,6 @@ function App() {
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {/* Public Routes */}
-
 
           <Route
             path="/"

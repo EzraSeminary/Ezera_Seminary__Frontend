@@ -12,23 +12,9 @@ import {
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import { RootState } from "@/redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
-import { setUser } from "@/redux/authSlice";
+import { useSelector } from "react-redux";
 
 function ChaptersDisplay() {
-  const dispatch = useDispatch();
-
-  //fetch user data
-  const { data: userData } = useGetCurrentUserQuery({});
-
-  //save user data to redux
-  useEffect(() => {
-    if (userData) {
-      dispatch(setUser(userData));
-    }
-  }, [userData, dispatch]);
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState<boolean>(true);
   {

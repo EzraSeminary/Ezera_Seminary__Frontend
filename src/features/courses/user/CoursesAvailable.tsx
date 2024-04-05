@@ -78,6 +78,7 @@ function CoursesAvailable() {
   //progress
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  console.log(currentUser);
 
   const userCourseId =
     currentUser?.progress?.map((progres) => progres.courseId) ?? [];
