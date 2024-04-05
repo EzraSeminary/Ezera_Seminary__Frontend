@@ -162,7 +162,7 @@ function SlidesDisplay() {
       console.log("CurrentUser Token:", token);
       axios
         .put(
-          "/users/progress",
+          "/users/profile",
           {
             userId: currentUser._id, // Make sure you have a field to identify the user, like _id
             progress: currentUser.progress,

@@ -38,6 +38,7 @@ const LoggedInHome = () => {
   //save user data to redux
   useEffect(() => {
     if (userData) {
+      console.log(userData);
       dispatch(setUser(userData));
     }
   }, [userData, dispatch]);
