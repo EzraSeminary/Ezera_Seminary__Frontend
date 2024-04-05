@@ -65,6 +65,13 @@ function SlidesDisplay() {
   //get single course
   const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
 
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   const chapterIndex = courseData?.chapters.findIndex(
@@ -199,13 +206,6 @@ function SlidesDisplay() {
       </div>
     );
 
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
-
   if (isLoading)
     return (
       <div className="h-full flex justify-center items-center min-h-screen">
@@ -228,18 +228,16 @@ function SlidesDisplay() {
     <div className="flex  mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
       {/* Back button */}
       <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
-        <NavLink
-          to={`/courses/get/${courseId}`}
+        <button
           className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
+          onClick={submitProgress}
         >
           <ArrowLeft
             size={22}
             className="text-white bg-accent-6 border p-1 rounded-lg"
           />
-          <button className="text-accent-6 text-xs font-nokia-bold">
-            ተመለስ
-          </button>
-        </NavLink>
+          <p className="text-accent-6 text-xs font-nokia-bold">ተመለስ</p>
+        </button>
       </div>
 
       {/* Slides side bar for mobile and tablet*/}
@@ -264,33 +262,8 @@ function SlidesDisplay() {
           />
         )}
 
-        {/* Bible image container*/}
-        <div className="w-[100%] ">
-          <img
-            src={
-              `https://ezra-seminary.mybese.tech/images/` + courseData?.image
-            }
-            alt=""
-            className="w-full rounded-t-lg"
-          />
-        </div>
-
-        {/* Short information*/}
-        <div
-          className={`  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center  w-full text-xs1  lg:text-xs ${
-            open ? "flex" : "hidden"
-          }`}
-        >
-          <div className="p-1 bg-accent-6 rounded">
-            <p className="font-Lato-Bold text-primary-1 ">10%</p>
-          </div>
-          <p className="font-Lato-Bold text-secondary-6 leading-none">
-            Pass 100% of your lessons to complete this course
-          </p>
-        </div>
-
         {/* Course title and description*/}
-        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
+        <div className="w-[100%] h-full bg-white opacity-90 pb-3 rounded-b-lg">
           <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
             {courseData?.title}
           </h1>
@@ -307,7 +280,7 @@ function SlidesDisplay() {
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>
           {/* slide list */}
-          <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
+          <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
               const unlocked = isSlideUnlocked(index);
               return (
@@ -341,49 +314,42 @@ function SlidesDisplay() {
               );
             })}
           </div>
-          <NavLink to={`/courses/get/${courseId}`}>
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button
-                className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
-                // onClick={}
-              >
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
-            </div>
-          </NavLink>
+
+          <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
+            <button
+              className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
+              onClick={submitProgress}
+            >
+              ዘግተህ ውጣ
+            </button>
+            <CaretCircleLeft className="text-2xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
+          </div>
         </div>
       </div>
       {/* Slides side bar for mdesktop*/}
       <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
         {/* Short information*/}
         <div className="flex  px-4 py-2 bg-secondary-5  gap-12 justify-between items-center w-full text-xs1  lg:text-xs z-50">
-          <NavLink to={`/courses/get/${courseId}`}>
-            <ArrowLeft
-              onClick={handleArrowClick}
-              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg  cursor-pointer "
-            />{" "}
-          </NavLink>
-          <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm flex-grow  items-center ">
+          <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow  items-center ">
             {courseData?.title}
           </h1>
         </div>
 
         {/* Course title and description*/}
-        <div className="w-[100%] overflow-y-auto bg-white opacity-90 pb-3 rounded-b-lg  ">
-          <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+        <div className="flex flex-col w-full h-full bg-white opacity-90 pb-3 rounded-b-lg">
+          <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-sm ">
             {courseData?.description}
           </p>
 
           {/* Header */}
           <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-            <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
-              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+            <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-lg">
+              ትምህርቶች {currentSlideNumber}/{totalDataNumber}
             </h1>
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>
           {/* slide list */}
-          <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
+          <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
               const unlocked = isSlideUnlocked(index);
               return (
@@ -417,14 +383,16 @@ function SlidesDisplay() {
               );
             })}
           </div>
-          <NavLink to={`/courses/get/${courseId}`}>
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
-            </div>
-          </NavLink>
+
+          <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
+            <button
+              className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
+              onClick={submitProgress}
+            >
+              ዘግተህ ውጣ
+            </button>
+            <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
+          </div>
         </div>
       </div>
       {/* slides display window*/}
@@ -444,13 +412,6 @@ function SlidesDisplay() {
                   <strong>Ezra</strong> Seminary
                 </h3>
               </div>
-              <NavLink to={`/courses/get/${courseId}`}>
-                <XCircle
-                  size={24}
-                  color={"white"}
-                  className="z-20 cursor-pointer"
-                />
-              </NavLink>
             </div>
             <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
           </div>

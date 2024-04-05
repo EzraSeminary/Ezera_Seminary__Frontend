@@ -138,7 +138,7 @@ function ChaptersDisplay() {
       case "Completed":
         return "100%";
       case "In Progress":
-        return "";
+        return "....";
       default:
         return "0%";
     }
@@ -297,20 +297,19 @@ function ChaptersDisplay() {
           </NavLink>
 
           {/* Bible image container*/}
-          <div className="w-[100%] ">
-            <img
-              src={
-                `http://ezra-seminary.mybese.tech/images/` + courseData?.image
-              }
-              alt=""
-              className="w-full "
-            />
-          </div>
+
+          <img
+            src={`http://ezra-seminary.mybese.tech/images/` + courseData?.image}
+            alt=""
+            className="w-full h-[30vh] object-cover"
+          />
 
           {/* Short information*/}
           <div className="pl-2 py-1 bg-primary-7  gap-2 flex justify-between items-center  w-full text-xs1  lg:text-xs">
             <div className="p-1 bg-accent-6 rounded w-[8%]">
-              <p className="font-Lato-Bold text-primary-1 ">10%</p>
+              <p className="font-Lato-Bold text-primary-1 ">
+                {progressValue()}%
+              </p>
             </div>
             <p className="font-Lato-Bold text-secondary-6 leading-none flex-grow">
               Pass 100% of your lessons to complete this course
