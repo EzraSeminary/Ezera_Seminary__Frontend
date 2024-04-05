@@ -25,7 +25,7 @@ const UserProfile = () => {
   const currentUser = user || initialUser;
 
   const avatarPreview = currentUser?.avatar
-    ? `http://localhost:5100/images/${currentUser.avatar}`
+    ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
     : mehari;
 
   const goBack = () => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useImperativeHandle } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useGetUsersQuery,
@@ -10,16 +10,18 @@ import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
-  const { data: users, isLoading, isError } = useGetUsersQuery(undefined, {});
+  const {
+    data: users,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
+  const [role, setRole] = useState("Learner");
   const [deleteUserMutation] = useDeleteUserMutation();
-  const { refetch } = useGetUsersQuery(undefined, {});
   const [editingUser, setEditingUser] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
-  const editingUserRef = useRef<any>(null);
-
-  useImperativeHandle(editingUserRef, () => editingUser, [editingUser]);
 
   useEffect(() => {
     if (isError) {
@@ -29,36 +31,68 @@ const ManageUsers: React.FC = () => {
     }
   }, [isError, users]);
 
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedAvatar(event.target.files[0]);
+    }
+  };
+
   const handleEditUser = (user: any) => {
     setEditingUser({ ...user });
     setSelectedAvatar(null);
   };
 
   const handleUpdateUser = async () => {
-    if (editingUserRef.current) {
-      try {
+    try {
+      // Check if any of the user details have changed
+      const currentUser = users.find((user) => user._id === editingUser._id);
+      if (
+        currentUser &&
+        (currentUser.firstName !== editingUser.firstName ||
+          currentUser.lastName !== editingUser.lastName ||
+          currentUser.email !== editingUser.email ||
+          editingUser.password ||
+          selectedAvatar)
+      ) {
+        const existingUser = users.find(
+          (user) =>
+            user.email === editingUser.email && user._id !== editingUser._id
+        );
+
+        // If the email exists and it's not the same user being edited, throw an error
+        if (existingUser) {
+          throw new Error("Email already in use");
+        }
+
         const formData = new FormData();
-        Object.entries(editingUserRef.current).forEach(([key, value]) => {
-          if (key !== "_id") {
-            formData.append(key, value);
-          }
-        });
+        formData.append("firstName", editingUser.firstName);
+        formData.append("lastName", editingUser.lastName);
+        formData.append("email", editingUser.email);
+
+        // Only add the password field if it's not an empty string
+        if (editingUser.password && editingUser.password.trim() !== "") {
+          formData.append("password", editingUser.password);
+        }
 
         if (selectedAvatar) {
           formData.append("avatar", selectedAvatar);
         }
 
         await updateUserMutation({
-          id: editingUserRef.current._id,
+          id: editingUser._id,
           updatedUser: formData,
         }).unwrap();
-
-        console.log("Submitted formData:", formData);
         toast.success("User updated successfully!");
         setEditingUser(null);
         setSelectedAvatar(null);
         await refetch();
-      } catch (error) {
+      } else {
+        toast.info("No changes made to the user details.");
+      }
+    } catch (error) {
+      if ((error as any)?.data?.message === "E11000 duplicate key error") {
+        toast.error("Email already in use. Please use a different email.");
+      } else {
         console.error("Error updating user:", error);
         toast.error("Error updating user. Please try again.");
       }
@@ -81,7 +115,7 @@ const ManageUsers: React.FC = () => {
   };
 
   const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prevState) => !prevState);
   };
 
   const goBack = () => {
@@ -123,7 +157,7 @@ const ManageUsers: React.FC = () => {
             >
               <td className="px-4 py-2">
                 <img
-                  src={`http://localhost:5100/images/${user.avatar}`}
+                  src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
                   alt={`${user.firstName} ${user.lastName}`}
                   className="w-12 h-12 rounded-full"
                 />
@@ -157,7 +191,7 @@ const ManageUsers: React.FC = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={() => handleDeleteUser(user._id as string)}
                       className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                     >
                       Delete
@@ -187,7 +221,7 @@ const ManageUsers: React.FC = () => {
                   src={
                     selectedAvatar
                       ? URL.createObjectURL(selectedAvatar)
-                      : `http://localhost:5100/images/${editingUser.avatar}`
+                      : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
                   }
                   alt={`${editingUser.firstName} ${editingUser.lastName}`}
                   className="w-20 h-20 rounded-full mr-4"
@@ -199,11 +233,7 @@ const ManageUsers: React.FC = () => {
                   <input
                     type="file"
                     id="avatar"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        setSelectedAvatar(e.target.files[0]);
-                      }
-                    }}
+                    onChange={handleAvatarUpload}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
                   />
                 </div>
@@ -215,12 +245,26 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="text"
                   id="firstName"
-                  value={editingUserRef.current?.firstName || ""}
+                  value={editingUser.firstName || ""}
                   onChange={(e) =>
-                    (editingUserRef.current = {
-                      ...editingUserRef.current,
+                    setEditingUser({
+                      ...editingUser,
                       firstName: e.target.value,
                     })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="lastName" className="block font-medium mb-1">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={editingUser.lastName || ""}
+                  onChange={(e) =>
+                    setEditingUser({ ...editingUser, lastName: e.target.value })
                   }
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
                 />
@@ -232,7 +276,7 @@ const ManageUsers: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  value={editingUser.email}
+                  value={editingUser.email || ""}
                   onChange={(e) =>
                     setEditingUser({ ...editingUser, email: e.target.value })
                   }
@@ -263,17 +307,16 @@ const ManageUsers: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="mb-4">
+              <div className="mb-5">
                 <label htmlFor="role" className="block font-medium mb-1">
                   Role
                 </label>
                 <select
                   id="role"
-                  value={editingUser.role}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, role: e.target.value })
-                  }
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                  required
                 >
                   <option value="Learner">Learner</option>
                   <option value="Admin">Admin</option>

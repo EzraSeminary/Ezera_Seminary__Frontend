@@ -189,7 +189,10 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={`http://localhost:5100/images/` + course.image}
+                      src={
+                        `https://ezra-seminary.mybese.tech/images/` +
+                        course.image
+                      }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
                       alt=""
                     />
@@ -236,7 +239,10 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={`http://localhost:5100/images/` + course.image}
+                      src={
+                        `https://ezra-seminary.mybese.tech/images/` +
+                        course.image
+                      }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
                       alt=""
                     />

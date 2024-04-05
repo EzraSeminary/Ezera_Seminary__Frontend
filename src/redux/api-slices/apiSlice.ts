@@ -4,7 +4,7 @@ import { Devotion } from "@/redux/types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5100",
+    baseUrl: "https://ezra-seminary.mybese.tech",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -62,15 +62,16 @@ export const apiSlice = createApi({
       providesTags: ["Devotions"],
     }),
     updateUser: builder.mutation({
-      query: (formData) => ({
-        url: `/users/profile`,
+      query: ({ id, updatedUser }) => ({
+        url: `/users/profile/${id}`,
         method: "PUT",
         headers: {
           // Don't set the "Content-Type" header, as it will be set automatically by the browser
         },
-        body: formData,
+        body: updatedUser,
       }),
     }),
+
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `/users/${userId}`,

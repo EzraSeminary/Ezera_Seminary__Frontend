@@ -153,7 +153,7 @@ function AdminCourseDisplay({
                   // display new image from redux or previous image from server
                   const srcValue =
                     imagePreviewUrl ||
-                    `http://localhost:5100/images/` + element.value;
+                    `https://ezra-seminary.mybese.tech/images/` + element.value;
 
                   elementComponent = (
                     <img

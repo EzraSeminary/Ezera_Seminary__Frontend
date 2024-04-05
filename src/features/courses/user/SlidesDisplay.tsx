@@ -180,7 +180,9 @@ function SlidesDisplay() {
         {/* Bible image container*/}
         <div className="w-[100%] ">
           <img
-            src={`http://localhost:5100/images/` + courseData?.image}
+            src={
+              `https://ezra-seminary.mybese.tech/images/` + courseData?.image
+            }
             alt=""
             className="w-full rounded-t-lg"
           />
