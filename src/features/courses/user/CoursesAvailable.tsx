@@ -6,6 +6,9 @@ import { useGetCoursesQuery } from "../../../services/api";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+import { Progress } from "@/components/ui/progress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import CoursesSkeleton from "@/skeletons/CoursesSkeleton";
 
 const gridContainerVariants = {
@@ -71,6 +74,36 @@ function CoursesAvailable() {
   }
   const handleViewAllCoursesClick = () => {
     setShowAllCourses(!showAllCourses);
+  };
+
+  //progress
+  // Retrieves the current user from Redux state
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  console.log(currentUser);
+
+  const userCourseId =
+    currentUser?.progress?.map((progres) => progres.courseId) ?? [];
+
+  const totalChapter = filteredData.map((course) => course.chapters.length);
+
+  // Function to calculate the progress value for a given course ID
+  const getProgressValue = (courseId: string): number | undefined => {
+    const userProgress = currentUser?.progress?.find(
+      (p) => p.courseId === courseId
+    );
+
+    // Assuming you have logic to calculate progress percentage correctly
+    if (
+      userProgress &&
+      userProgress.currentChapter &&
+      userProgress.currentSlide
+    ) {
+      const progressDecimal =
+        (userProgress.currentChapter + 1) /
+        totalChapter[userCourseId.indexOf(courseId)];
+      return progressDecimal * 100;
+    }
+    return undefined;
   };
 
   {
@@ -183,6 +216,9 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 4)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -196,10 +232,18 @@ function CoursesAvailable() {
                         `https://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </div>
+
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
@@ -233,6 +277,9 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 6)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -246,10 +293,18 @@ function CoursesAvailable() {
                         `https://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </div>
+
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <div className=" w-[95%] md:w-[90%] mx-auto h-full">
@@ -283,6 +338,9 @@ function CoursesAvailable() {
           {filteredData
             .slice(0, showAllCourses ? filteredData.length : 8)
             .map((course, index: number) => {
+              // Get the progress value for this course, if it exists
+              const progressValue = getProgressValue(course._id);
+
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -308,10 +366,18 @@ function CoursesAvailable() {
                         `http://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
                   </motion.div>
+
+                  {/* Conditionally render the progress bar if progress exists */}
+                  {progressValue !== undefined && (
+                    <Progress
+                      value={progressValue}
+                      className="w-[90%] mx-auto"
+                    />
+                  )}
 
                   {/* Title, Description and button */}
                   <motion.div

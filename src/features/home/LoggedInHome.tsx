@@ -26,6 +26,7 @@ const gridSquareVariants = {
 
 const LoggedInHome = () => {
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+
   const ethiopianMonths = [
     "", // There is no month 0
     "መስከረም",

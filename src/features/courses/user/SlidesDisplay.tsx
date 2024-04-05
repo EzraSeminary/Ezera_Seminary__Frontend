@@ -1,5 +1,5 @@
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -16,8 +16,15 @@ import {
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
+import { useDispatch, useSelector } from "react-redux";
+import { setProgress } from "@/redux/authSlice";
+import { RootState } from "@/redux/store";
+import axios from "axios";
+import { PuffLoader } from "react-spinners";
 
 function SlidesDisplay() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
@@ -27,6 +34,11 @@ function SlidesDisplay() {
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const [progressLoading, setProgressLoading] = useState(false);
+
+  //get the current user from the Root State
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -55,6 +67,9 @@ function SlidesDisplay() {
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
+  const chapterIndex = courseData?.chapters.findIndex(
+    (chap) => chap._id === chapterId
+  );
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
@@ -77,6 +92,7 @@ function SlidesDisplay() {
 
     setActiveIndex(newIndex);
     setShowQuizResult(false); // Reset the showQuizResult state
+    updateProgress();
   };
 
   interface AccordionItem {
@@ -85,7 +101,7 @@ function SlidesDisplay() {
   }
 
   // slide number
-  const currentDataNumber = activeIndex + 1;
+  const currentSlideNumber = activeIndex + 1;
   const totalDataNumber = data.length;
   const isLastSlide = activeIndex === totalDataNumber - 1;
 
@@ -119,6 +135,70 @@ function SlidesDisplay() {
     }
   };
 
+  // Check if courseData and courseData._id are not undefined
+  const courseID = courseData && courseData._id ? courseData._id : "";
+
+  const updateProgress = () => {
+    if (chapterIndex !== undefined && chapterIndex !== -1) {
+      dispatch(
+        setProgress({
+          courseId: courseID,
+          currentChapter: chapterIndex,
+          currentSlide: activeIndex,
+        })
+      );
+    }
+  };
+
+  const token = localStorage.getItem("token");
+
+  const submitProgress = () => {
+    if (currentUser && currentUser.progress) {
+      setProgressLoading(true);
+      console.log("CurrentUser Token:", token);
+      axios
+        .put(
+          "/users/profile",
+          {
+            userId: currentUser._id, // Make sure you have a field to identify the user, like _id
+            progress: currentUser.progress,
+          },
+          {
+            headers: {
+              // Add headers if needed, for example authorization token
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Progress updated successfully:", res.data);
+          setProgressLoading(false);
+          navigate(`/courses/get/${courseId}`);
+        })
+        .catch((err) => {
+          console.error(
+            "Error updating progress:",
+            err.response ? err.response.data : err.message
+          );
+          setProgressLoading(false);
+        });
+    }
+  };
+
+  if (progressLoading)
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <PuffLoader
+          color={"#707070"}
+          loading
+          size={80}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+        <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
+      </div>
+    );
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -140,6 +220,8 @@ function SlidesDisplay() {
     );
 
   if (error) return <div>Something went wrong.</div>;
+
+  console.log(currentUser);
 
   return (
     // <div className="flex justify-center items-center w-[80%] mx-auto">
@@ -220,7 +302,7 @@ function SlidesDisplay() {
           {/* Header */}
           <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
             <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
-              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+              ትምህርት {currentSlideNumber}/{totalDataNumber}
             </h1>
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>
@@ -261,7 +343,10 @@ function SlidesDisplay() {
           </div>
           <NavLink to={`/courses/get/${courseId}`}>
             <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto">
+              <button
+                className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
+                // onClick={}
+              >
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-2xl bg-accent-6 rounded-full text-primary-1 mr-2 hover:bg-accent-7 transition-all" />
@@ -558,14 +643,12 @@ function SlidesDisplay() {
                   </div>
 
                   {isLastSlide && (
-                    <NavLink
-                      to={`/courses/get/${courseId}`}
-                      className="flex justify-center items-center mx-auto"
+                    <button
+                      className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
+                      onClick={submitProgress}
                     >
-                      <button className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1">
-                        ዘግተህ ውጣ
-                      </button>
-                    </NavLink>
+                      ዘግተህ ውጣ
+                    </button>
                   )}
                 </div>
               );
