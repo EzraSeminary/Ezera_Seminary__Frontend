@@ -432,13 +432,6 @@ function SlidesDisplay() {
                   <strong>Ezra</strong> Seminary
                 </h3>
               </div>
-              <NavLink to={`/courses/get/${courseId}`}>
-                <XCircle
-                  size={24}
-                  color={"white"}
-                  className="z-20 cursor-pointer"
-                />
-              </NavLink>
             </div>
             <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
           </div>
