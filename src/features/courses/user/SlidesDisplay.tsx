@@ -65,6 +65,13 @@ function SlidesDisplay() {
   //get single course
   const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
 
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   const chapterIndex = courseData?.chapters.findIndex(
@@ -198,13 +205,6 @@ function SlidesDisplay() {
         <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
       </div>
     );
-
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
 
   if (isLoading)
     return (
@@ -378,7 +378,7 @@ function SlidesDisplay() {
           {/* Header */}
           <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
             <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
-              ትምህርቶች {currentDataNumber}/{totalDataNumber}
+              ትምህርቶች {currentSlideNumber}/{totalDataNumber}
             </h1>
             <hr className="border-accent-5 border-b-2 w-[30%] " />
           </div>

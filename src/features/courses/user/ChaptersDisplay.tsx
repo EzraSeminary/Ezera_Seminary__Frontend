@@ -138,7 +138,7 @@ function ChaptersDisplay() {
       case "Completed":
         return "100%";
       case "In Progress":
-        return "";
+        return "....";
       default:
         return "0%";
     }
