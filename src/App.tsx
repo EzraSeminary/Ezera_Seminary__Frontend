@@ -41,9 +41,11 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const isAuthReady = useSelector((state: RootState) => state.auth.isAuthReady);
+
   //fetch user data
   const { data: userData } = useGetCurrentUserQuery({});
 
+  //save user data to redux
   useEffect(() => {
     // const user = JSON.parse(localStorage.getItem("user") as string);
 
