@@ -83,8 +83,8 @@ export type QuizElementValue = {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://ezra-seminary.mybese.tech",
-    baseUrl: "https://ezra-seminary.mybese.tech",
+    baseUrl: "https://ezra-seminary.mybese.tech/",
+    // baseUrl: "http://localhost:5100/",
   }),
   endpoints: (builder) => ({
     getCourses: builder.query<ApiState[], void>({
