@@ -1,10 +1,12 @@
 export interface User {
+  _id: string;
   role: string;
   firstName: string;
   lastName: string;
   token: string;
   email: string;
   avatar: string | null;
+  password: string | null;
   // add other properties of a user object
 }
 

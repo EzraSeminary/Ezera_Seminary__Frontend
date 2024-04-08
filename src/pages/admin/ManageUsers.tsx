@@ -6,7 +6,9 @@ import {
   useDeleteUserMutation,
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
+import { User } from "@/redux/types";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
+import { AxiosError } from "axios";
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -17,9 +19,8 @@ const ManageUsers: React.FC = () => {
     refetch,
   } = useGetUsersQuery(undefined, {});
   const [updateUserMutation] = useUpdateUserMutation();
-  const [role, setRole] = useState("Learner");
   const [deleteUserMutation] = useDeleteUserMutation();
-  const [editingUser, setEditingUser] = useState<any>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
 
@@ -37,7 +38,7 @@ const ManageUsers: React.FC = () => {
     }
   };
 
-  const handleEditUser = (user: any) => {
+  const handleEditUser = (user: User) => {
     setEditingUser({ ...user });
     setSelectedAvatar(null);
   };
@@ -45,18 +46,20 @@ const ManageUsers: React.FC = () => {
   const handleUpdateUser = async () => {
     try {
       // Check if any of the user details have changed
-      const currentUser = users.find((user) => user._id === editingUser._id);
+      const currentUser = users?.find(
+        (user: User) => user._id === editingUser?._id
+      );
       if (
         currentUser &&
-        (currentUser.firstName !== editingUser.firstName ||
-          currentUser.lastName !== editingUser.lastName ||
-          currentUser.email !== editingUser.email ||
-          editingUser.password ||
+        (currentUser.firstName !== editingUser?.firstName ||
+          currentUser.lastName !== editingUser?.lastName ||
+          currentUser.email !== editingUser?.email ||
+          editingUser?.password ||
           selectedAvatar)
       ) {
-        const existingUser = users.find(
-          (user) =>
-            user.email === editingUser.email && user._id !== editingUser._id
+        const existingUser = users?.find(
+          (user: User) =>
+            user.email === editingUser?.email && user._id !== editingUser?._id
         );
 
         // If the email exists and it's not the same user being edited, throw an error
@@ -65,21 +68,25 @@ const ManageUsers: React.FC = () => {
         }
 
         const formData = new FormData();
-        formData.append("firstName", editingUser.firstName);
-        formData.append("lastName", editingUser.lastName);
-        formData.append("email", editingUser.email);
+        formData.append("firstName", editingUser?.firstName || "");
+        formData.append("lastName", editingUser?.lastName || "");
+        formData.append("email", editingUser?.email || "");
+        formData.append("role", editingUser?.role || ""); // Add the role field
 
         // Only add the password field if it's not an empty string
-        if (editingUser.password && editingUser.password.trim() !== "") {
+        if (editingUser?.password && editingUser.password.trim() !== "") {
           formData.append("password", editingUser.password);
         }
 
         if (selectedAvatar) {
           formData.append("avatar", selectedAvatar);
         }
-
+        console.log("Sending the following data to the backend:", {
+          id: editingUser?._id,
+          updatedUser: Object.fromEntries(formData),
+        });
         await updateUserMutation({
-          id: editingUser._id,
+          id: editingUser?._id,
           updatedUser: formData,
         }).unwrap();
         toast.success("User updated successfully!");
@@ -90,7 +97,10 @@ const ManageUsers: React.FC = () => {
         toast.info("No changes made to the user details.");
       }
     } catch (error) {
-      if ((error as any)?.data?.message === "E11000 duplicate key error") {
+      if (
+        error instanceof AxiosError &&
+        error.response?.data?.message === "E11000 duplicate key error"
+      ) {
         toast.error("Email already in use. Please use a different email.");
       } else {
         console.error("Error updating user:", error);
@@ -105,7 +115,10 @@ const ManageUsers: React.FC = () => {
       toast.success("User deleted successfully!");
       await refetch();
     } catch (error) {
-      if ((error as any)?.data?.message === "User not found") {
+      if (
+        error instanceof AxiosError &&
+        error.response?.data?.message === "User not found"
+      ) {
         toast.error("User not found. Unable to delete.");
       } else {
         console.error("Error deleting user:", error);
@@ -148,7 +161,7 @@ const ManageUsers: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => (
+          {users?.map((user: User) => (
             <tr
               key={user._id}
               className={`border-b ${
@@ -313,13 +326,15 @@ const ManageUsers: React.FC = () => {
                 </label>
                 <select
                   id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  value={editingUser.role || "Learner"} // Use editingUser.role
+                  onChange={(e) =>
+                    setEditingUser({ ...editingUser, role: e.target.value })
+                  }
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
                   required
                 >
-                  <option value="Learner">Learner</option>
                   <option value="Admin">Admin</option>
+                  <option value="Learner">Learner</option>
                 </select>
               </div>
               <div className="flex justify-end">
