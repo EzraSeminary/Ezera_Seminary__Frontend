@@ -1,7 +1,10 @@
 export interface User {
   role: string;
   firstName: string;
+  lastName: string;
   token: string;
+  email: string;
+  avatar: string | null;
   // add other properties of a user object
 }
 
