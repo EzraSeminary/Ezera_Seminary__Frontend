@@ -5,7 +5,14 @@ export interface User {
   token: string;
   email: string;
   avatar: string | null;
-  // add other properties of a user object
+  progress: Progress[];
+  achievement: number;
+}
+
+export interface Progress {
+  courseId: string;
+  currentChapter: number;
+  currentSlide: number;
 }
 
 export interface AuthState {
