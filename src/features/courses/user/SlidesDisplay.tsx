@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
@@ -158,6 +158,7 @@ function SlidesDisplay() {
   };
 
   const token = localStorage.getItem("token");
+  const userId = currentUser?._id;
 
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
@@ -165,7 +166,7 @@ function SlidesDisplay() {
       console.log("CurrentUser Token:", token);
       axios
         .put(
-          "/users/profile",
+          "/users/profile/" + userId,
           {
             userId: currentUser._id, // Make sure you have a field to identify the user, like _id
             progress: currentUser.progress,
