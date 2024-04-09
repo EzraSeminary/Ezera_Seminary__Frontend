@@ -95,6 +95,7 @@ function CoursesAvailable() {
     //calculate the percentage
     if (userProgress && totalChapter) {
       const currentChapterCount = (userProgress.currentChapter ?? 0) + 1;
+
       const progressDecimal = currentChapterCount / totalChapter;
       return progressDecimal * 100;
     }

@@ -351,6 +351,7 @@ function ChaptersDisplay() {
                       updateIndex(index);
                       handleArrowClick();
                     }}
+                    disabled={!unlocked} // Disable the button if the slide is locked
                   >
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
