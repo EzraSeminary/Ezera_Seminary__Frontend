@@ -81,26 +81,21 @@ function CoursesAvailable() {
   const currentUser = useSelector((state: RootState) => state.auth.user);
   console.log(currentUser);
 
-  const userCourseId =
-    currentUser?.progress?.map((progres) => progres.courseId) ?? [];
-
-  const totalChapter = filteredData.map((course) => course.chapters.length);
-
   // Function to calculate the progress value for a given course ID
   const getProgressValue = (courseId: string): number | undefined => {
+    //find the course id in the user data
     const userProgress = currentUser?.progress?.find(
       (p) => p.courseId === courseId
     );
 
-    // Assuming you have logic to calculate progress percentage correctly
-    if (
-      userProgress &&
-      userProgress.currentChapter &&
-      userProgress.currentSlide
-    ) {
-      const progressDecimal =
-        (userProgress.currentChapter + 1) /
-        totalChapter[userCourseId.indexOf(courseId)];
+    //find the course id in the course and get the total chapter
+    const totalChapter = courses?.find((course) => course._id === courseId)
+      ?.chapters.length;
+
+    //calculate the percentage
+    if (userProgress && totalChapter) {
+      const currentChapterCount = (userProgress.currentChapter ?? 0) + 1;
+      const progressDecimal = currentChapterCount / totalChapter;
       return progressDecimal * 100;
     }
     return undefined;
