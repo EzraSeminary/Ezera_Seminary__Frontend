@@ -73,6 +73,7 @@ function ChaptersDisplay() {
         setUnlockedIndex(newActiveIndex);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProgress]);
 
   //function for next & previous buttons
