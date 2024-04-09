@@ -4,8 +4,8 @@ import { Devotion } from "@/redux/types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://ezra-seminary.mybese.tech",
-    baseUrl: "http://localhost:5100",
+    baseUrl: "https://ezra-seminary.mybese.tech",
+    // baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
