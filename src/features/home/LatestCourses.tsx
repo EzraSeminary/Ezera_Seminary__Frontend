@@ -1,7 +1,7 @@
 import { useGetCoursesQuery } from "../../services/api";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import BeatLoader from "react-spinners/BeatLoader";
+import LoadingPage from "@/pages/user/LoadingPage";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -43,15 +43,7 @@ const LatestCourses = () => {
         </div>
 
         {/* Loading spinner */}
-        <div className="h-screen flex justify-center items-center">
-          <BeatLoader
-            color={"#707070"}
-            loading
-            size={15}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-        </div>
+        <LoadingPage />
       </>
     );
   }
