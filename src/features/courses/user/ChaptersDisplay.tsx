@@ -73,21 +73,23 @@ function ChaptersDisplay() {
         setUnlockedIndex(newActiveIndex);
       }
     }
-  }, [userProgress, unlockedIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProgress]);
 
   //function for next & previous buttons
   const updateIndex = (newIndex: number) => {
-    if (newIndex < 0) {
-      newIndex = 0;
-    } else if (newIndex >= data.length) {
-      newIndex = data.length - 1;
-    }
-
-    if (newIndex > unlockedIndex) {
-      setUnlockedIndex(newIndex); // Update the unlocked index
-    }
-
-    setActiveIndex(newIndex);
+    // First adjust the new index if it's out of bounds
+    const adjustedIndex = Math.max(0, Math.min(newIndex, data.length - 1));
+    // Use a functional update to ensure we're using the latest state
+    setUnlockedIndex((prevUnlockedIndex) => {
+      // Only update if the new index is greater than the previous unlocked index
+      if (adjustedIndex > prevUnlockedIndex) {
+        return adjustedIndex;
+      } else {
+        return prevUnlockedIndex;
+      }
+    });
+    setActiveIndex(adjustedIndex);
   };
 
   const isSlideUnlocked = (index: number) => {
