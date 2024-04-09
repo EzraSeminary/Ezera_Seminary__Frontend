@@ -43,7 +43,8 @@ function App() {
   const isAuthReady = useSelector((state: RootState) => state.auth.isAuthReady);
 
   //fetch user data
-  const { data: userData } = useGetCurrentUserQuery({});
+  const { data: userData, error: userError } = useGetCurrentUserQuery({});
+  console.log(userData);
 
   //save user data to redux
   useEffect(() => {
@@ -58,6 +59,11 @@ function App() {
 
   if (!isAuthReady) {
     return <div>Loading...</div>; // Or a  loading spinner
+  }
+
+  //catch error while fetching user data
+  if (userError) {
+    console.log(userError);
   }
 
   const PrivateUserRoute = ({ children }: { children: React.ReactNode }) => {
