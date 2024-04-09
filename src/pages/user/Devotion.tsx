@@ -2,6 +2,7 @@
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
 import Footer from "@/components/Footer";
+import LoadingPage from "@/pages/user/LoadingPage";
 // import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
@@ -14,7 +15,7 @@ const Devotion = () => {
   // Assuming the hook does not require an argument, remove `undefined`
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <LoadingPage />;
   if (error) return `Error: ${(error as Error).message}`;
 
   return (
