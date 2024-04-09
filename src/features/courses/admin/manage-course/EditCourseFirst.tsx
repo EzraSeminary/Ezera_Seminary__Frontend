@@ -44,7 +44,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
 
   // display new image from redux or previous image from server
   const srcValue =
-    imagePreviewUrl || `https://ezra-seminary.mybese.tech/mages/` + image;
+    imagePreviewUrl || `https://ezra-seminary.mybese.tech/images/` + image;
 
   return (
     <div className="w-[80%] mx-auto pt-9 font-nokia-bold">
