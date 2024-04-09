@@ -10,6 +10,7 @@ import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { User } from "@/redux/types";
 import defaultAvatar from "@/assets/avatar.png"; // Import a default avatar image
 
 const ProfileSettings = () => {
@@ -57,7 +58,7 @@ const ProfileSettings = () => {
     e.preventDefault();
 
     const currentUserData = users?.find(
-      (user) => user.email === currentUser?.email
+      (user: User) => user.email === currentUser?.email
     );
 
     if (currentUserData) {
