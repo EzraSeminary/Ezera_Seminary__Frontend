@@ -266,13 +266,23 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               ))}
 
             {devotionToDisplay && devotionToDisplay.prayer !== "" ? (
-              <p className="font-nokia-bold text-sm lg:text-lg text-center border-2 border-accent-6 p-2 rounded text-accent-6 ">
-                {devotionToDisplay.prayer}
-              </p>
+              <div className="relative border-2 border-accent-5  rounded text-accent-5 ">
+                <p className=" font-nokia-bold text-1xl text-center px-8  py-2">
+                  {devotionToDisplay.prayer}
+                </p>
+                <div className="absolute top-[30%] md:top-[20%] lg:top-[25%] xl:top-[20%] -left-8 bg-accent-6 rounded-full w-max  p-2">
+                  <img src="src/assets/prayerImg.png" alt="" className="" />
+                </div>
+              </div>
             ) : (
-              <p className="hidden font-nokia-bold text-sm lg:text-lg text-center border-2 border-accent-6 p-2 rounded text-accent-6 ">
-                {devotionToDisplay && devotionToDisplay.prayer}
-              </p>
+              <div className="relative border-2 border-accent-5  rounded text-accent-5 ">
+                <p className="hidden font-nokia-bold text-1xl text-center border-2 border-accent-5 p-2 rounded text-accent-5">
+                  {devotionToDisplay && devotionToDisplay.prayer}
+                </p>
+                <div className="absolute top-4 -left-8 bg-accent-6 rounded-full w-max  p-2">
+                  <img src="src/assets/prayerImg.png" alt="" className="" />
+                </div>
+              </div>
             )}
           </div>
           {/* devotion image */}
