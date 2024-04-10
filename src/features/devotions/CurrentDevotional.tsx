@@ -83,8 +83,8 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   return (
     <>
       <ToastContainer />
-      <div className="h-auto border shadow-lg rounded-2xl p-6 md:w-[90%] mx-auto border-accent-6">
-        <div className="flex flex-col justify-center lg:flex-row  lg:space-x-12">
+      <div className="h-auto border shadow-2xl rounded-2xl px-6 pb-6  lg:p-6 md:w-[90%] mx-auto border-accent-6">
+        <div className="flex flex-col justify-center lg:flex-row  lg:space-x-8">
           {/* Replace latestDevotion with devotionToDisplay */}
           <Modal
             isOpen={modalIsOpen}
@@ -151,49 +151,66 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </button>
             </div>
           </Modal>
-          {devotionToDisplay &&
-          (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1.1, 1],
-                rotate: [0, 0, 0, 0],
-                borderRadius: ["10%", "10%", "50%", "10%"],
-              }}
-              transition={{
-                duration: 5,
-                ease: "easeInOut",
-                repeatDelay: 1,
-                repeat: Infinity,
-              }}
-              className="rounded-xl md:w-[15%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6"
-            >
-              <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-4">
-                <p className=" font-nokia-bold md:text-2xl text-[#fff]">
-                  {devotionToDisplay.month}
-                </p>
-                <p className="md:text-5xl font-nokia-bold text-[#fff] -mt-3">
-                  {devotionToDisplay.day}
-                </p>
-              </div>
-            </motion.div>
-          ) : (
-            <div className="hidden rounded-xl md:w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
-              <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
-                <p className="font-nokia-bold md:text-2xl text-[#fff]">
-                  {devotionToDisplay && devotionToDisplay.month}
-                </p>
-                <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">
-                  {devotionToDisplay && devotionToDisplay.day}
-                </p>
-              </div>
-            </div>
-          )}
 
+          {/*moths and days */}
+          <div className="flex items-center justify-between w-full gap-5 md:gap-8 lg:gap-0 lg:block lg:w-[15%] ">
+            <div className="w-[35%] md:w-[25%] lg:w-full">
+              {devotionToDisplay &&
+              (devotionToDisplay.month !== "" ||
+                devotionToDisplay.day !== "") ? (
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1.1, 1],
+                    rotate: [0, 0, 0, 0],
+                    borderRadius: ["10%", "10%", "50%", "10%"],
+                  }}
+                  transition={{
+                    duration: 5,
+                    ease: "easeInOut",
+                    repeatDelay: 1,
+                    repeat: Infinity,
+                  }}
+                  className="rounded-xl   lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6"
+                >
+                  <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 lg:leading-none py-4 ">
+                    <p className=" font-nokia-bold md:text-2xl text-[#fff]">
+                      {devotionToDisplay.month}
+                    </p>
+                    <p className="md:text-5xl font-nokia-bold text-[#fff] md:-mt-3">
+                      {devotionToDisplay.day}
+                    </p>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="hidden rounded-xl lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+                  <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
+                    <p className="font-nokia-bold md:text-2xl text-[#fff]">
+                      {devotionToDisplay && devotionToDisplay.month}
+                    </p>
+                    <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">
+                      {devotionToDisplay && devotionToDisplay.day}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="w-[60%] self-end flex-grow lg:hidden">
+              <h1 className="text-2xl md:text-4xl text-justify text-secondary-6">
+                {devotionToDisplay && devotionToDisplay.title}
+              </h1>
+              <h4 className="flex gap-2 text-sm md:text-xl  text-secondary-6 w-full">
+                የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
+              </h4>
+              <h2 className="text-sm md:text-xl text-accent-6">
+                {devotionToDisplay && devotionToDisplay.chapter}
+              </h2>
+            </div>
+          </div>
           {/* devotion contents */}
-          <div className="font-nokia-bold flex flex-col w-[90%] lg:w-[50%] space-y-2 mt-8 mx-auto">
+          <div className="font-nokia-bold flex flex-col  lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
             {/* devotion titles */}
-            <div className="flex width: 100% space-x-12">
-              <h1 className="md:text-5xl xl:text-6xl text-justify text-secondary-6">
+            <div className="flex w-[100%]">
+              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-justify text-secondary-6">
                 {devotionToDisplay && devotionToDisplay.title}
               </h1>
               {role === "Admin" && showControls && (
@@ -217,7 +234,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
             {/* devotion chapter */}
 
-            <h4 className="flex gap-2 text-xl xl:text-2xl text-secondary-6 w-full">
+            <h4 className="hidden lg:flex gap-2 text-xl xl:text-3xl text-secondary-6 w-full ">
               የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               <span>
                 <h2 className="text-lg xl:text-2xl text-accent-6">
@@ -227,7 +244,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             </h4>
 
             {/* devotion verse */}
-            <p className=" text-lg xl:text-xl text-accent-6">
+            <p className=" text-sm md:text-lg xl:text-2xl text-accent-6">
               {devotionToDisplay && devotionToDisplay.verse}
             </p>
 
@@ -241,7 +258,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             {devotionToDisplay &&
               devotionToDisplay.body.map((paragraph, paragraphIndex) => (
                 <p
-                  className=" font-nokia-bold text-sm xl:text-lg text-justify text-secondary-6 space-y-3"
+                  className=" font-nokia-bold text-sm lg:text-lg xl:text-xl text-justify text-secondary-6 space-y-3"
                   key={paragraphIndex}
                 >
                   {paragraph}
@@ -268,9 +285,8 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </div>
             )}
           </div>
-
           {/* devotion image */}
-          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-12 border border-accent-5 rounded-xl">
+          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
             <img
               src={`https://ezra-seminary.mybese.tech/images/${
                 devotionToDisplay && devotionToDisplay.image
@@ -295,25 +311,23 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
             <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
-                className="flex text-xs w-auto  items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
+                className="flex  text-xs xl:text-lg  w-max  items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
                 onClick={handleDownload}
               >
                 ምስሉን አውርድ
                 <DownloadSimple
-                  size={24}
                   weight="bold"
-                  className="text-primary-1 animate-pulse"
+                  className="text-primary-1 animate-pulse text-sm md:text-lg lg:text-xl xl:text-2xl"
                 />
               </button>
               <button
-                className="flex w-auto text-xs items-center gap-2 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1 "
+                className="flex w-max text-xs xl:text-lg items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1 "
                 // onClick={handleShare}>
               >
                 ምስሉን አጋራ
                 <ShareNetwork
-                  size={24}
                   weight="bold"
-                  className="text-primary-1 animate-pulse"
+                  className="text-primary-1 animate-pulse text-sm md:text-lg lg:text-xl xl:text-2xl"
                 />
               </button>
             </div>
