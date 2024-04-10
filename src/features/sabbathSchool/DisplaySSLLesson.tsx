@@ -1,6 +1,7 @@
 import "./SSLStyles.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import LoadingPage from "@/pages/user/LoadingPage";
 import {
   useGetSSLOfDayLessonQuery,
   useGetSSLOfDayQuery,
@@ -103,7 +104,7 @@ function DisplaySSLLesson() {
     }
   }, [lessonDetails, backgroundImage, dayDetails]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingPage />;
   if (lessonError && "message" in lessonError)
     return <div>Error: {lessonError.message}</div>;
   if (!lessonDetails) return null;
@@ -120,18 +121,20 @@ function DisplaySSLLesson() {
           backgroundSize: "cover",
         }}
       >
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-2 md:mt-4">
           <button className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all">
             Watch on YouTube <YoutubeLogo size={24} weight="fill" />
           </button>
         </div>
-        <div className="flex flex-col">
-          <p className="flex flex-row text-primary-5 text-lg">
+        <div className="flex flex-col space-y-1">
+          <p className="flex flex-row text-primary-5 text-sm lg:text-lg">
             {daysOfWeek[(Number(day) ?? 0) % 7]}፣&nbsp;&nbsp;
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />
-          <div className="text-3xl text-primary-0 ">{lessonDetails.title}</div>
+          <div className="text-xl lg:text-3xl text-primary-0 ">
+            {lessonDetails.title}
+          </div>
         </div>
       </div>
       {isModalOpen && (
