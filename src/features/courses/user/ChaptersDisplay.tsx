@@ -96,6 +96,23 @@ function ChaptersDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
+  // We'll add this new function to "complete" a chapter, which means that
+  // the next chapter should be unlocked.
+  const completeChapter = (completedIndex: number) => {
+    // If the completed chapter is the current unlocked one,
+    // then we unlock the next one.
+    if (completedIndex === unlockedIndex) {
+      // Assume the max chapters are equal to the length of the data array
+      const maxChapters = data.length;
+      // Set the next chapter as the unlocked one if it isn't the last chapter
+      if (completedIndex < maxChapters - 1) {
+        setUnlockedIndex(completedIndex + 1);
+        // Auto-advance to next chapter.
+        setActiveIndex(completedIndex + 1);
+      }
+    }
+  };
+
   // slide number
   const currentDataNumber = activeIndex + 1;
   const totalDataNumber = data.length;
@@ -343,9 +360,9 @@ function ChaptersDisplay() {
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked ? "text-black  " : "text-gray-500 "
-                    }  ${index === activeIndex && "font-bold"}
+                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
+                      unlocked ? "text-secondary-6" : "text-secondary-3"
+                    }  ${index === activeIndex && "bg-[#FAE5C7]"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
