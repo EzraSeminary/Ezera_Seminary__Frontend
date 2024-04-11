@@ -43,6 +43,12 @@ function SlidesDisplay() {
   //get single course
   const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
 
+  // Extracting chapter data from the fetched course data
+  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
+  const chapterIndex = courseData?.chapters.findIndex(
+    (chap) => chap._id === chapterId
+  );
+
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -63,15 +69,23 @@ function SlidesDisplay() {
   //Resume chapter
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
-    if (userProgress?.currentSlide !== undefined) {
-      const newActiveIndex = userProgress.currentSlide;
-      setActiveIndex(newActiveIndex);
-      if (newActiveIndex > unlockedIndex) {
-        setUnlockedIndex(newActiveIndex);
+    if (userProgress) {
+      if (
+        chapterIndex === userProgress.currentChapter &&
+        userProgress.currentSlide !== undefined
+      ) {
+        // The current selected chapter is the same as the chapterIndex from progress
+        setActiveIndex(userProgress.currentSlide);
+        if (userProgress.currentSlide > unlockedIndex) {
+          setUnlockedIndex(userProgress.currentSlide);
+        }
+      } else {
+        // The current selected chapter does not match the chapterIndex from progress
+        // You might want to set the activeIndex to the beginning of the current chapter
+        setActiveIndex(0);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userProgress]);
+  }, [userProgress, chapterIndex]);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -97,18 +111,12 @@ function SlidesDisplay() {
     }, 2000);
   }, []);
 
-  // Extracting chapter data from the fetched course data
-  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
-  const chapterIndex = courseData?.chapters.findIndex(
-    (chap) => chap._id === chapterId
-  );
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
-  // console.log(data);
 
   //Slide changing functionality
   const updateIndex = (newIndex: number) => {
