@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { RootState } from "@/redux/store"; // Adjust this import according to your file structure
 import {
@@ -33,11 +34,17 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [activeMenu, setActiveMenu] = useState("");
+  //State to control account modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Close the account modal when clicked outside
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen((prev) => !prev);
   };
+
+  //Ref to listen the curser and close the account modal
+  const ref = useRef<HTMLDivElement>(null);
+  useOnClickOutside(ref, isModalOpen, () => setIsModalOpen(false));
 
   const isActive = (path: string): boolean => {
     return location.pathname.includes(path);
@@ -90,7 +97,7 @@ const Sidebar: React.FC = () => {
   }) => {
     return (
       <div
-        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5 ${
+        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5  ${
           active ? "bg-accent-6" : ""
         }`}
         onClick={onClick}
@@ -114,7 +121,7 @@ const Sidebar: React.FC = () => {
 
   const ProfileModal = () => {
     return (
-      <div className="fixed bottom-24 left-2 flex justify-center items-center z-50">
+      <div className="fixed bottom-20 left-4 flex justify-center items-center z-50">
         <div className="bg-primary-3 p-2 rounded-lg shadow-lg w-48">
           <div className="flex flex-col items-center">
             <Link
@@ -164,7 +171,7 @@ const Sidebar: React.FC = () => {
       }}
     >
       <div className="relative">
-        <div className="flex justify-center items-center py-4 my-4">
+        <div className="flex px-4 text-xl pb-6">
           <BookBookmark className="text-primary-1" size={24} weight="fill" />
           {!isCollapsed && <h1 className="ml-2">Dashboard</h1>}
         </div>
@@ -220,13 +227,20 @@ const Sidebar: React.FC = () => {
       </div>
       {isModalOpen && <ProfileModal />}
       <div
-        className="absolute bottom-8 left-4 hover:bg-accent-6 rounded-full transition-all px-3 py-1 cursor-pointer hover:shadow-lg"
+        ref={ref}
+        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1  cursor-pointer hover:shadow-lg"
         onClick={toggleModal}
       >
-        <div className="flex items-center gap-2">
-          <UserCircle size={28} className="text-primary-1 cursor-pointer " />
-          {user && user.firstName}
-        </div>
+        {isCollapsed ? (
+          <div className="flex items-center gap-1">
+            <UserCircle size={26} className="text-primary-1 cursor-pointer  " />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <UserCircle size={22} className="text-primary-1 cursor-pointer  " />
+            {user && user.firstName}
+          </div>
+        )}
       </div>
     </div>
   );
