@@ -1,10 +1,17 @@
 import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useGetCoursesQuery } from "../../services/api";
 import Modal from "react-modal"; // Import Modal from react-modal
 import useAxiosInstance from "../../api/axiosInstance";
 import LoadingPage from "../user/LoadingPage";
 Modal.setAppElement("#root"); // Assuming the root element of your app is `#root`
+
+const gridSquareVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 function ManageCourse() {
   const { data: courses, error, isLoading } = useGetCoursesQuery();
@@ -89,7 +96,7 @@ function ManageCourse() {
   return (
     <>
       {confirmationModal}
-      <div className="h-auto flex flex-col border border-gray-300 p-11 rounded-3xl mt-12 space-y-12 mb-12">
+      <div className="h-auto flex flex-col border border-gray-300 p-11 rounded-3xl mt-12 space-y-12 mb-12 shadow-2xl">
         <div className="space-y-3">
           <div className="flex justify-between items-end">
             <div>
@@ -97,25 +104,16 @@ function ManageCourse() {
                 Manage Courses
               </h1>
             </div>
-            <div className="flex justify-end">
+            <div className="flex  ">
               <input
                 type="text"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="md:inline-block  md:border-2  border-accent-6  w-[80%] outline-1 outline-accent-5 rounded-l px-4"
+                className="text-xs text-secondary-6 border border-accent-6 w-auto outline-1 outline-accent-5 rounded-l-lg  px-2 py-1"
               />
-              <span>
-                <img
-                  src="../assets/Search-1.svg"
-                  alt=""
-                  className="hidden md:inline-block cursor-pointer"
-                />
-                <img
-                  src="../assets/Search.svg"
-                  alt=""
-                  className="md:hidden cursor-pointer"
-                />
+              <span className=" self-center cursor-pointer border  rounded-r-lg px-1 py-[0.54rem] -ml-1 bg-accent-6 text-white">
+                <MagnifyingGlass size={20} />
               </span>
             </div>
           </div>
@@ -124,22 +122,30 @@ function ManageCourse() {
           <div className="flex flex-col md:grid md:grid-cols-4 justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
             {filteredData?.map((course, index: number) => {
               return (
-                <div
+                <motion.div
+                  variants={gridSquareVariants}
+                  whileHover={{
+                    scale: 1.03,
+                  }}
+                  transition={{
+                    bounceDamping: 10,
+                    bounceStiffness: 600,
+                  }}
                   key={index}
-                  className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] shadow-xl rounded-3xl md:rounded-xl h-auto pb-6 "
+                  className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] shadow-2xl rounded-3xl md:rounded-xl h-full pb-6 cursor-pointer"
                 >
-                  <div className="w-full p-2">
+                  <div className="w-full p-2 ">
                     <img
                       src={
                         `https://ezra-seminary.mybese.tech/images/` +
                         course.image
                       }
                       // src={`https://ezra-seminary.mybese.tech/images/` + course.image}
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-3xl md:rounded-2xl bg-secondary-1"
+                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-lg  bg-secondary-1"
                       alt=""
                     />
                   </div>
-                  <div className="space-y-2 w-[95%] md:w-[90%] mx-auto">
+                  <div className="space-y-2 w-[95%] md:w-[90%] mx-auto h-full">
                     <h2 className="text-secondary-6 text-xl font-nokia-bold w-[90%] truncate">
                       {course.title}
                     </h2>
@@ -179,7 +185,7 @@ function ManageCourse() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
