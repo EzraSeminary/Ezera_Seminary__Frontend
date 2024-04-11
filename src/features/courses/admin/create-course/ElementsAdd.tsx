@@ -111,16 +111,16 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       accordionTitles.map((title, i) => (i === index ? text : title))
     );
   };
-  
+
   const handleAccordionContentChange = (index: number, text: string) => {
     setAccordionContents(
       accordionContents.map((content, i) => (i === index ? text : content))
     );
   };
-  
+
   const handleAddAccordionItem = () => {
-    setAccordionTitles([...accordionTitles, '']);
-    setAccordionContents([...accordionContents, '']);
+    setAccordionTitles([...accordionTitles, ""]);
+    setAccordionContents([...accordionContents, ""]);
   };
 
   const saveAccordionToRedux = () => {
@@ -129,21 +129,21 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
         title,
         content: accordionContents[index],
       }));
-  
+
       dispatch(
         addElementToSlide({
           chapterIndex,
           slideIndex,
-          elementType: 'accordion',
+          elementType: "accordion",
           value: accordionItems,
         })
       );
-  
+
       // Reset accordion state
       setAccordionTitles([]);
       setAccordionContents([]);
     }
-    setCurrentElement('');
+    setCurrentElement("");
   };
 
   const renderListForm = () => (
@@ -213,14 +213,18 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           />
           <textarea
             value={accordionContents[index]}
-            onChange={(e) => handleAccordionContentChange(index, e.target.value)}
+            onChange={(e) =>
+              handleAccordionContentChange(index, e.target.value)
+            }
             placeholder={`Content ${index + 1}`}
             className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"
           />
           <Trash
             onClick={() => {
               setAccordionTitles(accordionTitles.filter((_, i) => i !== index));
-              setAccordionContents(accordionContents.filter((_, i) => i !== index));
+              setAccordionContents(
+                accordionContents.filter((_, i) => i !== index)
+              );
             }}
             className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1"
             weight="fill"
@@ -494,8 +498,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
                 placeholder={`Enter ${element.type}`}
                 value={
                   element.type === "quiz"
-                    ? element.value?.question
-                    : element.value
+                    ? element.value?.question?.toString()
+                    : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"

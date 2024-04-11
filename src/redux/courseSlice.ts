@@ -176,7 +176,13 @@ export const courseSlice = createSlice({
         chapterIndex: number;
         slideIndex: number;
         elementType: string;
-        value: string | string[] | File | QuizElementValue | AccordionElementValue[] | null;
+        value:
+          | string
+          | string[]
+          | File
+          | QuizElementValue
+          | AccordionElementValue[]
+          | null;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementType, value } = action.payload;
@@ -251,18 +257,45 @@ export const courseSlice = createSlice({
         chapterIndex: number;
         slideIndex: number;
         elementId: string;
-        value: string | string[] | File | QuizElementValue | AccordionElementValue[] | null;
+        value:
+          | string
+          | string[]
+          | File
+          | QuizElementValue
+          | AccordionElementValue[];
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
       const elements = state.chapters[chapterIndex].slides[slideIndex].elements;
       const elementIndex = elements.findIndex((e) => e.id === elementId);
       if (elementIndex !== -1) {
-        const element = elements[elementIndex];
-        if (element.type === "accordion") {
-          element.value = value as AccordionElementValue[];
-        } else {
-          element.value = value as CustomElement["value"];
+        const element = elements[elementIndex] as unknown as CustomElement;
+        switch (element.type) {
+          case "title":
+          case "sub":
+          case "text":
+            element.value = value as string;
+            break;
+          case "img":
+            element.value = value as string | File;
+            break;
+          case "list":
+            element.value = value as string[];
+            break;
+          case "slide":
+            element.value = value as string[];
+            break;
+          case "quiz":
+            element.value = value as QuizElementValue;
+            break;
+          case "accordion":
+            element.value = value as AccordionElementValue[];
+            break;
+          default:
+            // Handle unknown element type or throw error
+            throw new Error(
+              `Unknown element type: ${(element as CustomElement).type}`
+            );
         }
       }
     },

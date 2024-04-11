@@ -6,6 +6,7 @@ import {
   deleteElement,
   selectChapters,
   Chapter,
+  AccordionElementValue,
 } from "@/redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
@@ -59,7 +60,6 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     );
     setListItems(updatedLists);
   };
-  
 
   const renderListForm = () => (
     <div className="mt-4">
@@ -409,7 +409,9 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 value={
                   element.type === "quiz"
                     ? element.value.question
-                    :  element.type === "accordion" ? element.value.title : element.value
+                    : element.type === "accordion"
+                    ? (element.value as unknown as AccordionElementValue).title
+                    : element.value
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"

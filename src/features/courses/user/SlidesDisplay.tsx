@@ -21,6 +21,7 @@ import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
+import { CustomElement, AccordionElement } from "@/redux/courseSlice";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -582,24 +583,36 @@ function SlidesDisplay() {
                             </div>
                           </div>
                         );
-                      } else if (element.type === "accordion") {
-                        const accordionItemsComponent = element.value.map(
-                          (accordionItem: AccordionItem, index: number) => (
-                            <AccordionItemDisplay
-                              key={`$accordion-${index}`}
-                              title={accordionItem.title}
-                              content={accordionItem.content}
-                            />
-                          )
-                        );
+                      } else if (
+                        (element as CustomElement).type === "accordion"
+                      ) {
+                        if (
+                          Array.isArray((element as AccordionElement).value)
+                        ) {
+                          const accordionItemsComponent = (
+                            element as AccordionElement
+                          ).value.map(
+                            (accordionItem: AccordionItem, index: number) => (
+                              <AccordionItemDisplay
+                                key={`$accordion-${index}`}
+                                title={accordionItem.title}
+                                content={accordionItem.content}
+                              />
+                            )
+                          );
 
-                        return (
-                          <div className="flex flex-col justify-center items-center w-full">
-                            {accordionItemsComponent}
-                          </div>
-                        );
-                      } else {
-                        return null;
+                          return (
+                            <div className="flex flex-col justify-center items-center w-full">
+                              {accordionItemsComponent}
+                            </div>
+                          );
+                        } else {
+                          console.error(
+                            "Unexpected value for accordion element:",
+                            (element as AccordionElement).value
+                          );
+                          return null;
+                        }
                       }
                     })}
                   </div>
