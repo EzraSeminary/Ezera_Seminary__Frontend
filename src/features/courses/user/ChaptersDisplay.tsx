@@ -76,7 +76,7 @@ function ChaptersDisplay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProgress]);
 
-  //function for next & previous buttons
+  //function to select chapter buttons
   const updateIndex = (newIndex: number) => {
     // First adjust the new index if it's out of bounds
     const adjustedIndex = Math.max(0, Math.min(newIndex, data.length - 1));
@@ -96,29 +96,28 @@ function ChaptersDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
-  // We'll add this new function to "complete" a chapter, which means that
-  // the next chapter should be unlocked.
-  const completeChapter = (completedIndex: number) => {
-    // If the completed chapter is the current unlocked one,
-    // then we unlock the next one.
-    if (completedIndex === unlockedIndex) {
-      // Assume the max chapters are equal to the length of the data array
-      const maxChapters = data.length;
-      // Set the next chapter as the unlocked one if it isn't the last chapter
-      if (completedIndex < maxChapters - 1) {
-        setUnlockedIndex(completedIndex + 1);
-        // Auto-advance to next chapter.
-        setActiveIndex(completedIndex + 1);
-      }
-    }
-  };
+  // // We'll add this new function to "complete" a chapter, which means that
+  // // the next chapter should be unlocked.
+  // const completeChapter = (completedIndex: number) => {
+  //   // If the completed chapter is the current unlocked one,
+  //   // then we unlock the next one.
+  //   if (completedIndex === unlockedIndex) {
+  //     // Assume the max chapters are equal to the length of the data array
+  //     const maxChapters = data.length;
+  //     // Set the next chapter as the unlocked one if it isn't the last chapter
+  //     if (completedIndex < maxChapters - 1) {
+  //       setUnlockedIndex(completedIndex + 1);
+  //       // Auto-advance to next chapter.
+  //       setActiveIndex(completedIndex + 1);
+  //     }
+  //   }
+  // };
 
   // slide number
   const currentDataNumber = activeIndex + 1;
   const totalDataNumber = data.length;
 
   //progress
-
   const progressValue = () => {
     if (userProgress && userProgress.currentChapter !== undefined) {
       // the progressPercent should be calculated based on the index of chapter
@@ -365,7 +364,7 @@ function ChaptersDisplay() {
                     }  ${index === activeIndex && "bg-[#FAE5C7]"}
                     `} // Locked slide to gray
                     onClick={() => {
-                      completeChapter(index);
+                      updateIndex(index);
                       handleArrowClick();
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked

@@ -26,8 +26,6 @@ function SlidesDisplay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -39,6 +37,20 @@ function SlidesDisplay() {
 
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  //find matching courseId from the user progress array
+  const userProgress = currentUser?.progress?.find(
+    (p) => p.courseId === courseId
+  );
+
+  // Get current chapter index from the user's progress
+  const currentChapterIndex = userProgress?.currentChapter ?? 0;
+
+  // Get current slide index from the user's progress
+  const currentSlideIndex = userProgress?.currentSlide ?? 0;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
 
   {
     /* Function to open the chapters sidebar modal */
