@@ -140,18 +140,22 @@ const ManageUsers: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-md">
-      <button
-        onClick={goBack}
-        className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-      >
-        <ArrowLeft size={25} />
-        Back
-      </button>
-      <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
-      <table className="w-full table-auto">
+    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-2xl">
+      <div className="flex justify-between items-center">
+        <h2 className="text-3xl font-nokia-bold mb-6">Manage Users</h2>
+        <div
+          onClick={goBack}
+          className="flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
+        >
+          <button>
+            <ArrowLeft size={20} weight="fill" />
+          </button>
+          <div>Back</div>
+        </div>
+      </div>
+      <table className="w-full table-auto cursor-pointer font-nokia-bold">
         <thead>
-          <tr className="bg-gray-200">
+          <tr className="bg-accent-6 text-primary-1 text-xl">
             <th className="px-4 py-2">Avatar</th>
             <th className="px-4 py-2">First Name</th>
             <th className="px-4 py-2">Last Name</th>
@@ -165,7 +169,9 @@ const ManageUsers: React.FC = () => {
             <tr
               key={user._id}
               className={`border-b ${
-                editingUser?._id === user._id ? "bg-gray-100" : ""
+                editingUser?._id === user._id
+                  ? "bg-primary-6 "
+                  : "hover:bg-accent-4 transition-all rounded-lg"
               }`}
             >
               <td className="px-4 py-2">

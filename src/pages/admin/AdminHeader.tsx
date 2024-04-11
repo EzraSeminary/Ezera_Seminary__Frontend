@@ -13,7 +13,7 @@ const AdminHeader = () => {
 
   return (
     <header className="flex justify-between items-center p-4 bg-secondary-6 text-accent-6 my-8 rounded-lg font-nokia-bold">
-      <img src={logo} alt="Logo" className="h-10" />
+      <img src={logo} alt="Logo" className="h-7" />
       <div>
         <span className="w-48 h-12 mr-4 px-4 py-2 bg-primary-1 rounded-md ">
           {time.toLocaleTimeString()}

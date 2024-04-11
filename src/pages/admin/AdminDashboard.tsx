@@ -11,10 +11,6 @@ import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
 import Analytics from "@/features/courses/admin/analytics/Analytics";
 import AdminHeader from "./AdminHeader";
-import SabbathSchool from "@/pages/user/SabbathSchool";
-import SSLQuarter from "@/features/sabbathSchool/SSLQuarter";
-import SSLDay from "@/features/sabbathSchool/SSLDay";
-import DisplaySSLLesson from "@/features/sabbathSchool/DisplaySSLLesson";
 import CreateUser from "./CreateUser";
 import ManageUser from "./ManageUsers";
 
@@ -28,7 +24,7 @@ const AdminDashboard = () => {
     <div className="flex bg-gray-100">
       <div
         // Make the sidebar fixed to be visible on vertical scroll...!!
-        className={`sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
+        className={`sticky top-0 left-0 bottom-0 z-10 min-h-screen transition-all duration-500 ease-in-out text-white`}
       >
         <Sidebar />
       </div>
@@ -47,14 +43,7 @@ const AdminDashboard = () => {
             element={<EditCourseFirst setShowComponent={setShowComponent} />}
           />
           <Route path="edit/course/:id/chapters" element={<EditCourse />} />
-          <Route path="/sabbathSchool" element={<SabbathSchool />} />
-          <Route path="/sabbathSchool/:quarter" element={<SSLQuarter />} />
-          <Route
-            path="/sabbathSchool/:quarter/lessons/:id"
-            element={<SSLDay />}
-          >
-            <Route path="days/:day/read" element={<DisplaySSLLesson />} />
-          </Route>
+
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />

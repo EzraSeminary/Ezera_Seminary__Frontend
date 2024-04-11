@@ -49,116 +49,129 @@ const CreateUser: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-md">
+    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-2xl w-[80%] ">
       <h2 className="text-2xl font-bold mb-4">Create User</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="mb-4">
-          <label htmlFor="avatar" className="block font-medium mb-1">
-            Avatar
-          </label>
-          <div className="flex items-center">
-            <img
-              src={avatarPreview || defaultAvatar}
-              alt="Avatar Preview"
-              className="w-16 h-16 rounded-full mr-4"
-            />
-            <label
-              htmlFor="avatar-input"
-              className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md cursor-pointer"
-            >
-              <span>Upload Avatar</span>
-              <input
-                type="file"
-                id="avatar-input"
-                className="hidden"
-                onChange={handleAvatarUpload}
+      <form onSubmit={handleSubmit} className="space-y-16 flex flex-col">
+        <div className="flex justify-between w-[80%] mx-auto">
+          {/* Image container */}
+          <div className="mt-6 ">
+            {/* <label htmlFor="avatar" className="block font-medium mb-1">
+              Avatar
+            </label> */}
+            <div className="flex flex-col justify-center items-center space-y-3">
+              <img
+                src={avatarPreview || defaultAvatar}
+                alt="Avatar Preview"
+                className="w-24 h-24 rounded-full mr-4"
               />
-            </label>
+              <label
+                htmlFor="avatar-input"
+                className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md cursor-pointer"
+              >
+                <span>Upload Image</span>
+                <input
+                  type="file"
+                  id="avatar-input"
+                  className="hidden"
+                  onChange={handleAvatarUpload}
+                />
+              </label>
+            </div>
+          </div>
+          {/* name, email, password and role container */}
+          <div className="w-[60%] space-y-4 font-nokia-bold text-lg">
+            <div>
+              <label htmlFor="firstName" className="block font-medium mb-1">
+                First Name:
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="text-xs w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                required
+                placeholder="First Name"
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block font-medium mb-1">
+                Last Name:
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="text-xs w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                required
+                placeholder="Last Name"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block font-medium mb-1">
+                Email:
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="text-xs w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                required
+                placeholder="Email"
+              />
+            </div>
+            <div className="mb-4 relative">
+              <label htmlFor="password" className="block font-medium mb-1">
+                Password:
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 pr-10 text-xs"
+                required
+                placeholder="Password"
+              />
+              <div
+                className="absolute inset-y-0 right-0 pt-8 pr-3 flex items-center cursor-pointer text-accent-8"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <EyeSlash size={18} weight="fill" />
+                ) : (
+                  <Eye size={18} weight="fill" />
+                )}
+              </div>
+            </div>
+            <div>
+              <label htmlFor="role" className="block font-medium mb-1">
+                Role:
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full text-sm font-Lato-Regular border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 cursor-pointer"
+                required
+              >
+                <option value="Learner">Learner</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div>
-          <label htmlFor="firstName" className="block font-medium mb-1">
-            First Name
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName" className="block font-medium mb-1">
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block font-medium mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-            required
-          />
-        </div>
-        <div className="mb-4 relative">
-          <label htmlFor="password" className="block font-medium mb-1">
-            Password
-          </label>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 pr-10"
-            required
-          />
-          <div
-            className="absolute inset-y-0 right-0 pt-8 pr-3 flex items-center cursor-pointer text-accent-8"
-            onClick={toggleShowPassword}
+        {/* buttons container */}
+        <div className="self-center">
+          <button
+            type="submit"
+            className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md"
           >
-            {showPassword ? (
-              <EyeSlash size={18} weight="fill" />
-            ) : (
-              <Eye size={18} weight="fill" />
-            )}
-          </div>
+            Create
+          </button>
         </div>
-        <div>
-          <label htmlFor="role" className="block font-medium mb-1">
-            Role
-          </label>
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-            required
-          >
-            <option value="Learner">Learner</option>
-            <option value="Admin">Admin</option>
-          </select>
-        </div>
-        <button
-          type="submit"
-          className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md"
-        >
-          Create User
-        </button>
       </form>
     </div>
   );
