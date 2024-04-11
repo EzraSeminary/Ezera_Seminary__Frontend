@@ -8,7 +8,6 @@ import {
   BookOpen,
   CalendarCheck,
   ChatCircle,
-  Cross,
   UserCircle,
   Graph,
   IconProps,
@@ -59,11 +58,6 @@ const Sidebar: React.FC = () => {
         { label: "Create Course", path: "/admin/courses/create" },
         { label: "Manage Courses", path: "/admin/course/edit" },
       ],
-    },
-    {
-      label: "Sabbath School",
-      icon: Cross,
-      subItems: [{ label: "SSL Section", path: "/admin/sabbathSchool" }],
     },
     {
       label: "Devotion",
@@ -170,10 +164,10 @@ const Sidebar: React.FC = () => {
       }}
     >
       <div className="relative">
-      <div className="flex justify-center items-center py-4 my-4">
-        <BookBookmark className="text-primary-1" size={24} weight="fill" />
-        {!isCollapsed && <h1 className="ml-2">Dashboard</h1>}
-      </div>
+        <div className="flex justify-center items-center py-4 my-4">
+          <BookBookmark className="text-primary-1" size={24} weight="fill" />
+          {!isCollapsed && <h1 className="ml-2">Dashboard</h1>}
+        </div>
         <div
           className="absolute top-2 right-4 transform translate-x-full"
           onClick={() => setIsCollapsed(!isCollapsed)}
