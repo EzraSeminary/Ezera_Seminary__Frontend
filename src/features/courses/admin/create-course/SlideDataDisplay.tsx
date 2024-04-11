@@ -6,7 +6,7 @@ import {
   Chapter,
   CustomElement,
   QuizElement,
-  Slide ,
+  Slide,
 } from "../../../../redux/courseSlice";
 import AccordionItemDisplay from "./Elements/AccordionItemDisplay";
 import { RootState } from "../../../../redux/store";
@@ -249,7 +249,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                       />
                     )
                   );
-                
+
                   elementComponent = (
                     <div className="flex flex-col justify-center items-center w-full">
                       {accordionItemsComponent}
