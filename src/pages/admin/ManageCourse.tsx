@@ -152,7 +152,7 @@ function ManageCourse() {
                     <p className="text-secondary-5 text-xs font-nokia-bold w-[100%] line-clamp-3 text-justify">
                       {course.description}
                     </p>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between ">
                       <p className="text-secondary-6 text-xs font-nokia-bold line-clamp-3">
                         {course.chapters.length} Chapter
                       </p>
@@ -167,7 +167,7 @@ function ManageCourse() {
                       )}
                     </div>
                     <hr className="border-accent-5 border-1 w-[100%] " />
-                    <div className="flex justify-between">
+                    <div className="flex justify-between ">
                       <Link
                         to={`/admin/edit/course/` + course._id + `/chapters`}
                         className="inline-block bg-accent-6 text-primary-6 px-3 py-1 rounded transition duration-300 focus:outline-none font-nokia-bold text-xs hover:bg-accent-7"
