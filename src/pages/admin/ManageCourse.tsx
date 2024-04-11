@@ -1,9 +1,9 @@
 import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../services/api";
-import BeatLoader from "react-spinners/BeatLoader";
 import Modal from "react-modal"; // Import Modal from react-modal
 import useAxiosInstance from "../../api/axiosInstance";
+import LoadingPage from "../user/LoadingPage";
 Modal.setAppElement("#root"); // Assuming the root element of your app is `#root`
 
 function ManageCourse() {
@@ -30,18 +30,7 @@ function ManageCourse() {
     window.location.reload(); // Consider refetching the courses rather than reloading the page
   };
 
-  if (isLoading)
-    return (
-      <div className="h-full flex justify-center items-center">
-        <BeatLoader
-          color={"#707070"}
-          loading
-          size={15}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
+  if (isLoading) return <LoadingPage />;
   if (error) return <div>Something went wrong.</div>;
 
   const confirmationModal = (
