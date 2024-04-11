@@ -35,6 +35,14 @@ function SlidesDisplay() {
 
   const [progressLoading, setProgressLoading] = useState(false);
 
+  const { courseId, chapterId } = useParams<{
+    courseId: string;
+    chapterId: string;
+  }>();
+
+  //get single course
+  const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
+
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -49,8 +57,21 @@ function SlidesDisplay() {
   // Get current slide index from the user's progress
   const currentSlideIndex = userProgress?.currentSlide ?? 0;
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
+  const [activeIndex, setActiveIndex] = useState<number>(currentSlideIndex);
+  const [unlockedIndex, setUnlockedIndex] = useState<number>(currentSlideIndex); // New state variable to track the unlocked index
+
+  //Resume chapter
+  // When component did mount or userProgress has changed, update the activeIndex
+  useEffect(() => {
+    if (userProgress?.currentSlide !== undefined) {
+      const newActiveIndex = userProgress.currentSlide;
+      setActiveIndex(newActiveIndex);
+      if (newActiveIndex > unlockedIndex) {
+        setUnlockedIndex(newActiveIndex);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProgress]);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -68,14 +89,6 @@ function SlidesDisplay() {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
-
-  const { courseId, chapterId } = useParams<{
-    courseId: string;
-    chapterId: string;
-  }>();
-
-  //get single course
-  const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -129,7 +142,6 @@ function SlidesDisplay() {
   };
 
   //Quiz Related functions
-
   const handleRadioChange = (
     choiceIndex: number,
     choiceValue: string,
