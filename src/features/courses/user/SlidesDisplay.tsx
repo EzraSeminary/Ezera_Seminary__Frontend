@@ -57,18 +57,14 @@ function SlidesDisplay() {
     (p) => p.courseId === courseId
   );
 
-  // Get current chapter index from the user's progress
-  const currentChapterIndex = userProgress?.currentChapter ?? 0;
-
-  // Get current slide index from the user's progress
-  const currentSlideIndex = userProgress?.currentSlide ?? 0;
-
-  const [activeIndex, setActiveIndex] = useState<number>(currentSlideIndex);
-  const [unlockedIndex, setUnlockedIndex] = useState<number>(currentSlideIndex); // New state variable to track the unlocked index
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
 
   //Resume chapter
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
+    console.log("Current chapter index:", chapterIndex);
+    console.log("User progress:", userProgress);
     if (userProgress) {
       if (
         chapterIndex === userProgress.currentChapter &&
@@ -85,6 +81,7 @@ function SlidesDisplay() {
         setActiveIndex(0);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProgress, chapterIndex]);
 
   {
