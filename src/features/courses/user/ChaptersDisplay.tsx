@@ -360,11 +360,11 @@ function ChaptersDisplay() {
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
+                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${index === activeIndex && "bg-[#FAE5C7]"}
+                    }  ${index === activeIndex ? "bg-[#FAE5C7]" : "bg-gray-200"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
@@ -380,7 +380,7 @@ function ChaptersDisplay() {
                         {index + 1}/{totalDataNumber} Chapters
                       </p>
                     </div>
-                    {activeIndex ? (
+                    {index === activeIndex ? (
                       <Circle size={16} color={"#EA9215"} />
                     ) : unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
