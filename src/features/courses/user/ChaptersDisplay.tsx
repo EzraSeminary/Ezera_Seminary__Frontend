@@ -365,7 +365,7 @@ function ChaptersDisplay() {
                     }  ${index === activeIndex && "bg-[#FAE5C7]"}
                     `} // Locked slide to gray
                     onClick={() => {
-                      updateIndex(index);
+                      completeChapter(index);
                       handleArrowClick();
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
