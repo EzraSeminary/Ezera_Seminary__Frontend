@@ -76,8 +76,7 @@ function SlidesDisplay() {
           setUnlockedIndex(userProgress.currentSlide);
         }
       } else {
-        // The current selected chapter does not match the chapterIndex from progress
-        // You might want to set the activeIndex to the beginning of the current chapter
+        //set the activeIndex to the beginning of the current chapter
         setActiveIndex(0);
       }
     }

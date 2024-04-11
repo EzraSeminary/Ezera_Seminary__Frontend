@@ -9,6 +9,7 @@ import {
   Circle,
   XCircle,
   ArrowRight,
+  Lock,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import { RootState } from "@/redux/store";
@@ -355,12 +356,14 @@ function ChaptersDisplay() {
             {/* Chapters */}
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
-                const unlocked = isSlideUnlocked(index);
+                const unlocked = isSlideUnlocked(index - 1); //unlock the chapter next to the active index.
                 return (
                   <button
                     key={index}
                     className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked ? "text-secondary-6" : "text-secondary-3"
+                      unlocked
+                        ? "text-secondary-6"
+                        : "text-secondary-3 hover:cursor-not-allowed"
                     }  ${index === activeIndex && "bg-[#FAE5C7]"}
                     `} // Locked slide to gray
                     onClick={() => {
@@ -377,10 +380,12 @@ function ChaptersDisplay() {
                         {index + 1}/{totalDataNumber} Chapters
                       </p>
                     </div>
-                    {unlocked ? (
+                    {activeIndex ? (
+                      <Circle size={16} color={"#EA9215"} />
+                    ) : unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Circle size={16} color={"#EA9215"} />
+                      <Lock size={16} color={"#EC4000"} />
                     )}
                   </button>
                 );
