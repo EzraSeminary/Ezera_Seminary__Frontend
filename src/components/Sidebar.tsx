@@ -225,22 +225,22 @@ const Sidebar: React.FC = () => {
           </SidebarItem>
         ))}
       </div>
-      {isModalOpen && <ProfileModal />}
+      {/* {isModalOpen && <ProfileModal />} */}
       <div
         ref={ref}
         className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1  cursor-pointer hover:shadow-lg"
-        onClick={toggleModal}
       >
         {isCollapsed ? (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1" onClick={toggleModal}>
             <UserCircle size={26} className="text-primary-1 cursor-pointer  " />
           </div>
         ) : (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1" onClick={toggleModal}>
             <UserCircle size={22} className="text-primary-1 cursor-pointer  " />
             {user && user.firstName}
           </div>
         )}
+        {isModalOpen && <ProfileModal />}
       </div>
     </div>
   );
