@@ -32,90 +32,102 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="bg-gray-100 container mx-auto p-4 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+    <div className="  mx-auto py-8 flex flex-col items-center justify-center w-[80%] my-12 shadow-2xl lg:w-[70%] md:mt-32 lg:mt-14">
+      <div className="flex justify-between items-center w-[90%]">
+        <h1 className="text-xl lg:text-2xl font-bold text-center mb-4">
+          My Profile
+        </h1>
         <button
           onClick={goBack}
-          className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+          className="text-xs md:text-sm lg:text-lg flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
         >
-          <ArrowLeft size={25} />
+          <ArrowLeft className="text-lg lg:text-xl" />
           Back
         </button>
-        <h1 className="text-2xl font-bold text-center mb-4">My Profile</h1>
+      </div>
 
-        {/* User Avatar and Email */}
-        <div className="flex flex-col items-center mb-4">
-          <img
-            src={avatarPreview}
-            alt="User Avatar"
-            className="w-[25vmin] rounded-full mx-auto"
-          />
-          <span className="text-lg font-medium mt-2">{user?.email}</span>
-        </div>
-
-        <div className="space-y-5 flex flex-col items-center p-5 bg-primary-3 rounded-lg shadow-md divide-y divide-primary-7">
-          {/* User Info */}
-          <div className="flex items-start space-x-2 mb-4 py-2">
-            <div className="font-bold text-lg text-accent-6">Name:</div>
-            <div className="text-lg">{user?.firstName}</div>
+      <div className="flex flex-col w-full space-y-12 mt-6">
+        <div className="flex flex-col items-center justify-center lg:flex-row lg:items-start lg:justify-between md:w-[80%] mx-auto md:space-y-6">
+          {/* User Avatar and Email */}
+          <div className="flex flex-col items-center mb-4 lg:mt-8">
+            <img
+              src={avatarPreview}
+              alt="User Avatar"
+              className="w-[25vmin] rounded-full mx-auto"
+            />
+            <span className="text-lg font-medium mt-2">{user?.email}</span>
           </div>
 
-          {/* Achievements */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="#achievements">Achievements</a>
-          </h2>
+          <div className="md:w-[60%] space-y-5 flex flex-col items-center p-5 bg-primary-3 rounded-lg shadow-md divide-y divide-primary-7">
+            {/* User Info */}
+            <div className="flex items-start space-x-2  py-2">
+              <div className="font-bold text-lg text-accent-6">Name:</div>
+              <div className="text-lg">{user?.firstName}</div>
+            </div>
 
-          {/* Leaderboards */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="#leaderboards">Leaderboards</a>
-          </h2>
+            <div className="w-[70%] mx-auto text-center divide-y cursor-pointer">
+              {/* Achievements */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded">
+                <a href="#achievements">Achievements</a>
+              </h2>
 
-          {/* Certificates */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="#certificates">Certificates</a>
-          </h2>
+              {/* Leaderboards */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded">
+                <a href="#leaderboards">Leaderboards</a>
+              </h2>
 
-          {/* Practical Assessment Results */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="#practical-assessment-results">
-              Practical Assessment Results
-            </a>
-          </h2>
+              {/* Certificates */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded">
+                <a href="#certificates">Certificates</a>
+              </h2>
 
-          {/* My Performance */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="#my-performance">My Performance</a>
-          </h2>
+              {/* Practical Assessment Results */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded">
+                <a href="#practical-assessment-results">
+                  Practical Assessment Results
+                </a>
+              </h2>
 
-          {/* Account Settings */}
-          <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110">
-            <a href="profile/settings">Account Settings</a>
-          </h2>
+              {/* My Performance */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded">
+                <a href="#my-performance">My Performance</a>
+              </h2>
+
+              {/* Account Settings */}
+              <h2 className="py-2 text-xl font-bold text-accent-6 transform transition duration-500 hover:scale-110 hover:bg-accent-3 rounded ">
+                <a href="profile/settings">Account Settings</a>
+              </h2>
+            </div>
+          </div>
         </div>
 
         {/* Footer Links */}
-        <footer className="mt-6 flex justify-center items-center">
-          <a href="/terms" className="text-accent-6 hover:underline">
-            Terms and Conditions and Privacy Policy
-          </a>
-          <button
-            onClick={() => {
-              // Handle contact support action
-              console.log("Contact support clicked");
-            }}
-            className="ml-4 bg-accent-6 text-white px-3 py-1 rounded hover:bg-accent-4 hover:text-accent-7"
-          >
-            Contact support
-          </button>
-          <button
-            onClick={
-              // Handle sign out action
-              handleLogout
-            }
-            className="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-          >
-            Sign out
-          </button>
+        <footer className="flex flex-col-reverse lg:flex-row justify-center items-center gap-3 w-[90%] mx-auto ">
+          <div className="text-center">
+            <a href="/terms" className="text-accent-6  hover:underline">
+              Terms and Conditions and Privacy Policy
+            </a>
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                // Handle contact support action
+                console.log("Contact support clicked");
+              }}
+              className="ml-4 bg-accent-6 text-white px-3 py-1 rounded hover:bg-accent-4 hover:text-accent-7"
+            >
+              Contact support
+            </button>
+            <button
+              onClick={
+                // Handle sign out action
+                handleLogout
+              }
+              className="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            >
+              Sign out
+            </button>
+          </div>
         </footer>
       </div>
     </div>
