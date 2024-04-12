@@ -357,8 +357,7 @@ function ChaptersDisplay() {
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
                 const unlocked = isSlideUnlocked(index - 1); //unlock the chapter next to the active index.
-                const isActive =
-                  index === activeIndex || index === activeIndex + 1; //check if the index is equal with the active index.
+                const isActive = index === activeIndex; //check if the index is equal with the active index.
 
                 return (
                   <button
@@ -367,7 +366,7 @@ function ChaptersDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${index === activeIndex ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
@@ -383,9 +382,7 @@ function ChaptersDisplay() {
                         {index + 1}/{totalDataNumber} Chapters
                       </p>
                     </div>
-                    {isActive ? (
-                      <Circle size={16} color={"#EA9215"} />
-                    ) : unlocked ? (
+                    {unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                     ) : (
                       <Lock size={16} color={"#EC4000"} />
