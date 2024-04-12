@@ -49,8 +49,8 @@ const CreateUser: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-2xl w-[80%] ">
-      <h2 className="text-2xl font-bold mb-4">Create User</h2>
+    <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl w-[80%] ">
+      <h2 className="text-2xl font-bold mb-4 text-primary-6">Create User</h2>
       <form onSubmit={handleSubmit} className="space-y-16 flex flex-col">
         <div className="flex justify-between w-[80%] mx-auto">
           {/* Image container */}
@@ -66,7 +66,7 @@ const CreateUser: React.FC = () => {
               />
               <label
                 htmlFor="avatar-input"
-                className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md cursor-pointer"
+                className="bg-accent-6 hover:bg-accent-7 text-primary-6 font-medium py-2 px-4 rounded-md cursor-pointer"
               >
                 <span>Upload Image</span>
                 <input
@@ -79,7 +79,7 @@ const CreateUser: React.FC = () => {
             </div>
           </div>
           {/* name, email, password and role container */}
-          <div className="w-[60%] space-y-4 font-nokia-bold text-lg">
+          <div className="w-[60%] space-y-4 font-nokia-bold text-lg text-accent-6">
             <div>
               <label htmlFor="firstName" className="block font-medium mb-1">
                 First Name:
@@ -154,7 +154,7 @@ const CreateUser: React.FC = () => {
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full text-sm font-Lato-Regular border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 cursor-pointer"
+                className="w-full text-sm font-Lato-Regular border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 cursor-pointer text-secondary-5"
                 required
               >
                 <option value="Learner">Learner</option>
@@ -167,7 +167,7 @@ const CreateUser: React.FC = () => {
         <div className="self-center">
           <button
             type="submit"
-            className="bg-accent-6 hover:bg-accent-7 text-white font-medium py-2 px-4 rounded-md"
+            className="bg-accent-6 hover:bg-accent-7 text-primary-6 font-medium py-2 px-4 rounded-md"
           >
             Create
           </button>
