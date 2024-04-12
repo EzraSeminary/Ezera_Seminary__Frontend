@@ -105,7 +105,7 @@ function AdminChapter() {
                 Published
               </p>
             ) : (
-              <p className="text-primary-6 font-nokia-bold text-sm pl-4">
+              <p className="text-accent-6 bg-gray-200 font-nokia-bold text-sm ml-2 py-1 px-2 rounded-full">
                 Draft
               </p>
             )}

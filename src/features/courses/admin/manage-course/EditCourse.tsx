@@ -139,7 +139,7 @@ function EditCourse() {
     return (
       <div className="flex justify-center items-center h-full">
         <BeatLoader
-          color={"#707070"}
+          color={"#EA9215"}
           loading
           size={15}
           aria-label="Loading Spinner"
@@ -152,8 +152,8 @@ function EditCourse() {
     <>
       <ToastContainer />
       <div className="w-full">
-        <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
-          <div className="flex justify-center items-center my-auto">
+        <div className="flex justify-between bg-secondary-6 rounded-t-lg px-6 py-3">
+          <div className="flex items-center ">
             <Link to="/admin/course/edit" className="flex items-center">
               <ArrowCircleLeft
                 weight="fill"
@@ -171,7 +171,7 @@ function EditCourse() {
               <Pen size={22} className="text-accent-6" />
             </button>
             {course.published ? (
-              <p className="text-green-700 font-nokia-bold text-sm pl-4">
+              <p className="text-green-700 bg-gray-200 font-nokia-bold text-sm py-1 px-2 rounded-full ml-2">
                 Published
               </p>
             ) : (
@@ -183,8 +183,7 @@ function EditCourse() {
           <div className="flex">
             <button
               onClick={handlePublish}
-              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
-              style={{ padding: "10px" }}
+              className=" w-max px-2 flex justify-center items-center gap-2 font-semibold text-accent-6 bg-primary-6 rounded-lg  transition-all border border-accent-6"
             >
               {!course.published ? (
                 <span>Publish</span>
@@ -199,8 +198,7 @@ function EditCourse() {
             </button>
             <button
               onClick={handleSubmit}
-              className="h-[40px] w-[120px] flex justify-center items-center gap-2 ml-1 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
-              style={{ padding: "10px" }}
+              className="w-max px-2 flex justify-center items-center gap-2 ml-1 font-semibold text-primary-6 bg-accent-6 rounded-lg hover:bg-accent-7 transition-all"
             >
               <span>Update</span>
               <ArrowSquareOut
