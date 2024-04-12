@@ -8,7 +8,6 @@ import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
-  Circle,
   XCircle,
   ArrowRight,
   CaretCircleLeft,
@@ -312,13 +311,17 @@ function SlidesDisplay() {
           {/* slide list */}
           <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
-              const unlocked = isSlideUnlocked(index);
+              const unlocked = isSlideUnlocked(index - 1);
+              const isActive = index === activeIndex;
+
               return (
                 <button
                   key={index}
-                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                    unlocked ? "text-black" : "text-gray-500"
-                  }  ${index === activeIndex && "font-bold "}
+                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                    unlocked
+                      ? "text-secondary-6"
+                      : "text-secondary-3 hover:cursor-not-allowed"
+                  }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
 
                     `}
                   onClick={() => {
@@ -338,7 +341,7 @@ function SlidesDisplay() {
                   {unlocked ? (
                     <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                   ) : (
-                    <Circle size={16} color={"#EA9215"} />
+                    <Lock size={16} color={"#EC4000"} />
                   )}
                 </button>
               );
