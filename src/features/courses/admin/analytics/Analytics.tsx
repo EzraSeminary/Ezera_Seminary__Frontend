@@ -48,7 +48,7 @@ const Analytics: React.FC = () => {
           <hr className="border-accent-5 my-4" />
           <p className="text-accent-6 text-sm">In the past 1 month</p>
         </div>
-        <div className="col-span-1 mt-4 gap-12 w-10% p-6 border border-red-500 rounded-lg text-center">
+        <div className="col-span-1 mt-4 gap-12 w-10% p-6 border border-red-600 rounded-lg text-center">
           <p className="text-6xl">-5</p>
           <p className="text-sm">Users left</p>
           <hr className="border-red-500 my-4" />

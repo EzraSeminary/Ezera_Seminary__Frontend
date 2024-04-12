@@ -9,6 +9,7 @@ import {
 } from "../../redux/courseSlice";
 import { Button } from "../../components/ui/button";
 import { CourseState } from "../../redux/courseSlice";
+import "../../index.css";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -80,10 +81,12 @@ function CreateCourse() {
       <h2 className="text-accent-6 text-2xl border-b border-primary-8 pb-1">
         Create Course
       </h2>
-      <form className="w-[60%] mx-auto my-10 flex flex-col gap-4 border border-accent-6 p-8 rounded-xl">
+      <form className="w-[90%] mx-auto my-10 flex gap-8  border-2 border-accent-6 p-8 rounded-xl bg-secondary-6">
         <div
           className={`relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border ${
-            validationErrors.image ? "border-red-500" : "border-orange-300"
+            validationErrors.image
+              ? "border-red-500"
+              : "border-accent-6 rounded-lg"
           }`}
         >
           {imagePreviewUrl && (
@@ -96,78 +99,85 @@ function CreateCourse() {
 
           <input
             type="file"
-            className="relative z-10 w-[100%] lg:px-[40%] lg:py-[20%]
+            id="fileInput"
+            className="relative z-10 w-[100%] lg:px-[35%] lg:py-[30%]
             md:px-[30%] md:py-[30%]
+            text-accent-6
             file:mr-4 file:py-2 file:px-4
             file:rounded-md file:border-0
             file:text-sm file:font-semibold
-            file:bg-accent-6 file:text-primary-1
+            file:bg-accent-6 file:text-primary-6 file:font-nokia-bold
             hover:file:bg-accent-7 rounded-xs bg-transparent
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
             onChange={handleImageChange}
             required
           />
+
           {validationErrors.image && (
             <p className="text-red-500 text-xs italic text-center">
               Please provide an image.
             </p>
           )}
         </div>
-        <div className="col-span-12">
-          <label className="block text-accent-6">Course Title</label>
-          <input
-            type="text"
-            className={`w-full px-3 py-2 text-accent-6 leading-tight border ${
-              validationErrors.title ? "border-red-500" : "border-orange-300"
-            } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2`}
-            name="title"
-            placeholder="Untitled Course"
-            autoComplete="off"
-            value={title}
-            onChange={(e) => {
-              dispatch(setTitle(e.target.value));
-              setValidationErrors((prevErrors) => ({
-                ...prevErrors,
-                title: false,
-              }));
-            }}
-            required
-          />
-          {/* Conditionally render an error message */}
-          {validationErrors.title && (
-            <p className="text-red-500 text-xs italic">Please enter a title.</p>
-          )}
-        </div>
-        <div className="col-span-12">
-          <label className="block text-accent-6">Description</label>
-          <textarea
-            className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border ${
-              validationErrors.description
-                ? "border-red-500"
-                : "border-orange-300"
-            } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2`}
-            name="description"
-            placeholder="Add a description"
-            autoComplete="off"
-            value={description}
-            onChange={(e) => {
-              dispatch(setDescription(e.target.value));
-              setValidationErrors((prevErrors) => ({
-                ...prevErrors,
-                description: false,
-              }));
-            }}
-            required
-          />
-          {validationErrors.description && (
-            <p className="text-red-500 text-xs italic">
-              Please enter a description.
-            </p>
-          )}
-        </div>
-        <div className="col-span-12">
-          <Button onClick={toNextPage}>Create</Button>
+        <div className="w-[90%] space-y-6">
+          <div className="col-span-12">
+            <label className="block text-accent-6 mb-1">Course Title:</label>
+            <input
+              type="text"
+              className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 ${
+                validationErrors.title ? "border-red-500" : "border-accent-6"
+              } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-4 placeholder:text-sm`}
+              name="title"
+              placeholder="Untitled Course"
+              autoComplete="off"
+              value={title}
+              onChange={(e) => {
+                dispatch(setTitle(e.target.value));
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  title: false,
+                }));
+              }}
+              required
+            />
+            {/* Conditionally render an error message */}
+            {validationErrors.title && (
+              <p className="text-red-500 text-xs italic">
+                Please enter a title.
+              </p>
+            )}
+          </div>
+          <div className="col-span-12">
+            <label className="block text-accent-6 mb-1">Description:</label>
+            <textarea
+              className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border bg-primary-6 ${
+                validationErrors.description
+                  ? "border-red-500"
+                  : "border-accent-6"
+              } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-4 placeholder:text-sm`}
+              name="description"
+              placeholder="Add a description"
+              autoComplete="off"
+              value={description}
+              onChange={(e) => {
+                dispatch(setDescription(e.target.value));
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  description: false,
+                }));
+              }}
+              required
+            />
+            {validationErrors.description && (
+              <p className="text-red-500 text-xs italic">
+                Please enter a description.
+              </p>
+            )}
+          </div>
+          <div className="col-span-12 text-primary-6">
+            <Button onClick={toNextPage}>Create</Button>
+          </div>
         </div>
       </form>
     </div>

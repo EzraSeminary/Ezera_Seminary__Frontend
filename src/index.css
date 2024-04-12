@@ -237,3 +237,10 @@ footer {
 }
 
 
+#fileInput::placeholder {
+  color: #EA9215; /* Change placeholder color */
+}
+
+#fileInput::-webkit-file-upload-button {
+  color:  #EA9215; /* Change button text color */
+}

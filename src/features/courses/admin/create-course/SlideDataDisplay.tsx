@@ -95,7 +95,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   }, [selectedSlide]);
 
   return (
-    <div className="max-w-full h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg">
+    <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
         <div>
           <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">

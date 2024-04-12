@@ -85,7 +85,7 @@ function AdminChapter() {
     <>
       <ToastContainer />
       <div className="w-full">
-        <div className="flex justify-between border-gray-200 border-2 px-6 py-2">
+        <div className="flex justify-between bg-secondary-6 rounded-t-lg px-6 py-3">
           <div className="flex items-center">
             <Link
               to="/admin/courses/create"
@@ -96,7 +96,7 @@ function AdminChapter() {
                 size={24}
                 className="text-accent-6"
               />{" "}
-              <p className="text-accent-6 font-nokia-bold text-sm pl-4">
+              <p className="text-accent-6 font-nokia-bold text-sm pl-2">
                 {course.title}
               </p>
             </Link>
@@ -105,16 +105,15 @@ function AdminChapter() {
                 Published
               </p>
             ) : (
-              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+              <p className="text-primary-6 font-nokia-bold text-sm pl-4">
                 Draft
               </p>
             )}
           </div>
-          <div className="flex">
+          <div className="flex gap-3">
             <button
               onClick={handlePublish}
-              className="h-[40px] w-[120px] flex justify-center items-center gap-2 font-semibold text-accent-6 bg-white rounded-md hover:bg-secondary-1 transition-all border border-accent-6"
-              style={{ padding: "10px" }}
+              className=" w-max px-2 flex justify-center items-center gap-2 font-semibold text-accent-6 bg-primary-6 rounded-lg  transition-all border border-accent-6"
             >
               {!course.published ? (
                 <span>Publish</span>
@@ -129,8 +128,7 @@ function AdminChapter() {
             </button>
             <button
               onClick={handleSubmit}
-              className="h-[40px] w-[120px] flex justify-center items-center gap-2 ml-1 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7 transition-all"
-              style={{ padding: "10px" }}
+              className="w-max px-2 flex justify-center items-center gap-2 ml-1 font-semibold text-primary-6 bg-accent-6 rounded-lg hover:bg-accent-7 transition-all"
             >
               <span>Save</span>
               <ArrowSquareOut
