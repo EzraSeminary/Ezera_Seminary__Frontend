@@ -120,7 +120,7 @@ function CreateCourse() {
             </p>
           )}
         </div>
-        <div className="w-[90%] space-y-6">
+        <div className="w-[80%] space-y-6">
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Course Title:</label>
             <input
