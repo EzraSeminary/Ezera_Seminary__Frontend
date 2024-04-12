@@ -357,6 +357,9 @@ function ChaptersDisplay() {
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
                 const unlocked = isSlideUnlocked(index - 1); //unlock the chapter next to the active index.
+                const isActive =
+                  index === activeIndex || index === activeIndex + 1; //check if the index is equal with the active index.
+
                 return (
                   <button
                     key={index}
@@ -380,7 +383,7 @@ function ChaptersDisplay() {
                         {index + 1}/{totalDataNumber} Chapters
                       </p>
                     </div>
-                    {index === activeIndex ? (
+                    {isActive ? (
                       <Circle size={16} color={"#EA9215"} />
                     ) : unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
