@@ -6,7 +6,6 @@ import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
-  Circle,
   XCircle,
   ArrowRight,
   Lock,
@@ -293,7 +292,6 @@ function ChaptersDisplay() {
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
-                        {/* <Text>ID</Text> {courseId} */}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
                         {index + 1}/{totalDataNumber} Chapters
@@ -302,7 +300,7 @@ function ChaptersDisplay() {
                     {unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Circle size={16} color={"#EA9215"} />
+                      <Lock size={16} color={"#EC4000"} />
                     )}
                   </button>
                 );
