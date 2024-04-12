@@ -272,18 +272,23 @@ function ChaptersDisplay() {
             {/* Chapters */}
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
-                const unlocked = isSlideUnlocked(index);
+                const unlocked = isSlideUnlocked(index - 1);
+                const isActive = index === activeIndex;
+
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked ? "text-black  " : "text-gray-500 "
-                    }  ${index === activeIndex && "font-bold"}
+                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                      unlocked
+                        ? "text-secondary-6"
+                        : "text-secondary-3 hover:cursor-not-allowed"
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
                       handleArrowClick();
                     }}
+                    disabled={!unlocked}
                   >
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
