@@ -81,7 +81,7 @@ function SlidesDisplay() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userProgress]);
+  }, [chapterIndex]);
 
   {
     /* Function to open the chapters sidebar modal */
