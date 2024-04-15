@@ -509,14 +509,16 @@ function SlidesDisplay() {
                         return (
                           <div className="w-full h-full">
                             {isFullScreen ? (
-                              <div
-                                className="absolute top-0 right-0 w-full h-full z-50"
-                                onClick={handleCloseFullScreen}
-                              >
+                              <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
+                                <ArrowLeft
+                                  size={22}
+                                  className="absolute top-4 left-4 text-white bg-accent-6 border p-1 rounded-lg z-50 cursor-pointer"
+                                  onClick={handleCloseFullScreen}
+                                />
                                 <img
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="fullscreen content"
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover rounded-3xl relative"
                                 />
                               </div>
                             ) : (
