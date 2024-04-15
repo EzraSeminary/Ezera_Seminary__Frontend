@@ -35,6 +35,8 @@ function SlidesDisplay() {
 
   const [progressLoading, setProgressLoading] = useState(false);
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
@@ -235,6 +237,14 @@ function SlidesDisplay() {
         <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
       </div>
     );
+
+  const handleImageClick = () => {
+    setIsFullScreen(true);
+  };
+
+  const handleCloseFullScreen = () => {
+    setIsFullScreen(false);
+  };
 
   if (isLoading)
     return (
