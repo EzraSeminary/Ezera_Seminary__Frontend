@@ -526,17 +526,19 @@ function SlidesDisplay() {
                                 </div>
                               </div>
                             ) : (
-                              <div className="relative w-full h-full">
+                              <div
+                                className="relative w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] shadow-xl mt-2 bg-accent-9 rounded-xl"
+                                onClick={handleImageClick}
+                              >
                                 <img
                                   key={element._id}
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="no image"
-                                  className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
-                                  onClick={handleImageClick}
+                                  className="w-full h-full object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
                                 />
                                 <CornersOut
-                                  size={40}
-                                  className="absolute bottom-4 right-4 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                  size={28}
+                                  className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
                                   weight="bold"
                                 />
                               </div>
