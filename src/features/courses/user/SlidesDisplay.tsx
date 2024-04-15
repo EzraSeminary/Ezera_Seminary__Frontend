@@ -22,6 +22,7 @@ import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function SlidesDisplay() {
   const [progressLoading, setProgressLoading] = useState(false);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -535,6 +537,7 @@ function SlidesDisplay() {
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="no image"
                                   className="w-full h-full object-cover shadow-xl rounded-xl text-white text-center"
+                                  onLoad={() => setImageLoaded(true)}
                                 />
                                 <CornersOut
                                   size={28}
