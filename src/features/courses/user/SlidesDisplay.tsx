@@ -240,7 +240,7 @@ function SlidesDisplay() {
     );
 
   //display a full screen functionality when clicking on the image
-  const handleImageClick = () => {
+  const handleOpenFullScreen = () => {
     setIsFullScreen(true);
   };
 
@@ -527,14 +527,14 @@ function SlidesDisplay() {
                               </div>
                             ) : (
                               <div
-                                className="relative w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] shadow-xl mt-2 bg-accent-9 rounded-xl"
-                                onClick={handleImageClick}
+                                className="relative w-[30vh] h-auto mx-auto my-2 shadow-xl"
+                                onClick={handleOpenFullScreen}
                               >
                                 <img
                                   key={element._id}
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="no image"
-                                  className="w-full h-full object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
+                                  className="w-full h-full object-cover shadow-xl rounded-xl text-white text-center"
                                 />
                                 <CornersOut
                                   size={28}
