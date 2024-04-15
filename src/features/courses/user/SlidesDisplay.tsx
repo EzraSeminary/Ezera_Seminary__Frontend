@@ -445,7 +445,7 @@ function SlidesDisplay() {
         </div>
       </div>
       {/* slides display window*/}
-      <div className="  lg:w-[70%]   items-center  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full">
+      <div className="lg:w-[70%] items-center h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full relative">
         {/* Chapter display container */}
         <div className="flex flex-col justify-between h-full">
           {/* Header */}
@@ -510,7 +510,7 @@ function SlidesDisplay() {
                           <div className="w-full h-full">
                             {isFullScreen ? (
                               <div
-                                className="fixed top-0 left-0 w-screen h-screen z-50"
+                                className="absolute top-0 right-0 w-full h-full z-50"
                                 onClick={handleCloseFullScreen}
                               >
                                 <img
@@ -525,6 +525,7 @@ function SlidesDisplay() {
                                 src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                 alt="no image"
                                 className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
+                                onClick={handleImageClick}
                               />
                             )}
                           </div>
