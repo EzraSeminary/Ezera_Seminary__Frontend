@@ -238,6 +238,7 @@ function SlidesDisplay() {
       </div>
     );
 
+  //display a full screen functionality when clicking on the image
   const handleImageClick = () => {
     setIsFullScreen(true);
   };
@@ -507,12 +508,25 @@ function SlidesDisplay() {
                       } else if (element.type === "img") {
                         return (
                           <div className="w-full h-full">
-                            <img
-                              key={element._id}
-                              src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
-                              alt="no image"
-                              className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
-                            />
+                            {isFullScreen ? (
+                              <div
+                                className="fixed top-0 left-0 w-screen h-screen z-50"
+                                onClick={handleCloseFullScreen}
+                              >
+                                <img
+                                  src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                  alt="fullscreen content"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <img
+                                key={element._id}
+                                src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                alt="no image"
+                                className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
+                              />
+                            )}
                           </div>
                         );
                       } else if (element.type === "list") {
