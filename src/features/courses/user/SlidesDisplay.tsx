@@ -527,14 +527,14 @@ function SlidesDisplay() {
                               </div>
                             ) : (
                               <div
-                                className="relative w-[30vh] h-auto mx-auto my-2 shadow-xl"
+                                className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
                                 onClick={handleOpenFullScreen}
                               >
                                 <img
                                   key={element._id}
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="no image"
-                                  className="w-full h-full object-cover shadow-xl rounded-xl text-white text-center"
+                                  className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
                                 />
                                 <CornersOut
                                   size={28}
