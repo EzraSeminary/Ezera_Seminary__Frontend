@@ -193,7 +193,9 @@ function SlidesDisplay() {
 
   const submitProgress = () => {
     if (currentUser && currentUser.progress) {
-      setProgressLoading(true);
+      setTimeout(() => {
+        setProgressLoading(true);
+      }, 3000);
       console.log("CurrentUser Token:", token);
       axios
         .put(
@@ -222,8 +224,10 @@ function SlidesDisplay() {
             "Could not update progress: " +
               (err.response ? err.response.data : err.message)
           );
-          setProgressLoading(false);
-          navigate(`/courses/get/${courseId}`);
+          setTimeout(() => {
+            setProgressLoading(false);
+            navigate(`/courses/get/${courseId}`);
+          }, 3000);
         });
     }
   };
