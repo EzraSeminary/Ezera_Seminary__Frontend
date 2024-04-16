@@ -22,7 +22,6 @@ import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
-import { Skeleton } from "@/components/ui/skeleton";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -38,7 +37,6 @@ function SlidesDisplay() {
   const [progressLoading, setProgressLoading] = useState(false);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -513,7 +511,7 @@ function SlidesDisplay() {
                           <div className="w-full h-full">
                             {isFullScreen ? (
                               <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
-                                <div className="relative w-full h-full">
+                                <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
                                   <ArrowLeft
                                     size={40}
                                     className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
@@ -523,7 +521,7 @@ function SlidesDisplay() {
                                   <img
                                     src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                     alt="fullscreen content"
-                                    className="w-full h-full object-cover rounded-3xl"
+                                    className="w-full h-full object-contain rounded-3xl"
                                   />
                                 </div>
                               </div>
@@ -537,7 +535,6 @@ function SlidesDisplay() {
                                   src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
                                   alt="no image"
                                   className="w-full h-full object-cover shadow-xl rounded-xl text-white text-center"
-                                  onLoad={() => setImageLoaded(true)}
                                 />
                                 <CornersOut
                                   size={28}
