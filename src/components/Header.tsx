@@ -129,7 +129,7 @@ const Header: React.FC = () => {
                   className={`${
                     showMenu
                       ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                      : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
+                      : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 transition-all"
                   }`}
                 >
                   <li>
@@ -333,9 +333,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
@@ -352,9 +350,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
@@ -371,9 +367,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
@@ -390,9 +384,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
@@ -409,9 +401,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
@@ -428,9 +418,7 @@ const Header: React.FC = () => {
                     onClick={closeMenu}
                     className={({ isActive }: { isActive: boolean }) =>
                       `hover:text-accent-6 tracking-wide transition-all ${
-                        isActive
-                          ? "text-accent-6 font-nokia-bold"
-                          : "text-white"
+                        isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
                   >
