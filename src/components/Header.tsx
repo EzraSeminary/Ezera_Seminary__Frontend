@@ -136,7 +136,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       Home
                     </NavLink>
@@ -145,7 +149,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/courses"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       Courses
                     </NavLink>
@@ -154,7 +162,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/sabbathSchool"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       Sabbath School
                     </NavLink>
@@ -163,7 +175,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/devotion"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       Devotion
                     </NavLink>
@@ -172,7 +188,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/aboutUs"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       About Us
                     </NavLink>
@@ -181,7 +201,11 @@ const Header: React.FC = () => {
                     <NavLink
                       to="/contactUs"
                       onClick={closeMenu}
-                      className="hover:text-accent-6 tracking-wide"
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
                     >
                       Contact Us
                     </NavLink>
