@@ -4,7 +4,6 @@ import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery } from "../../../services/api";
-import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
@@ -23,6 +22,7 @@ import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
 import { CustomElement, AccordionElement } from "@/redux/courseSlice";
+import LoadingPage from "@/pages/user/LoadingPage";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -249,18 +249,7 @@ function SlidesDisplay() {
     setIsFullScreen(false);
   };
 
-  if (isLoading)
-    return (
-      <div className="h-full flex justify-center items-center min-h-screen">
-        <BeatLoader
-          color={"#EA9215"}
-          loading
-          size={15}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
+  if (isLoading) return <LoadingPage />;
 
   if (error) return <div>Something went wrong.</div>;
 
