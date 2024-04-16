@@ -283,12 +283,13 @@ const Header: React.FC = () => {
                   <NavLink
                     to="/"
                     onClick={closeMenu}
-                    className={`hover:text-accent-6 tracking-wide transition-all ${({
-                      isActive,
-                    }) =>
-                      isActive
-                        ? "text-blue-500 font-semibold"
-                        : "text-gray-500"}`}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive
+                          ? "text-accent-6 font-nokia-bold"
+                          : "text-white"
+                      }`
+                    }
                   >
                     Home
                   </NavLink>
