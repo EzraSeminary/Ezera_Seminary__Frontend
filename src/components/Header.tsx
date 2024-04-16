@@ -132,33 +132,57 @@ const Header: React.FC = () => {
                       : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
                   }`}
                 >
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       Home
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/courses" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/courses"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       Courses
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/sabbathSchool" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/sabbathSchool"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       Sabbath School
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/devotion" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/devotion"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       Devotion
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/aboutUs" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/aboutUs"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       About Us
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/contactUs" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/contactUs"
+                      onClick={closeMenu}
+                      className="hover:text-accent-6 tracking-wide"
+                    >
                       Contact Us
                     </NavLink>
                   </li>
