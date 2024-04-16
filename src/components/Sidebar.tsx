@@ -225,11 +225,11 @@ const Sidebar: React.FC = () => {
           </SidebarItem>
         ))}
       </div>
-      {isModalOpen && <ProfileModal />}
+      {/* {isModalOpen && <ProfileModal />} */}
       <div
         ref={ref}
-        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1  cursor-pointer hover:shadow-lg"
         onClick={toggleModal}
+        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1  cursor-pointer hover:shadow-lg"
       >
         {isCollapsed ? (
           <div className="flex items-center gap-1">
@@ -241,6 +241,7 @@ const Sidebar: React.FC = () => {
             {user && user.firstName}
           </div>
         )}
+        {isModalOpen && <ProfileModal />}
       </div>
     </div>
   );

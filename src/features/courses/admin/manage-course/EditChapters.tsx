@@ -84,9 +84,9 @@ function EditChapters() {
 
   return (
     <div className="flex justify-between h-screen w-full bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
-      <div className="bg-primary-1 w-[30%] h-screen overflow-auto scrollbar-thin p-6">
+      <div className="bg-secondary-5 w-[35%] h-screen overflow-auto scrollbar-thin p-6">
         <button
-          className="flex justify-center items-center text-white bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
+          className="flex gap-2 justify-center items-center text-white bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
           onClick={addChapterHandler}
         >
           <PlusCircle
@@ -103,8 +103,8 @@ function EditChapters() {
           return (
             <div key={chapterIndex}>
               <div
-                className={`flex bg-secondary-1 items-center justify-between gap-2 px-4 py-2 rounded-md mb-2 ${
-                  isSelected ? "bg-opacity-100" : "bg-opacity-0"
+                className={`flex bg-secondary-2 items-center justify-between gap-2 px-4 py-2 mb-2 border border-accent-5 rounded-lg ${
+                  isSelected ? "bg-opacity-100" : "bg-opacity-0 border-accent-5"
                 }`}
               >
                 <div
@@ -120,7 +120,7 @@ function EditChapters() {
                     name={`chapter-${chapterIndex}`}
                     placeholder="Chapter Title"
                     autoComplete="off"
-                    className="w-full text-lg font-bold focus:outline-none bg-transparent"
+                    className="w-full text-lg font-bold border-accent-6 focus:outline-none bg-transparent placeholder:text-secodary-3 text-secondary-6"
                     value={chapter.chapter}
                     onChange={(e) =>
                       updateChapterHandler(chapterIndex, e.target.value)
@@ -138,8 +138,8 @@ function EditChapters() {
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
                   {slides.map((slide, slideIndex) => (
                     <div key={slideIndex} className="flex flex-col ">
-                      <div className="flex px-2 items-center">
-                        <p className="flex items-center font-nokia-bold text-secondary-6 text-xs lg:text-sm pr-1">
+                      <div className="flex px-2 items-center gap-2">
+                        <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
                           {slideIndex + 1}
                         </p>
                         <input
@@ -147,7 +147,7 @@ function EditChapters() {
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
                           autoComplete="off"
-                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1 border-b border-t px-2 mt-2"
+                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4"
                           value={slide.slide}
                           onChange={(e) =>
                             updateSlideHandler(
@@ -169,7 +169,7 @@ function EditChapters() {
                           }
                           weight="fill"
                           className="text-accent-6 cursor-pointer"
-                          size={22}
+                          size={24}
                         />
                       </div>
                       {editingSlideIndex &&

@@ -62,31 +62,45 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   };
 
   const renderListForm = () => (
-    <div className="mt-4">
-      <div className="flex flex-row items-center w-[100%] gap-1">
+    <div className="pb-4">
+      <div className="flex flex-col items-center w-[100%] gap-1">
         <input
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
         />
-        <PlusCircle
-          onClick={handleAddListItem}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
-        <File
-          onClick={handleAddListElement}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
+        <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
+          <button
+            onClick={handleAddListItem}
+            className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <PlusCircle
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={handleAddListElement}
+            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
+        </div>
       </div>
-      <ul className="w-[100%]">
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {listItems.map((item, index) => (
-          <li key={index} className="flex justify-between break-words">
+           <label className="text-accent-6 ">
+           List Item {index + 1}:
+          <li key={index} className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6">
             {item}{" "}
             <span>
               <Trash
@@ -97,6 +111,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
               />
             </span>
           </li>
+          </label>
         ))}
       </ul>
     </div>
@@ -202,31 +217,46 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   };
 
   const renderSlideForm = () => (
-    <div className="mt-4">
-      <div className="flex flex-row items-center w-[100%] gap-1">
+    <div className="">
+      <div className="flex flex-col items-center w-[100%] gap-1">
         <textarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
-          className="border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
         />
-        <PlusCircle
+        <div
+          className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
           onClick={handleAddSlide}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
-        <File
-          onClick={handleSaveSlides}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
+        >
+          <button className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all">
+            <PlusCircle
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={handleSaveSlides}
+            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
+        </div>
       </div>
-      <ul className="w-[100%]">
+      <ul className="w-[100%]  pb-4 cursor-pointer overflow-y-auto">
         {slidesDetails.map((details, index) => (
-          <li key={index} className="flex justify-between break-words">
-            - {details}{" "}
+          <label className="text-accent-6 ">
+          {" "}
+          Slide {index + 1}:
+          <li key={index} className="flex justify-between break-words border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6">
+            {details}{" "}
             <span>
               <Trash
                 onClick={() => handleDeleteSlideItem(index)}
@@ -236,6 +266,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
               />
             </span>
           </li>
+          </label>
         ))}
       </ul>
     </div>
@@ -287,32 +318,47 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   };
 
   const renderQuizForm = () => (
-    <div className="mt-2">
-      <div className="flex flex-row items-center w-[100%] gap-1">
+    <div className="pb-4">
+      <div className="flex flex-col items-center w-[100%] gap-1">
         <input
           type="text"
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
-          className="border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
         />
-        <PlusCircle
-          onClick={handleAddQuizChoice}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
-        {/* // Replace the existing File OnClick action with saveQuizToRedux */}
-        <File
-          onClick={saveQuizToRedux}
-          className="text-accent-6 hover:text-accent-7 hover:cursor-pointer transition-all"
-          size={24}
-          weight="fill"
-        />
+        
+        <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
+          <button
+            onClick={handleAddQuizChoice}
+            className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <PlusCircle
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={saveQuizToRedux}
+            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
+        </div>
       </div>
+      <ul className="space-y-2 py-4">
       {/* // Map over quizChoices to render choices */}
       {quizChoices.map((choice, index) => (
-        <div key={index} className="flex justify-between">
+         <label className="text-accent-6 ">
+         Choice {index + 1}:
+        <li key={index} className="flex justify-between">
           <input
             type="text"
             value={choice}
@@ -329,13 +375,16 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
             weight="fill"
             size={22}
           />
-        </div>
+        </li>
+        </label>
       ))}
+      </ul>
       {/* choose the correct answer on the dropdown */}
-      <label>
+      <label className="text-accent-6 ">
         Correct Answer:
         <select
           value={correctAnswer}
+          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
           onChange={(e) => handleCorrectAnswerChange(e.target.value)}
           required
         >
@@ -351,17 +400,17 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   );
 
   return (
-    <div className="bg-white w-[100%] px-4">
-      <p className="font-bold py-2">Insert Element</p>
-      <div className="flex justify-between">
+    <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
+      <p className="font-bold py-2 text-accent-6 text-center text-lg">Insert Element</p>
+      <div className="flex justify-between pb-4">
         <select
           name="elements"
           id="elements"
           value={currentElement}
           onChange={handleDropdownChange}
-          className="w-[100%] border-2 border-accent-6 rounded-md mr-2 py-1"
+          className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
         >
-          <option value="">Choose Type</option>
+          <option value="" disabled>Choose Type</option>
           <option value="title">Title</option>
           <option value="sub">Sub-title</option>
           <option value="text">Paragraph</option>
@@ -400,7 +449,10 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 type="file"
                 id={element.id}
                 onChange={(e) => handleFileInputChange(e, element.id)}
-                className="w-[100%] border-2 border-accent-6 rounded-md text-primary-6 font-bold p-2"
+                className="w-[100%] border-2 border-accent-6 rounded-md file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0
+                file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
+                focus:outline-none focus:border-accent-8 cursor-pointer"
               />
             ) : (
               <input
@@ -414,7 +466,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                     : element.value
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1"
+                className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
               />
             )}
           </div>

@@ -140,9 +140,11 @@ const ManageUsers: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-2xl">
+    <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-nokia-bold mb-6">Manage Users</h2>
+        <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
+          Manage Users
+        </h2>
         <div
           onClick={goBack}
           className="flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
@@ -155,7 +157,7 @@ const ManageUsers: React.FC = () => {
       </div>
       <table className="w-full table-auto cursor-pointer font-nokia-bold">
         <thead>
-          <tr className="bg-accent-6 text-primary-1 text-xl">
+          <tr className="bg-secondary-4 text-primary-6 text-xl">
             <th className="px-4 py-2">Avatar</th>
             <th className="px-4 py-2">First Name</th>
             <th className="px-4 py-2">Last Name</th>
@@ -171,14 +173,14 @@ const ManageUsers: React.FC = () => {
               className={`border-b ${
                 editingUser?._id === user._id
                   ? "bg-primary-6 "
-                  : "hover:bg-accent-4 transition-all rounded-lg"
+                  : "text-primary-5 hover:bg-secondary-5 transition-all rounded-lg"
               }`}
             >
               <td className="px-4 py-2">
                 <img
                   src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
                   alt={`${user.firstName} ${user.lastName}`}
-                  className="w-12 h-12 rounded-full"
+                  className="w-12 h-12 rounded-full  "
                 />
               </td>
               <td className="px-4 py-2">{user.firstName}</td>
@@ -224,12 +226,12 @@ const ManageUsers: React.FC = () => {
       </table>
       {editingUser && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="bg-secondary-6 p-6 rounded-lg shadow-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold">Edit User</h3>
+              <h3 className="text-xl font-bold text-primary-6">Edit User</h3>
               <button
                 onClick={() => setEditingUser(null)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-accent-6 hover:scale-110 transition-all"
               >
                 <XCircle size={24} weight="bold" />
               </button>
@@ -243,10 +245,13 @@ const ManageUsers: React.FC = () => {
                       : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
                   }
                   alt={`${editingUser.firstName} ${editingUser.lastName}`}
-                  className="w-20 h-20 rounded-full mr-4"
+                  className="w-20 h-20 rounded-full mr-4  border-2 border-accent-6 p-1 "
                 />
                 <div>
-                  <label htmlFor="avatar" className="block font-medium mb-1">
+                  <label
+                    htmlFor="avatar"
+                    className="block font-medium mb-1 text-primary-6 "
+                  >
                     Avatar
                   </label>
                   <input
@@ -257,8 +262,11 @@ const ManageUsers: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="firstName" className="block font-medium mb-1">
+              <div className="mb-4 ">
+                <label
+                  htmlFor="firstName"
+                  className="block font-medium mb-1 text-accent-6"
+                >
                   First Name
                 </label>
                 <input
@@ -275,7 +283,10 @@ const ManageUsers: React.FC = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="lastName" className="block font-medium mb-1">
+                <label
+                  htmlFor="lastName"
+                  className="block font-medium mb-1 text-accent-6"
+                >
                   Last Name
                 </label>
                 <input
@@ -289,7 +300,10 @@ const ManageUsers: React.FC = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block font-medium mb-1">
+                <label
+                  htmlFor="email"
+                  className="block font-medium mb-1 text-accent-6"
+                >
                   Email
                 </label>
                 <input
@@ -303,7 +317,10 @@ const ManageUsers: React.FC = () => {
                 />
               </div>
               <div className="mb-4 relative">
-                <label htmlFor="password" className="block font-medium mb-1">
+                <label
+                  htmlFor="password"
+                  className="block font-medium mb-1 text-accent-6"
+                >
                   Password
                 </label>
                 <input
@@ -327,7 +344,10 @@ const ManageUsers: React.FC = () => {
                 </div>
               </div>
               <div className="mb-5">
-                <label htmlFor="role" className="block font-medium mb-1">
+                <label
+                  htmlFor="role"
+                  className="block font-medium mb-1 text-accent-6"
+                >
                   Role
                 </label>
                 <select
@@ -347,14 +367,14 @@ const ManageUsers: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setEditingUser(null)}
-                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                  className="bg-red-500 hover:bg-red-600 text-primary-6 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleUpdateUser}
-                  className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-accent-6 hover:bg-accent-7 text-primary-6 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                 >
                   Save
                 </button>
