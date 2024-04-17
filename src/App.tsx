@@ -66,15 +66,13 @@ function App() {
     console.log(userError);
   }
 
-  const PrivateUserRoute = ({ children }: { children: React.ReactNode }) => {
-    if (user) {
-      return children;
-    } else {
-      return <Navigate to="/login" replace={true} />;
-    }
+  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    return user ? <>{children}</> : <Navigate to="/login" replace />;
   };
 
-  PrivateUserRoute.propTypes = {
+  PrivateRoute.propTypes = {
     children: PropTypes.node.isRequired,
   };
 
@@ -132,17 +130,17 @@ function App() {
           <Route
             path="/profile"
             element={
-              <PrivateUserRoute>
+              <PrivateRoute>
                 <UserProfile />
-              </PrivateUserRoute>
+              </PrivateRoute>
             }
           />
           <Route
             path="/profile/settings"
             element={
-              <PrivateUserRoute>
+              <PrivateRoute>
                 <ProfileSettings />
-              </PrivateUserRoute>
+              </PrivateRoute>
             }
           />
 
