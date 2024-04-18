@@ -30,7 +30,8 @@ export type CustomElement =
   | SlideElement
   | QuizElement
   | AccordionElement
-  | SequenceElement;
+  | SequenceElement
+  | RevealElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -87,6 +88,16 @@ export interface SequenceElement extends Omit<Element, "value"> {
   type: "sequence";
   value: string[];
 }
+
+export interface RevealElement extends Omit<Element, "value"> {
+  type: "reveal";
+  value: RevealElementValue[];
+}
+
+export type RevealElementValue = {
+  title: string;
+  content: string;
+};
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
