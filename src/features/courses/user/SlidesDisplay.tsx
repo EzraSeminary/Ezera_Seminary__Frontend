@@ -727,7 +727,7 @@ function SlidesDisplay() {
                                 <ReactCardFlip
                                   isFlipped={flip[index] || false}
                                   flipDirection="vertical"
-                                  key={`${uniqueKey}-reveal-${index}`}
+                                  key={index}
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
