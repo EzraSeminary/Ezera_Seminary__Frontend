@@ -129,36 +129,84 @@ const Header: React.FC = () => {
                   className={`${
                     showMenu
                       ? "flex flex-col justify-center items-end text-xl text-primary-1 font-nokia-bold h-auto bg-secondary-6 overflow-auto bg-opacity-80  w-full z-10 top-0 left-0 bottom-0 transform -translate-x-100 transition-transform ease-in-out duration-200 pr-8 space-y-2 fixed cursor-pointer"
-                      : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 font-Lato-Bold transition-all"
+                      : "hidden  cursor-pointer  md:flex md:items-center md:justify-end  md:text-xs lg:text-sm xl:text-xl gap-[0.4rem] lg:space-x-2  xl:space-x-2  text-secondary-6 transition-all"
                   }`}
                 >
-                  <li className="  hover:text-accent-6 tracking-wide">
-                    <NavLink to="/" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       Home
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/courses" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/courses"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       Courses
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/sabbathSchool" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/sabbathSchool"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       Sabbath School
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/devotion" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/devotion"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       Devotion
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/aboutUs" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/aboutUs"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       About Us
                     </NavLink>
                   </li>
-                  <li className="hover:text-accent-6 tracking-wide">
-                    <NavLink to="/contactUs" onClick={closeMenu}>
+                  <li>
+                    <NavLink
+                      to="/contactUs"
+                      onClick={closeMenu}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }
+                    >
                       Contact Us
                     </NavLink>
                   </li>
@@ -279,9 +327,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                  className="hover:text-accent-6 tracking-wide"
                 >
-                  <NavLink to="/" onClick={closeMenu}>
+                  <NavLink
+                    to="/"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     Home
                   </NavLink>
                 </motion.li>
@@ -289,9 +344,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-                  className="hover:text-accent- tracking-wide"
                 >
-                  <NavLink to="/courses" onClick={closeMenu}>
+                  <NavLink
+                    to="/courses"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     Courses
                   </NavLink>
                 </motion.li>
@@ -299,9 +361,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
-                  className="hover:text-accent-6 tracking-wide"
                 >
-                  <NavLink to="/sabbathSchool" onClick={closeMenu}>
+                  <NavLink
+                    to="/sabbathSchool"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     Sabbath School
                   </NavLink>
                 </motion.li>
@@ -309,9 +378,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
-                  className="hover:text-accent-6 tracking-wide"
                 >
-                  <NavLink to="/devotion" onClick={closeMenu}>
+                  <NavLink
+                    to="/devotion"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     Devotion
                   </NavLink>
                 </motion.li>
@@ -319,9 +395,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.7 }}
-                  className="hover:text-accent-6 tracking-wide"
                 >
-                  <NavLink to="/aboutUs" onClick={closeMenu}>
+                  <NavLink
+                    to="/aboutUs"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     About Us
                   </NavLink>
                 </motion.li>
@@ -329,9 +412,16 @@ const Header: React.FC = () => {
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
-                  className="hover:text-accent-6 tracking-wide"
                 >
-                  <NavLink to="/contactUs" onClick={closeMenu}>
+                  <NavLink
+                    to="/contactUs"
+                    onClick={closeMenu}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `hover:text-accent-6 tracking-wide transition-all ${
+                        isActive && "text-accent-6 font-nokia-bold"
+                      }`
+                    }
+                  >
                     Contact Us
                   </NavLink>
                 </motion.li>

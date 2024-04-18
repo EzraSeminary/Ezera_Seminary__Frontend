@@ -2,7 +2,6 @@ import { useState, ChangeEvent } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../services/api";
-// import BeatLoader from "react-spinners/BeatLoader";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ArrowLeft } from "@phosphor-icons/react";
@@ -102,21 +101,8 @@ function CoursesAvailable() {
     return undefined;
   };
 
-  {
-    /* Loading spinner */
-  }
+  // Loading skeleton
   if (isLoading) return <CoursesSkeleton />;
-  // (
-  //     <div className="h-full flex justify-center items-center">
-  //       <BeatLoader
-  //         color={"#707070"}
-  //         loading
-  //         size={15}
-  //         aria-label="Loading Spinner"
-  //         data-testid="loader"
-  //       />
-  //     </div>
-  //   );
 
   if (error) {
     let errorMessage = "An unknown error occurred";
