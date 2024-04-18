@@ -308,6 +308,31 @@ function AdminCourseDisplay({
                       <CarouselNext />
                     </Carousel>
                   );
+                } else if (element.type === "reveal") {
+                  elementComponent = (
+                    <>
+                      {element.value.map((revealItem, index) => (
+                        <ReactCardFlip
+                          isFlipped={flip[index] || false}
+                          flipDirection="vertical"
+                          key={`${uniqueKey}-reveal-${index}`}
+                        >
+                          <div
+                            onClick={() => handleFlip(index)}
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                          >
+                            {revealItem.title}
+                          </div>
+                          <div
+                            onClick={() => handleFlip(index)}
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                          >
+                            {revealItem.content}
+                          </div>
+                        </ReactCardFlip>
+                      ))}
+                    </>
+                  );
                 }
 
                 return elementComponent;
