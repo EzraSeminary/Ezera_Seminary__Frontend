@@ -77,7 +77,7 @@ export const apiSlice = createApi({
     }),
     getCurrentUser: builder.query({
       query: () => "/users/current",
-    }), 
+    }),
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `/users/${userId}`,

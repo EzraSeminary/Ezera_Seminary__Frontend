@@ -62,8 +62,6 @@ function EditCourse() {
   const handleSubmit = (event?: FormEvent) => {
     event?.preventDefault();
 
-    // console.log("Chapters data:", chapters);
-
     const formData = new FormData();
     formData.append("title", course.title);
     formData.append("description", course.description);

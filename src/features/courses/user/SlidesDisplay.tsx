@@ -259,8 +259,6 @@ function SlidesDisplay() {
 
   if (error) return <div>Something went wrong.</div>;
 
-  console.log(currentUser);
-
   return (
     <>
       <ToastContainer />

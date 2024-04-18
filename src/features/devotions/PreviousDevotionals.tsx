@@ -146,8 +146,6 @@ const PreviousDevotionals = ({
                     alt="Devotion Image"
                     className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                     onClick={() => {
-                      // open the devotion on click
-                      // console.log("clicked");
                       setSelectedDevotion(devotion);
                     }}
                   />
@@ -170,8 +168,6 @@ const PreviousDevotionals = ({
                       className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
                       size="devotion"
                       onClick={() => {
-                        // open the devotion on click
-                        // console.log("clicked");
                         setSelectedDevotion(devotion);
                       }}
                     >
@@ -198,8 +194,6 @@ const PreviousDevotionals = ({
                     alt="Devotion Image"
                     className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                     onClick={() => {
-                      // open the devotion on click
-                      // console.log("clicked");
                       setSelectedDevotion(devotion);
                     }}
                   />
@@ -222,8 +216,6 @@ const PreviousDevotionals = ({
                       className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
                       size="devotion"
                       onClick={() => {
-                        // open the devotion on click
-                        // console.log("clicked");
                         setSelectedDevotion(devotion);
                       }}
                     >
@@ -264,8 +256,6 @@ const PreviousDevotionals = ({
                     alt="Devotion Image"
                     className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                     onClick={() => {
-                      // open the devotion on click
-                      // console.log("clicked");
                       setSelectedDevotion(devotion);
                     }}
                   />
@@ -297,8 +287,6 @@ const PreviousDevotionals = ({
                       className="text-[#fff] bg-accent-6 text-xs font-nokia-bold w-[100%] border-2  rounded-full  px-2 hover: hover:bg-accent-7"
                       // size="devotion"
                       onClick={() => {
-                        // open the devotion on click
-                        // console.log("clicked");
                         setSelectedDevotion(devotion);
                       }}
                     >
