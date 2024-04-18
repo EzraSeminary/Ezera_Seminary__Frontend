@@ -15,6 +15,13 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { XCircle, CheckFat } from "@phosphor-icons/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
@@ -257,18 +264,32 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   );
                 } else if (element.type === "sequence") {
                   elementComponent = (
-                    <div className="flex flex-col justify-center items-center ml-8">
-                      <ul className="list-disc mt-2">
+                    <Carousel
+                      orientation="vertical"
+                      opts={{
+                        align: "start",
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent className="-mt-1 h-[200px]">
                         {element.value.map((sequenceItem, index) => (
-                          <li
+                          <CarouselItem
                             key={`${uniqueKey}-list-${index}`}
-                            className="text-primary-6 font-nokia-bold w-[100%] tracking-wide text-xs"
+                            className="pt-1 md:basis-1/2"
                           >
-                            {sequenceItem}
-                          </li>
+                            <div className="p-1">
+                              <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                <span className="text-secondary-9 text-xl font-nokia-bold">
+                                  {sequenceItem}
+                                </span>
+                              </div>
+                            </div>
+                          </CarouselItem>
                         ))}
-                      </ul>
-                    </div>
+                      </CarouselContent>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </Carousel>
                   );
                 }
 
