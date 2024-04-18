@@ -24,6 +24,13 @@ import { PuffLoader } from "react-spinners";
 import { CustomElement, AccordionElement } from "@/redux/courseSlice";
 import LoadingPage from "@/pages/user/LoadingPage";
 import { toast, ToastContainer } from "react-toastify";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -687,26 +694,28 @@ function SlidesDisplay() {
                             return null;
                           }
                         } else if (element.type === "sequence") {
-                          const sequenceItemsComponent = element.value.map(
-                            (sequenceItem: string, index: number) => (
-                              <li
-                                key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
-                              >
-                                {sequenceItem}
-                              </li>
-                            )
-                          );
-
                           return (
-                            <div
+                            <Carousel
+                              orientation="vertical"
+                              opts={{
+                                align: "start",
+                              }}
                               key={element._id}
-                              className="flex flex-col justify-center items-center ml-8"
+                              className="w-full"
                             >
                               <ul className="list-disc mt-2">
-                                {sequenceItemsComponent}
+                                {element.value.map(
+                                  (sequenceItem: string, index: number) => (
+                                    <li
+                                      key={index}
+                                      className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                                    >
+                                      {sequenceItem}
+                                    </li>
+                                  )
+                                )}
                               </ul>
-                            </div>
+                            </Carousel>
                           );
                         }
                       })}
