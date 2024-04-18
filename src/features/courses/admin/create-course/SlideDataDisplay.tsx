@@ -22,6 +22,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ReactCardFlip from "react-card-flip";
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
@@ -41,6 +42,8 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const [flip, setFlip] = useState(false);
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -293,15 +296,22 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                   );
                 } else if (element.type === "reveal") {
                   elementComponent = (
-                    <div className="flex flex-col justify-center items-center w-full">
-                      {element.value.map((accordionItem, index) => (
-                        <AccordionItemDisplay
+                    <>
+                      {element.value.map((revealItem, index) => (
+                        <ReactCardFlip
+                          isFlipped={flip}
+                          flipDirection="vertical"
                           key={`${uniqueKey}-accordion-${index}`}
-                          title={accordionItem.title}
-                          content={accordionItem.content}
-                        />
+                        >
+                          <div onClick={() => setFlip(!flip)}>
+                            {revealItem.title}
+                          </div>
+                          <div onClick={() => setFlip(!flip)}>
+                            {revealItem.content}
+                          </div>
+                        </ReactCardFlip>
                       ))}
-                    </div>
+                    </>
                   );
                 }
 
