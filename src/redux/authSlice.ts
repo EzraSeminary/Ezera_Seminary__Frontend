@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
+  _id?: string;
   role: string | null;
   firstName: string | null;
   lastName: string | null;
@@ -11,7 +12,6 @@ interface User {
   avatar: string | null;
   progress?: Progress[];
   achievement?: number;
-  _id?: string;
 }
 
 interface Progress {
@@ -65,16 +65,23 @@ const authSlice = createSlice({
     setAuthReady: (state, action: PayloadAction<boolean>) => {
       state.isAuthReady = action.payload;
     },
-    setProgress: (state, action: PayloadAction<{courseId: string, currentChapter: number, currentSlide: number}>) => {
+    setProgress: (
+      state,
+      action: PayloadAction<{
+        courseId: string;
+        currentChapter: number;
+        currentSlide: number;
+      }>
+    ) => {
       const { courseId, currentChapter, currentSlide } = action.payload;
-    
+
       // Error handling for existence of user and progress array
       if (state.user && state.user.progress) {
         // Find the index of the progress item for the specific course
         const progressIndex = state.user.progress.findIndex(
           (p) => p.courseId === courseId
         );
-    
+
         // If the course progress does not exist, initialize it
         if (progressIndex === -1) {
           state.user.progress.push({ courseId, currentChapter, currentSlide });
@@ -95,13 +102,20 @@ const authSlice = createSlice({
       // Store the token in localStorage
       localStorage.setItem("token", action.payload.token || "");
     },
-
   },
 });
 
-export const { login, signup, updateUser, logout, setAuthReady, setProgress, setUser } =
-  authSlice.actions;
+export const {
+  login,
+  signup,
+  updateUser,
+  logout,
+  setAuthReady,
+  setProgress,
+  setUser,
+} = authSlice.actions;
 
-export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
+export const selectCurrentUser = (state: { auth: AuthState }) =>
+  state.auth.user;
 
 export default authSlice.reducer;
