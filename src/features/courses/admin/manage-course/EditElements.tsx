@@ -6,7 +6,6 @@ import {
   deleteElement,
   selectChapters,
   Chapter,
-  AccordionElementValue,
 } from "@/redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
@@ -501,6 +500,114 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     </div>
   );
 
+  // Reveal Related Functions
+  const [revealTitles, setRevealTitles] = useState<string[]>([]);
+  const [revealContents, setRevealContents] = useState<string[]>([]);
+
+  const handleRevealTitleChange = (index: number, text: string) => {
+    setRevealTitles(
+      revealTitles.map((title, i) => (i === index ? text : title))
+    );
+  };
+
+  const handleRevealContentChange = (index: number, text: string) => {
+    setRevealContents(
+      revealContents.map((content, i) => (i === index ? text : content))
+    );
+  };
+
+  const handleAddRevealItem = () => {
+    setRevealTitles([...revealTitles, ""]);
+    setRevealContents([...revealContents, ""]);
+  };
+
+  const saveRevealToRedux = () => {
+    if (revealTitles.length > 0 && revealContents.length > 0) {
+      const revealItems = revealTitles.map((title, index) => ({
+        title,
+        content: revealContents[index],
+      }));
+
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "reveal",
+          value: revealItems,
+        })
+      );
+
+      // Reset state
+      setRevealTitles([]);
+      setRevealContents([]);
+    }
+    setCurrentElement("");
+  };
+
+  const renderRevealForm = () => (
+    <div className="pb-4">
+      <div className="flex justify-between items-center gap-2 w-full">
+        <button
+          onClick={handleAddRevealItem}
+          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <PlusCircle
+            className="text-primary-6  transition-all"
+            size={16}
+            weight="fill"
+          />
+          Add
+        </button>
+        <button
+          onClick={saveRevealToRedux}
+          className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <File
+            className="text-primary-6 transition-all"
+            size={16}
+            weight="fill"
+          />
+          Save
+        </button>
+      </div>
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {revealTitles.map((title, index) => (
+          <label className="text-accent-6 ">
+            Reveal Item {index + 1}:
+            <li key={index} className="flex flex-col space-y-2 mb-4">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => handleRevealTitleChange(index, e.target.value)}
+                placeholder={`Title ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <textarea
+                value={revealContents[index]}
+                onChange={(e) =>
+                  handleRevealContentChange(index, e.target.value)
+                }
+                placeholder={`Content ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => {
+                  setRevealTitles(revealTitles.filter((_, i) => i !== index));
+                  setRevealContents(
+                    revealContents.filter((_, i) => i !== index)
+                  );
+                }}
+                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1 self-end"
+                weight="fill"
+                size={22}
+              />
+            </li>
+          </label>
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
     <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
       <p className="font-bold py-2 text-accent-6 text-center text-lg">
@@ -525,6 +632,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
           <option value="sequence">Sequence</option>
+          <option value="reveal">Reveal</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -538,6 +646,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "sequence" && renderSequenceForm()}
+      {currentElement === "reveal" && renderRevealForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
@@ -569,10 +678,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 placeholder={`Enter ${element.type}`}
                 value={
                   element.type === "quiz"
-                    ? element.value.question
-                    : element.type === "accordion"
-                    ? (element.value as unknown as AccordionElementValue).title
-                    : element.value
+                    ? element.value?.question?.toString()
+                    : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
