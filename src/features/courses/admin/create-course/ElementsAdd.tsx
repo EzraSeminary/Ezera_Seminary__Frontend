@@ -29,6 +29,12 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
   const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
   const [accordionContents, setAccordionContents] = useState<string[]>([]);
+  const [sequenceItems, setSequenceItems] = useState<string[]>([]);
+  const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
+
+  const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCurrentSequenceItem(event.target.value);
+  };
 
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
