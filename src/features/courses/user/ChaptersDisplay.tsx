@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
@@ -13,6 +12,7 @@ import {
 import logo from "../../../assets/ezra-logo.svg";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import LoadingPage from "@/pages/user/LoadingPage";
 
 function ChaptersDisplay() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -165,18 +165,7 @@ function ChaptersDisplay() {
   {
     /* Loading state */
   }
-  if (isLoading)
-    return (
-      <div className="h-full flex justify-center items-center min-h-screen">
-        <BeatLoader
-          color={"#EA9215"}
-          loading
-          size={15}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
+  if (isLoading) return <LoadingPage />;
 
   if (error) return <div>Something went wrong.</div>;
 
