@@ -405,7 +405,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     </div>
   );
 
-  //List items related functions
+  // Sequence related functions
   const [sequenceItems, setSequenceItems] = useState<string[]>([]);
   const [currentSequenceItem, setCurrentSequenceItem] = useState("");
 
@@ -433,14 +433,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       setSequenceItems([]);
     }
     setCurrentElement("");
-    console.log(elements);
   };
 
   const handleDeleteSequenceItem = (indexToDelete: number) => {
-    const updatedLists = sequenceItems.filter(
+    const updatedSequence = sequenceItems.filter(
       (_, index) => index !== indexToDelete
     );
-    setSequenceItems(updatedLists);
+    setSequenceItems(updatedSequence);
   };
 
   const renderSequenceForm = () => (
@@ -481,7 +480,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {sequenceItems.map((item, index) => (
           <label className="text-accent-6 ">
-            List Item {index + 1}:
+            Sequence {index + 1}:
             <li
               key={index}
               className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
@@ -525,6 +524,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="img">Image</option>
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
+          <option value="sequence">Sequence</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -537,6 +537,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
+      {currentElement === "sequence" && renderSequenceForm()}
+
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
