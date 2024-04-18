@@ -222,15 +222,12 @@ const Header: React.FC = () => {
                         </div>
                       </div>
                       {showAccountModal && (
-                        <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10">
+                        <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10 text-primary-1 mt-1">
                           <div className="px-4 py-2 border-b tracking-wide">
-                            Logged in as: {user.email}
+                            {user.role}
                           </div>
                           <div className="px-4 py-2 border-b tracking-wide">
-                            Role: {user.role}
-                          </div>
-                          <div className="px-4 py-2 border-b tracking-wide">
-                            <NavLink to="/profile">Profile Settings</NavLink>
+                            <NavLink to="/profile">Settings</NavLink>
                           </div>
                           {user.role === "Admin" && (
                             <div className="px-4 py-2 border-b tracking-wide">
@@ -246,7 +243,11 @@ const Header: React.FC = () => {
                   ) : (
                     <>
                       <li className="hover:text-gray-400 tracking-wide">
-                        <NavLink to="/logIn">Log In</NavLink>
+                        <NavLink to="/logIn" className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }>Log In</NavLink>
                       </li>
                       <li className="hover:text-gray-400 text-base ">
                         <NavLink to="/signup">
@@ -434,24 +435,21 @@ const Header: React.FC = () => {
                     className="relative"
                   >
                     <div
-                      className="flex items-center space-x-2 bg-accent-6 rounded-full px-2 py-1 text-xs1  hover:bg-accent-7 cursor-pointer"
+                      className="flex items-center space-x-2 bg-accent-6 rounded-full py-1 px-2 text-xs1  hover:bg-accent-7 cursor-pointer"
                       onClick={handleAccountClick}
                     >
-                      <UserCircle size={25} />
+                      <UserCircle size={24} />
                       <div className="text-xs  xl:text-lg font-medium text-white tracking-wide">
                         {user.firstName}
                       </div>
                     </div>
                     {showAccountModal && (
-                      <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10">
+                      <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10 text-primary-1">
                         <div className="px-4 py-2 border-b tracking-wide">
-                          Logged in as: {user.email}
+                        {user.role}
                         </div>
                         <div className="px-4 py-2 border-b tracking-wide">
-                          Role: {user.role}
-                        </div>
-                        <div className="px-4 py-2 border-b tracking-wide">
-                          <NavLink to="/profile">Profile Settings</NavLink>
+                          <NavLink to="/profile">Settings</NavLink>
                         </div>
                         {user.role === "Admin" && (
                           <div className="px-4 py-2 border-b tracking-wide">
@@ -472,7 +470,11 @@ const Header: React.FC = () => {
                       transition={{ duration: 1, ease: "easeOut", delay: 0.9 }}
                       className="hover:text-accent-7 tracking-wide"
                     >
-                      <NavLink to="/logIn">Log In</NavLink>
+                      <NavLink to="/logIn" className={({ isActive }: { isActive: boolean }) =>
+                        `hover:text-accent-6 tracking-wide transition-all ${
+                          isActive && "text-accent-6 font-nokia-bold"
+                        }`
+                      }>Log In</NavLink>
                     </motion.li>
                     <motion.li
                       initial={{ opacity: 0, y: 100 }}
