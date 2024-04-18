@@ -592,7 +592,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {sequenceItems.map((item, index) => (
           <label className="text-accent-6 ">
-            Sequence Item {index + 1}:
+            Sequence {index + 1}:
             <li
               key={index}
               className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"

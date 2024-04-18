@@ -701,7 +701,7 @@ function SlidesDisplay() {
                                 align: "start",
                               }}
                               key={element._id}
-                              className="w-full"
+                              className="w-full mt-12"
                             >
                               <CarouselContent className="-mt-1 h-[200px]">
                                 {element.value.map(
