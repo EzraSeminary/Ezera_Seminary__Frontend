@@ -30,6 +30,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ReactCardFlip from "react-card-flip";
+
+interface FlipState {
+  [index: number]: boolean;
+}
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -45,6 +50,9 @@ function SlidesDisplay() {
   const [progressLoading, setProgressLoading] = useState(false);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  // Flip state
+  const [flip, setFlip] = useState<FlipState>({});
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -254,6 +262,14 @@ function SlidesDisplay() {
 
   const handleCloseFullScreen = () => {
     setIsFullScreen(false);
+  };
+
+  // Flip divs on Reveal Element
+  const handleFlip = (index: number) => {
+    setFlip((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state
+    }));
   };
 
   if (isLoading) return <LoadingPage />;
