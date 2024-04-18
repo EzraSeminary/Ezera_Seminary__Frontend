@@ -29,7 +29,9 @@ export type CustomElement =
   | ImgElement
   | ListElement
   | SlideElement
-  | QuizElement;
+  | QuizElement
+  | AccordionElement
+  | SequenceElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -79,6 +81,22 @@ export type QuizElementValue = {
   correctAnswer: string;
   _id: string;
 };
+
+export interface AccordionElement extends Omit<Element, "value"> {
+  type: "accordion";
+  value: AccordionElementValue[];
+}
+
+export type AccordionElementValue = {
+  title: string;
+  content: string;
+};
+
+export interface SequenceElement extends Omit<Element, "value"> {
+  type: "sequence";
+  value: string[];
+  _id: string;
+}
 
 export const api = createApi({
   reducerPath: "api",

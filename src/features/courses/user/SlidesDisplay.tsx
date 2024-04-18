@@ -686,6 +686,28 @@ function SlidesDisplay() {
                             );
                             return null;
                           }
+                        } else if (element.type === "sequence") {
+                          const sequenceItemsComponent = element.value.map(
+                            (sequenceItem: string, index: number) => (
+                              <li
+                                key={index}
+                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                              >
+                                {sequenceItem}
+                              </li>
+                            )
+                          );
+
+                          return (
+                            <div
+                              key={element._id}
+                              className="flex flex-col justify-center items-center ml-8"
+                            >
+                              <ul className="list-disc mt-2">
+                                {sequenceItemsComponent}
+                              </ul>
+                            </div>
+                          );
                         }
                       })}
                     </div>
