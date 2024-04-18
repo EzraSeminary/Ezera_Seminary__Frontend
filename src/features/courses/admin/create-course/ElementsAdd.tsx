@@ -32,39 +32,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const [sequenceItems, setSequenceItems] = useState<string[]>([]);
   const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
 
-  const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCurrentSequenceItem(event.target.value);
-  };
-
-  const handleAddSequenceItem = () => {
-    if (currentSequenceItem) {
-      setSequenceItems([...sequenceItems, currentSequenceItem]);
-      setCurrentSequenceItem("");
-    }
-  };
-
-  const handleAddSequenceElement = () => {
-    if (sequenceItems.length > 0) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: "sequence",
-          value: sequenceItems,
-        })
-      );
-      setSequenceItems([]);
-    }
-    setCurrentElement("");
-  };
-
-  const handleDeleteSequenceItem = (indexToDelete: number) => {
-    const updatedSequence = sequenceItems.filter(
-      (_, index) => index !== indexToDelete
-    );
-    setSequenceItems(updatedSequence);
-  };
-
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
@@ -551,6 +518,40 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       </label>
     </div>
   );
+
+  // Sequence Related Functions.
+  const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCurrentSequenceItem(event.target.value);
+  };
+
+  const handleAddSequenceItem = () => {
+    if (currentSequenceItem) {
+      setSequenceItems([...sequenceItems, currentSequenceItem]);
+      setCurrentSequenceItem("");
+    }
+  };
+
+  const handleAddSequenceElement = () => {
+    if (sequenceItems.length > 0) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "sequence",
+          value: sequenceItems,
+        })
+      );
+      setSequenceItems([]);
+    }
+    setCurrentElement("");
+  };
+
+  const handleDeleteSequenceItem = (indexToDelete: number) => {
+    const updatedSequence = sequenceItems.filter(
+      (_, index) => index !== indexToDelete
+    );
+    setSequenceItems(updatedSequence);
+  };
 
   const renderSequenceForm = () => (
     <div className="pb-4">

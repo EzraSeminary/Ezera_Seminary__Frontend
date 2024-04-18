@@ -255,6 +255,25 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                       {accordionItemsComponent}
                     </div>
                   );
+                } else if (element.type === "sequence") {
+                  const sequenceItemsComponent = element.value.map(
+                    (sequenceItem, index) => (
+                      <li
+                        key={`${uniqueKey}-list-${index}`}
+                        className="text-primary-6 font-nokia-bold w-[100%] tracking-wide text-xs"
+                      >
+                        {sequenceItem}
+                      </li>
+                    )
+                  );
+
+                  elementComponent = (
+                    <div className="flex flex-col justify-center items-center ml-8">
+                      <ul className="list-disc mt-2">
+                        {sequenceItemsComponent}
+                      </ul>
+                    </div>
+                  );
                 }
 
                 return elementComponent;
