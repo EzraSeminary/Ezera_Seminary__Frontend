@@ -36,6 +36,28 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setCurrentSequenceItem(event.target.value);
   };
 
+  const handleAddSequenceItem = () => {
+    if (currentSequenceItem) {
+      setSequenceItems([...sequenceItems, currentSequenceItem]);
+      setCurrentSequenceItem("");
+    }
+  };
+
+  const handleAddSequenceElement = () => {
+    if (sequenceItems.length > 0) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "sequence",
+          value: sequenceItems,
+        })
+      );
+      setSequenceItems([]);
+    }
+    setCurrentElement("");
+  };
+
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
