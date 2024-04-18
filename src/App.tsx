@@ -44,17 +44,19 @@ function App() {
 
   //fetch user data
   const { data: userData, error: userError } = useGetCurrentUserQuery({});
-  console.log(userData);
 
   //save user data to redux
   useEffect(() => {
-    // const user = JSON.parse(localStorage.getItem("user") as string);
+    const localStorageUser = JSON.parse(localStorage.getItem("user") as string);
 
-    if (userData) {
-      dispatch(login(userData)); // Dispatch the login action
+    // Prefer userData from the API, fallback to localStorage if not available
+    const userToLogin = userData || localStorageUser;
+
+    if (userToLogin) {
+      dispatch(login(userToLogin));
     }
 
-    dispatch(setAuthReady(true)); // Dispatch the setAuthReady action
+    dispatch(setAuthReady(true));
   }, [dispatch, userData]);
 
   if (!isAuthReady) {

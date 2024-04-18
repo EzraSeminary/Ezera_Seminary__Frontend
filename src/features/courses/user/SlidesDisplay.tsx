@@ -264,8 +264,6 @@ function SlidesDisplay() {
 
   if (error) return <div>Something went wrong.</div>;
 
-  console.log(currentUser);
-
   return (
     // <div className="flex justify-center items-center w-[80%] mx-auto">
     <div className="flex  mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
