@@ -192,6 +192,70 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setCurrentElement("");
   };
 
+  const renderRevealForm = () => (
+    <div className="pb-4">
+      <div className="flex justify-between items-center gap-2 w-full">
+        <button
+          onClick={handleAddRevealItem}
+          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <PlusCircle
+            className="text-primary-6  transition-all"
+            size={16}
+            weight="fill"
+          />
+          Add
+        </button>
+        <button
+          onClick={saveRevealToRedux}
+          className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <File
+            className="text-primary-6 transition-all"
+            size={16}
+            weight="fill"
+          />
+          Save
+        </button>
+      </div>
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {revealTitles.map((title, index) => (
+          <label className="text-accent-6 ">
+            Reveal Item {index + 1}:
+            <li key={index} className="flex flex-col space-y-2 mb-4">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => handleRevealTitleChange(index, e.target.value)}
+                placeholder={`Title ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <textarea
+                value={revealContents[index]}
+                onChange={(e) =>
+                  handleRevealContentChange(index, e.target.value)
+                }
+                placeholder={`Content ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => {
+                  setRevealTitles(revealTitles.filter((_, i) => i !== index));
+                  setRevealContents(
+                    revealContents.filter((_, i) => i !== index)
+                  );
+                }}
+                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1 self-end"
+                weight="fill"
+                size={22}
+              />
+            </li>
+          </label>
+        ))}
+      </ul>
+    </div>
+  );
+
   const renderListForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
@@ -390,7 +454,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       currentElement !== "list" &&
       currentElement !== "img" &&
       currentElement !== "quiz" &&
-      currentElement !== "sequence"
+      currentElement !== "sequence" &&
+      currentElement !== "reveal"
     ) {
       dispatch(
         addElementToSlide({
@@ -681,6 +746,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           <option value="list">List</option>
           <option value="accordion">Accordion</option>
           <option value="sequence">Sequence</option>
+          <option value="reveal">Reveal</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -695,6 +761,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "accordion" && renderAccordionForm()}
       {currentElement === "sequence" && renderSequenceForm()}
+      {currentElement === "reveal" && renderRevealForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
