@@ -194,6 +194,7 @@ export const courseSlice = createSlice({
           | File
           | QuizElementValue
           | AccordionElementValue[]
+          | RevealElementValue[]
           | null;
       }>
     ) => {
@@ -255,10 +256,14 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as AccordionElementValue[]; // Cast value to AccordionElementValue array for accordion element
           break;
-          case "sequence":
-            newElement.type = elementType;
-            newElement.value = value as string[];
-            break;
+        case "sequence":
+          newElement.type = elementType;
+          newElement.value = value as string[];
+          break;
+        case "reveal":
+          newElement.type = elementType;
+          newElement.value = value as RevealElementValue[];
+          break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -278,7 +283,8 @@ export const courseSlice = createSlice({
           | string[]
           | File
           | QuizElementValue
-          | AccordionElementValue[];
+          | AccordionElementValue[]
+          | RevealElementValue[];
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
@@ -309,6 +315,9 @@ export const courseSlice = createSlice({
             break;
           case "sequence":
             element.value = value as string[];
+            break;
+          case "reveal":
+            element.value = value as RevealElementValue[];
             break;
           default:
             // Handle unknown element type or throw error

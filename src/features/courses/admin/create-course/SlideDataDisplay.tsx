@@ -291,6 +291,18 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                       <CarouselNext />
                     </Carousel>
                   );
+                } else if (element.type === "reveal") {
+                  elementComponent = (
+                    <div className="flex flex-col justify-center items-center w-full">
+                      {element.value.map((accordionItem, index) => (
+                        <AccordionItemDisplay
+                          key={`${uniqueKey}-accordion-${index}`}
+                          title={accordionItem.title}
+                          content={accordionItem.content}
+                        />
+                      ))}
+                    </div>
+                  );
                 }
 
                 return elementComponent;
