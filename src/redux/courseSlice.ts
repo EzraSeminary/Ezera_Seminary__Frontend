@@ -29,13 +29,8 @@ export type CustomElement =
   | ListElement
   | SlideElement
   | QuizElement
-  | AccordionElement;
-
-// export interface Element {
-//   type: string;
-//   id: string;
-//   value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
-// }
+  | AccordionElement
+  | SequenceElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -87,6 +82,12 @@ export type AccordionElementValue = {
   title: string;
   content: string;
 };
+
+export interface SequenceElement extends Omit<Element, "value"> {
+  type: "sequence";
+  value: string[];
+}
+
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
   title: "",
@@ -243,6 +244,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as AccordionElementValue[]; // Cast value to AccordionElementValue array for accordion element
           break;
+          case "sequence":
+            newElement.type = elementType;
+            newElement.value = value as string[];
+            break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -290,6 +295,9 @@ export const courseSlice = createSlice({
             break;
           case "accordion":
             element.value = value as AccordionElementValue[];
+            break;
+          case "sequence":
+            element.value = value as string[];
             break;
           default:
             // Handle unknown element type or throw error
