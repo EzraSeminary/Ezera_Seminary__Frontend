@@ -21,6 +21,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ReactCardFlip from "react-card-flip";
+
+interface FlipState {
+  [index: number]: boolean;
+}
 
 interface SelectedSlideIndex {
   chapter: number;
@@ -36,6 +41,9 @@ function AdminCourseDisplay({
   selectedSlideIndex,
   onNextSlide,
 }: AdminCourseDisplayProps) {
+  // Flip state
+  const [flip, setFlip] = useState<FlipState>({});
+
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
@@ -100,6 +108,14 @@ function AdminCourseDisplay({
     }
     setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
+
+  // Flip divs on Reveal Element
+  const handleFlip = (index: number) => {
+    setFlip((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state
+    }));
+  };
 
   return (
     <div className="h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
