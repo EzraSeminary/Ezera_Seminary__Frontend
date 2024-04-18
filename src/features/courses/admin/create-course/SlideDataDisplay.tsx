@@ -43,7 +43,7 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
-  const [flip, setFlip] = useState(false);
+  const [flip, setFlip] = useState([]);
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -299,19 +299,19 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                     <>
                       {element.value.map((revealItem, index) => (
                         <ReactCardFlip
-                          isFlipped={flip}
+                          isFlipped={flip[index] || false}
                           flipDirection="vertical"
                           key={`${uniqueKey}-reveal-${index}`}
                         >
                           <div
                             onClick={() => setFlip(!flip)}
-                            className="w-[250px] h-[150px] bg-white border-2 border-secondary-3 shadow-2xl my-1 text-secondary-9 text-xl"
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl"
                           >
                             {revealItem.title}
                           </div>
                           <div
                             onClick={() => setFlip(!flip)}
-                            className="w-[250px] h-[150px] bg-white border-2 border-secondary-3 shadow-2xl my-1 text-secondary-9 text-xl"
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg"
                           >
                             {revealItem.content}
                           </div>
