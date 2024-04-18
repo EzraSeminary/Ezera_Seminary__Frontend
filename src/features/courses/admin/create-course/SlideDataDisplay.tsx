@@ -301,12 +301,18 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                         <ReactCardFlip
                           isFlipped={flip}
                           flipDirection="vertical"
-                          key={`${uniqueKey}-accordion-${index}`}
+                          key={`${uniqueKey}-reveal-${index}`}
                         >
-                          <div onClick={() => setFlip(!flip)}>
+                          <div
+                            onClick={() => setFlip(!flip)}
+                            className="w-[250px] h-[150px] bg-white border-2 border-secondary-3 shadow-2xl my-1 text-secondary-9 text-xl"
+                          >
                             {revealItem.title}
                           </div>
-                          <div onClick={() => setFlip(!flip)}>
+                          <div
+                            onClick={() => setFlip(!flip)}
+                            className="w-[250px] h-[150px] bg-white border-2 border-secondary-3 shadow-2xl my-1 text-secondary-9 text-xl"
+                          >
                             {revealItem.content}
                           </div>
                         </ReactCardFlip>
