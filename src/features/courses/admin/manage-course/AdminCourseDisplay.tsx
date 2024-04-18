@@ -14,6 +14,13 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { XCircle, CheckFat } from "@phosphor-icons/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface SelectedSlideIndex {
   chapter: number;
@@ -255,6 +262,35 @@ function AdminCourseDisplay({
                         {listItemsComponent}
                       </Splide>
                     </div>
+                  );
+                } else if (element.type === "sequence") {
+                  elementComponent = (
+                    <Carousel
+                      orientation="vertical"
+                      opts={{
+                        align: "start",
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent className="-mt-1 h-[200px]">
+                        {element.value.map((sequenceItem, index) => (
+                          <CarouselItem
+                            key={`${uniqueKey}-list-${index}`}
+                            className="pt-1 md:basis-1/2"
+                          >
+                            <div className="p-1">
+                              <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                <span className="text-secondary-9 text-xl font-nokia-bold">
+                                  {sequenceItem}
+                                </span>
+                              </div>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </Carousel>
                   );
                 }
 
