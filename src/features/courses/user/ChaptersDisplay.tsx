@@ -6,9 +6,9 @@ import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
-  Circle,
   XCircle,
   ArrowRight,
+  Lock,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import { RootState } from "@/redux/store";
@@ -76,7 +76,7 @@ function ChaptersDisplay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProgress]);
 
-  //function for next & previous buttons
+  //function to select chapter buttons
   const updateIndex = (newIndex: number) => {
     // First adjust the new index if it's out of bounds
     const adjustedIndex = Math.max(0, Math.min(newIndex, data.length - 1));
@@ -96,12 +96,28 @@ function ChaptersDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
+  // // We'll add this new function to "complete" a chapter, which means that
+  // // the next chapter should be unlocked.
+  // const completeChapter = (completedIndex: number) => {
+  //   // If the completed chapter is the current unlocked one,
+  //   // then we unlock the next one.
+  //   if (completedIndex === unlockedIndex) {
+  //     // Assume the max chapters are equal to the length of the data array
+  //     const maxChapters = data.length;
+  //     // Set the next chapter as the unlocked one if it isn't the last chapter
+  //     if (completedIndex < maxChapters - 1) {
+  //       setUnlockedIndex(completedIndex + 1);
+  //       // Auto-advance to next chapter.
+  //       setActiveIndex(completedIndex + 1);
+  //     }
+  //   }
+  // };
+
   // slide number
   const currentDataNumber = activeIndex + 1;
   const totalDataNumber = data.length;
 
   //progress
-
   const progressValue = () => {
     if (userProgress && userProgress.currentChapter !== undefined) {
       // the progressPercent should be calculated based on the index of chapter
@@ -255,23 +271,27 @@ function ChaptersDisplay() {
             {/* Chapters */}
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
-                const unlocked = isSlideUnlocked(index);
+                const unlocked = isSlideUnlocked(index - 1);
+                const isActive = index === activeIndex;
+
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked ? "text-black  " : "text-gray-500 "
-                    }  ${index === activeIndex && "font-bold"}
+                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                      unlocked
+                        ? "text-secondary-6"
+                        : "text-secondary-3 hover:cursor-not-allowed"
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
                       handleArrowClick();
                     }}
+                    disabled={!unlocked}
                   >
                     <div className="flex flex-col items-start justify-center">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
-                        {/* <Text>ID</Text> {courseId} */}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
                         {index + 1}/{totalDataNumber} Chapters
@@ -280,7 +300,7 @@ function ChaptersDisplay() {
                     {unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Circle size={16} color={"#EA9215"} />
+                      <Lock size={16} color={"#EC4000"} />
                     )}
                   </button>
                 );
@@ -339,13 +359,17 @@ function ChaptersDisplay() {
             {/* Chapters */}
             <div className="flex flex-col px-2 pt-2 gap-2 md:px-3">
               {data.map((chapter, index) => {
-                const unlocked = isSlideUnlocked(index);
+                const unlocked = isSlideUnlocked(index - 1); //unlock the chapter next to the active index.
+                const isActive = index === activeIndex; //check if the index is equal with the active index.
+
                 return (
                   <button
                     key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked ? "text-black  " : "text-gray-500 "
-                    }  ${index === activeIndex && "font-bold"}
+                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                      unlocked
+                        ? "text-secondary-6"
+                        : "text-secondary-3 hover:cursor-not-allowed"
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
@@ -364,7 +388,7 @@ function ChaptersDisplay() {
                     {unlocked ? (
                       <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Circle size={16} color={"#EA9215"} />
+                      <Lock size={16} color={"#EC4000"} />
                     )}
                   </button>
                 );

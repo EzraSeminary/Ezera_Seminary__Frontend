@@ -8,11 +8,12 @@ import BeatLoader from "react-spinners/BeatLoader";
 import {
   ArrowLeft,
   CheckCircle,
-  Circle,
   XCircle,
   ArrowRight,
   CaretCircleLeft,
   CheckFat,
+  Lock,
+  CornersOut,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
@@ -27,8 +28,6 @@ function SlidesDisplay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [unlockedIndex, setUnlockedIndex] = useState(0); // New state variable to track the unlocked index
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -38,8 +37,55 @@ function SlidesDisplay() {
 
   const [progressLoading, setProgressLoading] = useState(false);
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const { courseId, chapterId } = useParams<{
+    courseId: string;
+    chapterId: string;
+  }>();
+
+  //get single course
+  const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
+
+  // Extracting chapter data from the fetched course data
+  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
+  const chapterIndex = courseData?.chapters.findIndex(
+    (chap) => chap._id === chapterId
+  );
+
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  //find matching courseId from the user progress array
+  const userProgress = currentUser?.progress?.find(
+    (p) => p.courseId === courseId
+  );
+
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
+
+  //Resume chapter
+  // When component did mount or userProgress has changed, update the activeIndex
+  useEffect(() => {
+    console.log("Current chapter index:", chapterIndex);
+    console.log("User progress:", userProgress);
+    if (userProgress) {
+      if (
+        chapterIndex === userProgress.currentChapter &&
+        userProgress.currentSlide !== undefined
+      ) {
+        // The current selected chapter is the same as the chapterIndex from progress
+        setActiveIndex(userProgress.currentSlide);
+        if (userProgress.currentSlide > unlockedIndex) {
+          setUnlockedIndex(userProgress.currentSlide);
+        }
+      } else {
+        //set the activeIndex to the beginning of the current chapter
+        setActiveIndex(0);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chapterIndex]);
 
   {
     /* Function to open the chapters sidebar modal */
@@ -58,14 +104,6 @@ function SlidesDisplay() {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  const { courseId, chapterId } = useParams<{
-    courseId: string;
-    chapterId: string;
-  }>();
-
-  //get single course
-  const { data: courseData, error } = useGetCourseByIdQuery(courseId as string);
-
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -73,32 +111,27 @@ function SlidesDisplay() {
     }, 2000);
   }, []);
 
-  // Extracting chapter data from the fetched course data
-  const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
-  const chapterIndex = courseData?.chapters.findIndex(
-    (chap) => chap._id === chapterId
-  );
   // If the chapter is not found, handle accordingly
   if (!chapter) {
     return <p>Chapter not found</p>;
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
-  // console.log(data);
 
-  //Slide changing functionality
+  //function to select chapter buttons
   const updateIndex = (newIndex: number) => {
-    if (newIndex < 0) {
-      newIndex = 0;
-    } else if (newIndex >= data.length) {
-      newIndex = data.length - 1;
-    }
-
-    if (newIndex > unlockedIndex) {
-      setUnlockedIndex(newIndex); // Update the unlocked index
-    }
-
-    setActiveIndex(newIndex);
+    // First adjust the new index if it's out of bounds
+    const adjustedIndex = Math.max(0, Math.min(newIndex, data.length - 1));
+    // Use a functional update to ensure we're using the latest state
+    setUnlockedIndex((prevUnlockedIndex) => {
+      // Only update if the new index is greater than the previous unlocked index
+      if (adjustedIndex > prevUnlockedIndex) {
+        return adjustedIndex;
+      } else {
+        return prevUnlockedIndex;
+      }
+    });
+    setActiveIndex(adjustedIndex);
     setShowQuizResult(false); // Reset the showQuizResult state
     updateProgress();
   };
@@ -118,7 +151,6 @@ function SlidesDisplay() {
   };
 
   //Quiz Related functions
-
   const handleRadioChange = (
     choiceIndex: number,
     choiceValue: string,
@@ -208,6 +240,15 @@ function SlidesDisplay() {
       </div>
     );
 
+  //display a full screen functionality when clicking on the image
+  const handleOpenFullScreen = () => {
+    setIsFullScreen(true);
+  };
+
+  const handleCloseFullScreen = () => {
+    setIsFullScreen(false);
+  };
+
   if (isLoading)
     return (
       <div className="h-full flex justify-center items-center min-h-screen">
@@ -284,13 +325,17 @@ function SlidesDisplay() {
           {/* slide list */}
           <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
-              const unlocked = isSlideUnlocked(index);
+              const unlocked = isSlideUnlocked(index - 1);
+              const isActive = index === activeIndex;
+
               return (
                 <button
                   key={index}
-                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                    unlocked ? "text-black" : "text-gray-500"
-                  }  ${index === activeIndex && "font-bold "}
+                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                    unlocked
+                      ? "text-secondary-6"
+                      : "text-secondary-3 hover:cursor-not-allowed"
+                  }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
 
                     `}
                   onClick={() => {
@@ -310,7 +355,7 @@ function SlidesDisplay() {
                   {unlocked ? (
                     <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                   ) : (
-                    <Circle size={16} color={"#EA9215"} />
+                    <Lock size={16} color={"#EC4000"} />
                   )}
                 </button>
               );
@@ -353,13 +398,17 @@ function SlidesDisplay() {
           {/* slide list */}
           <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
             {data.map((slides, index) => {
-              const unlocked = isSlideUnlocked(index);
+              const unlocked = isSlideUnlocked(index - 1);
+              const isActive = index === activeIndex;
+
               return (
                 <button
                   key={index}
-                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 text-secondary-6 cursor-pointer py-2 rounded-lg bg-gray-200 hover:bg-[#FAE5C7] hover:opacity-80  ${
-                    unlocked ? "text-black" : "text-gray-500"
-                  }  ${index === activeIndex && "font-bold "}
+                  className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
+                    unlocked
+                      ? "text-secondary-6"
+                      : "text-secondary-3 hover:cursor-not-allowed"
+                  }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
 
                     `}
                   onClick={() => {
@@ -379,7 +428,7 @@ function SlidesDisplay() {
                   {unlocked ? (
                     <CheckCircle size={16} weight="fill" color={"#EA9215"} />
                   ) : (
-                    <Circle size={16} color={"#EA9215"} />
+                    <Lock size={16} color={"#EC4000"} />
                   )}
                 </button>
               );
@@ -398,7 +447,7 @@ function SlidesDisplay() {
         </div>
       </div>
       {/* slides display window*/}
-      <div className="  lg:w-[70%]   items-center  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full">
+      <div className="lg:w-[70%] items-center h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full relative">
         {/* Chapter display container */}
         <div className="flex flex-col justify-between h-full">
           {/* Header */}
@@ -461,12 +510,40 @@ function SlidesDisplay() {
                       } else if (element.type === "img") {
                         return (
                           <div className="w-full h-full">
-                            <img
-                              key={element._id}
-                              src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
-                              alt="no image"
-                              className="w-[40vh] max-h-[40vh] min-h-[40vh] mx-auto md:w-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover shadow-xl mt-2 bg-accent-9 rounded-xl text-white text-center"
-                            />
+                            {isFullScreen ? (
+                              <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
+                                <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
+                                  <ArrowLeft
+                                    size={40}
+                                    className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                    weight="bold"
+                                    onClick={handleCloseFullScreen}
+                                  />
+                                  <img
+                                    src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                    alt="fullscreen content"
+                                    className="w-full h-full object-contain rounded-3xl"
+                                  />
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
+                                onClick={handleOpenFullScreen}
+                              >
+                                <img
+                                  key={element._id}
+                                  src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                  alt="no image"
+                                  className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
+                                />
+                                <CornersOut
+                                  size={28}
+                                  className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                  weight="bold"
+                                />
+                              </div>
+                            )}
                           </div>
                         );
                       } else if (element.type === "list") {
