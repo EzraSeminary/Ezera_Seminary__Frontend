@@ -31,6 +31,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const [accordionContents, setAccordionContents] = useState<string[]>([]);
   const [sequenceItems, setSequenceItems] = useState<string[]>([]);
   const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
+  const [revealTitles, setRevealTitles] = useState<string[]>([]);
+  const [revealContents, setRevealContents] = useState<string[]>([]);
 
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
@@ -145,6 +147,47 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       // Reset accordion state
       setAccordionTitles([]);
       setAccordionContents([]);
+    }
+    setCurrentElement("");
+  };
+
+  // Reveal Related Functions
+  const handleRevealTitleChange = (index: number, text: string) => {
+    setRevealTitles(
+      revealTitles.map((title, i) => (i === index ? text : title))
+    );
+  };
+
+  const handleRevealContentChange = (index: number, text: string) => {
+    setRevealContents(
+      revealContents.map((content, i) => (i === index ? text : content))
+    );
+  };
+
+  const handleAddRevealItem = () => {
+    setRevealTitles([...revealTitles, ""]);
+    setRevealContents([...revealContents, ""]);
+  };
+
+  const saveRevealToRedux = () => {
+    if (revealTitles.length > 0 && revealContents.length > 0) {
+      const revealItems = revealTitles.map((title, index) => ({
+        title,
+        content: revealContents[index],
+      }));
+
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "reveal",
+          value: revealItems,
+        })
+      );
+
+      // Reset state
+      setRevealTitles([]);
+      setRevealContents([]);
     }
     setCurrentElement("");
   };
