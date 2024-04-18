@@ -703,18 +703,26 @@ function SlidesDisplay() {
                               key={element._id}
                               className="w-full"
                             >
-                              <ul className="list-disc mt-2">
+                              <CarouselContent className="-mt-1 h-[200px]">
                                 {element.value.map(
                                   (sequenceItem: string, index: number) => (
-                                    <li
+                                    <CarouselItem
                                       key={index}
-                                      className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                                      className="pt-1 md:basis-1/2"
                                     >
-                                      {sequenceItem}
-                                    </li>
+                                      <div className="p-1">
+                                        <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                          <span className="text-secondary-9 text-xl font-nokia-bold">
+                                            {sequenceItem}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </CarouselItem>
                                   )
                                 )}
-                              </ul>
+                              </CarouselContent>
+                              <CarouselPrevious />
+                              <CarouselNext />
                             </Carousel>
                           );
                         }
