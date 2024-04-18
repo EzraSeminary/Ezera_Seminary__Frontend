@@ -139,7 +139,7 @@ const ProfileSettings = () => {
   return (
     <>
       <ToastContainer />
-      <div className="container mx-8 my-20 p-10 bg-accent-1 rounded-lg shadow-lg">
+      <div className="container mx-8 my-20 p-10 bg-secondary-6 rounded-lg shadow-lg text-primary-6">
         <button
           onClick={goBack}
           className="mb-4 bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
@@ -161,7 +161,7 @@ const ProfileSettings = () => {
               className="w-[25vmin] rounded-full mx-auto"
             />
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">{`${firstName} ${lastName}`}</h3>
+              <h3 className="text-lg text-primary-6 font-semibold">{`${firstName} ${lastName}`}</h3>
               <label className="mt-2 inline-block bg-accent-6 text-white py-1 px-4 rounded cursor-pointer hover:bg-accent-7">
                 <span>Upload New Photo</span>
                 <input
@@ -174,12 +174,12 @@ const ProfileSettings = () => {
           </div>
           {/* Second Section - Edit Profile Form */}
           <div className="md:w-2/3">
-            <h2 className="text-2xl font-bold text-secondary-10 mb-6">
+            <h2 className="text-2xl font-bold text-primary-6 mb-6">
               Edit Profile
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="mb-4">
-                <label className="block text-secondary-10 text-sm font-bold mb-2">
+                <label className="block text-primary-6 text-sm font-bold mb-2">
                   First Name:
                 </label>
                 <input
@@ -190,7 +190,7 @@ const ProfileSettings = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-secondary-10 text-sm font-bold mb-2">
+                <label className="block text-primary-6 text-sm font-bold mb-2">
                   Last Name:
                 </label>
                 <input
@@ -201,7 +201,7 @@ const ProfileSettings = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-secondary-10 text-sm font-bold mb-2">
+                <label className="block text-primary-6 text-sm font-bold mb-2">
                   Email:
                 </label>
                 <input
@@ -212,7 +212,7 @@ const ProfileSettings = () => {
                 />
               </div>
               <div className="mb-6 relative">
-                <label className="block text-secondary-10 text-sm font-bold mb-2">
+                <label className="block text-primary-6 text-sm font-bold mb-2">
                   Password:
                 </label>
                 <input
