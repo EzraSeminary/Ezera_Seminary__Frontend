@@ -24,6 +24,10 @@ import {
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
 
+interface FlipState {
+  [index: number]: boolean;
+}
+
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
     chapter: number;
@@ -32,10 +36,10 @@ interface SlideDataDisplayProps {
   onNextSlide: () => void;
 }
 
-const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
+function SlideDataDisplay({
   selectedSlideIndex,
   onNextSlide,
-}) => {
+}: SlideDataDisplayProps) {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
@@ -43,7 +47,8 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
-  const [flip, setFlip] = useState([]);
+  // Flip state
+  const [flip, setFlip] = useState<FlipState>([]);
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -103,6 +108,14 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
     }
     setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
+
+  // Flip divs on Reveal Element
+  const handleFlip = (index: number) => {
+    setFlip((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state
+    }));
+  };
 
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
@@ -304,13 +317,13 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
                           key={`${uniqueKey}-reveal-${index}`}
                         >
                           <div
-                            onClick={() => setFlip(!flip)}
+                            onClick={() => handleFlip(index)}
                             className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl"
                           >
                             {revealItem.title}
                           </div>
                           <div
-                            onClick={() => setFlip(!flip)}
+                            onClick={() => handleFlip(index)}
                             className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg"
                           >
                             {revealItem.content}
@@ -340,6 +353,6 @@ const SlideDataDisplay: React.FC<SlideDataDisplayProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default SlideDataDisplay;
