@@ -58,6 +58,13 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     setCurrentElement("");
   };
 
+  const handleDeleteSequenceItem = (indexToDelete: number) => {
+    const updatedSequence = sequenceItems.filter(
+      (_, index) => index !== indexToDelete
+    );
+    setSequenceItems(updatedSequence);
+  };
+
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
@@ -129,6 +136,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       }
     }
   };
+
   const handleDeleteListItem = (indexToDelete: number) => {
     const updatedList = listItems.filter((_, index) => index !== indexToDelete);
     setListItems(updatedList);
