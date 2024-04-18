@@ -48,7 +48,7 @@ function SlideDataDisplay({
   const [showQuizResult, setShowQuizResult] = useState(false);
 
   // Flip state
-  const [flip, setFlip] = useState<FlipState>([]);
+  const [flip, setFlip] = useState<FlipState>({});
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -318,13 +318,13 @@ function SlideDataDisplay({
                         >
                           <div
                             onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl"
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
                           >
                             {revealItem.title}
                           </div>
                           <div
                             onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg"
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
                           >
                             {revealItem.content}
                           </div>
