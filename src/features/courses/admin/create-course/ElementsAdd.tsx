@@ -379,7 +379,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       currentElement &&
       currentElement !== "list" &&
       currentElement !== "img" &&
-      currentElement !== "quiz"
+      currentElement !== "quiz" &&
+      currentElement !== "sequence"
     ) {
       dispatch(
         addElementToSlide({
@@ -635,6 +636,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
           <option value="accordion">Accordion</option>
+          <option value="sequence">Sequence</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -648,6 +650,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "accordion" && renderAccordionForm()}
+      {currentElement === "sequence" && renderSequenceForm()}
+
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
