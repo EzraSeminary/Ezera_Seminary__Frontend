@@ -29,7 +29,10 @@ export type CustomElement =
   | ImgElement
   | ListElement
   | SlideElement
-  | QuizElement;
+  | QuizElement
+  | AccordionElement
+  | SequenceElement
+  | RevealElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -77,6 +80,36 @@ export type QuizElementValue = {
   question: string;
   choices: { text: string }[];
   correctAnswer: string;
+  _id: string;
+};
+
+export interface AccordionElement extends Omit<Element, "value"> {
+  type: "accordion";
+  value: AccordionElementValue[];
+  _id: string;
+}
+
+export type AccordionElementValue = {
+  title: string;
+  content: string;
+  _id: string;
+};
+
+export interface SequenceElement extends Omit<Element, "value"> {
+  type: "sequence";
+  value: string[];
+  _id: string;
+}
+
+export interface RevealElement extends Omit<Element, "value"> {
+  type: "reveal";
+  value: RevealElementValue[];
+  _id: string;
+}
+
+export type RevealElementValue = {
+  title: string;
+  content: string;
   _id: string;
 };
 

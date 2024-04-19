@@ -21,9 +21,20 @@ import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
-import { CustomElement, AccordionElement } from "@/redux/courseSlice";
 import LoadingPage from "@/pages/user/LoadingPage";
 import { toast, ToastContainer } from "react-toastify";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import ReactCardFlip from "react-card-flip";
+
+interface FlipState {
+  [index: number]: boolean;
+}
 
 function SlidesDisplay() {
   const dispatch = useDispatch();
@@ -39,6 +50,9 @@ function SlidesDisplay() {
   const [progressLoading, setProgressLoading] = useState(false);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  // Flip state
+  const [flip, setFlip] = useState<FlipState>({});
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -133,11 +147,6 @@ function SlidesDisplay() {
     setShowQuizResult(false); // Reset the showQuizResult state
     updateProgress();
   };
-
-  interface AccordionItem {
-    title: string;
-    content: string;
-  }
 
   // slide number
   const currentSlideNumber = activeIndex + 1;
@@ -253,6 +262,14 @@ function SlidesDisplay() {
 
   const handleCloseFullScreen = () => {
     setIsFullScreen(false);
+  };
+
+  // Flip divs on Reveal Element
+  const handleFlip = (index: number) => {
+    setFlip((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state
+    }));
   };
 
   if (isLoading) return <LoadingPage />;
@@ -469,7 +486,7 @@ function SlidesDisplay() {
                     key={index}
                     className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                   >
-                    <div className="flex flex-col justify-center items-center h-auto overflow-y-auto scrollbar-thin py-2">
+                    <div className="flex flex-col justify-center items-center h-full overflow-y-auto scrollbar-thin py-2">
                       <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                         {slides.slide}
                       </h1>
@@ -654,36 +671,78 @@ function SlidesDisplay() {
                               </div>
                             </div>
                           );
-                        } else if (
-                          (element as CustomElement).type === "accordion"
-                        ) {
-                          if (
-                            Array.isArray((element as AccordionElement).value)
-                          ) {
-                            const accordionItemsComponent = (
-                              element as AccordionElement
-                            ).value.map(
-                              (accordionItem: AccordionItem, index: number) => (
-                                <AccordionItemDisplay
-                                  key={`$accordion-${index}`}
-                                  title={accordionItem.title}
-                                  content={accordionItem.content}
-                                />
-                              )
-                            );
-
-                            return (
-                              <div className="flex flex-col justify-center items-center w-full">
-                                {accordionItemsComponent}
-                              </div>
-                            );
-                          } else {
-                            console.error(
-                              "Unexpected value for accordion element:",
-                              (element as AccordionElement).value
-                            );
-                            return null;
-                          }
+                        } else if (element.type === "accordion") {
+                          const accordionItemsComponent = element.value.map(
+                            (accordionItem, index: number) => (
+                              <AccordionItemDisplay
+                                key={`$accordion-${index}`}
+                                title={accordionItem.title}
+                                content={accordionItem.content}
+                              />
+                            )
+                          );
+                          return (
+                            <div className="flex flex-col justify-center items-center w-full">
+                              {accordionItemsComponent}
+                            </div>
+                          );
+                        } else if (element.type === "sequence") {
+                          return (
+                            <Carousel
+                              orientation="vertical"
+                              opts={{
+                                align: "start",
+                              }}
+                              key={element._id}
+                              className="w-full mt-12"
+                            >
+                              <CarouselContent className="-mt-1 h-[200px]">
+                                {element.value.map(
+                                  (sequenceItem: string, index: number) => (
+                                    <CarouselItem
+                                      key={index}
+                                      className="pt-1 md:basis-1/2"
+                                    >
+                                      <div className="p-1">
+                                        <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                          <span className="text-secondary-9 text-xl font-nokia-bold">
+                                            {sequenceItem}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </CarouselItem>
+                                  )
+                                )}
+                              </CarouselContent>
+                              <CarouselPrevious />
+                              <CarouselNext />
+                            </Carousel>
+                          );
+                        } else if (element.type === "reveal") {
+                          return (
+                            <>
+                              {element.value.map((revealItem, index) => (
+                                <ReactCardFlip
+                                  isFlipped={flip[index] || false}
+                                  flipDirection="vertical"
+                                  key={index}
+                                >
+                                  <div
+                                    onClick={() => handleFlip(index)}
+                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                                  >
+                                    {revealItem.title}
+                                  </div>
+                                  <div
+                                    onClick={() => handleFlip(index)}
+                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                                  >
+                                    {revealItem.content}
+                                  </div>
+                                </ReactCardFlip>
+                              ))}
+                            </>
+                          );
                         }
                       })}
                     </div>
