@@ -29,6 +29,10 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
   const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
   const [accordionContents, setAccordionContents] = useState<string[]>([]);
+  const [sequenceItems, setSequenceItems] = useState<string[]>([]);
+  const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
+  const [revealTitles, setRevealTitles] = useState<string[]>([]);
+  const [revealContents, setRevealContents] = useState<string[]>([]);
 
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
@@ -101,6 +105,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       }
     }
   };
+
   const handleDeleteListItem = (indexToDelete: number) => {
     const updatedList = listItems.filter((_, index) => index !== indexToDelete);
     setListItems(updatedList);
@@ -205,6 +210,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       </ul>
     </div>
   );
+
   const renderAccordionForm = () => (
     <div className="pb-4">
       <div className="flex justify-between items-center gap-2 w-full">
@@ -272,6 +278,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       </ul>
     </div>
   );
+
   const renderSlideForm = () => (
     <div className="">
       <div className="flex flex-col items-center w-[100%] gap-1 ">
@@ -341,7 +348,9 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       currentElement &&
       currentElement !== "list" &&
       currentElement !== "img" &&
-      currentElement !== "quiz"
+      currentElement !== "quiz" &&
+      currentElement !== "sequence" &&
+      currentElement !== "reveal"
     ) {
       dispatch(
         addElementToSlide({
@@ -513,6 +522,205 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     </div>
   );
 
+  // Sequence Related Functions.
+  const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCurrentSequenceItem(event.target.value);
+  };
+
+  const handleAddSequenceItem = () => {
+    if (currentSequenceItem) {
+      setSequenceItems([...sequenceItems, currentSequenceItem]);
+      setCurrentSequenceItem("");
+    }
+  };
+
+  const handleAddSequenceElement = () => {
+    if (sequenceItems.length > 0) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "sequence",
+          value: sequenceItems,
+        })
+      );
+      setSequenceItems([]);
+    }
+    setCurrentElement("");
+  };
+
+  const handleDeleteSequenceItem = (indexToDelete: number) => {
+    const updatedSequence = sequenceItems.filter(
+      (_, index) => index !== indexToDelete
+    );
+    setSequenceItems(updatedSequence);
+  };
+
+  const renderSequenceForm = () => (
+    <div className="pb-4">
+      <div className="flex flex-col items-center w-[100%] gap-1">
+        <input
+          type="text"
+          value={currentSequenceItem}
+          onChange={handleSequenceInputChange}
+          placeholder="Enter sequence item"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+        />
+
+        <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
+          <button
+            onClick={handleAddSequenceItem}
+            className="flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <PlusCircle
+              className="text-primary-6 transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={handleAddSequenceElement}
+            className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6 transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
+        </div>
+      </div>
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {sequenceItems.map((item, index) => (
+          <label className="text-accent-6 ">
+            Sequence {index + 1}:
+            <li
+              key={index}
+              className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
+            >
+              {item}{" "}
+              <span>
+                <Trash
+                  onClick={() => handleDeleteSequenceItem(index)}
+                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  weight="fill"
+                  size={22}
+                />
+              </span>
+            </li>
+          </label>
+        ))}
+      </ul>
+    </div>
+  );
+
+  // Reveal Related Functions
+  const handleRevealTitleChange = (index: number, text: string) => {
+    setRevealTitles(
+      revealTitles.map((title, i) => (i === index ? text : title))
+    );
+  };
+
+  const handleRevealContentChange = (index: number, text: string) => {
+    setRevealContents(
+      revealContents.map((content, i) => (i === index ? text : content))
+    );
+  };
+
+  const handleAddRevealItem = () => {
+    setRevealTitles([...revealTitles, ""]);
+    setRevealContents([...revealContents, ""]);
+  };
+
+  const saveRevealToRedux = () => {
+    if (revealTitles.length > 0 && revealContents.length > 0) {
+      const revealItems = revealTitles.map((title, index) => ({
+        title,
+        content: revealContents[index],
+      }));
+
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "reveal",
+          value: revealItems,
+        })
+      );
+
+      // Reset state
+      setRevealTitles([]);
+      setRevealContents([]);
+    }
+    setCurrentElement("");
+  };
+
+  const renderRevealForm = () => (
+    <div className="pb-4">
+      <div className="flex justify-between items-center gap-2 w-full">
+        <button
+          onClick={handleAddRevealItem}
+          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <PlusCircle
+            className="text-primary-6  transition-all"
+            size={16}
+            weight="fill"
+          />
+          Add
+        </button>
+        <button
+          onClick={saveRevealToRedux}
+          className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <File
+            className="text-primary-6 transition-all"
+            size={16}
+            weight="fill"
+          />
+          Save
+        </button>
+      </div>
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {revealTitles.map((title, index) => (
+          <label className="text-accent-6 ">
+            Reveal Item {index + 1}:
+            <li key={index} className="flex flex-col space-y-2 mb-4">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => handleRevealTitleChange(index, e.target.value)}
+                placeholder={`Title ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <textarea
+                value={revealContents[index]}
+                onChange={(e) =>
+                  handleRevealContentChange(index, e.target.value)
+                }
+                placeholder={`Content ${index + 1}`}
+                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => {
+                  setRevealTitles(revealTitles.filter((_, i) => i !== index));
+                  setRevealContents(
+                    revealContents.filter((_, i) => i !== index)
+                  );
+                }}
+                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1 self-end"
+                weight="fill"
+                size={22}
+              />
+            </li>
+          </label>
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
     <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
       <p className="font-nokia-Bold py-2 text-accent-6 text-center text-lg">
@@ -537,6 +745,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
           <option value="accordion">Accordion</option>
+          <option value="sequence">Sequence</option>
+          <option value="reveal">Reveal</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -550,6 +760,9 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "accordion" && renderAccordionForm()}
+      {currentElement === "sequence" && renderSequenceForm()}
+      {currentElement === "reveal" && renderRevealForm()}
+
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
