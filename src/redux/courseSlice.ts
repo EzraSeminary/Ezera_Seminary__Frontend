@@ -29,13 +29,9 @@ export type CustomElement =
   | ListElement
   | SlideElement
   | QuizElement
-  | AccordionElement;
-
-// export interface Element {
-//   type: string;
-//   id: string;
-//   value?: string | string[] | File | null | { question: string; choices: { text: string }[]; correctAnswer: string };
-// }
+  | AccordionElement
+  | SequenceElement
+  | RevealElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -87,6 +83,22 @@ export type AccordionElementValue = {
   title: string;
   content: string;
 };
+
+export interface SequenceElement extends Omit<Element, "value"> {
+  type: "sequence";
+  value: string[];
+}
+
+export interface RevealElement extends Omit<Element, "value"> {
+  type: "reveal";
+  value: RevealElementValue[];
+}
+
+export type RevealElementValue = {
+  title: string;
+  content: string;
+};
+
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
   title: "",
@@ -182,6 +194,7 @@ export const courseSlice = createSlice({
           | File
           | QuizElementValue
           | AccordionElementValue[]
+          | RevealElementValue[]
           | null;
       }>
     ) => {
@@ -243,6 +256,14 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as AccordionElementValue[]; // Cast value to AccordionElementValue array for accordion element
           break;
+        case "sequence":
+          newElement.type = elementType;
+          newElement.value = value as string[];
+          break;
+        case "reveal":
+          newElement.type = elementType;
+          newElement.value = value as RevealElementValue[];
+          break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -262,7 +283,8 @@ export const courseSlice = createSlice({
           | string[]
           | File
           | QuizElementValue
-          | AccordionElementValue[];
+          | AccordionElementValue[]
+          | RevealElementValue[];
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
@@ -290,6 +312,12 @@ export const courseSlice = createSlice({
             break;
           case "accordion":
             element.value = value as AccordionElementValue[];
+            break;
+          case "sequence":
+            element.value = value as string[];
+            break;
+          case "reveal":
+            element.value = value as RevealElementValue[];
             break;
           default:
             // Handle unknown element type or throw error

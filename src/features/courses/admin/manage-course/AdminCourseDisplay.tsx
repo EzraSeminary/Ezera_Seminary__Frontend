@@ -14,6 +14,18 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
 import { XCircle, CheckFat } from "@phosphor-icons/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import ReactCardFlip from "react-card-flip";
+
+interface FlipState {
+  [index: number]: boolean;
+}
 
 interface SelectedSlideIndex {
   chapter: number;
@@ -29,6 +41,9 @@ function AdminCourseDisplay({
   selectedSlideIndex,
   onNextSlide,
 }: AdminCourseDisplayProps) {
+  // Flip state
+  const [flip, setFlip] = useState<FlipState>({});
+
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
@@ -93,6 +108,14 @@ function AdminCourseDisplay({
     }
     setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
+
+  // Flip divs on Reveal Element
+  const handleFlip = (index: number) => {
+    setFlip((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state
+    }));
+  };
 
   return (
     <div className="h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
@@ -255,6 +278,60 @@ function AdminCourseDisplay({
                         {listItemsComponent}
                       </Splide>
                     </div>
+                  );
+                } else if (element.type === "sequence") {
+                  elementComponent = (
+                    <Carousel
+                      orientation="vertical"
+                      opts={{
+                        align: "start",
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent className="-mt-1 h-[200px]">
+                        {element.value.map((sequenceItem, index) => (
+                          <CarouselItem
+                            key={`${uniqueKey}-list-${index}`}
+                            className="pt-1 md:basis-1/2"
+                          >
+                            <div className="p-1">
+                              <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                <span className="text-secondary-9 text-xl font-nokia-bold">
+                                  {sequenceItem}
+                                </span>
+                              </div>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </Carousel>
+                  );
+                } else if (element.type === "reveal") {
+                  elementComponent = (
+                    <>
+                      {element.value.map((revealItem, index) => (
+                        <ReactCardFlip
+                          isFlipped={flip[index] || false}
+                          flipDirection="vertical"
+                          key={`${uniqueKey}-reveal-${index}`}
+                        >
+                          <div
+                            onClick={() => handleFlip(index)}
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                          >
+                            {revealItem.title}
+                          </div>
+                          <div
+                            onClick={() => handleFlip(index)}
+                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                          >
+                            {revealItem.content}
+                          </div>
+                        </ReactCardFlip>
+                      ))}
+                    </>
                   );
                 }
 
