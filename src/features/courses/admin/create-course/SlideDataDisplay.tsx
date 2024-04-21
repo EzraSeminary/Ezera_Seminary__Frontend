@@ -118,6 +118,12 @@ function SlideDataDisplay({
     }));
   };
 
+  const [value, setValue] = useState(30);
+
+  const handleChange = (event, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
@@ -339,7 +345,7 @@ function SlideDataDisplay({
                       value={value}
                       onChange={handleChange}
                       min={0}
-                      max={100}
+                      max={5}
                       step={1}
                       valueLabelDisplay="auto"
                       aria-labelledby="non-linear-slider"
