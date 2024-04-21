@@ -23,6 +23,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
+import Slider from "@material-ui/core/Slider";
 
 interface FlipState {
   [index: number]: boolean;
@@ -331,6 +332,18 @@ function SlideDataDisplay({
                         </ReactCardFlip>
                       ))}
                     </>
+                  );
+                } else if (element.type === "range") {
+                  elementComponent = (
+                    <Slider
+                      value={value}
+                      onChange={handleChange}
+                      min={0}
+                      max={100}
+                      step={1}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="non-linear-slider"
+                    />
                   );
                 }
 
