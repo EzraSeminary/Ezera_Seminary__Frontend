@@ -137,6 +137,13 @@ export const apiSlice = createApi({
         method: "DELETE",
       }),
     }),
+    sendMessage: builder.mutation({
+      query: (message) => ({
+        url: "/contact", // The endpoint for sending messages
+        method: "POST",
+        body: message,
+      }),
+    }),
   }),
 });
 
@@ -155,4 +162,5 @@ export const {
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
   useGetCurrentUserQuery,
+  useSendMessageMutation,
 } = apiSlice;
