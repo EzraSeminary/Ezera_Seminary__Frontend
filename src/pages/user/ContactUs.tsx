@@ -1,9 +1,7 @@
 import Footer from "@/components/Footer";
 import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 // import { useLoginMutation } from "@/redux/api-slices/apiSlice";
-// import { login as loginAction } from "@/redux/authSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
