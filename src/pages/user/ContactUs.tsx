@@ -3,7 +3,7 @@ import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 // import { useLoginMutation } from "@/redux/api-slices/apiSlice";
-import { login as loginAction } from "@/redux/authSlice";
+// import { login as loginAction } from "@/redux/authSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -38,28 +38,17 @@ const ContactUs = () => {
       message: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-        const result = await login(values).unwrap();
-        if (result) {
-          localStorage.setItem("user", JSON.stringify(result));
-          dispatch(loginAction(result));
-          if (result.role === "Admin") {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-          toast.success("Login successful!");
-        }
+        const result = await sendMessage(values).unwrap();
+        // Assuming the API returns some success message on successful contact message submission.
+        toast.success("Your message has been sent successfully!");
+        setSubmitting(false);
       } catch (err) {
-        console.error(err);
-        if ((err as APIError).status === 400) {
-          toast.error("Invalid email or password. Please try again.");
-        } else {
-          toast.error(
-            "An error occurred during login. Please try again later."
-          );
-        }
+        toast.error(
+          "An error occurred while sending your message. Please try again later."
+        );
+        setSubmitting(false);
       }
     },
   });
