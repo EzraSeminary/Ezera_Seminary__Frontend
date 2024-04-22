@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
 import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
-import { useDispatch } from "react-redux";
 // import { useLoginMutation } from "@/redux/api-slices/apiSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
@@ -37,7 +36,7 @@ const ContactUs = () => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const result = await sendMessage(values).unwrap();
+        await sendMessage(values).unwrap();
         // Assuming the API returns some success message on successful contact message submission.
         toast.success("Your message has been sent successfully!");
         setSubmitting(false);
