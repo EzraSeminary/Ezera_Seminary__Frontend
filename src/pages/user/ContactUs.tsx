@@ -36,11 +36,15 @@ const ContactUs = () => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await sendMessage(values).unwrap();
-        // Assuming the API returns some success message on successful contact message submission.
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        await sendMessage(formData).unwrap();
         toast.success("Your message has been sent successfully!");
         setSubmitting(false);
       } catch (err) {
+        console.error("Error sending contact message:", err);
         toast.error(
           "An error occurred while sending your message. Please try again later."
         );

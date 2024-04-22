@@ -4,8 +4,8 @@ import { Devotion } from "@/redux/types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech",
-    // baseUrl: "http://localhost:5100",
+    // baseUrl: "https://ezra-seminary.mybese.tech",
+    baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -26,6 +26,16 @@ export const apiSlice = createApi({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials), // stringified the credentials
+      }),
+    }),
+    sendMessage: builder.mutation({
+      query: (formData) => ({
+        url: "/users/contact",
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }),
     }),
     signup: builder.mutation({
@@ -135,13 +145,6 @@ export const apiSlice = createApi({
       query: (id) => ({
         url: `/devotion/${id}`,
         method: "DELETE",
-      }),
-    }),
-    sendMessage: builder.mutation({
-      query: (message) => ({
-        url: "/contact", // The endpoint for sending messages
-        method: "POST",
-        body: message,
       }),
     }),
   }),
