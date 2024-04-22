@@ -17,7 +17,6 @@ interface APIError extends Error {
 
 const ContactUs = () => {
   const [sendMessage, { isLoading, error }] = useSendMessageMutation();
-  const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
