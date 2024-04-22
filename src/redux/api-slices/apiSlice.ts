@@ -29,15 +29,16 @@ export const apiSlice = createApi({
       }),
     }),
     sendMessage: builder.mutation({
-      query: (formData) => ({
+      query: ({ firstName, lastName, email, message }) => ({
         url: "/users/contact",
         method: "POST",
-        body: formData,
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ firstName, lastName, email, message }),
       }),
     }),
+
     signup: builder.mutation({
       query: ({ firstName, lastName, email, password }) => ({
         url: "/users/signup",

@@ -36,11 +36,7 @@ const ContactUs = () => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const formData = new FormData();
-        Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        await sendMessage(formData).unwrap();
+        await sendMessage(values).unwrap(); // Directly pass the values object
         toast.success("Your message has been sent successfully!");
         setSubmitting(false);
       } catch (err) {
@@ -121,6 +117,22 @@ const ContactUs = () => {
               {formik.touched.lastName && formik.errors.lastName && (
                 <div className="text-red-500 text-xs xl:text-sm">
                   {formik.errors.lastName}
+                </div>
+              )}
+              <label>Email</label>
+              <input
+                type="email"
+                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
+                  formik.touched.email && formik.errors.email
+                    ? "border-red-500"
+                    : ""
+                }`}
+                placeholder="Email"
+                {...formik.getFieldProps("email")}
+              />
+              {formik.touched.email && formik.errors.email && (
+                <div className="text-red-500 text-xs xl:text-sm">
+                  {formik.errors.email}
                 </div>
               )}
               <label>Your Message</label>
