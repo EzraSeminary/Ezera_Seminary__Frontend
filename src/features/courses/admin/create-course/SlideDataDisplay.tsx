@@ -345,7 +345,7 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "range") {
                   elementComponent = (
-                    <div className="w-[80%]">
+                    <div className="w-[80%] mt-10">
                       <Slider
                         min={0}
                         max={5}

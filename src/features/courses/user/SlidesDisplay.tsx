@@ -497,7 +497,7 @@ function SlidesDisplay() {
                     key={index}
                     className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                   >
-                    <div className="flex flex-col justify-center items-center h-full overflow-y-auto scrollbar-thin py-2">
+                    <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
                       <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                         {slides.slide}
                       </h1>
@@ -756,7 +756,7 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "range") {
                           return (
-                            <div className="w-[80%]">
+                            <div className="w-[80%] mt-10">
                               <Slider
                                 min={0}
                                 max={5}
