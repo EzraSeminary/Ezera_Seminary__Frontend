@@ -1,9 +1,6 @@
 import Footer from "@/components/Footer";
 import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useLoginMutation } from "@/redux/api-slices/apiSlice";
-import { login as loginAction } from "@/redux/authSlice";
+import { useSendMessageMutation } from "@/redux/api-slices/apiSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -18,9 +15,7 @@ interface APIError extends Error {
 }
 
 const ContactUs = () => {
-  const [login, { isLoading, error }] = useLoginMutation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [sendMessage, { isLoading, error }] = useSendMessageMutation();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -39,28 +34,17 @@ const ContactUs = () => {
       message: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-        const result = await login(values).unwrap();
-        if (result) {
-          localStorage.setItem("user", JSON.stringify(result));
-          dispatch(loginAction(result));
-          if (result.role === "Admin") {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-          toast.success("Login successful!");
-        }
+        await sendMessage(values).unwrap(); // Directly pass the values object
+        toast.success("Your message has been sent successfully!");
+        setSubmitting(false);
       } catch (err) {
-        console.error(err);
-        if ((err as APIError).status === 400) {
-          toast.error("Invalid email or password. Please try again.");
-        } else {
-          toast.error(
-            "An error occurred during login. Please try again later."
-          );
-        }
+        console.error("Error sending contact message:", err);
+        toast.error(
+          "An error occurred while sending your message. Please try again later."
+        );
+        setSubmitting(false);
       }
     },
   });
@@ -106,6 +90,9 @@ const ContactUs = () => {
               <label>First Name</label>
               <input
                 type="firstName"
+                minLength={1}
+                maxLength={30}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.firstName && formik.errors.firstName
                     ? "border-red-500"
@@ -122,6 +109,9 @@ const ContactUs = () => {
               <label>Last Name</label>
               <input
                 type="lastName"
+                minLength={1}
+                maxLength={30}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.lastName && formik.errors.lastName
                     ? "border-red-500"
@@ -135,10 +125,32 @@ const ContactUs = () => {
                   {formik.errors.lastName}
                 </div>
               )}
+              <label>Email</label>
+              <input
+                type="email"
+                minLength={1}
+                maxLength={30}
+                required
+                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
+                  formik.touched.email && formik.errors.email
+                    ? "border-red-500"
+                    : ""
+                }`}
+                placeholder="Email"
+                {...formik.getFieldProps("email")}
+              />
+              {formik.touched.email && formik.errors.email && (
+                <div className="text-red-500 text-xs xl:text-sm">
+                  {formik.errors.email}
+                </div>
+              )}
               <label>Your Message</label>
               <textarea
                 cols={30}
                 rows={5}
+                minLength={1}
+                maxLength={300}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.message && formik.errors.message
                     ? "border-red-500"
