@@ -23,7 +23,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
-import Slider from "@material-ui/core/Slider";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
 
 interface FlipState {
   [index: number]: boolean;
@@ -36,6 +37,33 @@ interface SlideDataDisplayProps {
   };
   onNextSlide: () => void;
 }
+
+const marks = [
+  {
+    value: 0,
+    label: "0",
+  },
+  {
+    value: 1,
+    label: "1",
+  },
+  {
+    value: 2,
+    label: "2",
+  },
+  {
+    value: 3,
+    label: "3",
+  },
+  {
+    value: 4,
+    label: "4",
+  },
+  {
+    value: 5,
+    label: "5",
+  },
+];
 
 function SlideDataDisplay({
   selectedSlideIndex,
@@ -118,10 +146,8 @@ function SlideDataDisplay({
     }));
   };
 
-  const [value, setValue] = useState(30);
-
-  const handleChange = (event, newValue: number) => {
-    setValue(newValue);
+  const valuetext = (value: number) => {
+    return { value };
   };
 
   return (
@@ -341,15 +367,16 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "range") {
                   elementComponent = (
-                    <Slider
-                      value={value}
-                      onChange={handleChange}
-                      min={0}
-                      max={5}
-                      step={1}
-                      valueLabelDisplay="auto"
-                      aria-labelledby="non-linear-slider"
-                    />
+                    <Box sx={{ width: 300 }}>
+                      <Slider
+                        aria-label="Always visible"
+                        defaultValue={2}
+                        getAriaValueText={valuetext}
+                        step={1}
+                        marks={marks}
+                        valueLabelDisplay="on"
+                      />
+                    </Box>
                   );
                 }
 
