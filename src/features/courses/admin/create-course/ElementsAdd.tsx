@@ -788,7 +788,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
                 file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
-            ) : (
+            ) : element.type === "range" ? null : (
               <input
                 id={element.id}
                 placeholder={`Enter ${element.type}`}

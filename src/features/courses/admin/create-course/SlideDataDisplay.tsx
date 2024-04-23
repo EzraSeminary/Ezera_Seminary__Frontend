@@ -337,7 +337,7 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "range") {
                   elementComponent = (
-                    <Box sx={{ width: 300 }}>
+                    <Box sx={{ width: 500 }}>
                       <Slider
                         defaultValue={2.5}
                         min={0}
@@ -356,8 +356,19 @@ function SlideDataDisplay({
                           "& .MuiSlider-mark": {
                             backgroundColor: "white",
                           },
+                          "& .MuiSlider-markLabel": {
+                            color: "white",
+                          },
                         }}
                       />
+                      <div className="flex justify-between">
+                        <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                          ምንም አልተማርኩም
+                        </button>
+                        <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                          በጣም ተምሬያለሁ
+                        </button>
+                      </div>
                     </Box>
                   );
                 }
