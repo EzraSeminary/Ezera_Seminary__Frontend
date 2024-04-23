@@ -25,6 +25,7 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import { sliderMarks } from "@/utils/SliderMarks";
 
 interface FlipState {
   [index: number]: boolean;
@@ -37,33 +38,6 @@ interface SlideDataDisplayProps {
   };
   onNextSlide: () => void;
 }
-
-const marks = [
-  {
-    value: 0,
-    label: "0",
-  },
-  {
-    value: 1,
-    label: "1",
-  },
-  {
-    value: 2,
-    label: "2",
-  },
-  {
-    value: 3,
-    label: "3",
-  },
-  {
-    value: 4,
-    label: "4",
-  },
-  {
-    value: 5,
-    label: "5",
-  },
-];
 
 function SlideDataDisplay({
   selectedSlideIndex,
@@ -144,10 +118,6 @@ function SlideDataDisplay({
       ...prevState,
       [index]: !prevState[index], // Toggle the state
     }));
-  };
-
-  const valuetext = (value: number) => {
-    return { value };
   };
 
   return (
@@ -369,11 +339,11 @@ function SlideDataDisplay({
                   elementComponent = (
                     <Box sx={{ width: 300 }}>
                       <Slider
-                        aria-label="Always visible"
-                        defaultValue={2}
-                        getAriaValueText={valuetext}
+                        defaultValue={2.5}
+                        min={0}
+                        max={5}
                         step={1}
-                        marks={marks}
+                        marks={sliderMarks}
                         valueLabelDisplay="on"
                       />
                     </Box>
