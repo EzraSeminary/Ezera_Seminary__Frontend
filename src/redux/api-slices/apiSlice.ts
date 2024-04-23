@@ -28,6 +28,17 @@ export const apiSlice = createApi({
         body: JSON.stringify(credentials), // stringified the credentials
       }),
     }),
+    sendMessage: builder.mutation({
+      query: ({ firstName, lastName, email, message }) => ({
+        url: "/users/contact",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstName, lastName, email, message }),
+      }),
+    }),
+
     signup: builder.mutation({
       query: ({ firstName, lastName, email, password }) => ({
         url: "/users/signup",
@@ -155,4 +166,5 @@ export const {
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
   useGetCurrentUserQuery,
+  useSendMessageMutation,
 } = apiSlice;
