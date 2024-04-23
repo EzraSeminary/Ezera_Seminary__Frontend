@@ -767,10 +767,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
-            <div className="flex justify-between">
-              <label className="text-accent-6 font-bold mb-1">
-                {element.type}
-              </label>
+            <div className="flex justify-between items-center border border-secondary-3 px-1 mb-1">
+              <label className="text-accent-6 font-bold">{element.type}</label>
               <Trash
                 onClick={() => handleDeleteButtonClick(element.id)}
                 className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"

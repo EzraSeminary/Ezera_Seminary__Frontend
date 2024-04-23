@@ -23,7 +23,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
-import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
 
@@ -337,7 +336,7 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "range") {
                   elementComponent = (
-                    <Box sx={{ width: 500 }}>
+                    <div className="w-[80%]">
                       <Slider
                         defaultValue={2.5}
                         min={0}
@@ -345,6 +344,9 @@ function SlideDataDisplay({
                         step={1}
                         marks={sliderMarks}
                         valueLabelDisplay="on"
+                        valueLabelFormat={(value) =>
+                          value === 2.5 ? "Touch to slide" : value
+                        }
                         sx={{
                           color: "#424242",
                           "& .MuiSlider-track": {
@@ -369,7 +371,7 @@ function SlideDataDisplay({
                           በጣም ተምሬያለሁ
                         </button>
                       </div>
-                    </Box>
+                    </div>
                   );
                 }
 
