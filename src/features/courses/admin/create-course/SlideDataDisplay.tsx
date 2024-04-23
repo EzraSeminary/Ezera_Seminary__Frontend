@@ -51,6 +51,8 @@ function SlideDataDisplay({
 
   // Flip state
   const [flip, setFlip] = useState<FlipState>({});
+  // Slider state
+  const [sliderValue, setSliderValue] = useState(2.5);
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -117,6 +119,12 @@ function SlideDataDisplay({
       ...prevState,
       [index]: !prevState[index], // Toggle the state
     }));
+  };
+
+  const handleSliderChange = (_: Event, newValue: number | number[]) => {
+    if (typeof newValue === "number") {
+      setSliderValue(newValue);
+    }
   };
 
   return (
@@ -338,7 +346,6 @@ function SlideDataDisplay({
                   elementComponent = (
                     <div className="w-[80%]">
                       <Slider
-                        defaultValue={2.5}
                         min={0}
                         max={5}
                         step={1}
@@ -347,6 +354,8 @@ function SlideDataDisplay({
                         valueLabelFormat={(value) =>
                           value === 2.5 ? "Touch to slide" : value
                         }
+                        value={sliderValue}
+                        onChange={handleSliderChange}
                         sx={{
                           color: "#424242",
                           "& .MuiSlider-track": {
