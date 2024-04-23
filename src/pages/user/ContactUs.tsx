@@ -90,6 +90,9 @@ const ContactUs = () => {
               <label>First Name</label>
               <input
                 type="firstName"
+                minLength={1}
+                maxLength={30}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.firstName && formik.errors.firstName
                     ? "border-red-500"
@@ -106,6 +109,9 @@ const ContactUs = () => {
               <label>Last Name</label>
               <input
                 type="lastName"
+                minLength={1}
+                maxLength={30}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.lastName && formik.errors.lastName
                     ? "border-red-500"
@@ -122,6 +128,9 @@ const ContactUs = () => {
               <label>Email</label>
               <input
                 type="email"
+                minLength={1}
+                maxLength={30}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.email && formik.errors.email
                     ? "border-red-500"
@@ -139,6 +148,9 @@ const ContactUs = () => {
               <textarea
                 cols={30}
                 rows={5}
+                minLength={1}
+                maxLength={300}
+                required
                 className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
                   formik.touched.message && formik.errors.message
                     ? "border-red-500"
