@@ -121,6 +121,7 @@ function AdminCourseDisplay({
     }));
   };
 
+  // Save the state of the slider
   const handleSliderChange = (_: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setSliderValue(newValue);

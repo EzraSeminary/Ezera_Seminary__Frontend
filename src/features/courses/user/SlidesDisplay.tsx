@@ -31,6 +31,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
+import Slider from "@mui/material/Slider";
+import { sliderMarks } from "@/utils/SliderMarks";
 
 interface FlipState {
   [index: number]: boolean;
@@ -53,6 +55,8 @@ function SlidesDisplay() {
 
   // Flip state
   const [flip, setFlip] = useState<FlipState>({});
+  // Slider state
+  const [sliderValue, setSliderValue] = useState(2.5);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -270,6 +274,13 @@ function SlidesDisplay() {
       ...prevState,
       [index]: !prevState[index], // Toggle the state
     }));
+  };
+
+  // Save the state of the slider
+  const handleSliderChange = (_: Event, newValue: number | number[]) => {
+    if (typeof newValue === "number") {
+      setSliderValue(newValue);
+    }
   };
 
   if (isLoading) return <LoadingPage />;
