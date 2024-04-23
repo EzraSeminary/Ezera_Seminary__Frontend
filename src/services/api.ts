@@ -32,7 +32,8 @@ export type CustomElement =
   | QuizElement
   | AccordionElement
   | SequenceElement
-  | RevealElement;
+  | RevealElement
+  | RangeElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -112,6 +113,11 @@ export type RevealElementValue = {
   content: string;
   _id: string;
 };
+
+export interface RangeElement extends Omit<Element, "value"> {
+  type: "range";
+  value: boolean;
+}
 
 export const api = createApi({
   reducerPath: "api",
