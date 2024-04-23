@@ -22,6 +22,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
+import Slider from "@mui/material/Slider";
+import { sliderMarks } from "@/utils/SliderMarks";
 
 interface FlipState {
   [index: number]: boolean;
@@ -43,6 +45,8 @@ function AdminCourseDisplay({
 }: AdminCourseDisplayProps) {
   // Flip state
   const [flip, setFlip] = useState<FlipState>({});
+  // Slider state
+  const [sliderValue, setSliderValue] = useState(2.5);
 
   //Quiz Related functions
   //track whether the selected answer is correct or not.
@@ -115,6 +119,12 @@ function AdminCourseDisplay({
       ...prevState,
       [index]: !prevState[index], // Toggle the state
     }));
+  };
+
+  const handleSliderChange = (_: Event, newValue: number | number[]) => {
+    if (typeof newValue === "number") {
+      setSliderValue(newValue);
+    }
   };
 
   return (
