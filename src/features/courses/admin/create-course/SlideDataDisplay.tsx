@@ -345,6 +345,18 @@ function SlideDataDisplay({
                         step={1}
                         marks={sliderMarks}
                         valueLabelDisplay="on"
+                        sx={{
+                          color: "#424242",
+                          "& .MuiSlider-track": {
+                            backgroundColor: "#424242",
+                          },
+                          "& .MuiSlider-thumb": {
+                            backgroundColor: "white",
+                          },
+                          "& .MuiSlider-mark": {
+                            backgroundColor: "white",
+                          },
+                        }}
                       />
                     </Box>
                   );
