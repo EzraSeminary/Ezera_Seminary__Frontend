@@ -31,7 +31,8 @@ export type CustomElement =
   | QuizElement
   | AccordionElement
   | SequenceElement
-  | RevealElement;
+  | RevealElement
+  | RangeElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -98,6 +99,11 @@ export type RevealElementValue = {
   title: string;
   content: string;
 };
+
+export interface RangeElement extends Omit<Element, "value"> {
+  type: "range";
+  value: boolean;
+}
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
@@ -192,6 +198,7 @@ export const courseSlice = createSlice({
           | string
           | string[]
           | File
+          | boolean
           | QuizElementValue
           | AccordionElementValue[]
           | RevealElementValue[]
@@ -264,6 +271,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as RevealElementValue[];
           break;
+        case "range":
+          newElement.type = elementType;
+          newElement.value = value as boolean;
+          break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -282,6 +293,7 @@ export const courseSlice = createSlice({
           | string
           | string[]
           | File
+          | boolean
           | QuizElementValue
           | AccordionElementValue[]
           | RevealElementValue[];
@@ -319,6 +331,9 @@ export const courseSlice = createSlice({
           case "reveal":
             element.value = value as RevealElementValue[];
             break;
+          case "range":
+          element.value = value as boolean;
+          break;
           default:
             // Handle unknown element type or throw error
             throw new Error(

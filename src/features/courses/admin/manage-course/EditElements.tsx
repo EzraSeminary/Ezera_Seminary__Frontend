@@ -633,6 +633,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="list">List</option>
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
+          <option value="range">Range</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -651,10 +652,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
-            <div className="flex justify-between">
-              <label className="text-accent-6 font-bold mb-1">
-                {element.type}
-              </label>
+            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 mb-1">
+              <label className="text-accent-6 font-bold">{element.type}</label>
               <Trash
                 onClick={() => handleDeleteButtonClick(element.id)}
                 className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
@@ -672,7 +671,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
-            ) : (
+            ) : element.type === "range" ? null : (
               <input
                 id={element.id}
                 placeholder={`Enter ${element.type}`}

@@ -31,6 +31,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
+import Slider from "@mui/material/Slider";
+import { sliderMarks } from "@/utils/SliderMarks";
 
 interface FlipState {
   [index: number]: boolean;
@@ -53,6 +55,8 @@ function SlidesDisplay() {
 
   // Flip state
   const [flip, setFlip] = useState<FlipState>({});
+  // Slider state
+  const [sliderValue, setSliderValue] = useState(2.5);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -272,6 +276,13 @@ function SlidesDisplay() {
     }));
   };
 
+  // Save the state of the slider
+  const handleSliderChange = (_: Event, newValue: number | number[]) => {
+    if (typeof newValue === "number") {
+      setSliderValue(newValue);
+    }
+  };
+
   if (isLoading) return <LoadingPage />;
 
   if (error) return <div>Something went wrong.</div>;
@@ -486,7 +497,7 @@ function SlidesDisplay() {
                     key={index}
                     className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                   >
-                    <div className="flex flex-col justify-center items-center h-full overflow-y-auto scrollbar-thin py-2">
+                    <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
                       <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
                         {slides.slide}
                       </h1>
@@ -742,6 +753,46 @@ function SlidesDisplay() {
                                 </ReactCardFlip>
                               ))}
                             </>
+                          );
+                        } else if (element.type === "range") {
+                          return (
+                            <div className="w-[80%] mt-10">
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={1}
+                                marks={sliderMarks}
+                                valueLabelDisplay="on"
+                                valueLabelFormat={(value) =>
+                                  value === 2.5 ? "Touch to slide" : value
+                                }
+                                value={sliderValue}
+                                onChange={handleSliderChange}
+                                sx={{
+                                  color: "#424242",
+                                  "& .MuiSlider-track": {
+                                    backgroundColor: "#424242",
+                                  },
+                                  "& .MuiSlider-thumb": {
+                                    backgroundColor: "white",
+                                  },
+                                  "& .MuiSlider-mark": {
+                                    backgroundColor: "white",
+                                  },
+                                  "& .MuiSlider-markLabel": {
+                                    color: "white",
+                                  },
+                                }}
+                              />
+                              <div className="flex justify-between">
+                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                                  ምንም አልተማርኩም
+                                </button>
+                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                                  በጣም ተምሬያለሁ
+                                </button>
+                              </div>
+                            </div>
                           );
                         }
                       })}
