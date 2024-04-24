@@ -25,7 +25,15 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
-import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
+import {
+  DndContext,
+  useDraggable,
+  useDroppable,
+  PointerSensor,
+  useSensors,
+  closestCenter,
+} from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 interface FlipState {
   [index: number]: boolean;
@@ -429,41 +437,46 @@ function SlideDataDisplay({
                         <DndContext
                           onDragStart={handleDragStart}
                           onDragEnd={handleDragEnd}
+                          // sensors={useSensors(
+                          //   useDraggable({
+                          //     activationConstraint: PointerSensor,
+                          //   })
+                          // )}
+                          collisionDetection={closestCenter}
                         >
                           <div className="flex flex-col mt-2">
                             {element.value.choices.map(
                               (choice, choiceIndex) => {
                                 return (
-                                  <Draggable key={choice.id} id={choice.id}>
-                                    <label
+                                  // dragable component
+                                  <div
+                                    ref={setNodeRef}
+                                    style={style}
+                                    {...attributes}
+                                    {...listeners}
+                                    key={choiceIndex}
+                                  >
+                                    <div
                                       key={`${uniqueKey}-choice-${choiceIndex}`}
                                       className="inline-flex items-center"
                                     >
-                                      <input
-                                        type="radio"
-                                        className="w-5 h-5 appearance-none bg-primary-6 focus:bg-orange-400 rounded-full transition-all"
-                                        checked={selectedChoice === choiceIndex}
-                                        onChange={() =>
-                                          handleRadioChange(
-                                            choiceIndex,
-                                            choice.text
-                                          )
-                                        }
-                                      />
                                       <span className="text-primary-6 font-nokia-bold text-sm ml-2">
                                         {choice.text}
                                       </span>
-                                    </label>
-                                  </Draggable>
+                                    </div>
+                                  </div>
                                 );
                               }
                             )}
                           </div>
-                          <Droppable id="answer-space">
-                            <div className="answer-space">
-                              {/* Render the user's choice here if dropped */}
-                            </div>
-                          </Droppable>
+                          {/* dropable component */}
+                          <div
+                            ref={setDroppableRef}
+                            id="answer-space"
+                            className="border-dashed border-2 border-gray-300 min-h-[50px] flex justify-center items-center mt-4"
+                          >
+                            {/* Render the user's choice here if dropped */}
+                          </div>
                         </DndContext>
                       )}
                       {/* Correct Answer */}
