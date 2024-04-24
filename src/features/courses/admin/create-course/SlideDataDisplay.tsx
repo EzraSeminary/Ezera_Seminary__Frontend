@@ -25,6 +25,7 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
 
 interface FlipState {
   [index: number]: boolean;
@@ -126,6 +127,23 @@ function SlideDataDisplay({
     if (typeof newValue === "number") {
       setSliderValue(newValue);
     }
+  };
+
+  // Drag and Drop Functions
+  const [draggedItem, setDraggedItem] = useState(null);
+
+  const handleDragStart = (event) => {
+    const { active } = event;
+    setDraggedItem(active.id);
+  };
+
+  const handleDragEnd = (event) => {
+    const { over } = event;
+    if (over && draggedItem === over.id) {
+      // Logic for a successful drop
+      console.log("Item dropped onto the correct area");
+    }
+    setDraggedItem(null);
   };
 
   return (
