@@ -31,6 +31,7 @@ import {
   useDroppable,
   PointerSensor,
   useSensors,
+  useSensor,
   closestCenter,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
@@ -166,6 +167,10 @@ function SlideDataDisplay({
   const { setNodeRef: setDroppableRef } = useDroppable({
     id: "droppable",
   });
+
+  // Define sensors
+  const pointerSensor = useSensor(PointerSensor);
+  const sensors = useSensors(pointerSensor);
 
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
@@ -437,11 +442,7 @@ function SlideDataDisplay({
                         <DndContext
                           onDragStart={handleDragStart}
                           onDragEnd={handleDragEnd}
-                          // sensors={useSensors(
-                          //   useDraggable({
-                          //     activationConstraint: PointerSensor,
-                          //   })
-                          // )}
+                          sensors={sensors}
                           collisionDetection={closestCenter}
                         >
                           <div className="flex flex-col mt-2">
