@@ -32,7 +32,8 @@ export type CustomElement =
   | AccordionElement
   | SequenceElement
   | RevealElement
-  | RangeElement;
+  | RangeElement
+  | DndElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -104,6 +105,17 @@ export interface RangeElement extends Omit<Element, "value"> {
   type: "range";
   value: boolean;
 }
+
+export interface DndElement extends Omit<Element, "value"> {
+  type: "dnd";
+  value: DndElementValue;
+}
+
+export type DndElementValue = {
+  question: string;
+  choices: { text: string }[];
+  correctAnswer: string;
+};
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
@@ -202,6 +214,7 @@ export const courseSlice = createSlice({
           | QuizElementValue
           | AccordionElementValue[]
           | RevealElementValue[]
+          | DndElementValue
           | null;
       }>
     ) => {
@@ -275,6 +288,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as boolean;
           break;
+        case "dnd":
+          newElement.type = elementType;
+          newElement.value = value as DndElementValue;
+        break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -296,7 +313,8 @@ export const courseSlice = createSlice({
           | boolean
           | QuizElementValue
           | AccordionElementValue[]
-          | RevealElementValue[];
+          | RevealElementValue[]
+          | DndElementValue;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
@@ -332,8 +350,11 @@ export const courseSlice = createSlice({
             element.value = value as RevealElementValue[];
             break;
           case "range":
-          element.value = value as boolean;
-          break;
+            element.value = value as boolean;
+            break;
+          case "dnd":
+            element.value = value as DndElementValue;
+            break;
           default:
             // Handle unknown element type or throw error
             throw new Error(
