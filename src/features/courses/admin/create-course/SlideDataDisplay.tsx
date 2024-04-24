@@ -25,13 +25,7 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
-import {
-  DndContext,
-  useDraggable,
-  useDroppable,
-  Draggable,
-  Droppable,
-} from "@dnd-kit/core";
+import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
 
 interface FlipState {
   [index: number]: boolean;
@@ -151,6 +145,19 @@ function SlideDataDisplay({
     }
     setDraggedItem(null);
   };
+
+  // Create a draggable component & droppable area using the useDraggable & useDroppable hook.
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: "draggable",
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+  };
+
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: "droppable",
+  });
 
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
