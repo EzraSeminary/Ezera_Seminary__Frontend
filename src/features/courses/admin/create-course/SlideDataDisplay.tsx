@@ -383,6 +383,53 @@ function SlideDataDisplay({
                       </div>
                     </div>
                   );
+                } else if (element.type === "dnd") {
+                  elementComponent = (
+                    <div
+                      key={uniqueKey}
+                      className="flex flex-col justify-center items-center mb-4"
+                    >
+                      {/* Questions */}
+                      <p className="text-primary-6 font-nokia-bold text-lg">
+                        {element.value.question}
+                      </p>
+                      {/* Choices */}
+                      {element.value.choices && (
+                        <div className="flex flex-col mt-2">
+                          {element.value.choices.map((choice, choiceIndex) => {
+                            return (
+                              <label
+                                key={`${uniqueKey}-choice-${choiceIndex}`}
+                                className="inline-flex items-center"
+                              >
+                                <input
+                                  type="radio"
+                                  className="w-5 h-5 appearance-none bg-primary-6 focus:bg-orange-400 rounded-full transition-all"
+                                  checked={selectedChoice === choiceIndex}
+                                  onChange={() =>
+                                    handleRadioChange(choiceIndex, choice.text)
+                                  }
+                                />
+                                <span className="text-primary-6 font-nokia-bold text-sm ml-2">
+                                  {choice.text}
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {/* Correct Answer */}
+                      <div className="flex mt-2">
+                        <button
+                          className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                          onClick={() => setShowQuizResult(true)}
+                        >
+                          Check Answer
+                        </button>
+                        {renderQuizResult()}
+                      </div>
+                    </div>
+                  );
                 }
 
                 return elementComponent;

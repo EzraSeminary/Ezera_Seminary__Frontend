@@ -918,7 +918,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
                 id={element.id}
                 placeholder={`Enter ${element.type}`}
                 value={
-                  element.type === "quiz" && element.type === "dnd"
+                  element.type === "quiz" || element.type === "dnd"
                     ? element.value?.question?.toString()
                     : element.value?.toString()
                 }
