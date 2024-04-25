@@ -27,13 +27,13 @@ import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
 import {
   DndContext,
-  useDroppable,
   PointerSensor,
   useSensors,
   useSensor,
   closestCenter,
 } from "@dnd-kit/core";
 import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "./Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
@@ -160,10 +160,6 @@ function SlideDataDisplay({
     }
     setDraggedItem(null);
   };
-
-  const { setNodeRef: setDroppableRef } = useDroppable({
-    id: "droppable",
-  });
 
   // Define sensors
   const pointerSensor = useSensor(PointerSensor);
@@ -471,7 +467,16 @@ function SlideDataDisplay({
                             )}
                           </div>
                           {/* dropable area */}
-                          <div
+                          {droppedChoices.map((droppedChoice, droppedIndex) => {
+                            return (
+                              <DroppableArea
+                                key={droppedIndex}
+                                droppedChoice={droppedChoice}
+                                droppedIndex={droppedIndex}
+                              />
+                            );
+                          })}
+                          {/* <div
                             ref={setDroppableRef}
                             id="droppable"
                             className="border-dashed border-2 border-gray-300 min-w-[50px] min-h-[50px] flex justify-center items-center mt-4"
@@ -481,7 +486,7 @@ function SlideDataDisplay({
                                 {choice}
                               </div>
                             ))}
-                          </div>
+                          </div> */}
                         </DndContext>
                       )}
                       {/* Correct Answer */}

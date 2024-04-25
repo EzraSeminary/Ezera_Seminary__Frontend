@@ -1,7 +1,14 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-function DraggableItem({ choice, choiceIndex }) {
+interface DraggableItemProps {
+  choice: {
+    text: string;
+  };
+  choiceIndex: number;
+}
+
+function DraggableItem({ choice, choiceIndex }: DraggableItemProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `draggable-${choiceIndex}`,
     data: { choice },
