@@ -35,6 +35,7 @@ import {
   closestCenter,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
 
 interface FlipState {
   [index: number]: boolean;
@@ -456,19 +457,26 @@ function SlideDataDisplay({
                             {element.value.choices.map(
                               (choice, choiceIndex) => {
                                 return (
-                                  // dragable component
-                                  <div
-                                    ref={setNodeRef}
-                                    style={style}
-                                    {...attributes}
-                                    {...listeners}
+                                  // dragable item
+                                  <DraggableItem
                                     key={choiceIndex}
-                                    className="bg-white p-2 my-1"
-                                  >
-                                    <span className="text-secondary-6 font-nokia-bold text-sm ml-2">
-                                      {choice.text}
-                                    </span>
-                                  </div>
+                                    choice={choice}
+                                    choiceIndex={choiceIndex}
+                                  />
+                                  // <div
+                                  //   ref={setNodeRef}
+                                  //   style={style}
+                                  //   {...attributes}
+                                  //   {...listeners}
+                                  //   id="draggable"
+                                  //   key={choiceIndex}
+                                  //   className="bg-white p-2 my-1"
+                                  //   onMouseDown={(e) => e.preventDefault()}
+                                  // >
+                                  //   <span className="text-secondary-6 font-nokia-bold text-sm ml-2">
+                                  //     {choice.text}
+                                  //   </span>
+                                  // </div>
                                 );
                               }
                             )}
