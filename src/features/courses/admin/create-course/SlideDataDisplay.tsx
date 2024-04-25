@@ -27,14 +27,12 @@ import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
 import {
   DndContext,
-  useDraggable,
   useDroppable,
   PointerSensor,
   useSensors,
   useSensor,
   closestCenter,
 } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
 
 interface FlipState {
@@ -161,15 +159,6 @@ function SlideDataDisplay({
       setDroppedChoices([...droppedChoices, choiceToAdd]);
     }
     setDraggedItem(null);
-  };
-
-  // Create a draggable component & droppable area using the useDraggable & useDroppable hook.
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: "draggable",
-  });
-
-  const style = {
-    transform: CSS.Translate.toString(transform),
   };
 
   const { setNodeRef: setDroppableRef } = useDroppable({
