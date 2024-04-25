@@ -85,7 +85,7 @@ const LoggedInHome = () => {
           <div className=" text-2xl md:text-5xl">
             Welcome <span className="text-accent-6">Back</span>
           </div>
-          <div className="text-lg md:text-3xl text-accent-6">እንኳን ደና መጣችሁ</div>
+          <div className="text-lg md:text-3xl text-accent-6">እንኳን ደህና መጣችሁ</div>
         </div>
       </div>
 
