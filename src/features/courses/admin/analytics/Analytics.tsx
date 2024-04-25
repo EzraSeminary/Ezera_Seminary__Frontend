@@ -1,36 +1,15 @@
-// import React, { useEffect } from "react";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// analytics.tsx
+import React from "react";
+import { useGetAnalyticsQuery } from "@/redux/api-slices/apiSlice";
 
-interface AnalyticsData {
-  newUsers: number;
-  totalUsers: number;
-  newCourses: number;
-  totalCourses: number;
-  accountsReached: number;
-  usersLeft: number;
-}
-
-const analyticsApi = createApi({
-  reducerPath: "analyticsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech",
-    prepareHeaders: (headers) => {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const token = user ? user.token : "";
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
-  endpoints: (builder) => ({
-    getAnalytics: builder.query<AnalyticsData, void>({
-      query: () => "/analytics",
-    }),
-  }),
-});
-
-const { useGetAnalyticsQuery } = analyticsApi;
+// interface AnalyticsData {
+//   newUsers: number;
+//   totalUsers: number;
+//   newCourses: number;
+//   totalCourses: number;
+//   accountsReached: number;
+//   usersLeft: number;
+// }
 
 const Analytics: React.FC = () => {
   const { data: analyticsData, isLoading, error } = useGetAnalyticsQuery();
