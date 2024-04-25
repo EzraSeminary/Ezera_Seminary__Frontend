@@ -52,7 +52,6 @@ function SlideDataDisplay({
   selectedSlideIndex,
   onNextSlide,
 }: SlideDataDisplayProps) {
-  //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
@@ -64,6 +63,7 @@ function SlideDataDisplay({
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
 
+  //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
@@ -140,6 +140,8 @@ function SlideDataDisplay({
 
   // Drag and Drop Functions
   const [draggedItem, setDraggedItem] = useState(null);
+  // dropped choice
+  const [droppedChoices, setDroppedChoices] = useState([]);
 
   const handleDragStart = (event) => {
     const { active } = event;
@@ -147,10 +149,15 @@ function SlideDataDisplay({
   };
 
   const handleDragEnd = (event) => {
-    const { over } = event;
+    const { active, over } = event;
     if (over && draggedItem === over.id) {
       // Logic for a successful drop
       console.log("Item dropped onto the correct area");
+    }
+    // Assuming that your droppable area has the id "droppable"
+    if (over?.id === "droppable") {
+      const choiceToAdd = active.data.current; // You will need to ensure that you set the 'data' property of draggable items correctly
+      setDroppedChoices([...droppedChoices, choiceToAdd]);
     }
     setDraggedItem(null);
   };
@@ -456,27 +463,27 @@ function SlideDataDisplay({
                                     {...attributes}
                                     {...listeners}
                                     key={choiceIndex}
+                                    className="bg-white p-2 my-1"
                                   >
-                                    <div
-                                      key={`${uniqueKey}-choice-${choiceIndex}`}
-                                      className="inline-flex items-center"
-                                    >
-                                      <span className="text-primary-6 font-nokia-bold text-sm ml-2">
-                                        {choice.text}
-                                      </span>
-                                    </div>
+                                    <span className="text-secondary-6 font-nokia-bold text-sm ml-2">
+                                      {choice.text}
+                                    </span>
                                   </div>
                                 );
                               }
                             )}
                           </div>
-                          {/* dropable component */}
+                          {/* dropable area */}
                           <div
                             ref={setDroppableRef}
-                            id="answer-space"
-                            className="border-dashed border-2 border-gray-300 min-h-[50px] flex justify-center items-center mt-4"
+                            id="droppable"
+                            className="border-dashed border-2 border-gray-300 min-w-[50px] min-h-[50px] flex justify-center items-center mt-4"
                           >
-                            {/* Render the user's choice here if dropped */}
+                            {droppedChoices.map((choice, index) => (
+                              <div key={index} className="bg-white p-2 my-1">
+                                {choice}
+                              </div>
+                            ))}
                           </div>
                         </DndContext>
                       )}
