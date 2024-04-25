@@ -9,11 +9,11 @@ import { ApiState } from "../services/api";
 import DevotionsState from "./devotionsSlice";
 
 export interface RootState {
-  devotions: typeof DevotionsState; // Replace 'any' with the appropriate type
+  devotions: typeof DevotionsState;
   course: CourseState;
   api: ApiState;
   auth: AuthState;
-  // Define other state fields if you have more reducers
+  [apiSlice.reducerPath]: ReturnType<typeof apiSlice.reducer>;
 }
 
 const store = configureStore({
