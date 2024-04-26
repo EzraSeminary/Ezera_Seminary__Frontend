@@ -140,19 +140,20 @@ function SlideDataDisplay({
   };
 
   // Drag and Drop Functions
-  const [draggedItem, setDraggedItem] = useState(null);
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    setDraggedItem(active.id);
+    setDraggedItem(active.id as string);
+    console.log("dragged choice:", draggedItem);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (over?.id === "droppable" && active.data.current.choice) {
+    if (over?.id === "droppable" && active.data?.current?.choice) {
       const choiceToAdd = active.data.current.choice.text;
       if (typeof choiceToAdd === "string") {
         setDroppedChoice(choiceToAdd);
