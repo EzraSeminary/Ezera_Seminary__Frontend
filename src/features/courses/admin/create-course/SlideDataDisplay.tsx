@@ -31,6 +31,8 @@ import {
   useSensors,
   useSensor,
   closestCenter,
+  DragEndEvent,
+  DragStartEvent,
 } from "@dnd-kit/core";
 import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "./Elements/dragAndDrop/DroppableArea";
@@ -142,22 +144,18 @@ function SlideDataDisplay({
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
-  const handleDragStart = (event) => {
+  const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id);
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    console.log("Active object:", active);
-    console.log("Over object:", over);
-
-    if (over?.id === "droppable" && active.data?.current.choice) {
+    if (over?.id === "droppable" && active.data.current.choice) {
       const choiceToAdd = active.data.current.choice.text;
       if (typeof choiceToAdd === "string") {
         setDroppedChoice(choiceToAdd);
-        console.log("Dropped choice:", choiceToAdd);
       }
     }
 
@@ -453,7 +451,6 @@ function SlideDataDisplay({
                                   <DraggableItem
                                     key={choiceIndex}
                                     choice={choice}
-                                    choiceIndex={choiceIndex}
                                     id="draggable"
                                   />
                                 );
@@ -464,7 +461,6 @@ function SlideDataDisplay({
                           <DroppableArea
                             key={uniqueKey}
                             droppedChoice={droppedChoice}
-                            droppedIndex={0}
                             id="droppable"
                           />
                         </DndContext>
