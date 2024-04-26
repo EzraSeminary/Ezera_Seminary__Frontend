@@ -2,7 +2,6 @@ import { useDroppable } from "@dnd-kit/core";
 
 interface DroppableAreaProps {
   droppedChoice: string | null;
-  droppedIndex: number;
   id: string;
 }
 
@@ -11,7 +10,6 @@ function DroppableArea({ droppedChoice, id }: DroppableAreaProps) {
     id: id,
     data: { droppedChoice },
   });
-  console.log("choice", droppedChoice);
 
   const style = {
     opacity: isOver ? 1 : 0.5,

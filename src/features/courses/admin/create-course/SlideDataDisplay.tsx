@@ -467,18 +467,6 @@ function SlideDataDisplay({
                             droppedIndex={0}
                             id="droppable"
                           />
-
-                          {/* <div
-                            ref={setDroppableRef}
-                            id="droppable"
-                            className="border-dashed border-2 border-gray-300 min-w-[50px] min-h-[50px] flex justify-center items-center mt-4"
-                          >
-                            {droppedChoices.map((choice, index) => (
-                              <div key={index} className="bg-white p-2 my-1">
-                                {choice}
-                              </div>
-                            ))}
-                          </div> */}
                         </DndContext>
                       )}
                       {/* Correct Answer */}
