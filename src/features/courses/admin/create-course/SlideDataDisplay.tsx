@@ -147,7 +147,6 @@ function SlideDataDisplay({
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id as string);
-    console.log("dragged choice:", draggedItem);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

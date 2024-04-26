@@ -114,7 +114,7 @@ export interface DndElement extends Omit<Element, "value"> {
 export type DndElementValue = {
   question: string;
   choices: { text: string }[];
-  correctAnswer: string;
+  correctDndAnswer: string;
 };
 
 // Define the initial state using `CourseState`

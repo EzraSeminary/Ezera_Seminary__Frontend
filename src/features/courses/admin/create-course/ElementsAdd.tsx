@@ -873,7 +873,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
-          <option value="dnd">Drag & Drop</option>
+          <option value="dnd">Missing Words</option>
         </select>
         <button
           onClick={handleAddButtonClick}
