@@ -444,7 +444,7 @@ function SlideDataDisplay({
                           sensors={sensors}
                           collisionDetection={closestCenter}
                         >
-                          <div className="flex mt-2">
+                          <div className="flex my-2">
                             {element.value.choices.map(
                               (choice, choiceIndex) => {
                                 return (

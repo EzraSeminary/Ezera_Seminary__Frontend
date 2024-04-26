@@ -11,18 +11,15 @@ function DroppableArea({ droppedChoice, id }: DroppableAreaProps) {
     data: { droppedChoice },
   });
 
-  const style = {
-    opacity: isOver ? 1 : 0.5,
-  };
-
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className="border-dashed border-2 border-gray-300 min-w-[100px] min-h-[100px] flex justify-center items-center mt-4"
+      className={`border-dashed border-2 border-gray-300 min-w-[100px] min-h-[50px] flex justify-center items-center my-2 ${
+        isOver ? "opacity-100" : "opacity-50"
+      }`}
     >
       {droppedChoice && (
-        <div className="bg-white p-2 my-1">
+        <div className="bg-white hover:bg-secondary-2 transition-all px-2 rounded-sm shadow-2xl cursor-move">
           <span className="text-secondary-6 font-nokia-bold text-sm">
             {droppedChoice}
           </span>

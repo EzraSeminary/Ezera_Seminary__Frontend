@@ -26,7 +26,7 @@ function DraggableItem({ choice, id, choiceIndex }: DraggableItemProps) {
       {...attributes}
       {...listeners}
       style={style}
-      className="bg-white px-2 mx-1 cursor-move"
+      className="bg-white hover:bg-secondary-2 transition-all px-2 mx-1 cursor-move rounded-sm shadow-2xl"
       onMouseDown={(e) => e.preventDefault()}
     >
       <span className="text-secondary-6 font-nokia-bold text-sm">
