@@ -7,14 +7,14 @@ interface DroppableAreaProps {
 
 function DroppableArea({ droppedChoice, droppedIndex }: DroppableAreaProps) {
   const { setNodeRef } = useDroppable({
-    id: `droppable-${droppedIndex}`,
+    id: "droppable",
     data: { droppedChoice },
   });
 
   return (
     <div
       ref={setNodeRef}
-      className="border-dashed border-2 border-gray-300 min-w-[50px] min-h-[50px] flex justify-center items-center mt-4"
+      className="border-dashed border-2 border-gray-300 min-w-[100px] min-h-[100px] flex justify-center items-center mt-4"
     >
       {droppedChoice}
     </div>

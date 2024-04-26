@@ -155,8 +155,8 @@ function SlideDataDisplay({
     }
     // Assuming that your droppable area has the id "droppable"
     if (over?.id === "droppable") {
-      const choiceToAdd = active.data.current; // You will need to ensure that you set the 'data' property of draggable items correctly
-      setDroppedChoices([...droppedChoices, choiceToAdd]);
+      const choiceToAdd = active.data.choice.text;
+      setDroppedChoices((prevChoices) => [...prevChoices, choiceToAdd]);
     }
     setDraggedItem(null);
   };
@@ -448,20 +448,6 @@ function SlideDataDisplay({
                                     choice={choice}
                                     choiceIndex={choiceIndex}
                                   />
-                                  // <div
-                                  //   ref={setNodeRef}
-                                  //   style={style}
-                                  //   {...attributes}
-                                  //   {...listeners}
-                                  //   id="draggable"
-                                  //   key={choiceIndex}
-                                  //   className="bg-white p-2 my-1"
-                                  //   onMouseDown={(e) => e.preventDefault()}
-                                  // >
-                                  //   <span className="text-secondary-6 font-nokia-bold text-sm ml-2">
-                                  //     {choice.text}
-                                  //   </span>
-                                  // </div>
                                 );
                               }
                             )}
