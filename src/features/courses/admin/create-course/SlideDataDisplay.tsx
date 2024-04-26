@@ -153,8 +153,8 @@ function SlideDataDisplay({
     console.log("Active object:", active);
     console.log("Over object:", over);
 
-    if (over?.id === "droppable" && active.data?.choice) {
-      const choiceToAdd = active.data.choice.text;
+    if (over?.id === "droppable" && active.data?.current.choice) {
+      const choiceToAdd = active.data.current.choice.text;
       if (typeof choiceToAdd === "string") {
         setDroppedChoice(choiceToAdd);
         console.log("Dropped choice:", choiceToAdd);
@@ -165,9 +165,13 @@ function SlideDataDisplay({
   };
 
   // Define sensors
-  const pointerSensor = useSensor(PointerSensor);
-  const sensors = useSensors(pointerSensor);
-
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
