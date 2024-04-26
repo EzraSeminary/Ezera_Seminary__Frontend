@@ -5,12 +5,13 @@ interface DraggableItemProps {
   choice: {
     text: string;
   };
+  choiceIndex: number;
   id: string;
 }
 
-function DraggableItem({ choice, id }: DraggableItemProps) {
+function DraggableItem({ choice, id, choiceIndex }: DraggableItemProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: id,
+    id: `${id}-${choiceIndex}`,
     data: { choice },
   });
 
@@ -25,7 +26,7 @@ function DraggableItem({ choice, id }: DraggableItemProps) {
       {...attributes}
       {...listeners}
       style={style}
-      className="bg-white p-2 my-1 cursor-move"
+      className="bg-white px-2 mx-1 cursor-move"
       onMouseDown={(e) => e.preventDefault()}
     >
       <span className="text-secondary-6 font-nokia-bold text-sm">

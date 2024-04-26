@@ -444,7 +444,7 @@ function SlideDataDisplay({
                           sensors={sensors}
                           collisionDetection={closestCenter}
                         >
-                          <div className="flex flex-col mt-2">
+                          <div className="flex mt-2">
                             {element.value.choices.map(
                               (choice, choiceIndex) => {
                                 return (
@@ -452,6 +452,7 @@ function SlideDataDisplay({
                                   <DraggableItem
                                     key={choiceIndex}
                                     choice={choice}
+                                    choiceIndex={choiceIndex}
                                     id="draggable"
                                   />
                                 );
