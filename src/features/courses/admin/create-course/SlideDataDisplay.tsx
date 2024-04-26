@@ -450,6 +450,7 @@ function SlideDataDisplay({
                                     key={choiceIndex}
                                     choice={choice}
                                     choiceIndex={choiceIndex}
+                                    id="draggable"
                                   />
                                 );
                               }
@@ -460,6 +461,7 @@ function SlideDataDisplay({
                             key={uniqueKey}
                             droppedChoice={droppedChoice}
                             droppedIndex={0}
+                            id="droppable"
                           />
 
                           {/* <div
