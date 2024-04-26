@@ -9,6 +9,7 @@ interface DraggableItemProps {
 }
 
 function DraggableItem({ choice, choiceIndex }: DraggableItemProps) {
+  console.log("Choice object:", choice);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `draggable-${choiceIndex}`,
     data: { choice },

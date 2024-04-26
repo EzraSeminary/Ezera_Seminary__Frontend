@@ -149,18 +149,19 @@ function SlideDataDisplay({
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (over && draggedItem === over.id) {
-      // Logic for a successful drop
-      console.log("Item dropped onto the correct area");
+
+    console.log("Active object:", active);
+    console.log("Over object:", over);
+
+    if (over?.id === "droppable" && active.data?.choice) {
+      const choiceToAdd = active.data.choice.text;
+      if (typeof choiceToAdd === "string") {
+        setDroppedChoice(choiceToAdd);
+        console.log("Dropped choice:", choiceToAdd);
+      }
     }
 
     setDraggedItem(null);
-
-    // Assuming that your droppable area has the id "droppable"
-    if (over?.id === "droppable") {
-      const choiceToAdd = active.data.choice.text;
-      setDroppedChoice(choiceToAdd); // Set the single dropped choice string.
-    }
   };
 
   // Define sensors
