@@ -140,7 +140,7 @@ function SlideDataDisplay({
   // Drag and Drop Functions
   const [draggedItem, setDraggedItem] = useState(null);
   // dropped choice
-  const [droppedChoices, setDroppedChoices] = useState([]);
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
   const handleDragStart = (event) => {
     const { active } = event;
@@ -153,12 +153,14 @@ function SlideDataDisplay({
       // Logic for a successful drop
       console.log("Item dropped onto the correct area");
     }
+
+    setDraggedItem(null);
+
     // Assuming that your droppable area has the id "droppable"
     if (over?.id === "droppable") {
       const choiceToAdd = active.data.choice.text;
-      setDroppedChoices((prevChoices) => [...prevChoices, choiceToAdd]);
+      setDroppedChoice(choiceToAdd); // Set the single dropped choice string.
     }
-    setDraggedItem(null);
   };
 
   // Define sensors
@@ -453,15 +455,12 @@ function SlideDataDisplay({
                             )}
                           </div>
                           {/* dropable area */}
-                          {droppedChoices.map((droppedChoice, droppedIndex) => {
-                            return (
-                              <DroppableArea
-                                key={droppedIndex}
-                                droppedChoice={droppedChoice}
-                                droppedIndex={droppedIndex}
-                              />
-                            );
-                          })}
+                          <DroppableArea
+                            key={uniqueKey}
+                            droppedChoice={droppedChoice}
+                            droppedIndex={0}
+                          />
+
                           {/* <div
                             ref={setDroppableRef}
                             id="droppable"

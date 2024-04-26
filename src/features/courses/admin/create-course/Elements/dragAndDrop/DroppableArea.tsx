@@ -1,7 +1,7 @@
 import { useDroppable } from "@dnd-kit/core";
 
 interface DroppableAreaProps {
-  droppedChoice: string[];
+  droppedChoice: string;
   droppedIndex: number;
 }
 
