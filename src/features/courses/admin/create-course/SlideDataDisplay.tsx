@@ -190,6 +190,8 @@ function SlideDataDisplay({
       if (typeof choiceToAdd === "string") {
         setDroppedChoice(choiceToAdd);
       }
+    } else {
+      setDroppedChoice(null); // Reset or handle this scenario if needed.
     }
 
     setDraggedItem(null);
@@ -480,15 +482,17 @@ function SlideDataDisplay({
                           <div className="flex my-2">
                             {element.value.choices.map(
                               (choice, choiceIndex) => {
-                                return (
-                                  // dragable item
-                                  <DraggableItem
-                                    key={choiceIndex}
-                                    choice={choice}
-                                    choiceIndex={choiceIndex}
-                                    id="draggable"
-                                  />
-                                );
+                                if (droppedChoice !== choice.text) {
+                                  return (
+                                    // dragable item
+                                    <DraggableItem
+                                      key={choiceIndex}
+                                      choice={choice}
+                                      choiceIndex={choiceIndex}
+                                      id="draggable"
+                                    />
+                                  );
+                                }
                               }
                             )}
                           </div>
