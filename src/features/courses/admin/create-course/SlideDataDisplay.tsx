@@ -6,6 +6,7 @@ import {
   Chapter,
   CustomElement,
   QuizElement,
+  DndElement,
   Slide,
 } from "../../../../redux/courseSlice";
 import AccordionItemDisplay from "./Elements/AccordionItemDisplay";
@@ -55,6 +56,9 @@ function SlideDataDisplay({
 }: SlideDataDisplayProps) {
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
+    null
+  );
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
@@ -67,7 +71,7 @@ function SlideDataDisplay({
   //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
+  const handleCheckAnswer = (choiceIndex: number, choiceValue: string) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide?.elements?.some((element) => element.type === "quiz")) {
@@ -77,12 +81,27 @@ function SlideDataDisplay({
       if (quizElement) {
         const isCorrect = choiceValue === quizElement.value.correctAnswer;
         setIsAnswerCorrect(isCorrect);
-        setShowQuizResult(false); // Reset showResult when a new answer is selected
       }
     }
+    // For "dnd" type
+    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
+      // Get the "dnd" element
+      const dndElement = selectedSlide.elements.find(
+        (element): element is DndElement => element.type === "dnd"
+      );
+      if (dndElement && droppedChoice) {
+        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
+        const isDndCorrect =
+          droppedChoice === dndElement.value.correctDndAnswer;
+        setIsDndAnswerCorrect(isDndCorrect);
+      }
+    }
+
+    setShowQuizResult(true);
   };
 
   //isCorrect switch
+  // Render quiz result
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
@@ -93,6 +112,19 @@ function SlideDataDisplay({
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
+  };
+
+  // Render dnd result
+  const renderDndResult = () => {
+    if (isDndAnswerCorrect === true) {
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
+    } else if (isDndAnswerCorrect === false) {
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+
+    return null;
   };
 
   const chapters = useSelector(selectChapters) as Chapter[];
@@ -140,6 +172,7 @@ function SlideDataDisplay({
   };
 
   // Drag and Drop Functions
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
@@ -170,6 +203,7 @@ function SlideDataDisplay({
       },
     })
   );
+
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
@@ -262,7 +296,7 @@ function SlideDataDisplay({
                                   className="w-5 h-5 appearance-none bg-primary-6 focus:bg-orange-400 rounded-full transition-all"
                                   checked={selectedChoice === choiceIndex}
                                   onChange={() =>
-                                    handleRadioChange(choiceIndex, choice.text)
+                                    handleCheckAnswer(choiceIndex, choice.text)
                                   }
                                 />
                                 <span className="text-primary-6 font-nokia-bold text-sm ml-2">
@@ -470,11 +504,11 @@ function SlideDataDisplay({
                       <div className="flex mt-2">
                         <button
                           className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                          onClick={() => setShowQuizResult(true)}
+                          onClick={handleCheckAnswer}
                         >
                           Check Answer
                         </button>
-                        {renderQuizResult()}
+                        {renderDndResult()}
                       </div>
                     </div>
                   );
