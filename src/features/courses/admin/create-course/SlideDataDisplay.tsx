@@ -71,7 +71,7 @@ function SlideDataDisplay({
   //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const handleCheckAnswer = (choiceIndex: number, choiceValue: string) => {
+  const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
     setSelectedChoice(choiceIndex);
     //logic to determine whether the selected answer is correct.
     if (selectedSlide?.elements?.some((element) => element.type === "quiz")) {
@@ -81,8 +81,11 @@ function SlideDataDisplay({
       if (quizElement) {
         const isCorrect = choiceValue === quizElement.value.correctAnswer;
         setIsAnswerCorrect(isCorrect);
+        setShowQuizResult(false); // Reset showResult when a new answer is selected
       }
     }
+  };
+  const handleCheckAnswer = () => {
     // For "dnd" type
     if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
       // Get the "dnd" element
@@ -298,7 +301,7 @@ function SlideDataDisplay({
                                   className="w-5 h-5 appearance-none bg-primary-6 focus:bg-orange-400 rounded-full transition-all"
                                   checked={selectedChoice === choiceIndex}
                                   onChange={() =>
-                                    handleCheckAnswer(choiceIndex, choice.text)
+                                    setSelectedChoice(choiceIndex)
                                   }
                                 />
                                 <span className="text-primary-6 font-nokia-bold text-sm ml-2">
@@ -313,7 +316,7 @@ function SlideDataDisplay({
                       <div className="flex mt-2">
                         <button
                           className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                          onClick={() => setShowQuizResult(true)}
+                          onClick={handleCheckAnswer}
                         >
                           Check Answer
                         </button>
