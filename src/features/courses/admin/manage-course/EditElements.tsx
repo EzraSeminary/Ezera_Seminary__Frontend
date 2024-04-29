@@ -759,6 +759,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
+          <option value="dnd">Missing Words</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -773,6 +774,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "sequence" && renderSequenceForm()}
       {currentElement === "reveal" && renderRevealForm()}
+      {currentElement === "dnd" && renderDndForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
@@ -801,7 +803,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 id={element.id}
                 placeholder={`Enter ${element.type}`}
                 value={
-                  element.type === "quiz"
+                  element.type === "quiz" || element.type === "dnd"
                     ? element.value?.question?.toString()
                     : element.value?.toString()
                 }
