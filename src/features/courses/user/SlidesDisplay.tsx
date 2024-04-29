@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { useGetCourseByIdQuery } from "../../../services/api";
+import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
 import {
   ArrowLeft,
   CheckCircle,
@@ -160,6 +160,8 @@ function SlidesDisplay() {
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
+  // Selected Slide
+  const selectedSlide = data[activeIndex];
 
   //function to select chapter buttons
   const updateIndex = (newIndex: number) => {
