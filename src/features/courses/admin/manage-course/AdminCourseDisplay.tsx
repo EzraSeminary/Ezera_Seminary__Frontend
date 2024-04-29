@@ -8,6 +8,7 @@ import {
   CourseState,
   CustomElement,
   QuizElement,
+  DndElement,
 } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -24,6 +25,17 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import {
+  DndContext,
+  PointerSensor,
+  useSensors,
+  useSensor,
+  closestCenter,
+  DragEndEvent,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "./Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
