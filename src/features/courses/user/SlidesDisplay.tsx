@@ -15,7 +15,7 @@ import {
   CornersOut,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
-import AccordionItemDisplay from "../admin/Elements/AccordionItemDisplay";
+import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
@@ -42,8 +42,8 @@ import {
   DragEndEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
-import DroppableArea from "./Elements/dragAndDrop/DroppableArea";
+import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
@@ -139,6 +139,19 @@ function SlidesDisplay() {
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
     null
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  // dropped choice
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
+  // Define Drag & Drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
   );
 
   // If the chapter is not found, handle accordingly
@@ -329,10 +342,6 @@ function SlidesDisplay() {
   };
 
   // Drag and Drop Functions
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [draggedItem, setDraggedItem] = useState<string | null>(null);
-  // dropped choice
-  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -354,15 +363,6 @@ function SlidesDisplay() {
 
     setDraggedItem(null);
   };
-
-  // Define sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
 
   if (isLoading) return <LoadingPage />;
 
@@ -912,7 +912,7 @@ function SlidesDisplay() {
                                   </div>
                                   {/* dropable area */}
                                   <DroppableArea
-                                    key={uniqueKey}
+                                    key={`droppable_${element._id}`}
                                     droppedChoice={droppedChoice}
                                     id="droppable"
                                   />

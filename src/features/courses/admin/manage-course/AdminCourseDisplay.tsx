@@ -34,8 +34,8 @@ import {
   DragEndEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
-import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
+import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
