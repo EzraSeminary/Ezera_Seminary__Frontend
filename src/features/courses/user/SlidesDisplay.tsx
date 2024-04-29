@@ -15,7 +15,7 @@ import {
   CornersOut,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
-import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
+import AccordionItemDisplay from "../admin/Elements/AccordionItemDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
