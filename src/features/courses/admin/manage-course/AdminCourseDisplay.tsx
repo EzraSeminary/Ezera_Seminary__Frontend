@@ -175,6 +175,42 @@ function AdminCourseDisplay({
     }
   };
 
+  // Drag and Drop Functions
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  // dropped choice
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setDraggedItem(active.id as string);
+    console.log(draggedItem);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over?.id === "droppable" && active.data?.current?.choice) {
+      const choiceToAdd = active.data.current.choice.text;
+      if (typeof choiceToAdd === "string") {
+        setDroppedChoice(choiceToAdd);
+      }
+    } else {
+      setDroppedChoice(null); // Reset or handle this scenario if needed.
+    }
+
+    setDraggedItem(null);
+  };
+
+  // Define sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
   return (
     <div className="h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
