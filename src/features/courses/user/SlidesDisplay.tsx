@@ -794,6 +794,61 @@ function SlidesDisplay() {
                               </div>
                             </div>
                           );
+                        } else if (element.type === "dnd") {
+                          return (
+                            <div
+                              key={element._id}
+                              className="flex flex-col justify-center items-center mb-4"
+                            >
+                              {/* Questions */}
+                              <p className="text-primary-6 font-nokia-bold text-lg">
+                                {element.value.question}
+                              </p>
+                              {/* Choices */}
+                              {element.value.choices && (
+                                <DndContext
+                                  onDragStart={handleDragStart}
+                                  onDragEnd={handleDragEnd}
+                                  sensors={sensors}
+                                  collisionDetection={closestCenter}
+                                >
+                                  <div className="flex my-2">
+                                    {element.value.choices.map(
+                                      (choice, choiceIndex) => {
+                                        if (droppedChoice !== choice.text) {
+                                          return (
+                                            // dragable item
+                                            <DraggableItem
+                                              key={choiceIndex}
+                                              choice={choice}
+                                              choiceIndex={choiceIndex}
+                                              id="draggable"
+                                            />
+                                          );
+                                        }
+                                      }
+                                    )}
+                                  </div>
+                                  {/* dropable area */}
+                                  <DroppableArea
+                                    key={uniqueKey}
+                                    droppedChoice={droppedChoice}
+                                    id="droppable"
+                                  />
+                                </DndContext>
+                              )}
+                              {/* Correct Answer */}
+                              <div className="flex mt-2">
+                                <button
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  onClick={handleCheckAnswer}
+                                >
+                                  Check Answer
+                                </button>
+                                {renderDndResult()}
+                              </div>
+                            </div>
+                          );
                         }
                       })}
                     </div>
