@@ -33,6 +33,17 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import {
+  DndContext,
+  PointerSensor,
+  useSensors,
+  useSensor,
+  closestCenter,
+  DragEndEvent,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import DraggableItem from "./Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "./Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
@@ -173,6 +184,24 @@ function SlidesDisplay() {
     setShowQuizResult(false); // Reset showResult when a new answer is selected
   };
 
+  // For "dnd" type
+  const handleCheckAnswer = () => {
+    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
+      // Get the "dnd" element
+      const dndElement = selectedSlide.elements.find(
+        (element): element is DndElement => element.type === "dnd"
+      );
+      if (dndElement && droppedChoice) {
+        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
+        const isDndCorrect =
+          droppedChoice === dndElement.value.correctDndAnswer;
+        setIsDndAnswerCorrect(isDndCorrect);
+      }
+    }
+
+    setShowQuizResult(true);
+  };
+
   //isCorrect switch
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
@@ -184,6 +213,19 @@ function SlidesDisplay() {
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
+  };
+
+  // Render dnd result
+  const renderDndResult = () => {
+    if (isDndAnswerCorrect === true) {
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
+    } else if (isDndAnswerCorrect === false) {
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+
+    return null;
   };
 
   // Check if courseData and courseData._id are not undefined
