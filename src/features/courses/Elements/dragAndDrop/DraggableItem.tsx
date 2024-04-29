@@ -29,7 +29,7 @@ function DraggableItem({ choice, id, choiceIndex }: DraggableItemProps) {
       className="bg-white hover:bg-secondary-2 transition-all px-2 mx-1 cursor-move rounded-sm shadow-2xl"
       onMouseDown={(e) => e.preventDefault()}
     >
-      <span className="text-secondary-6 font-nokia-bold text-sm">
+      <span className="text-secondary-6 font-nokia-bold text-lg">
         {choice.text}
       </span>
     </div>

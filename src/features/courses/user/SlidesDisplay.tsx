@@ -344,11 +344,12 @@ function SlidesDisplay() {
   };
 
   // Drag and Drop Functions
-
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id as string);
     console.log(draggedItem);
+    // Reset showResult when dragging starts
+    setShowQuizResult(false);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -581,7 +582,7 @@ function SlidesDisplay() {
                     className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                   >
                     <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
-                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
+                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 mb-4 font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -881,10 +882,10 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center mb-4"
+                              className="flex flex-col justify-center items-center mt-6 mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-primary-6 font-nokia-bold text-lg">
+                              <p className="text-primary-6 font-nokia-bold text-xl">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -895,7 +896,7 @@ function SlidesDisplay() {
                                   sensors={sensors}
                                   collisionDetection={closestCenter}
                                 >
-                                  <div className="flex my-2">
+                                  <div className="flex my-4">
                                     {element.value.choices.map(
                                       (choice, choiceIndex) => {
                                         if (droppedChoice !== choice.text) {
@@ -938,7 +939,7 @@ function SlidesDisplay() {
 
                     {isLastSlide && (
                       <button
-                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
+                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 mb-4 transition-all text-xs1"
                         onClick={submitProgress}
                       >
                         ዘግተህ ውጣ
