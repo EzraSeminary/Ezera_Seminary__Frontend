@@ -106,6 +106,7 @@ function AdminCourseDisplay({
   };
 
   //isCorrect switch
+  // Render quiz result
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
@@ -116,6 +117,19 @@ function AdminCourseDisplay({
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
+  };
+
+  // Render dnd result
+  const renderDndResult = () => {
+    if (isDndAnswerCorrect === true) {
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
+    } else if (isDndAnswerCorrect === false) {
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+
+    return null;
   };
 
   const chapters = useSelector(selectChapters) as Chapter[];
