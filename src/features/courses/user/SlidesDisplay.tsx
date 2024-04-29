@@ -137,6 +137,9 @@ function SlidesDisplay() {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
+    null
+  );
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
@@ -324,6 +327,42 @@ function SlidesDisplay() {
       setSliderValue(newValue);
     }
   };
+
+  // Drag and Drop Functions
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  // dropped choice
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setDraggedItem(active.id as string);
+    console.log(draggedItem);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over?.id === "droppable" && active.data?.current?.choice) {
+      const choiceToAdd = active.data.current.choice.text;
+      if (typeof choiceToAdd === "string") {
+        setDroppedChoice(choiceToAdd);
+      }
+    } else {
+      setDroppedChoice(null); // Reset or handle this scenario if needed.
+    }
+
+    setDraggedItem(null);
+  };
+
+  // Define sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   if (isLoading) return <LoadingPage />;
 
