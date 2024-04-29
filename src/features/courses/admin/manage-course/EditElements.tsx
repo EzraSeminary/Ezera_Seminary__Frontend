@@ -608,6 +608,131 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     </div>
   );
 
+  // DND-related state and functions
+  const [dndQuestion, setDndQuestion] = useState("");
+  const [dndChoices, setDndChoices] = useState<string[]>([]);
+  const [correctDndAnswer, setCorrectDndAnswer] = useState("");
+
+  const handleDndQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDndQuestion(event.target.value);
+  };
+
+  const handleDndChoiceChange = (index: number, text: string) => {
+    setDndChoices(dndChoices.map((choice, i) => (i === index ? text : choice)));
+  };
+
+  const handleAddDndChoice = () => {
+    setDndChoices([...dndChoices, ""]); // Adds a new empty choice
+  };
+
+  const handleCorrectDndAnswerChange = (value: string) => {
+    setCorrectDndAnswer(value);
+  };
+
+  const saveDndToRedux = () => {
+    if (dndQuestion && dndChoices.length > 0) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "dnd",
+          value: {
+            question: dndQuestion,
+            choices: dndChoices.map((text) => ({ text })),
+            correctDndAnswer,
+          },
+        })
+      );
+      // Reset quiz state
+      setDndQuestion("");
+      setDndChoices([]);
+      setCorrectDndAnswer("");
+    }
+    setCurrentElement("");
+  };
+
+  const renderDndForm = () => (
+    <div className="pb-4">
+      <div className="flex flex-col items-center w-[100%] gap-1">
+        <input
+          type="text"
+          value={dndQuestion}
+          onChange={handleDndQuestionChange}
+          placeholder="Enter quiz question"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+        />
+
+        <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
+          <button
+            onClick={handleAddDndChoice}
+            className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <PlusCircle
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={saveDndToRedux}
+            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
+        </div>
+      </div>
+      <ul className="space-y-2 py-4">
+        {/* // Map over dndChoices to render choices */}
+        {dndChoices.map((choice, index) => (
+          <label className="text-accent-6 ">
+            Choice {index + 1}:
+            <li key={index} className="flex justify-between">
+              <input
+                type="text"
+                value={choice}
+                onChange={(e) => handleDndChoiceChange(index, e.target.value)}
+                placeholder={`Choice ${index + 1}`}
+                className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+              />
+              <Trash
+                onClick={() => {
+                  // Add a function to handle removing choices
+                  setDndChoices(dndChoices.filter((_, i) => i !== index));
+                }}
+                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1"
+                weight="fill"
+                size={22}
+              />
+            </li>
+          </label>
+        ))}
+      </ul>
+      {/* choose the correct answer on the dropdown */}
+      <label className="text-accent-6 ">
+        Correct Answer:
+        <select
+          value={correctDndAnswer}
+          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
+          onChange={(e) => handleCorrectDndAnswerChange(e.target.value)}
+          required
+        >
+          <option value="">Select the correct answer</option>
+          {dndChoices.map((a, index) => (
+            <option key={index} value={a}>
+              {a}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+
   return (
     <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
       <p className="font-bold py-2 text-accent-6 text-center text-lg">
@@ -634,6 +759,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
+          <option value="dnd">Missing Words</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -648,6 +774,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "sequence" && renderSequenceForm()}
       {currentElement === "reveal" && renderRevealForm()}
+      {currentElement === "dnd" && renderDndForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
@@ -676,7 +803,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 id={element.id}
                 placeholder={`Enter ${element.type}`}
                 value={
-                  element.type === "quiz"
+                  element.type === "quiz" || element.type === "dnd"
                     ? element.value?.question?.toString()
                     : element.value?.toString()
                 }
