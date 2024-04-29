@@ -60,13 +60,16 @@ function AdminCourseDisplay({
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
 
-  //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
+    null
+  );
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
+  //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
@@ -82,6 +85,24 @@ function AdminCourseDisplay({
         setShowQuizResult(false); // Reset showResult when a new answer is selected
       }
     }
+  };
+
+  // For "dnd" type
+  const handleCheckAnswer = () => {
+    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
+      // Get the "dnd" element
+      const dndElement = selectedSlide.elements.find(
+        (element): element is DndElement => element.type === "dnd"
+      );
+      if (dndElement && droppedChoice) {
+        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
+        const isDndCorrect =
+          droppedChoice === dndElement.value.correctDndAnswer;
+        setIsDndAnswerCorrect(isDndCorrect);
+      }
+    }
+
+    setShowQuizResult(true);
   };
 
   //isCorrect switch
