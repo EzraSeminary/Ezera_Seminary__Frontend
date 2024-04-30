@@ -8,6 +8,7 @@ import {
   CourseState,
   CustomElement,
   QuizElement,
+  DndElement,
 } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -24,6 +25,17 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import {
+  DndContext,
+  PointerSensor,
+  useSensors,
+  useSensor,
+  closestCenter,
+  DragEndEvent,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
@@ -48,13 +60,16 @@ function AdminCourseDisplay({
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
 
-  //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
+    null
+  );
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
 
+  //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
@@ -72,7 +87,26 @@ function AdminCourseDisplay({
     }
   };
 
+  // For "dnd" type
+  const handleCheckAnswer = () => {
+    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
+      // Get the "dnd" element
+      const dndElement = selectedSlide.elements.find(
+        (element): element is DndElement => element.type === "dnd"
+      );
+      if (dndElement && droppedChoice) {
+        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
+        const isDndCorrect =
+          droppedChoice === dndElement.value.correctDndAnswer;
+        setIsDndAnswerCorrect(isDndCorrect);
+      }
+    }
+
+    setShowQuizResult(true);
+  };
+
   //isCorrect switch
+  // Render quiz result
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
 
@@ -83,6 +117,19 @@ function AdminCourseDisplay({
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
+  };
+
+  // Render dnd result
+  const renderDndResult = () => {
+    if (isDndAnswerCorrect === true) {
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
+    } else if (isDndAnswerCorrect === false) {
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+
+    return null;
   };
 
   const chapters = useSelector(selectChapters) as Chapter[];
@@ -127,6 +174,42 @@ function AdminCourseDisplay({
       setSliderValue(newValue);
     }
   };
+
+  // Drag and Drop Functions
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  // dropped choice
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setDraggedItem(active.id as string);
+    console.log(draggedItem);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over?.id === "droppable" && active.data?.current?.choice) {
+      const choiceToAdd = active.data.current.choice.text;
+      if (typeof choiceToAdd === "string") {
+        setDroppedChoice(choiceToAdd);
+      }
+    } else {
+      setDroppedChoice(null); // Reset or handle this scenario if needed.
+    }
+
+    setDraggedItem(null);
+  };
+
+  // Define sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   return (
     <div className="h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
@@ -381,6 +464,61 @@ function AdminCourseDisplay({
                         <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
                           በጣም ተምሬያለሁ
                         </button>
+                      </div>
+                    </div>
+                  );
+                } else if (element.type === "dnd") {
+                  elementComponent = (
+                    <div
+                      key={uniqueKey}
+                      className="flex flex-col justify-center items-center mb-4"
+                    >
+                      {/* Questions */}
+                      <p className="text-primary-6 font-nokia-bold text-lg">
+                        {element.value.question}
+                      </p>
+                      {/* Choices */}
+                      {element.value.choices && (
+                        <DndContext
+                          onDragStart={handleDragStart}
+                          onDragEnd={handleDragEnd}
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                        >
+                          <div className="flex my-2">
+                            {element.value.choices.map(
+                              (choice, choiceIndex) => {
+                                if (droppedChoice !== choice.text) {
+                                  return (
+                                    // dragable item
+                                    <DraggableItem
+                                      key={choiceIndex}
+                                      choice={choice}
+                                      choiceIndex={choiceIndex}
+                                      id="draggable"
+                                    />
+                                  );
+                                }
+                              }
+                            )}
+                          </div>
+                          {/* dropable area */}
+                          <DroppableArea
+                            key={uniqueKey}
+                            droppedChoice={droppedChoice}
+                            id="droppable"
+                          />
+                        </DndContext>
+                      )}
+                      {/* Correct Answer */}
+                      <div className="flex mt-2">
+                        <button
+                          className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                          onClick={handleCheckAnswer}
+                        >
+                          Check Answer
+                        </button>
+                        {renderDndResult()}
                       </div>
                     </div>
                   );

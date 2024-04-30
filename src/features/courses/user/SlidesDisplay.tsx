@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { useGetCourseByIdQuery } from "../../../services/api";
+import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
 import {
   ArrowLeft,
   CheckCircle,
@@ -15,7 +15,7 @@ import {
   CornersOut,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
-import AccordionItemDisplay from "../admin/create-course/Elements/AccordionItemDisplay";
+import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/authSlice";
 import { RootState } from "@/redux/store";
@@ -33,6 +33,17 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import {
+  DndContext,
+  PointerSensor,
+  useSensors,
+  useSensor,
+  closestCenter,
+  DragEndEvent,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
+import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 
 interface FlipState {
   [index: number]: boolean;
@@ -126,6 +137,22 @@ function SlidesDisplay() {
   //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
+    null
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  // dropped choice
+  const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
+  // Define Drag & Drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
@@ -133,6 +160,8 @@ function SlidesDisplay() {
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
+  // Selected Slide
+  const selectedSlide = data[activeIndex];
 
   //function to select chapter buttons
   const updateIndex = (newIndex: number) => {
@@ -173,6 +202,24 @@ function SlidesDisplay() {
     setShowQuizResult(false); // Reset showResult when a new answer is selected
   };
 
+  // For "dnd" type
+  const handleCheckAnswer = () => {
+    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
+      // Get the "dnd" element
+      const dndElement = selectedSlide.elements.find(
+        (element): element is DndElement => element.type === "dnd"
+      );
+      if (dndElement && droppedChoice) {
+        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
+        const isDndCorrect =
+          droppedChoice === dndElement.value.correctDndAnswer;
+        setIsDndAnswerCorrect(isDndCorrect);
+      }
+    }
+
+    setShowQuizResult(true);
+  };
+
   //isCorrect switch
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
@@ -184,6 +231,19 @@ function SlidesDisplay() {
     } else {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
+  };
+
+  // Render dnd result
+  const renderDndResult = () => {
+    if (isDndAnswerCorrect === true) {
+      return (
+        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
+      );
+    } else if (isDndAnswerCorrect === false) {
+      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
+    }
+
+    return null;
   };
 
   // Check if courseData and courseData._id are not undefined
@@ -281,6 +341,30 @@ function SlidesDisplay() {
     if (typeof newValue === "number") {
       setSliderValue(newValue);
     }
+  };
+
+  // Drag and Drop Functions
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setDraggedItem(active.id as string);
+    console.log(draggedItem);
+    // Reset showResult when dragging starts
+    setShowQuizResult(false);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over?.id === "droppable" && active.data?.current?.choice) {
+      const choiceToAdd = active.data.current.choice.text;
+      if (typeof choiceToAdd === "string") {
+        setDroppedChoice(choiceToAdd);
+      }
+    } else {
+      setDroppedChoice(null); // Reset or handle this scenario if needed.
+    }
+
+    setDraggedItem(null);
   };
 
   if (isLoading) return <LoadingPage />;
@@ -498,7 +582,7 @@ function SlidesDisplay() {
                     className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
                   >
                     <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
-                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 font-nokia-bold">
+                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 mb-4 font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -794,13 +878,68 @@ function SlidesDisplay() {
                               </div>
                             </div>
                           );
+                        } else if (element.type === "dnd") {
+                          return (
+                            <div
+                              key={element._id}
+                              className="flex flex-col justify-center items-center mt-6 mb-4"
+                            >
+                              {/* Questions */}
+                              <p className="text-primary-6 font-nokia-bold text-xl">
+                                {element.value.question}
+                              </p>
+                              {/* Choices */}
+                              {element.value.choices && (
+                                <DndContext
+                                  onDragStart={handleDragStart}
+                                  onDragEnd={handleDragEnd}
+                                  sensors={sensors}
+                                  collisionDetection={closestCenter}
+                                >
+                                  <div className="flex my-4">
+                                    {element.value.choices.map(
+                                      (choice, choiceIndex) => {
+                                        if (droppedChoice !== choice.text) {
+                                          return (
+                                            // dragable item
+                                            <DraggableItem
+                                              key={choiceIndex}
+                                              choice={choice}
+                                              choiceIndex={choiceIndex}
+                                              id="draggable"
+                                            />
+                                          );
+                                        }
+                                      }
+                                    )}
+                                  </div>
+                                  {/* dropable area */}
+                                  <DroppableArea
+                                    key={`droppable_${element._id}`}
+                                    droppedChoice={droppedChoice}
+                                    id="droppable"
+                                  />
+                                </DndContext>
+                              )}
+                              {/* Correct Answer */}
+                              <div className="flex mt-2">
+                                <button
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  onClick={handleCheckAnswer}
+                                >
+                                  Check Answer
+                                </button>
+                                {renderDndResult()}
+                              </div>
+                            </div>
+                          );
                         }
                       })}
                     </div>
 
                     {isLastSlide && (
                       <button
-                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 transition-all text-xs1"
+                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 mb-4 transition-all text-xs1"
                         onClick={submitProgress}
                       >
                         ዘግተህ ውጣ
