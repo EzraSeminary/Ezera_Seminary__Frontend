@@ -32,6 +32,8 @@ function ChaptersAdd() {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState<
     number | null
   >(null);
+  // show element popup
+  const [showElementPopup, setShowElementPopup] = useState(false);
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -49,12 +51,16 @@ function ChaptersAdd() {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
   };
 
-  const addSlideHandler = (chapterIndex: number) => {
-    dispatch(addSlide({ chapterIndex }));
-    setEditingSlideIndex({
-      chapter: chapterIndex,
-      slide: chapters[chapterIndex].slides.length,
-    });
+  // const addSlideHandler = (chapterIndex: number) => {
+  //   dispatch(addSlide({ chapterIndex }));
+  //   setEditingSlideIndex({
+  //     chapter: chapterIndex,
+  //     slide: chapters[chapterIndex].slides.length,
+  //   });
+  // };
+
+  const handleShowElementPopup = () => {
+    setShowElementPopup(true);
   };
 
   const updateSlideHandler = (
@@ -179,7 +185,8 @@ function ChaptersAdd() {
                   ))}
                   <button
                     className=""
-                    onClick={() => addSlideHandler(chapterIndex)}
+                    // onClick={() => addSlideHandler(chapterIndex)}
+                    onClick={handleShowElementPopup}
                   >
                     <p className=" flex items-center text-accent-6 px-4 gap-2 mt-4">
                       <PlusCircle
@@ -196,6 +203,10 @@ function ChaptersAdd() {
           );
         })}
       </div>
+
+      {/* display elements popup here */}
+      {showElementPopup && <ElementPopup />}
+
       <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
