@@ -189,7 +189,6 @@ function ChaptersDisplay() {
             </button>
           </NavLink>
         </div>
-
         {/* Chapters side bar for mobile and tablet*/}
         <div
           ref={ref}
@@ -278,7 +277,7 @@ function ChaptersDisplay() {
                     }}
                     disabled={!unlocked}
                   >
-                    <div className="flex flex-col items-start justify-center">
+                    <div className="flex flex-col items-start text-left w-[80%] mx-auto">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
                       </h2>
@@ -287,9 +286,9 @@ function ChaptersDisplay() {
                       </p>
                     </div>
                     {unlocked ? (
-                      <CheckCircle size={16} weight="fill" color={"#EA9215"} />
+                      <CheckCircle size={14} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Lock size={16} color={"#EC4000"} />
+                      <Lock size={14} color={"#EC4000"} />
                     )}
                   </button>
                 );
@@ -297,7 +296,6 @@ function ChaptersDisplay() {
             </div>
           </div>
         </div>
-
         {/* Chapters side bar for desktop*/}
         <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
           <NavLink to={"/courses"}>
@@ -366,7 +364,7 @@ function ChaptersDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-center">
+                    <div className="flex flex-col items-start text-left w-[80%] mx-auto">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
                       </h2>
@@ -385,7 +383,6 @@ function ChaptersDisplay() {
             </div>
           </div>
         </div>
-
         {/* Chapter display window*/}
         <div className=" lg:w-[70%]   items-center  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full">
           {/* Chapter display container */}
@@ -451,13 +448,13 @@ function ChaptersDisplay() {
                       </button>
                     </div>
                     {/* footer */}
-                    <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs lg:text-sm absolute bottom-0">
-                      <div className="p-1 bg-accent-6 rounded">
+                    <div className="pl-2 py-1 bg-secondary-4 gap-2 flex justify-center items-center w-full text-xs lg:text-sm absolute bottom-0">
+                      <div className="px-1 bg-accent-6 rounded">
                         <p className="font-Lato-Bold text-primary-1">
                           {progressPercent}
                         </p>
                       </div>
-                      <p className="font-Lato-Bold text-secondary-6 leading-none">
+                      <p className="font-Lato-Bold text-primary-6 leading-none">
                         {chapterStatus}
                       </p>
                     </div>

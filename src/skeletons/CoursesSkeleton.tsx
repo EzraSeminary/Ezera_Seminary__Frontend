@@ -42,7 +42,7 @@ const CoursesSkeleton = () => {
             >
               {/* Image of the course */}
               <div className="w-full p-2 h-full">
-                <Skeleton className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-xl bg-gray-200 animate-pulse" />
+                <Skeleton className="w-full max-h-[40vh] min-h-[40vh]  md:min-h-[20vh] md:max-h-[20vh] lg:min-h-[25vh] lg:max-h-[25vh] object-cover rounded-xl bg-gray-200 animate-pulse" />
               </div>
 
               {/* Title, Description and button */}

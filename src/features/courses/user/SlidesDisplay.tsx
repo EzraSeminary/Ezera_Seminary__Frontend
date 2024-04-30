@@ -31,6 +31,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
+import ChapterNotFound from "@/components/ChapterNotFound";
 
 interface FlipState {
   [index: number]: boolean;
@@ -125,7 +126,7 @@ function SlidesDisplay() {
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
-    return <p>Chapter not found</p>;
+    return <ChapterNotFound />;
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
@@ -243,15 +244,17 @@ function SlidesDisplay() {
 
   if (progressLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-screen flex justify-center items-center bg-primary-6">
         <PuffLoader
-          color={"#707070"}
+          color={"#EA9215"}
           loading
-          size={80}
+          size={56}
           aria-label="Loading Spinner"
           data-testid="loader"
         />
-        <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
+        <h1 className="text-secondary-6 font-nokia-bold text-3xl">
+          Saving your progress
+        </h1>
       </div>
     );
 
@@ -384,7 +387,7 @@ function SlidesDisplay() {
             </div>
           </div>
         </div>
-        {/* Slides side bar for mdesktop*/}
+        {/* Slides side bar for desktop*/}
         <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
           {/* Short information*/}
           <div className="flex  px-4 py-2 bg-secondary-5  gap-12 justify-between items-center w-full text-xs1  lg:text-xs z-50">
