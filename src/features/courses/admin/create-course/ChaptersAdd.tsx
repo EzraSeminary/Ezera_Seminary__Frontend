@@ -14,6 +14,7 @@ import {
 } from "../../../../redux/courseSlice";
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
+import ElementPopup from "../../Elements/ElementPopup";
 
 export interface EditingSlideIndex {
   chapter: number;

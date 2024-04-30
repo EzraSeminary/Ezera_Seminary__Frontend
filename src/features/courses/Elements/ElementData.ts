@@ -4,7 +4,20 @@ export interface ElementData {
   }
   
   export const elementData: ElementData[] = [
-    { title: 'Title 1', description: 'Description 1' },
-    { title: 'Title 2', description: 'Description 2' },
-    { title: 'Title 3', description: 'Description 3' },
+    { title: "title", description: 'Description 1' },
+    { title: "sub", description: 'Description 2' },
+    { title: "text", description: 'Description 3' },
   ];
+
+//   <option value=>Title</option>
+//           <option value=>Sub-title</option>
+//           <option value=>Paragraph</option>
+//           <option value="slide">Slide</option>
+//           <option value="img">Image</option>
+//           <option value="quiz">Quiz</option>
+//           <option value="list">List</option>
+//           <option value="accordion">Accordion</option>
+//           <option value="sequence">Sequence</option>
+//           <option value="reveal">Reveal</option>
+//           <option value="range">Range</option>
+//           <option value="dnd">Missing Words</option>
