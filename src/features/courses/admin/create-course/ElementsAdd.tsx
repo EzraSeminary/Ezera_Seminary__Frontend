@@ -846,6 +846,13 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     </div>
   );
 
+  // // Select element type on the popup menu
+  // const handleSelectElement = (value: string) => {
+  //   setCurrentElement(value);
+  //   closeElementPopup(); // Assuming you want to close the popup after selecting an element
+  //   handleAddButtonClick(); // If you also want to automatically add the element after selecting
+  // };
+
   return (
     <div className="bg-secondary-1 w-full h-full px-4 border border-secondary-3">
       <p className="font-nokia-Bold py-2 text-accent-6 text-center text-lg">

@@ -2,12 +2,12 @@ import { useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCourse,
+  // selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
   updateChapter,
-  addSlide,
+  // addSlide,
   updateSlide,
   deleteChapter,
   deleteSlide,
@@ -23,7 +23,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
+  // const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -92,7 +92,17 @@ function ChaptersAdd() {
     });
   };
 
-  console.log(course);
+  // const handleSelectElement = (elementType: string) => {
+  //   if (editingSlideIndex !== null) {
+  //     setCurrentElement(value);
+  //     closeElementPopup(); // Assuming you want to close the popup after selecting an element
+  //     handleAddButtonClick(); // If you also want to automatically add the element after selecting
+
+  //     // Pass the element type to our ElementsAdd component
+  //     // You may need a new useState hook to manage this part
+  //     // Also, add logic to control the popup closure right here or inside the handler in ElementsAdd.tsx
+  //   }
+  // };
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
