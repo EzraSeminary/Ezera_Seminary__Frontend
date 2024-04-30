@@ -62,6 +62,9 @@ function ChaptersAdd() {
   const handleShowElementPopup = () => {
     setShowElementPopup(true);
   };
+  const closeElementPopup = () => {
+    setShowElementPopup(false);
+  };
 
   const updateSlideHandler = (
     chapterIndex: number,
@@ -205,7 +208,9 @@ function ChaptersAdd() {
       </div>
 
       {/* display elements popup here */}
-      {showElementPopup && <ElementPopup />}
+      {showElementPopup && (
+        <ElementPopup closeElementPopup={closeElementPopup} />
+      )}
 
       <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
