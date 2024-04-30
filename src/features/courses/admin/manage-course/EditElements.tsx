@@ -734,7 +734,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   );
 
   return (
-    <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
+    <div className="bg-secondary-1 w-full h-full px-4 border border-secondary-3">
       <p className="font-bold py-2 text-accent-6 text-center text-lg">
         Insert Element
       </p>
