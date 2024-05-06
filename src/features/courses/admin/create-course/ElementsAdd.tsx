@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FC } from "react";
+import { useState, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
@@ -11,17 +11,22 @@ import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 interface ElementsAddProps {
   chapterIndex: number;
   slideIndex: number;
+  currentElement: string;
+  setCurrentElement: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
+function ElementsAdd({
+  chapterIndex,
+  slideIndex,
+  currentElement,
+  setCurrentElement,
+}: ElementsAddProps) {
   const dispatch = useDispatch();
 
   const chapters = useSelector(
     (state: { course: CourseState }) => state.course.chapters
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
-
-  const [currentElement, setCurrentElement] = useState("");
 
   const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState<string>("");
@@ -337,42 +342,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       </ul>
     </div>
   );
-
-  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCurrentElement(e.target.value);
-  };
-
-  const handleAddButtonClick = () => {
-    // Only dispatch addElementToSlide when the add button is clicked and currentElement is not "list"
-    if (
-      currentElement &&
-      currentElement !== "list" &&
-      currentElement !== "img" &&
-      currentElement !== "quiz" &&
-      currentElement !== "sequence" &&
-      currentElement !== "reveal"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: "",
-        })
-      );
-      setCurrentElement("");
-    } else if (currentElement && currentElement === "img") {
-      // For an image, just setup the element; don't add until an image is selected
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: null, // Initially no image file chosen
-        })
-      );
-    }
-  };
 
   const handleInputChange = (id: string, value: string) => {
     dispatch(
@@ -846,50 +815,8 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
     </div>
   );
 
-  // // Select element type on the popup menu
-  // const handleSelectElement = (value: string) => {
-  //   setCurrentElement(value);
-  //   closeElementPopup(); // Assuming you want to close the popup after selecting an element
-  //   handleAddButtonClick(); // If you also want to automatically add the element after selecting
-  // };
-
   return (
     <div className="bg-secondary-1 w-full h-full px-4 border border-secondary-3">
-      <p className="font-nokia-Bold py-2 text-accent-6 text-center text-lg">
-        Insert Element
-      </p>
-      <div className="flex justify-between pb-4">
-        <select
-          name="elements"
-          id="elements"
-          value={currentElement}
-          onChange={handleDropdownChange}
-          className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
-        >
-          <option value="" disabled>
-            Choose Type
-          </option>
-          <option value="title">Title</option>
-          <option value="sub">Sub-title</option>
-          <option value="text">Paragraph</option>
-          <option value="slide">Slide</option>
-          <option value="img">Image</option>
-          <option value="quiz">Quiz</option>
-          <option value="list">List</option>
-          <option value="accordion">Accordion</option>
-          <option value="sequence">Sequence</option>
-          <option value="reveal">Reveal</option>
-          <option value="range">Range</option>
-          <option value="dnd">Missing Words</option>
-        </select>
-        <button
-          onClick={handleAddButtonClick}
-          className=" px-2 font-semibold text-primary-6 bg-accent-6 rounded-md hover:bg-accent-7 hover:cursor-pointer transition-all"
-        >
-          Add
-        </button>
-      </div>
-
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
@@ -938,6 +865,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       ))}
     </div>
   );
-};
+}
 
 export default ElementsAdd;
