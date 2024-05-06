@@ -5,16 +5,16 @@ export interface ElementData {
   }
   
   export const elementData: ElementData[] = [
-    { title: "Title", description: 'Description 1' ,value:"title"},
-    { title: "Sub Title", description: 'Description 2' ,value:"sub"},
-    { title: "Paragraph", description: 'Description 3' ,value:"text"},
-    { title: "List", description: 'Description 1',value:"list" },
-    { title: "Slide", description: 'Description 1', value:"slide" },
-    { title: "Image", description: 'Description 2',value:"img" },
-    { title: "Quiz", description: 'Description 3',value:"quiz" },
-    { title: "Accordion", description: 'Description 2' ,value:"accordion"},
-    { title: "Sequence", description: 'Description 3' ,value:"sequence"},
-    { title: "Reveal", description: 'Description 1',value:"reveal" },
-    { title: "Range", description: 'Description 2' ,value:"range"},
-    { title: "Missing Words", description: 'Description 3' ,value:"dnd"},
+    { title: "Title", description: 'Introduce the lesson' ,value:"title"},
+    { title: "Sub Title", description: 'Show a sub-title' ,value:"sub"},
+    { title: "Paragraph", description: 'Show long-form text' ,value:"text"},
+    { title: "Bulleted list", description: 'Show a list of bullet points',value:"list" },
+    { title: "Horizontal series", description: 'Show text blocks in order', value:"slide" },
+    { title: "Image", description: 'Show a single image',value:"img" },
+    { title: "Multiple choice", description: 'Show answers in a list',value:"quiz" },
+    { title: "Expandable list", description: 'Show a list of concepts' ,value:"accordion"},
+    { title: "Sequence", description: 'Show a sequence of text' ,value:"sequence"},
+    { title: "Reveal", description: 'Show a list of concepts',value:"reveal" },
+    { title: "Slider", description: 'Select a single value' ,value:"range"},
+    { title: "Missing Words", description: 'Fill the missing words' ,value:"dnd"},
   ];
