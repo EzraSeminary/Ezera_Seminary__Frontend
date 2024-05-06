@@ -52,7 +52,7 @@ const Analytics: React.FC = () => {
         </div>
         <div className="col-span-1 mt-4 gap-12 w-10% p-6 border border-red-600 rounded-lg text-center">
           <p className="text-6xl">
-            {formatNumber(-analyticsData?.usersLeft ?? 0)}
+            {formatNumber(-(analyticsData?.usersLeft ?? 0))}
           </p>
           <p className="text-sm">Users left</p>
           <hr className="border-red-500 my-4" />
