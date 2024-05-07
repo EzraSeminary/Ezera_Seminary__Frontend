@@ -167,7 +167,7 @@ function ElementsAdd({
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold px-2 py-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -295,12 +295,12 @@ function ElementsAdd({
       <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
         Horizontal Series
       </h1>
-      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <textarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -855,7 +855,7 @@ function ElementsAdd({
                 type="file"
                 id={element.id}
                 onChange={(e) => handleFileInputChange(e, element.id)}
-                className="w-[100%] border-2 border-accent-6 rounded-md file:mr-4 file:py-2 file:px-4
+                className="w-[100%] border-2 border-secondary-3 rounded-md my-3 file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0
                 file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
                 focus:outline-none focus:border-accent-8 cursor-pointer"
@@ -870,7 +870,7 @@ function ElementsAdd({
                     : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border border-secondary-3 rounded-md text-accent-6 outline-accent-6 bg-primary-4 px-2 py-2 my-3 placeholder:text-xl"
+                className="w-[100%] border border-secondary-3 rounded-md text-accent-6 outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
               />
             )}
           </div>
