@@ -537,14 +537,17 @@ function ElementsAdd({
   };
 
   const renderSequenceForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Sequence
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
         <input
           type="text"
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -638,8 +641,11 @@ function ElementsAdd({
   };
 
   const renderRevealForm = () => (
-    <div className="pb-4">
-      <div className="flex justify-between items-center gap-2 w-full">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Reveal
+      </h1>
+      <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddRevealItem}
           className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
@@ -745,14 +751,17 @@ function ElementsAdd({
   };
 
   const renderDndForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
+        Missing Words
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <input
           type="text"
           value={dndQuestion}
           onChange={handleDndQuestionChange}
           placeholder="Enter quiz question"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -807,7 +816,7 @@ function ElementsAdd({
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <label className="text-accent-6 ">
+      <div className="text-accent-6 border-y-2 border-secondary-4 py-6">
         Correct Answer:
         <select
           value={correctDndAnswer}
@@ -822,7 +831,7 @@ function ElementsAdd({
             </option>
           ))}
         </select>
-      </label>
+      </div>
     </div>
   );
 
