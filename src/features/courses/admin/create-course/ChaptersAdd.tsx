@@ -103,8 +103,11 @@ function ChaptersAdd() {
   };
 
   // add element to redux
-  const handleAddButtonClick = (chapterIndex: number, slideIndex: number) => {
-    console.log("Current Element:", currentElement);
+  const handleAddElementToRedux = (
+    chapterIndex: number,
+    slideIndex: number
+  ) => {
+    console.log("Current Element inside function:", currentElement);
 
     if (
       currentElement &&
@@ -137,14 +140,17 @@ function ChaptersAdd() {
 
   useEffect(() => {
     if (currentElement && editingSlideIndex) {
-      handleAddButtonClick(editingSlideIndex.chapter, editingSlideIndex.slide);
-      setCurrentElement("");
+      handleAddElementToRedux(
+        editingSlideIndex.chapter,
+        editingSlideIndex.slide
+      );
+      // setCurrentElement("");
     }
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentElement, editingSlideIndex]);
 
   // console.log(course);
+  console.log("currentElement before conditional rendering:", currentElement);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
