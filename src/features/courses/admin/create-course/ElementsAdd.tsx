@@ -156,68 +156,65 @@ function ElementsAdd({
     setCurrentElement("");
   };
 
-  const renderListForm = () => {
-    console.log("Rendering list form");
-    return (
-      <div className="pb-4">
-        <div className="flex flex-col items-center w-[100%] gap-1">
-          <input
-            type="text"
-            value={currentListItem}
-            onChange={handleListInputChange}
-            placeholder="Enter list item"
-            className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
-          />
+  const renderListForm = () => (
+    <div className="pb-4">
+      <div className="flex flex-col items-center w-[100%] gap-1">
+        <input
+          type="text"
+          value={currentListItem}
+          onChange={handleListInputChange}
+          placeholder="Enter list item"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+        />
 
-          <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
-            <button
-              onClick={handleAddListItem}
-              className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
-            >
-              <PlusCircle
-                className="text-primary-6  transition-all"
-                size={16}
-                weight="fill"
-              />
-              Add
-            </button>
-            <button
-              onClick={handleAddListElement}
-              className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
-            >
-              <File
-                className="text-primary-6  transition-all"
-                size={16}
-                weight="fill"
-              />
-              Save
-            </button>
-          </div>
+        <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
+          <button
+            onClick={handleAddListItem}
+            className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <PlusCircle
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Add
+          </button>
+          <button
+            onClick={handleAddListElement}
+            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          >
+            <File
+              className="text-primary-6  transition-all"
+              size={16}
+              weight="fill"
+            />
+            Save
+          </button>
         </div>
-        <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
-          {listItems.map((item, index) => (
-            <label className="text-accent-6 ">
-              List Item {index + 1}:
-              <li
-                key={index}
-                className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
-              >
-                {item}{" "}
-                <span>
-                  <Trash
-                    onClick={() => handleDeleteListItem(index)}
-                    className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
-                    weight="fill"
-                    size={22}
-                  />
-                </span>
-              </li>
-            </label>
-          ))}
-        </ul>
       </div>
-    );
-  };
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {listItems.map((item, index) => (
+          <label className="text-accent-6 ">
+            List Item {index + 1}:
+            <li
+              key={index}
+              className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
+            >
+              {item}{" "}
+              <span>
+                <Trash
+                  onClick={() => handleDeleteListItem(index)}
+                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  weight="fill"
+                  size={22}
+                />
+              </span>
+            </li>
+          </label>
+        ))}
+      </ul>
+    </div>
+  );
 
   const renderAccordionForm = () => (
     <div className="pb-4">

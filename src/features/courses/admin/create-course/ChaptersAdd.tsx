@@ -112,10 +112,13 @@ function ChaptersAdd() {
     if (
       currentElement &&
       currentElement !== "list" &&
+      currentElement !== "slide" &&
       currentElement !== "img" &&
       currentElement !== "quiz" &&
+      currentElement !== "accordion" &&
       currentElement !== "sequence" &&
-      currentElement !== "reveal"
+      currentElement !== "reveal" &&
+      currentElement !== "dnd"
     ) {
       dispatch(
         addElementToSlide({
