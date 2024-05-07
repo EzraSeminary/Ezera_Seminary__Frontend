@@ -157,7 +157,7 @@ function ElementsAdd({
   };
 
   const renderListForm = () => (
-    <div className="">
+    <div>
       <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
         Bulleted List
       </h1>
@@ -167,7 +167,7 @@ function ElementsAdd({
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-2 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold px-2 py-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -220,7 +220,10 @@ function ElementsAdd({
   );
 
   const renderAccordionForm = () => (
-    <div className="pb-4">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Horizontal Series
+      </h1>
       <div className="flex justify-between items-center gap-2 w-full">
         <button
           onClick={handleAddAccordionItem}
@@ -288,8 +291,11 @@ function ElementsAdd({
   );
 
   const renderSlideForm = () => (
-    <div className="">
-      <div className="flex flex-col items-center w-[100%] gap-1 ">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Horizontal Series
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
         <textarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
