@@ -167,7 +167,7 @@ function ElementsAdd({
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -300,7 +300,7 @@ function ElementsAdd({
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -429,7 +429,7 @@ function ElementsAdd({
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -483,11 +483,13 @@ function ElementsAdd({
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <div className="text-accent-6 border-y-2 border-secondary-4 py-6">
-        Correct Answer:
+      <div className="border-y-2 border-secondary-4 py-6">
+        <h2 className="text-lg border border-secondary-3 w-fit px-1 bg-primary-4 rounded-md">
+          Correct Answer:
+        </h2>
         <select
           value={correctAnswer}
-          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md text-lg font-Lato-Regular px-2 py-1 w-full placeholder:text-lg cursor-pointer"
           onChange={(e) => handleCorrectAnswerChange(e.target.value)}
           required
         >
@@ -547,7 +549,7 @@ function ElementsAdd({
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -761,7 +763,7 @@ function ElementsAdd({
           value={dndQuestion}
           onChange={handleDndQuestionChange}
           placeholder="Enter quiz question"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -816,11 +818,13 @@ function ElementsAdd({
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <div className="text-accent-6 border-y-2 border-secondary-4 py-6">
-        Correct Answer:
+      <div className="border-y-2 border-secondary-4 py-6">
+        <h2 className="text-lg border border-secondary-3 w-fit px-1 bg-primary-4 rounded-md">
+          Correct Answer:
+        </h2>
         <select
           value={correctDndAnswer}
-          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md text-lg font-Lato-Regular px-2 py-1 w-full placeholder:text-lg cursor-pointer"
           onChange={(e) => handleCorrectDndAnswerChange(e.target.value)}
           required
         >
@@ -862,15 +866,23 @@ function ElementsAdd({
               />
             </div>
             {element.type === "img" ? (
-              <input
-                type="file"
-                id={element.id}
-                onChange={(e) => handleFileInputChange(e, element.id)}
-                className="w-[100%] border-2 border-secondary-3 rounded-md my-3 file:mr-4 file:py-2 file:px-4
+              <div className="flex flex-col">
+                <input
+                  type="file"
+                  id={element.id}
+                  onChange={(e) => handleFileInputChange(e, element.id)}
+                  className="w-[100%] border-2 border-secondary-3 rounded-md my-3 file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0
                 file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
                 focus:outline-none focus:border-accent-8 cursor-pointer"
-              />
+                />
+                <img
+                  key={element.type}
+                  src={element.value}
+                  alt=""
+                  className="w-[40%] mx-auto"
+                />
+              </div>
             ) : element.type === "range" ? null : (
               <input
                 id={element.id}
@@ -881,7 +893,7 @@ function ElementsAdd({
                     : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border border-secondary-3 rounded-md text-accent-6 outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+                className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
               />
             )}
           </div>
