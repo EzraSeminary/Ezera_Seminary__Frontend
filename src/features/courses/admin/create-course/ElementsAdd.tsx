@@ -222,9 +222,9 @@ function ElementsAdd({
   const renderAccordionForm = () => (
     <div>
       <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-        Horizontal Series
+        Expandable List
       </h1>
-      <div className="flex justify-between items-center gap-2 w-full">
+      <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddAccordionItem}
           className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
@@ -419,14 +419,17 @@ function ElementsAdd({
   };
 
   const renderQuizForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1 pb-2">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
+        Multiple Choice
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <input
           type="text"
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 text-secondary-6 rounded-md font-bold p-2 w-full placeholder:text-lg"
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -456,7 +459,6 @@ function ElementsAdd({
       <ul className="space-y-2 py-4">
         {/* // Map over quizChoices to render choices */}
         {quizChoices.map((choice, index) => (
-          // {`Choice ${index + 1}`}
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
@@ -481,7 +483,7 @@ function ElementsAdd({
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <label className="text-accent-6 ">
+      <div className="text-accent-6 border-y-2 border-secondary-4 py-6">
         Correct Answer:
         <select
           value={correctAnswer}
@@ -496,7 +498,7 @@ function ElementsAdd({
             </option>
           ))}
         </select>
-      </label>
+      </div>
     </div>
   );
 
@@ -827,7 +829,7 @@ function ElementsAdd({
   console.log("Current element before rendering form:", currentElement);
 
   return (
-    <div className="bg-secondary-1 w-full h-full px-4 border border-secondary-3">
+    <div className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3">
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
