@@ -157,14 +157,17 @@ function ElementsAdd({
   };
 
   const renderListForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div className="">
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Bulleted List
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
         <input
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-2 w-full placeholder:text-sm placeholder:text-secondary-3"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -830,8 +833,10 @@ function ElementsAdd({
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
-            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 mb-1">
-              <label className="text-accent-6 font-bold">{element.type}</label>
+            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 py-3 mb-1">
+              <h2 className="text-secondary-7 font-bold">
+                {element.type.toUpperCase()}
+              </h2>
               <Trash
                 onClick={() => handleDeleteButtonClick(element.id)}
                 className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
@@ -859,7 +864,7 @@ function ElementsAdd({
                     : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
+                className="w-[100%] border border-secondary-3 rounded-md text-accent-6 outline-accent-6 bg-primary-4 px-2 py-2 my-3 placeholder:text-xl"
               />
             )}
           </div>
