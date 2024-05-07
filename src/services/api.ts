@@ -32,7 +32,9 @@ export type CustomElement =
   | QuizElement
   | AccordionElement
   | SequenceElement
-  | RevealElement;
+  | RevealElement
+  | RangeElement
+  | DndElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -110,6 +112,25 @@ export interface RevealElement extends Omit<Element, "value"> {
 export type RevealElementValue = {
   title: string;
   content: string;
+  _id: string;
+};
+
+export interface RangeElement extends Omit<Element, "value"> {
+  type: "range";
+  value: boolean;
+  _id: string;
+}
+
+export interface DndElement extends Omit<Element, "value"> {
+  type: "dnd";
+  value: DndElementValue;
+  _id: string;
+}
+
+export type DndElementValue = {
+  question: string;
+  choices: { text: string }[];
+  correctDndAnswer: string;
   _id: string;
 };
 

@@ -85,8 +85,8 @@ function ChaptersAdd() {
   console.log(course);
 
   return (
-    <div className="flex  h-screen w-full bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
-      <div className="bg-secondary-5 w-[35%] h-screen overflow-auto scrollbar-thin p-6">
+    <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
+      <div className="bg-secondary-5 w-[25%] h-screen overflow-auto scrollbar-thin p-6">
         <button
           className="flex gap-2 justify-center items-center text-primary-6 bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
           onClick={addChapterHandler}
@@ -139,7 +139,7 @@ function ChaptersAdd() {
               {isSelected && (
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
                   {slides.map((slide, slideIndex) => (
-                    <div key={slideIndex} className="flex flex-col ">
+                    <div key={slideIndex} className="flex flex-col">
                       <div className="flex px-2 items-center gap-2">
                         <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
                           {slideIndex + 1}.
@@ -174,14 +174,6 @@ function ChaptersAdd() {
                           size={24}
                         />
                       </div>
-                      {editingSlideIndex &&
-                        editingSlideIndex.chapter === chapterIndex &&
-                        editingSlideIndex.slide === slideIndex && (
-                          <ElementsAdd
-                            chapterIndex={chapterIndex}
-                            slideIndex={slideIndex}
-                          />
-                        )}
                     </div>
                   ))}
                   <button
@@ -203,12 +195,20 @@ function ChaptersAdd() {
           );
         })}
       </div>
-      <div className="w-[65%]">
+      <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
           <SlideDataDisplay
             selectedSlideIndex={editingSlideIndex}
             onNextSlide={goToNextSlide}
+          />
+        )}
+      </div>
+      <div className="w-[25%]">
+        {editingSlideIndex && (
+          <ElementsAdd
+            chapterIndex={editingSlideIndex.chapter}
+            slideIndex={editingSlideIndex.slide}
           />
         )}
       </div>
