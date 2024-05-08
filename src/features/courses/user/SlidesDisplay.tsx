@@ -405,12 +405,12 @@ function SlidesDisplay() {
           {open ? (
             <ArrowLeft
               onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer"
+              className="text-white z-50 text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer"
             />
           ) : (
             <ArrowRight
               onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -left-3  top-36 md:top-44 cursor-pointer"
+              className="text-white z-50 text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -left-3  top-36 md:top-44 cursor-pointer"
             />
           )}
 
@@ -485,8 +485,14 @@ function SlidesDisplay() {
         {/* Slides side bar for desktop*/}
         <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
           {/* Short information*/}
-          <div className="flex  px-4 py-2 bg-secondary-5  gap-12 justify-between items-center w-full text-xs1  lg:text-xs z-50">
-            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow  items-center ">
+
+          <div className="flex   py-2 bg-secondary-5  pl-12 w-full text-xs1  lg:text-xs z-50">
+            <ArrowLeft
+              onClick={submitProgress}
+              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-2 cursor-pointer "
+            />
+
+            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow   items-center ">
               {courseData?.title}
             </h1>
           </div>
