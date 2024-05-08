@@ -388,7 +388,7 @@ function SlidesDisplay() {
               size={22}
               className="text-white bg-accent-6 border p-1 rounded-lg"
             />
-            <p className="text-accent-6 text-xs font-nokia-bold">ተመለስ</p>
+            <p className="text-accent-6 text-xs font-nokia-bold">ዘግተህ ውጣ</p>
           </button>
         </div>
 
@@ -432,7 +432,7 @@ function SlidesDisplay() {
               <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
             {/* slide list */}
-            <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
+            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
               {data.map((slides, index) => {
                 const unlocked = isSlideUnlocked(index - 1);
                 const isActive = index === activeIndex;
@@ -471,7 +471,7 @@ function SlidesDisplay() {
               })}
             </div>
 
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
+            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
               <button
                 className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
                 onClick={submitProgress}
@@ -479,7 +479,7 @@ function SlidesDisplay() {
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-2xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div>
+            </div> */}
           </div>
         </div>
         {/* Slides side bar for desktop*/}
@@ -511,7 +511,7 @@ function SlidesDisplay() {
               <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
             {/* slide list */}
-            <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
+            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
               {data.map((slides, index) => {
                 const unlocked = isSlideUnlocked(index - 1);
                 const isActive = index === activeIndex;
@@ -550,7 +550,7 @@ function SlidesDisplay() {
               })}
             </div>
 
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
+            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
               <button
                 className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
                 onClick={submitProgress}
@@ -558,7 +558,7 @@ function SlidesDisplay() {
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div>
+            </div> */}
           </div>
         </div>
         {/* slides display window*/}
