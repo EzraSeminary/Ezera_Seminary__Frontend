@@ -88,7 +88,6 @@ function ElementsAdd({
       setListItems([]);
     }
     setCurrentElement("");
-    console.log(elements);
   };
 
   const handleAddSlide = () => {
