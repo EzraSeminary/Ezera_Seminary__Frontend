@@ -28,6 +28,31 @@ function ElementsAdd({
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 
+  // Image preview state
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]; // Get the first file from the input
+      if (file) {
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId: id,
+            value: file,
+          })
+        );
+        // Create a URL for the file
+        const fileUrl = URL.createObjectURL(file);
+        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+      }
+    }
+  };
+
   const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState<string>("");
   const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
@@ -90,25 +115,6 @@ function ElementsAdd({
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
-  };
-
-  const handleFileInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
-      if (file) {
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId: id,
-            value: file,
-          })
-        );
-      }
-    }
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -866,22 +872,26 @@ function ElementsAdd({
               />
             </div>
             {element.type === "img" ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
                 <input
                   type="file"
                   id={element.id}
                   onChange={(e) => handleFileInputChange(e, element.id)}
-                  className="w-[100%] border-2 border-secondary-3 rounded-md my-3 file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
+                  className="w-[100%] file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0 text-sm
+                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6 
+                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 
+                rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
                 />
-                <img
-                  key={element.type}
-                  src={element.value}
-                  alt=""
-                  className="w-[40%] mx-auto"
-                />
+                {imagePreviewUrl && (
+                  <img
+                    key={element.type}
+                    src={imagePreviewUrl}
+                    alt=""
+                    className="rounded-b-md"
+                  />
+                )}
               </div>
             ) : element.type === "range" ? null : (
               <input
