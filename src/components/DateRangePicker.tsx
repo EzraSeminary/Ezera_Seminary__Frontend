@@ -11,8 +11,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   value,
   onChange,
 }) => {
-  const [startDate, setStartDate] = useState < Date > value.startDate;
-  const [endDate, setEndDate] = useState < Date > value.endDate;
+  const [startDate, setStartDate] = useState<Date>(new Date(value.startDate));
+  const [endDate, setEndDate] = useState<Date>(new Date(value.endDate));
 
   const handleDateRangeChange = () => {
     onChange({ startDate, endDate });
