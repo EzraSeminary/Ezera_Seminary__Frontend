@@ -252,12 +252,13 @@ function ChaptersAdd() {
                               e.target.value
                             )
                           }
-                          onClick={() =>
+                          onClick={() => {
                             setEditingSlideIndex({
                               chapter: chapterIndex,
                               slide: slideIndex,
-                            })
-                          }
+                            });
+                            setCurrentElement("");
+                          }}
                         />
                         <Trash
                           onClick={() =>
@@ -309,9 +310,15 @@ function ChaptersAdd() {
           />
         )}
       </div>
+
+      {console.log(
+        "Editing Slide Index before rendering ElementsAdd:",
+        editingSlideIndex
+      )}
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd
+            key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
             chapterIndex={editingSlideIndex.chapter}
             slideIndex={editingSlideIndex.slide}
             currentElement={currentElement}

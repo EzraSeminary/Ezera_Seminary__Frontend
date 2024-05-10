@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
@@ -21,6 +21,9 @@ function ElementsAdd({
   currentElement,
   setCurrentElement,
 }: ElementsAddProps) {
+  console.log("chapter", chapterIndex);
+  console.log("slide", slideIndex);
+
   const dispatch = useDispatch();
 
   const chapters = useSelector(
@@ -114,6 +117,7 @@ function ElementsAdd({
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
+    // setCurrentElement("");
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -844,10 +848,24 @@ function ElementsAdd({
     </div>
   );
 
+  const uniqueKey = `${chapterIndex}-${slideIndex}`;
+
+  // useEffect(() => {
+  //   // Reset form-related states
+  //   setCurrentElement("");
+  //   setImagePreviewUrl(null);
+  //   // Reset other form-related states here...
+
+  //   // You might need other actions to fetch the new slide's content if necessary
+  // }, [chapterIndex, slideIndex, setCurrentElement]);
+
   console.log("Current element before rendering form:", currentElement);
 
   return (
-    <div className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3">
+    <div
+      key={uniqueKey}
+      className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
+    >
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
       {currentElement === "quiz" && renderQuizForm()}
