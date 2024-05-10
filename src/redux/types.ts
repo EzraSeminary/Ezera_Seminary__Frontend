@@ -10,7 +10,7 @@ export interface User {
   progress: Progress[];
   achievement: number;
   createdAt: string;
-  updatedAt: string;
+  deletedAt: string;
   lastLogin: string;
 }
 
