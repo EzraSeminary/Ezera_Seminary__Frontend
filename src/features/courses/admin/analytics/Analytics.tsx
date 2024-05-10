@@ -24,10 +24,16 @@ const Analytics: React.FC = () => {
     return <div>Error fetching analytics data.</div>;
   }
 
-  const formatNumber = (value: number) => {
+  const formatNumber = (value: number | null | undefined) => {
+    if (value === null || value === undefined) {
+      return "0";
+    }
+
     const formattedValue = Math.abs(value).toLocaleString();
     return value >= 0 ? `+${formattedValue}` : `-${formattedValue}`;
   };
+
+
 
   return (
     <div className="bg-secondary-6 border border-accent-6 p-4 flex flex-col items-center mx-auto my-10 rounded-2xl font-nokia-bold text-primary-6 shadow-accent-2 justify-center shadow-2xl">
