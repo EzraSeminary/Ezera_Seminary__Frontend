@@ -878,7 +878,7 @@ function ElementsAdd({
                 />
                 <img
                   key={element.type}
-                  src={element.value}
+                  src={typeof element.value === 'string' ? element.value : ''}
                   alt=""
                   className="w-[40%] mx-auto"
                 />
