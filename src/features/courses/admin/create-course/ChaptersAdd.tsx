@@ -99,7 +99,7 @@ function ChaptersAdd() {
       chapter: chapterIndex,
       slide: slideIndex,
     });
-    setCurrentElement("");
+    // setCurrentElement("");
   };
 
   const handleChapterClick = (chapterIndex: number) => {

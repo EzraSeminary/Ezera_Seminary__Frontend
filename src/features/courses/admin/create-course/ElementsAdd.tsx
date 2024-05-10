@@ -128,7 +128,7 @@ function ElementsAdd({
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
-    // setCurrentElement("");
+    setCurrentElement("");
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -855,9 +855,42 @@ function ElementsAdd({
   //   setCurrentElement("");
   //   setImagePreviewUrl(null);
   //   // Reset other form-related states here...
+  //   setListItems([]);
+  //   setSlidesDetails([]);
+  //   setAccordionTitles([]);
+  //   setAccordionContents([]);
+  //   setSequenceItems([]);
+  //   setCurrentSequenceItem("");
+  //   setRevealTitles([]);
+  //   setRevealContents([]);
+  //   setQuizQuestion("");
+  //   setQuizChoices([]);
+  //   setCorrectAnswer("");
+  //   // ...add resets for all the relevant state variables here...
 
   //   // You might need other actions to fetch the new slide's content if necessary
-  // }, [chapterIndex, slideIndex, setCurrentElement]);
+  // }, [chapterIndex, slideIndex]);
+
+  const renderForm = () => {
+    switch (currentElement) {
+      case "list":
+        return renderListForm();
+      case "slide":
+        return renderSlideForm();
+      case "quiz":
+        return renderQuizForm();
+      case "accordion":
+        return renderAccordionForm();
+      case "sequence":
+        return renderSequenceForm();
+      case "reveal":
+        return renderRevealForm();
+      case "dnd":
+        return renderDndForm();
+      default:
+        return null;
+    }
+  };
 
   console.log("Current element before rendering form:", currentElement);
 
@@ -866,13 +899,7 @@ function ElementsAdd({
       key={uniqueKey}
       className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
     >
-      {currentElement === "list" && renderListForm()}
-      {currentElement === "slide" && renderSlideForm()}
-      {currentElement === "quiz" && renderQuizForm()}
-      {currentElement === "accordion" && renderAccordionForm()}
-      {currentElement === "sequence" && renderSequenceForm()}
-      {currentElement === "reveal" && renderRevealForm()}
-      {currentElement === "dnd" && renderDndForm()}
+      {renderForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
