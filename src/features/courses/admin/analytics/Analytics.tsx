@@ -4,15 +4,6 @@ import { useGetAnalyticsQuery } from "@/redux/api-slices/apiSlice";
 const Analytics: React.FC = () => {
   const { data: analyticsData, isLoading, error } = useGetAnalyticsQuery();
 
-  const {
-    newUsers = 0,
-    totalUsers = 0,
-    newCourses = 0,
-    totalCourses = 0,
-    accountsReached = 0,
-    usersLeft = 0,
-  } = analyticsData ?? {};
-
   console.log(analyticsData);
 
   if (isLoading) {
@@ -32,8 +23,6 @@ const Analytics: React.FC = () => {
     const formattedValue = Math.abs(value).toLocaleString();
     return value >= 0 ? `+${formattedValue}` : `-${formattedValue}`;
   };
-
-
 
   return (
     <div className="bg-secondary-6 border border-accent-6 p-4 flex flex-col items-center mx-auto my-10 rounded-2xl font-nokia-bold text-primary-6 shadow-accent-2 justify-center shadow-2xl">
