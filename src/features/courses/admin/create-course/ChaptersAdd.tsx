@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // selectCourse,
+  selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -24,7 +24,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  // const course = useSelector(selectCourse);
+  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -49,10 +49,33 @@ function ChaptersAdd() {
 
   const deleteChapterHandler = (chapterIndex: number) => {
     dispatch(deleteChapter({ chapterIndex }));
+    // Check if the current editingSlideIndex is within the chapter being deleted
+    if (editingSlideIndex && editingSlideIndex.chapter === chapterIndex) {
+      // Reset the editingSlideIndex since the current chapter is being deleted
+      setEditingSlideIndex(null);
+    } else if (editingSlideIndex && editingSlideIndex.chapter > chapterIndex) {
+      // Adjust the chapterIndex for the slide currently being edited.
+      setEditingSlideIndex((prevIndex) => {
+        // Ensure prevIndex is not null before trying to access its properties.
+        if (prevIndex) {
+          return { chapter: prevIndex.chapter - 1, slide: prevIndex.slide };
+        }
+        return null;
+      });
+    }
   };
 
   const deleteSlideHandler = (chapterIndex: number, slideIndex: number) => {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
+    // Check if the slide being edited is the one being deleted
+    if (
+      editingSlideIndex &&
+      editingSlideIndex.chapter === chapterIndex &&
+      editingSlideIndex.slide === slideIndex
+    ) {
+      // Reset the editingSlideIndex since the current slide is being deleted
+      setEditingSlideIndex(null);
+    }
   };
 
   const handleShowElementPopup = () => {
@@ -152,7 +175,7 @@ function ChaptersAdd() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  // console.log(course);
+  console.log("course", course);
   console.log("currentElement before conditional rendering:", currentElement);
 
   return (
@@ -229,12 +252,13 @@ function ChaptersAdd() {
                               e.target.value
                             )
                           }
-                          onClick={() =>
+                          onClick={() => {
                             setEditingSlideIndex({
                               chapter: chapterIndex,
                               slide: slideIndex,
-                            })
-                          }
+                            });
+                            setCurrentElement("");
+                          }}
                         />
                         <Trash
                           onClick={() =>
@@ -286,9 +310,15 @@ function ChaptersAdd() {
           />
         )}
       </div>
+
+      {console.log(
+        "Editing Slide Index before rendering ElementsAdd:",
+        editingSlideIndex
+      )}
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd
+            key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
             chapterIndex={editingSlideIndex.chapter}
             slideIndex={editingSlideIndex.slide}
             currentElement={currentElement}
