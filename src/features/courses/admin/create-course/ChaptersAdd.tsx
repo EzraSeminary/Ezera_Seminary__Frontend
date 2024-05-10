@@ -93,6 +93,15 @@ function ChaptersAdd() {
     dispatch(updateSlide({ chapterIndex, slideIndex, value }));
   };
 
+  // when click on slide title input
+  const handleSlideClick = (chapterIndex: number, slideIndex: number) => {
+    setEditingSlideIndex({
+      chapter: chapterIndex,
+      slide: slideIndex,
+    });
+    setCurrentElement("");
+  };
+
   const handleChapterClick = (chapterIndex: number) => {
     if (selectedChapterIndex === chapterIndex) {
       setSelectedChapterIndex(null); // Hide slides if clicked again
@@ -252,13 +261,9 @@ function ChaptersAdd() {
                               e.target.value
                             )
                           }
-                          onClick={() => {
-                            setEditingSlideIndex({
-                              chapter: chapterIndex,
-                              slide: slideIndex,
-                            });
-                            setCurrentElement("");
-                          }}
+                          onClick={() =>
+                            handleSlideClick(chapterIndex, slideIndex)
+                          }
                         />
                         <Trash
                           onClick={() =>
@@ -311,10 +316,10 @@ function ChaptersAdd() {
         )}
       </div>
 
-      {console.log(
+      {/* {console.log(
         "Editing Slide Index before rendering ElementsAdd:",
         editingSlideIndex
-      )}
+      )} */}
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd

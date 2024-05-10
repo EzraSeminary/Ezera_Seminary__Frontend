@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
@@ -30,6 +30,17 @@ function ElementsAdd({
     (state: { course: CourseState }) => state.course.chapters
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+
+  const handleInputChange = (id: string, value: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: value,
+      })
+    );
+  };
 
   // Image preview state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -360,17 +371,6 @@ function ElementsAdd({
       </ul>
     </div>
   );
-
-  const handleInputChange = (id: string, value: string) => {
-    dispatch(
-      updateElement({
-        chapterIndex,
-        slideIndex,
-        elementId: id,
-        value: value,
-      })
-    );
-  };
 
   const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
