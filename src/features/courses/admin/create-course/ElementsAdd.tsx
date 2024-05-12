@@ -901,6 +901,7 @@ function ElementsAdd({
                 rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
                 />
+
                 {imagePreviewUrl && (
                   <img
                     key={element.type}
