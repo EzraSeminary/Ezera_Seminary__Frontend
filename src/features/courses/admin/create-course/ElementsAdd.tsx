@@ -1,10 +1,15 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import {
+  useState,
+  ChangeEvent,
+  // useEffect
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
+  // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
@@ -21,8 +26,8 @@ function ElementsAdd({
   currentElement,
   setCurrentElement,
 }: ElementsAddProps) {
-  console.log("chapter", chapterIndex);
-  console.log("slide", slideIndex);
+  // console.log("chapter", chapterIndex);
+  // console.log("slide", slideIndex);
 
   const dispatch = useDispatch();
 
@@ -30,6 +35,17 @@ function ElementsAdd({
     (state: { course: CourseState }) => state.course.chapters
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+
+  const handleInputChange = (id: string, value: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: value,
+      })
+    );
+  };
 
   // Image preview state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -117,7 +133,7 @@ function ElementsAdd({
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
-    // setCurrentElement("");
+    setCurrentElement("");
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -360,17 +376,6 @@ function ElementsAdd({
       </ul>
     </div>
   );
-
-  const handleInputChange = (id: string, value: string) => {
-    dispatch(
-      updateElement({
-        chapterIndex,
-        slideIndex,
-        elementId: id,
-        value: value,
-      })
-    );
-  };
 
   const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
@@ -850,30 +855,50 @@ function ElementsAdd({
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
+  const renderForm = () => {
+    switch (currentElement) {
+      case "list":
+        return renderListForm();
+      case "slide":
+        return renderSlideForm();
+      case "quiz":
+        return renderQuizForm();
+      case "accordion":
+        return renderAccordionForm();
+      case "sequence":
+        return renderSequenceForm();
+      case "reveal":
+        return renderRevealForm();
+      case "dnd":
+        return renderDndForm();
+      default:
+        return null;
+    }
+  };
+
   // useEffect(() => {
-  //   // Reset form-related states
-  //   setCurrentElement("");
-  //   setImagePreviewUrl(null);
-  //   // Reset other form-related states here...
+  //   console.log("Effect ran: Checking new slide elements");
+  //   const newSlideElements =
+  //     chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+  //   console.log("New slide elements:", newSlideElements);
 
-  //   // You might need other actions to fetch the new slide's content if necessary
-  // }, [chapterIndex, slideIndex, setCurrentElement]);
+  //   if (newSlideElements.length > 0) {
+  //     console.log("First element type:", newSlideElements[[1]].type);
+  //     setCurrentElement(newSlideElements[[1]].type);
+  //   } else {
+  //     console.log("No elements found, resetting currentElement");
+  //     setCurrentElement("");
+  //   }
+  // }, [chapterIndex, slideIndex, chapters, setCurrentElement]);
 
-  console.log("Current element before rendering form:", currentElement);
+  // console.log("Current element before rendering form:", currentElement);
 
   return (
     <div
       key={uniqueKey}
       className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
     >
-      {currentElement === "list" && renderListForm()}
-      {currentElement === "slide" && renderSlideForm()}
-      {currentElement === "quiz" && renderQuizForm()}
-      {currentElement === "accordion" && renderAccordionForm()}
-      {currentElement === "sequence" && renderSequenceForm()}
-      {currentElement === "reveal" && renderRevealForm()}
-      {currentElement === "dnd" && renderDndForm()}
-
+      {renderForm()}
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
