@@ -1,10 +1,15 @@
-import { useState, ChangeEvent } from "react";
+import {
+  useState,
+  ChangeEvent,
+  // useEffect
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
+  // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
@@ -21,8 +26,8 @@ function ElementsAdd({
   currentElement,
   setCurrentElement,
 }: ElementsAddProps) {
-  console.log("chapter", chapterIndex);
-  console.log("slide", slideIndex);
+  // console.log("chapter", chapterIndex);
+  // console.log("slide", slideIndex);
 
   const dispatch = useDispatch();
 
@@ -850,27 +855,6 @@ function ElementsAdd({
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
-  // useEffect(() => {
-  //   // Reset form-related states
-  //   setCurrentElement("");
-  //   setImagePreviewUrl(null);
-  //   // Reset other form-related states here...
-  //   setListItems([]);
-  //   setSlidesDetails([]);
-  //   setAccordionTitles([]);
-  //   setAccordionContents([]);
-  //   setSequenceItems([]);
-  //   setCurrentSequenceItem("");
-  //   setRevealTitles([]);
-  //   setRevealContents([]);
-  //   setQuizQuestion("");
-  //   setQuizChoices([]);
-  //   setCorrectAnswer("");
-  //   // ...add resets for all the relevant state variables here...
-
-  //   // You might need other actions to fetch the new slide's content if necessary
-  // }, [chapterIndex, slideIndex]);
-
   const renderForm = () => {
     switch (currentElement) {
       case "list":
@@ -892,7 +876,22 @@ function ElementsAdd({
     }
   };
 
-  console.log("Current element before rendering form:", currentElement);
+  // useEffect(() => {
+  //   console.log("Effect ran: Checking new slide elements");
+  //   const newSlideElements =
+  //     chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+  //   console.log("New slide elements:", newSlideElements);
+
+  //   if (newSlideElements.length > 0) {
+  //     console.log("First element type:", newSlideElements[[1]].type);
+  //     setCurrentElement(newSlideElements[[1]].type);
+  //   } else {
+  //     console.log("No elements found, resetting currentElement");
+  //     setCurrentElement("");
+  //   }
+  // }, [chapterIndex, slideIndex, chapters, setCurrentElement]);
+
+  // console.log("Current element before rendering form:", currentElement);
 
   return (
     <div
@@ -900,7 +899,6 @@ function ElementsAdd({
       className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
     >
       {renderForm()}
-
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
