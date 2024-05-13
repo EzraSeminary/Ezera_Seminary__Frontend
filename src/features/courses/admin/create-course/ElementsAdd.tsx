@@ -921,11 +921,12 @@ function ElementsAdd({
                   onChange={(e) => handleFileInputChange(e, element.id)}
                   className="w-[100%] file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0 text-sm
-                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6 
-                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 
+                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6
+                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7
                 rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
                 />
+
                 {imagePreviewUrl && (
                   <img
                     key={element.type}

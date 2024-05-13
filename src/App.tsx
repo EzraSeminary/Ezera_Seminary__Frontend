@@ -65,7 +65,7 @@ function App() {
 
   //catch error while fetching user data
   if (userError) {
-    console.log(userError);
+    console.log(userError, userData);
   }
 
   const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
