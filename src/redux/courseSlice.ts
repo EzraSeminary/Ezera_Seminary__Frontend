@@ -299,6 +299,7 @@ export const courseSlice = createSlice({
       // eslint-disable-next-line
       // @ts-expect-error
       slides[slideIndex].elements.push(newElement);
+      // console.log(`Adding element of type ${elementType} to slide with index ${slideIndex} in chapter with index ${chapterIndex}`);
     },
     updateElement: (
       state,
