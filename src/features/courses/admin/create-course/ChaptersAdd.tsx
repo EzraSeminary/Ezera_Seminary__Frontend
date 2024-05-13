@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCourse,
+  // selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -11,9 +11,11 @@ import {
   updateSlide,
   deleteChapter,
   deleteSlide,
+  addElementToSlide,
 } from "../../../../redux/courseSlice";
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
+import ElementPopup from "../../Elements/ElementPopup";
 
 export interface EditingSlideIndex {
   chapter: number;
@@ -22,15 +24,20 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
+  // const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
   const [editingSlideIndex, setEditingSlideIndex] =
     useState<EditingSlideIndex | null>(null);
+
   const [selectedChapterIndex, setSelectedChapterIndex] = useState<
     number | null
   >(null);
+
+  // show element popup
+  const [showElementPopup, setShowElementPopup] = useState(false);
+  const [currentElement, setCurrentElement] = useState("");
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -42,18 +49,40 @@ function ChaptersAdd() {
 
   const deleteChapterHandler = (chapterIndex: number) => {
     dispatch(deleteChapter({ chapterIndex }));
+    // Check if the current editingSlideIndex is within the chapter being deleted
+    if (editingSlideIndex && editingSlideIndex.chapter === chapterIndex) {
+      // Reset the editingSlideIndex since the current chapter is being deleted
+      setEditingSlideIndex(null);
+    } else if (editingSlideIndex && editingSlideIndex.chapter > chapterIndex) {
+      // Adjust the chapterIndex for the slide currently being edited.
+      setEditingSlideIndex((prevIndex) => {
+        // Ensure prevIndex is not null before trying to access its properties.
+        if (prevIndex) {
+          return { chapter: prevIndex.chapter - 1, slide: prevIndex.slide };
+        }
+        return null;
+      });
+    }
   };
 
   const deleteSlideHandler = (chapterIndex: number, slideIndex: number) => {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
+    // Check if the slide being edited is the one being deleted
+    if (
+      editingSlideIndex &&
+      editingSlideIndex.chapter === chapterIndex &&
+      editingSlideIndex.slide === slideIndex
+    ) {
+      // Reset the editingSlideIndex since the current slide is being deleted
+      setEditingSlideIndex(null);
+    }
   };
 
-  const addSlideHandler = (chapterIndex: number) => {
-    dispatch(addSlide({ chapterIndex }));
-    setEditingSlideIndex({
-      chapter: chapterIndex,
-      slide: chapters[chapterIndex].slides.length,
-    });
+  const handleShowElementPopup = () => {
+    setShowElementPopup(true);
+  };
+  const closeElementPopup = () => {
+    setShowElementPopup(false);
   };
 
   const updateSlideHandler = (
@@ -62,6 +91,15 @@ function ChaptersAdd() {
     value: string
   ) => {
     dispatch(updateSlide({ chapterIndex, slideIndex, value }));
+  };
+
+  // when click on slide title input
+  const handleSlideClick = (chapterIndex: number, slideIndex: number) => {
+    setEditingSlideIndex({
+      chapter: chapterIndex,
+      slide: slideIndex,
+    });
+    // setCurrentElement("");
   };
 
   const handleChapterClick = (chapterIndex: number) => {
@@ -82,11 +120,76 @@ function ChaptersAdd() {
     });
   };
 
-  console.log(course);
+  // add a slide to redux
+  const addSlideHandler = (chapterIndex: number) => {
+    dispatch(addSlide({ chapterIndex }));
+    setEditingSlideIndex({
+      chapter: chapterIndex,
+      slide: chapters[chapterIndex].slides.length,
+    });
+  };
+
+  // Set the element type & add the element
+  const handleSelectElement = (elementType: string) => {
+    setCurrentElement(elementType); // set the element type
+  };
+
+  // add element to redux
+  const handleAddElementToRedux = (
+    chapterIndex: number,
+    slideIndex: number
+  ) => {
+    console.log("Current Element inside function:", currentElement);
+
+    if (
+      currentElement &&
+      currentElement !== "list" &&
+      currentElement !== "slide" &&
+      currentElement !== "img" &&
+      currentElement !== "quiz" &&
+      currentElement !== "accordion" &&
+      currentElement !== "sequence" &&
+      currentElement !== "reveal" &&
+      currentElement !== "dnd"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: "",
+        })
+      );
+      setCurrentElement("");
+    } else if (currentElement && currentElement === "img") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: null,
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (currentElement && editingSlideIndex) {
+      handleAddElementToRedux(
+        editingSlideIndex.chapter,
+        editingSlideIndex.slide
+      );
+      // setCurrentElement("");
+    }
+    // This effect should only run when `currentElement` or `editingSlideIndex` changes
+  }, [currentElement, editingSlideIndex]);
+
+  // console.log("course", course);
+  // console.log("currentElement before conditional rendering:", currentElement);
 
   return (
-    <div className="flex  h-screen w-full bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
-      <div className="bg-secondary-5 w-[35%] h-screen overflow-auto scrollbar-thin p-6">
+    <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
+      <div className="bg-secondary-5 w-[25%] h-screen overflow-auto scrollbar-thin p-6">
         <button
           className="flex gap-2 justify-center items-center text-primary-6 bg-accent-6 hover:bg-accent-8 transition-all rounded-3xl mb-4 p-2"
           onClick={addChapterHandler}
@@ -139,7 +242,7 @@ function ChaptersAdd() {
               {isSelected && (
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
                   {slides.map((slide, slideIndex) => (
-                    <div key={slideIndex} className="flex flex-col ">
+                    <div key={slideIndex} className="flex flex-col">
                       <div className="flex px-2 items-center gap-2">
                         <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
                           {slideIndex + 1}.
@@ -159,10 +262,7 @@ function ChaptersAdd() {
                             )
                           }
                           onClick={() =>
-                            setEditingSlideIndex({
-                              chapter: chapterIndex,
-                              slide: slideIndex,
-                            })
+                            handleSlideClick(chapterIndex, slideIndex)
                           }
                         />
                         <Trash
@@ -174,19 +274,13 @@ function ChaptersAdd() {
                           size={24}
                         />
                       </div>
-                      {editingSlideIndex &&
-                        editingSlideIndex.chapter === chapterIndex &&
-                        editingSlideIndex.slide === slideIndex && (
-                          <ElementsAdd
-                            chapterIndex={chapterIndex}
-                            slideIndex={slideIndex}
-                          />
-                        )}
                     </div>
                   ))}
                   <button
-                    className=""
-                    onClick={() => addSlideHandler(chapterIndex)}
+                    onClick={() => {
+                      addSlideHandler(chapterIndex); // add slide to redux
+                      handleShowElementPopup(); // show the slide popup
+                    }}
                   >
                     <p className=" flex items-center text-accent-6 px-4 gap-2 mt-4">
                       <PlusCircle
@@ -203,12 +297,37 @@ function ChaptersAdd() {
           );
         })}
       </div>
-      <div className="w-[65%]">
+
+      {/* display elements popup here */}
+      {showElementPopup && (
+        <ElementPopup
+          closeElementPopup={closeElementPopup}
+          onSelectElement={handleSelectElement}
+        />
+      )}
+
+      <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
           <SlideDataDisplay
             selectedSlideIndex={editingSlideIndex}
             onNextSlide={goToNextSlide}
+          />
+        )}
+      </div>
+
+      {/* {console.log(
+        "Editing Slide Index before rendering ElementsAdd:",
+        editingSlideIndex
+      )} */}
+      <div className="w-[25%]">
+        {editingSlideIndex && (
+          <ElementsAdd
+            key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
+            chapterIndex={editingSlideIndex.chapter}
+            slideIndex={editingSlideIndex.slide}
+            currentElement={currentElement}
+            setCurrentElement={setCurrentElement}
           />
         )}
       </div>

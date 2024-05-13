@@ -37,7 +37,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     }
   };
 
-  const handleAddListElement = () => {
+  const saveListElementToRedux = () => {
     if (listItems.length > 0) {
       dispatch(
         addElementToSlide({
@@ -83,7 +83,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
             Add
           </button>
           <button
-            onClick={handleAddListElement}
+            onClick={saveListElementToRedux}
             className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <File
@@ -734,7 +734,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   );
 
   return (
-    <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
+    <div className="bg-secondary-1 w-full h-full px-4 border border-secondary-3">
       <p className="font-bold py-2 text-accent-6 text-center text-lg">
         Insert Element
       </p>

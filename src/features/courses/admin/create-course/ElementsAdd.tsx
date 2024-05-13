@@ -1,19 +1,34 @@
-import { useState, ChangeEvent, FC } from "react";
+import {
+  useState,
+  ChangeEvent,
+  // useEffect
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
+  // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
 interface ElementsAddProps {
   chapterIndex: number;
   slideIndex: number;
+  currentElement: string;
+  setCurrentElement: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
+function ElementsAdd({
+  chapterIndex,
+  slideIndex,
+  currentElement,
+  setCurrentElement,
+}: ElementsAddProps) {
+  // console.log("chapter", chapterIndex);
+  // console.log("slide", slideIndex);
+
   const dispatch = useDispatch();
 
   const chapters = useSelector(
@@ -21,7 +36,41 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
 
-  const [currentElement, setCurrentElement] = useState("");
+  const handleInputChange = (id: string, value: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: value,
+      })
+    );
+  };
+
+  // Image preview state
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]; // Get the first file from the input
+      if (file) {
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId: id,
+            value: file,
+          })
+        );
+        // Create a URL for the file
+        const fileUrl = URL.createObjectURL(file);
+        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+      }
+    }
+  };
 
   const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState<string>("");
@@ -58,7 +107,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       setListItems([]);
     }
     setCurrentElement("");
-    console.log(elements);
   };
 
   const handleAddSlide = () => {
@@ -85,25 +133,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
-  };
-
-  const handleFileInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
-      if (file) {
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId: id,
-            value: file,
-          })
-        );
-      }
-    }
+    setCurrentElement("");
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -152,14 +182,17 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   const renderListForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Bulleted List
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
         <input
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -212,8 +245,11 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   );
 
   const renderAccordionForm = () => (
-    <div className="pb-4">
-      <div className="flex justify-between items-center gap-2 w-full">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Expandable List
+      </h1>
+      <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddAccordionItem}
           className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
@@ -280,13 +316,16 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   );
 
   const renderSlideForm = () => (
-    <div className="">
-      <div className="flex flex-col items-center w-[100%] gap-1 ">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Horizontal Series
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <textarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -337,53 +376,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       </ul>
     </div>
   );
-
-  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCurrentElement(e.target.value);
-  };
-
-  const handleAddButtonClick = () => {
-    // Only dispatch addElementToSlide when the add button is clicked and currentElement is not "list"
-    if (
-      currentElement &&
-      currentElement !== "list" &&
-      currentElement !== "img" &&
-      currentElement !== "quiz" &&
-      currentElement !== "sequence" &&
-      currentElement !== "reveal"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: "",
-        })
-      );
-      setCurrentElement("");
-    } else if (currentElement && currentElement === "img") {
-      // For an image, just setup the element; don't add until an image is selected
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: null, // Initially no image file chosen
-        })
-      );
-    }
-  };
-
-  const handleInputChange = (id: string, value: string) => {
-    dispatch(
-      updateElement({
-        chapterIndex,
-        slideIndex,
-        elementId: id,
-        value: value,
-      })
-    );
-  };
 
   const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
@@ -441,14 +433,17 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   const renderQuizForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1 pb-2">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
+        Multiple Choice
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <input
           type="text"
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -478,7 +473,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       <ul className="space-y-2 py-4">
         {/* // Map over quizChoices to render choices */}
         {quizChoices.map((choice, index) => (
-          // {`Choice ${index + 1}`}
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
@@ -503,11 +497,13 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <label className="text-accent-6 ">
-        Correct Answer:
+      <div className="border-y-2 border-secondary-4 py-6">
+        <h2 className="text-lg border border-secondary-3 w-fit px-1 bg-primary-4 rounded-md">
+          Correct Answer:
+        </h2>
         <select
           value={correctAnswer}
-          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md text-lg font-Lato-Regular px-2 py-1 w-full placeholder:text-lg cursor-pointer"
           onChange={(e) => handleCorrectAnswerChange(e.target.value)}
           required
         >
@@ -518,7 +514,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
             </option>
           ))}
         </select>
-      </label>
+      </div>
     </div>
   );
 
@@ -557,14 +553,17 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   const renderSequenceForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Sequence
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-3">
         <input
           type="text"
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -658,8 +657,11 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   const renderRevealForm = () => (
-    <div className="pb-4">
-      <div className="flex justify-between items-center gap-2 w-full">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+        Reveal
+      </h1>
+      <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddRevealItem}
           className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
@@ -765,14 +767,17 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
   };
 
   const renderDndForm = () => (
-    <div className="pb-4">
-      <div className="flex flex-col items-center w-[100%] gap-1">
+    <div>
+      <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
+        Missing Words
+      </h1>
+      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
         <input
           type="text"
           value={dndQuestion}
           onChange={handleDndQuestionChange}
           placeholder="Enter quiz question"
-          className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -827,11 +832,13 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
         ))}
       </ul>
       {/* choose the correct answer on the dropdown */}
-      <label className="text-accent-6 ">
-        Correct Answer:
+      <div className="border-y-2 border-secondary-4 py-6">
+        <h2 className="text-lg border border-secondary-3 w-fit px-1 bg-primary-4 rounded-md">
+          Correct Answer:
+        </h2>
         <select
           value={correctDndAnswer}
-          className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3 cursor-pointer"
+          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md text-lg font-Lato-Regular px-2 py-1 w-full placeholder:text-lg cursor-pointer"
           onChange={(e) => handleCorrectDndAnswerChange(e.target.value)}
           required
         >
@@ -842,60 +849,63 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
             </option>
           ))}
         </select>
-      </label>
+      </div>
     </div>
   );
 
+  const uniqueKey = `${chapterIndex}-${slideIndex}`;
+
+  const renderForm = () => {
+    switch (currentElement) {
+      case "list":
+        return renderListForm();
+      case "slide":
+        return renderSlideForm();
+      case "quiz":
+        return renderQuizForm();
+      case "accordion":
+        return renderAccordionForm();
+      case "sequence":
+        return renderSequenceForm();
+      case "reveal":
+        return renderRevealForm();
+      case "dnd":
+        return renderDndForm();
+      default:
+        return null;
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log("Effect ran: Checking new slide elements");
+  //   const newSlideElements =
+  //     chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+  //   console.log("New slide elements:", newSlideElements);
+
+  //   if (newSlideElements.length > 0) {
+  //     console.log("First element type:", newSlideElements[[1]].type);
+  //     setCurrentElement(newSlideElements[[1]].type);
+  //   } else {
+  //     console.log("No elements found, resetting currentElement");
+  //     setCurrentElement("");
+  //   }
+  // }, [chapterIndex, slideIndex, chapters, setCurrentElement]);
+
+  // console.log("Current element before rendering form:", currentElement);
+
   return (
-    <div className="bg-secondary-1  w-[77%] mx-auto rounded-lg px-4 mt-3">
-      <p className="font-nokia-Bold py-2 text-accent-6 text-center text-lg">
-        Insert Element
-      </p>
-      <div className="flex justify-between pb-4">
-        <select
-          name="elements"
-          id="elements"
-          value={currentElement}
-          onChange={handleDropdownChange}
-          className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
-        >
-          <option value="" disabled>
-            Choose Type
-          </option>
-          <option value="title">Title</option>
-          <option value="sub">Sub-title</option>
-          <option value="text">Paragraph</option>
-          <option value="slide">Slide</option>
-          <option value="img">Image</option>
-          <option value="quiz">Quiz</option>
-          <option value="list">List</option>
-          <option value="accordion">Accordion</option>
-          <option value="sequence">Sequence</option>
-          <option value="reveal">Reveal</option>
-          <option value="range">Range</option>
-          <option value="dnd">Missing Words</option>
-        </select>
-        <button
-          onClick={handleAddButtonClick}
-          className=" px-2 font-semibold text-primary-6 bg-accent-6 rounded-md hover:bg-accent-7 hover:cursor-pointer transition-all"
-        >
-          Add
-        </button>
-      </div>
-
-      {currentElement === "list" && renderListForm()}
-      {currentElement === "slide" && renderSlideForm()}
-      {currentElement === "quiz" && renderQuizForm()}
-      {currentElement === "accordion" && renderAccordionForm()}
-      {currentElement === "sequence" && renderSequenceForm()}
-      {currentElement === "reveal" && renderRevealForm()}
-      {currentElement === "dnd" && renderDndForm()}
-
+    <div
+      key={uniqueKey}
+      className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
+    >
+      {renderForm()}
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
-            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 mb-1">
-              <label className="text-accent-6 font-bold">{element.type}</label>
+            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 py-3 mb-1">
+              <h2 className="text-secondary-7 font-bold">
+                {element.type.toUpperCase()}
+              </h2>
               <Trash
                 onClick={() => handleDeleteButtonClick(element.id)}
                 className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
@@ -904,15 +914,28 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
               />
             </div>
             {element.type === "img" ? (
-              <input
-                type="file"
-                id={element.id}
-                onChange={(e) => handleFileInputChange(e, element.id)}
-                className="w-[100%] border-2 border-accent-6 rounded-md file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
+              <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
+                <input
+                  type="file"
+                  id={element.id}
+                  onChange={(e) => handleFileInputChange(e, element.id)}
+                  className="w-[100%] file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0 text-sm
+                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6
+                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7
+                rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
-              />
+                />
+
+                {imagePreviewUrl && (
+                  <img
+                    key={element.type}
+                    src={imagePreviewUrl}
+                    alt=""
+                    className="rounded-b-md"
+                  />
+                )}
+              </div>
             ) : element.type === "range" ? null : (
               <input
                 id={element.id}
@@ -923,7 +946,7 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
                     : element.value?.toString()
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
+                className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
               />
             )}
           </div>
@@ -931,6 +954,6 @@ const ElementsAdd: FC<ElementsAddProps> = ({ chapterIndex, slideIndex }) => {
       ))}
     </div>
   );
-};
+}
 
 export default ElementsAdd;
