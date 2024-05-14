@@ -9,7 +9,6 @@ import {
   CheckCircle,
   XCircle,
   ArrowRight,
-  CaretCircleLeft,
   CheckFat,
   Lock,
   CornersOut,
@@ -185,6 +184,7 @@ function SlidesDisplay() {
   // slide number
   const currentSlideNumber = activeIndex + 1;
   const totalDataNumber = data.length;
+
   const isLastSlide = activeIndex === totalDataNumber - 1;
 
   const isSlideUnlocked = (index: number) => {
@@ -377,7 +377,7 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex  mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
+      <div className="flex  mt-6 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-full lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
         {/* Back button */}
         <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
@@ -391,7 +391,6 @@ function SlidesDisplay() {
             <p className="text-accent-6 text-xs font-nokia-bold">ዘግተህ ውጣ</p>
           </button>
         </div>
-
         {/* Slides side bar for mobile and tablet*/}
         <div
           ref={ref}
@@ -415,7 +414,7 @@ function SlidesDisplay() {
           )}
 
           {/* Course title and description*/}
-          <div className="w-[100%] h-full bg-white opacity-90 pb-3 rounded-b-lg">
+          <div className="w-[100%] h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
             <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
@@ -444,7 +443,7 @@ function SlidesDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
                     onClick={() => {
@@ -483,7 +482,7 @@ function SlidesDisplay() {
           </div>
         </div>
         {/* Slides side bar for desktop*/}
-        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
+        <div className="hidden w-[15%] h-full lg:flex flex-col justify-start items-center bg-primary-7  z-40 lg:w-[27%] lg:h-full">
           {/* Short information*/}
 
           <div className="flex   py-2 bg-secondary-5  pl-12 w-full text-xs1  lg:text-xs z-50">
@@ -498,20 +497,20 @@ function SlidesDisplay() {
           </div>
 
           {/* Course title and description*/}
-          <div className="flex flex-col w-full h-full bg-white opacity-90 pb-3 rounded-b-lg">
-            <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-sm ">
+          <div className="flex flex-col w-full h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
+            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ">
               {courseData?.description}
             </p>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-lg">
+              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
                 ትምህርቶች {currentSlideNumber}/{totalDataNumber}
               </h1>
               <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
             {/* slide list */}
-            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
+            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto ">
               {data.map((slides, index) => {
                 const unlocked = isSlideUnlocked(index - 1);
                 const isActive = index === activeIndex;
@@ -523,7 +522,7 @@ function SlidesDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
                     onClick={() => {
@@ -562,7 +561,7 @@ function SlidesDisplay() {
           </div>
         </div>
         {/* slides display window*/}
-        <div className="lg:w-[70%] items-center h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full relative">
+        <div className="lg:w-[73%]  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center  rounded-lg lg:rounded-none lg:h-full relative">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
@@ -578,6 +577,9 @@ function SlidesDisplay() {
                     <strong>Ezra</strong> Seminary
                   </h3>
                 </div>
+                <p className="font-nokia-bold text-primary-6 text-xs lg:text-sm">
+                  {currentSlideNumber} / {totalDataNumber}
+                </p>
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
             </div>
@@ -588,10 +590,18 @@ function SlidesDisplay() {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
+                    className=" flex flex-col justify-center items-center w-full px-2 md:w-[90%] mx-auto h-full overflow-y-hidden py-5"
                   >
-                    <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
-                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 mb-4 font-nokia-bold">
+                    <div
+                      className={`flex flex-col  items-center w-full h-full overflow-y-auto  rounded-lg bg-black bg-opacity-20 scrollbar-thin px-2 ${
+                        slides.elements.some(
+                          (element) => element.type === "text"
+                        )
+                          ? " overflow-y-auto h-auto pb-3 justify-start"
+                          : "py-0 justify-center"
+                      }`}
+                    >
+                      <h1 className="text-lg lg:text-2xl text-accent-6 text-center pt-6   font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -599,7 +609,7 @@ function SlidesDisplay() {
                           return (
                             <h1
                               key={element._id}
-                              className="text-white text-sm lg:text-lg font-nokia-bold pb-2 "
+                              className="text-primary-6 text-sm lg:text-lg font-nokia-bold pb-2 "
                             >
                               {element.value}
                             </h1>
@@ -608,7 +618,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-white font-nokia-bold  self-center tracking-wide text-center text-sm"
+                              className="text-primary-6 font-nokia-bold  self-center tracking-wide text-center text-sm"
                             >
                               {element.value}
                             </p>
@@ -617,14 +627,14 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-white font-nokia-bold self-center tracking-wide text-justify text-xs1 lg:text-xs "
+                              className="text-secondary-3 font-nokia-bold   self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2"
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
                           );
                         } else if (element.type === "img") {
                           return (
-                            <div className="w-full h-full">
+                            <div className="w-full h-auto">
                               {isFullScreen ? (
                                 <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
                                   <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
@@ -666,7 +676,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                                className="text-secondary-3 pt-2  font-nokia-bold w-[100%] tracking-wide  text-left text-xs lg:text-sm"
                               >
                                 {listItem}
                               </li>
@@ -676,7 +686,7 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center ml-8"
+                              className="flex flex-col justify-center items-center"
                             >
                               <ul className="list-disc mt-2">
                                 {listItemsComponent}
@@ -688,7 +698,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide text-xs1 md:text-xs "
+                                className="flex justify-center items-center mx-auto text-secondary-2 font-nokia-bold w-[100%] h-full text-justify px-14 md:px-16 pt-2 tracking-wide text-xs lg:text-sm "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -696,25 +706,27 @@ function SlidesDisplay() {
                           );
 
                           return (
-                            <div
-                              key={element._id}
-                              className=" flex  w-[50%] md:w-[80%] lg:w-[90%] mx-auto h-auto"
-                            >
-                              <Splide
-                                options={{
-                                  perPage: 1,
-                                  width: "100%",
-                                  height: "100%",
-                                  autoWidth: true,
-                                  arrows: true, // Enable arrow navigation
-                                  pagination: false,
-                                  focus: "center",
-                                  trimSpace: true,
-                                  isNavigation: false,
-                                }}
+                            <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin">
+                              <div
+                                key={element._id}
+                                className="w-full  mx-auto h-auto px-2"
                               >
-                                {listItemsComponent}
-                              </Splide>
+                                <Splide
+                                  options={{
+                                    perPage: 1,
+                                    width: "100%",
+                                    height: "100%",
+                                    autoWidth: true,
+                                    arrows: true, // Enable arrow navigation
+                                    pagination: false,
+                                    focus: "center",
+                                    trimSpace: true,
+                                    isNavigation: false,
+                                  }}
+                                >
+                                  {listItemsComponent}
+                                </Splide>
+                              </div>
                             </div>
                           );
                         } else if (element.type === "quiz") {
@@ -724,7 +736,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-white font-nokia-bold text-sm lg:text-xl">
+                              <p className="text-secondary-2 font-nokia-bold text-sm lg:text-lg">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -742,7 +754,7 @@ function SlidesDisplay() {
                                         >
                                           <input
                                             type="radio"
-                                            className="w-5 h-5 appearance-none bg-white focus:bg-orange-400 rounded-full transition-all"
+                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 rounded-full transition-all"
                                             checked={
                                               selectedChoice === choiceIndex
                                             }
@@ -754,7 +766,7 @@ function SlidesDisplay() {
                                               )
                                             }
                                           />
-                                          <span className="text-white font-nokia-bold text-xs lg:text-lg ml-2">
+                                          <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg ml-2">
                                             {choice.text}
                                           </span>
                                         </label>
@@ -798,18 +810,18 @@ function SlidesDisplay() {
                                 align: "start",
                               }}
                               key={element._id}
-                              className="w-full mt-12"
+                              className="w-full mt-16"
                             >
-                              <CarouselContent className="-mt-1 h-[200px]">
+                              <CarouselContent className="-mt-1 h-[200px] ">
                                 {element.value.map(
                                   (sequenceItem: string, index: number) => (
                                     <CarouselItem
                                       key={index}
-                                      className="pt-1 md:basis-1/2"
+                                      className="pt-1 py-6 h-auto"
                                     >
                                       <div className="p-1">
-                                        <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
-                                          <span className="text-secondary-9 text-xl font-nokia-bold">
+                                        <div className="flex items-center justify-start p-6 bg-secondary-1 border-2 border-secondary-3 rounded-xl shadow-2xl">
+                                          <span className="text-accent-6 text-lg lg:text-xl text-justify font-nokia-bold">
                                             {sequenceItem}
                                           </span>
                                         </div>

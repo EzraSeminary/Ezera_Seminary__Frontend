@@ -326,7 +326,7 @@ function ChaptersDisplay() {
           </div>
 
           {/* Course title and description*/}
-          <div className="w-[100%] overflow-y-auto bg-white opacity-85 pb-3 rounded-b-lg  ">
+          <div className="w-[100%] overflow-y-auto bg-primary-3 opacity-85 pb-3 rounded-b-lg  ">
             <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
@@ -356,7 +356,7 @@ function ChaptersDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
