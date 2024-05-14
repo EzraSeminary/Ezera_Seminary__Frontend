@@ -173,6 +173,7 @@ function ChaptersAdd() {
     }
   };
 
+  //
   useEffect(() => {
     if (currentElement && editingSlideIndex) {
       handleAddElementToRedux(
