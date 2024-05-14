@@ -16,8 +16,8 @@ import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 interface ElementsAddProps {
   chapterIndex: number;
   slideIndex: number;
-  currentElement: string;
-  setCurrentElement: React.Dispatch<React.SetStateAction<string>>;
+  currentElement: string | null;
+  setCurrentElement: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function ElementsAdd({

@@ -37,7 +37,7 @@ function ChaptersAdd() {
 
   // show element popup
   const [showElementPopup, setShowElementPopup] = useState(false);
-  const [currentElement, setCurrentElement] = useState("");
+  const [currentElement, setCurrentElement] = useState<string | null>("");
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -139,7 +139,7 @@ function ChaptersAdd() {
     chapterIndex: number,
     slideIndex: number
   ) => {
-    console.log("Current Element inside function:", currentElement);
+    // console.log("Current Element inside function:", currentElement);
 
     if (
       currentElement &&
@@ -170,6 +170,7 @@ function ChaptersAdd() {
           value: null,
         })
       );
+      setCurrentElement(null);
     }
   };
 
