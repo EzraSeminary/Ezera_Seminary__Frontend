@@ -1,10 +1,15 @@
-import { useState, ChangeEvent } from "react";
+import {
+  useState,
+  ChangeEvent,
+  // useEffect
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
+  // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
@@ -21,12 +26,51 @@ function ElementsAdd({
   currentElement,
   setCurrentElement,
 }: ElementsAddProps) {
+  // console.log("chapter", chapterIndex);
+  // console.log("slide", slideIndex);
+
   const dispatch = useDispatch();
 
   const chapters = useSelector(
     (state: { course: CourseState }) => state.course.chapters
   );
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+
+  const handleInputChange = (id: string, value: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: value,
+      })
+    );
+  };
+
+  // Image preview state
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]; // Get the first file from the input
+      if (file) {
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId: id,
+            value: file,
+          })
+        );
+        // Create a URL for the file
+        const fileUrl = URL.createObjectURL(file);
+        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+      }
+    }
+  };
 
   const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState<string>("");
@@ -63,7 +107,6 @@ function ElementsAdd({
       setListItems([]);
     }
     setCurrentElement("");
-    console.log(elements);
   };
 
   const handleAddSlide = () => {
@@ -90,25 +133,7 @@ function ElementsAdd({
       })
     );
     setSlidesDetails([]); // Clear slides details after adding
-  };
-
-  const handleFileInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
-      if (file) {
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId: id,
-            value: file,
-          })
-        );
-      }
-    }
+    setCurrentElement("");
   };
 
   const handleDeleteListItem = (indexToDelete: number) => {
@@ -351,17 +376,6 @@ function ElementsAdd({
       </ul>
     </div>
   );
-
-  const handleInputChange = (id: string, value: string) => {
-    dispatch(
-      updateElement({
-        chapterIndex,
-        slideIndex,
-        elementId: id,
-        value: value,
-      })
-    );
-  };
 
   const handleDeleteButtonClick = (elementId: string) => {
     dispatch(
@@ -839,18 +853,52 @@ function ElementsAdd({
     </div>
   );
 
-  console.log("Current element before rendering form:", currentElement);
+  const uniqueKey = `${chapterIndex}-${slideIndex}`;
+
+  const renderForm = () => {
+    switch (currentElement) {
+      case "list":
+        return renderListForm();
+      case "slide":
+        return renderSlideForm();
+      case "quiz":
+        return renderQuizForm();
+      case "accordion":
+        return renderAccordionForm();
+      case "sequence":
+        return renderSequenceForm();
+      case "reveal":
+        return renderRevealForm();
+      case "dnd":
+        return renderDndForm();
+      default:
+        return null;
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log("Effect ran: Checking new slide elements");
+  //   const newSlideElements =
+  //     chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
+  //   console.log("New slide elements:", newSlideElements);
+
+  //   if (newSlideElements.length > 0) {
+  //     console.log("First element type:", newSlideElements[[1]].type);
+  //     setCurrentElement(newSlideElements[[1]].type);
+  //   } else {
+  //     console.log("No elements found, resetting currentElement");
+  //     setCurrentElement("");
+  //   }
+  // }, [chapterIndex, slideIndex, chapters, setCurrentElement]);
+
+  // console.log("Current element before rendering form:", currentElement);
 
   return (
-    <div className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3">
-      {currentElement === "list" && renderListForm()}
-      {currentElement === "slide" && renderSlideForm()}
-      {currentElement === "quiz" && renderQuizForm()}
-      {currentElement === "accordion" && renderAccordionForm()}
-      {currentElement === "sequence" && renderSequenceForm()}
-      {currentElement === "reveal" && renderRevealForm()}
-      {currentElement === "dnd" && renderDndForm()}
-
+    <div
+      key={uniqueKey}
+      className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
+    >
+      {renderForm()}
       {elements.map((element, index) => (
         <div key={index} className="py-2">
           <div className="flex flex-col justify-between pb-2">
@@ -866,22 +914,27 @@ function ElementsAdd({
               />
             </div>
             {element.type === "img" ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
                 <input
                   type="file"
                   id={element.id}
                   onChange={(e) => handleFileInputChange(e, element.id)}
-                  className="w-[100%] border-2 border-secondary-3 rounded-md my-3 file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm  text-secondary-6 font-bold p-2 file:bg-accent-6 file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 rounded-xs bg-transparent
+                  className="w-[100%] file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0 text-sm
+                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6
+                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7
+                rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
                 />
-                <img
-                  key={element.type}
-                  src={element.value}
-                  alt=""
-                  className="w-[40%] mx-auto"
-                />
+
+                {imagePreviewUrl && (
+                  <img
+                    key={element.type}
+                    src={imagePreviewUrl}
+                    alt=""
+                    className="rounded-b-md"
+                  />
+                )}
               </div>
             ) : element.type === "range" ? null : (
               <input
