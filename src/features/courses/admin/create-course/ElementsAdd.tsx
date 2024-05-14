@@ -855,26 +855,26 @@ function ElementsAdd({
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
-  const renderForm = () => {
-    switch (currentElement) {
-      case "list":
-        return renderListForm();
-      case "slide":
-        return renderSlideForm();
-      case "quiz":
-        return renderQuizForm();
-      case "accordion":
-        return renderAccordionForm();
-      case "sequence":
-        return renderSequenceForm();
-      case "reveal":
-        return renderRevealForm();
-      case "dnd":
-        return renderDndForm();
-      default:
-        return null;
-    }
-  };
+  // const renderForm = () => {
+  //   switch (currentElement) {
+  //     case "list":
+  //       return renderListForm();
+  //     case "slide":
+  //       return renderSlideForm();
+  //     case "quiz":
+  //       return renderQuizForm();
+  //     case "accordion":
+  //       return renderAccordionForm();
+  //     case "sequence":
+  //       return renderSequenceForm();
+  //     case "reveal":
+  //       return renderRevealForm();
+  //     case "dnd":
+  //       return renderDndForm();
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   // useEffect(() => {
   //   console.log("Effect ran: Checking new slide elements");
@@ -898,59 +898,151 @@ function ElementsAdd({
       key={uniqueKey}
       className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
     >
-      {renderForm()}
-      {elements.map((element, index) => (
-        <div key={index} className="py-2">
-          <div className="flex flex-col justify-between pb-2">
-            <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 py-3 mb-1">
-              <h2 className="text-secondary-7 font-bold">
-                {element.type.toUpperCase()}
-              </h2>
-              <Trash
-                onClick={() => handleDeleteButtonClick(element.id)}
-                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
-                weight="fill"
-                size={18}
-              />
-            </div>
-            {element.type === "img" ? (
-              <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
-                <input
-                  type="file"
-                  id={element.id}
-                  onChange={(e) => handleFileInputChange(e, element.id)}
-                  className="w-[100%] file:mr-4 file:py-2 file:px-4
+      {/* {renderForm()} */}
+      {elements.map((element, index) => {
+        let elementComponent;
+        if (
+          element.type === "title" ||
+          element.type === "sub" ||
+          element.type === "text"
+        ) {
+          elementComponent = (
+            <input
+              id={element.id}
+              placeholder={`Enter ${element.type}`}
+              value={element.value?.toString()}
+              onChange={(e) => handleInputChange(element.id, e.target.value)}
+              className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+            />
+          );
+        } else if (element.type === "img") {
+          elementComponent = (
+            <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
+              <input
+                type="file"
+                id={element.id}
+                onChange={(e) => handleFileInputChange(e, element.id)}
+                className="w-[100%] file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0 text-sm
-                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6 
-                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7 
+                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6
+                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7
                 rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
-                />
-                {imagePreviewUrl && (
-                  <img
-                    key={element.type}
-                    src={imagePreviewUrl}
-                    alt=""
-                    className="rounded-b-md"
-                  />
-                )}
-              </div>
-            ) : element.type === "range" ? null : (
-              <input
-                id={element.id}
-                placeholder={`Enter ${element.type}`}
-                value={
-                  element.type === "quiz" || element.type === "dnd"
-                    ? element.value?.question?.toString()
-                    : element.value?.toString()
-                }
-                onChange={(e) => handleInputChange(element.id, e.target.value)}
-                className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
               />
-            )}
+
+              {imagePreviewUrl && (
+                <img
+                  key={element.type}
+                  src={imagePreviewUrl}
+                  alt=""
+                  className="rounded-b-md"
+                />
+              )}
+            </div>
+          );
+        } else if (element.type === "list") {
+          elementComponent = (
+            <div>
+              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
+                Expandable List
+              </h1>
+              <div className="flex justify-between items-center gap-2 w-full py-4">
+                <button
+                  onClick={handleAddAccordionItem}
+                  className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+                >
+                  <PlusCircle
+                    className="text-primary-6  transition-all"
+                    size={16}
+                    weight="fill"
+                  />
+                  Add
+                </button>
+                <button
+                  onClick={saveAccordionToRedux}
+                  className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+                >
+                  <File
+                    className="text-primary-6  transition-all"
+                    size={16}
+                    weight="fill"
+                  />
+                  Save
+                </button>
+              </div>
+              <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+                {accordionTitles.map((title, index) => (
+                  <label className="text-accent-6 ">
+                    Accordion Item {index + 1}:
+                    <li key={index} className="flex flex-col space-y-2 mb-4">
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) =>
+                          handleAccordionTitleChange(index, e.target.value)
+                        }
+                        placeholder={`Title ${index + 1}`}
+                        className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                      />
+                      <textarea
+                        value={accordionContents[index]}
+                        onChange={(e) =>
+                          handleAccordionContentChange(index, e.target.value)
+                        }
+                        placeholder={`Content ${index + 1}`}
+                        className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                      />
+                      <Trash
+                        onClick={() => {
+                          setAccordionTitles(
+                            accordionTitles.filter((_, i) => i !== index)
+                          );
+                          setAccordionContents(
+                            accordionContents.filter((_, i) => i !== index)
+                          );
+                        }}
+                        className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1 self-end"
+                        weight="fill"
+                        size={22}
+                      />
+                    </li>
+                  </label>
+                ))}
+              </ul>
+            </div>
+          );
+        } else if (element.type === "slide") {
+          elementComponent = (
+            <p
+              key={element.type}
+              className="text-primary-6 font-nokia-bold w-[100%] self-center tracking-wide text-lg text-center"
+            >
+              {element.value}
+            </p>
+          );
+        } else if (element.type === "range") {
+          elementComponent = null; // Here you can define what the 'range' type should render
+        }
+
+        return (
+          <div key={index} className="py-2">
+            <div className="flex flex-col justify-between pb-2">
+              <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 py-3 mb-1">
+                <h2 className="text-secondary-7 font-bold">
+                  {element.type.toUpperCase()}
+                </h2>
+                <Trash
+                  onClick={() => handleDeleteButtonClick(element.id)}
+                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  weight="fill"
+                  size={18}
+                />
+              </div>
+              {elementComponent}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
