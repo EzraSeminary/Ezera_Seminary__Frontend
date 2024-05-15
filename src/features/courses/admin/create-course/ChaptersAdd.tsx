@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // selectCourse,
+  selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -24,7 +24,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  // const course = useSelector(selectCourse);
+  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -232,7 +232,7 @@ function ChaptersAdd() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  // console.log("course", course);
+  console.log("course", course);
   // console.log("currentElement before conditional rendering:", currentElement);
 
   return (

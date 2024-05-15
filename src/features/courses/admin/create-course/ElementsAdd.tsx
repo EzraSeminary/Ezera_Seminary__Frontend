@@ -97,18 +97,18 @@ function ElementsAdd({
   };
 
   const handleAddListElement = () => {
-    if (listItems.length > 0) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: "list",
-          value: listItems,
-        })
-      );
-      setListItems([]);
-    }
-    setCurrentElement("");
+    // if (listItems.length > 0) {
+    dispatch(
+      addElementToSlide({
+        chapterIndex,
+        slideIndex,
+        elementType: "list",
+        value: listItems,
+      })
+    );
+    setListItems([]); // reset the data in the input
+    // }
+    setCurrentElement(""); // reset the current element to avoid form re-rendering
   };
 
   const handleAddSlide = () => {
