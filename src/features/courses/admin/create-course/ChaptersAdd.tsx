@@ -142,15 +142,9 @@ function ChaptersAdd() {
     // console.log("Current Element inside function:", currentElement);
 
     if (
-      currentElement &&
-      currentElement !== "list" &&
-      currentElement !== "slide" &&
-      currentElement !== "img" &&
-      currentElement !== "quiz" &&
-      currentElement !== "accordion" &&
-      currentElement !== "sequence" &&
-      currentElement !== "reveal" &&
-      currentElement !== "dnd"
+      (currentElement && currentElement === "title") ||
+      currentElement === "sub" ||
+      currentElement === "text"
     ) {
       dispatch(
         addElementToSlide({
@@ -171,10 +165,50 @@ function ChaptersAdd() {
         })
       );
       setCurrentElement(null);
+    } else if (
+      (currentElement && currentElement === "list") ||
+      currentElement === "slide" ||
+      currentElement === "sequence"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: [],
+        })
+      );
+      setCurrentElement("");
+    } else if (
+      (currentElement && currentElement === "quiz") ||
+      currentElement === "dnd"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: [],
+        })
+      );
+      setCurrentElement("");
+    } else if (
+      (currentElement && currentElement === "accordion") ||
+      currentElement === "reveal"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: [],
+        })
+      );
+      setCurrentElement("");
     }
   };
 
-  //
+  // Display elements when click a slide
   useEffect(() => {
     if (currentElement && editingSlideIndex) {
       handleAddElementToRedux(
