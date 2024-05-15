@@ -6,6 +6,7 @@ import { DownloadSimple } from "@phosphor-icons/react";
 import { ShareNetwork } from "@phosphor-icons/react";
 import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
 import { PencilSimpleLine, Trash } from "@phosphor-icons/react";
+import prayerImage from "@/assets/prayerImg.png";
 
 import {
   selectDevotion,
@@ -271,7 +272,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   {devotionToDisplay.prayer}
                 </p>
                 <div className="absolute top-[30%] md:top-[25%] lg:top-[30%] xl:top-[20%] -left-5 bg-accent-6 rounded-full w-max  p-2">
-                  <img src="src/assets/prayerImg.png" alt="" className="w-6" />
+                  <img src={prayerImage} alt="" className="w-6" />
                 </div>
               </div>
             ) : (
@@ -280,7 +281,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   {devotionToDisplay && devotionToDisplay.prayer}
                 </p>
                 <div className="absolute top-4 -left-8 bg-accent-6 rounded-full w-max  p-2">
-                  <img src="src/assets/prayerImg.png" alt="" className="" />
+                  <img src={prayerImage} alt="" className="" />
                 </div>
               </div>
             )}
