@@ -1,3 +1,5 @@
+import LogoImage from "@/assets/Logo Ion.png";
+
 const Footer = () => {
   return (
     <footer className="w-full ">
@@ -5,11 +7,7 @@ const Footer = () => {
         <div className="flex flex-col bg-secondary-6 justify-center items-center py-8 space-y-4">
           <div className="flex flex-row justify-center items-center space-x-3">
             <div>
-              <img
-                src="src/assets/Logo Ion.png"
-                alt=""
-                className="w-7 lg:w-9 xl:w-11"
-              />
+              <img src={LogoImage} alt="Logo Icon" className="w-7 lg:w-9 xl:w-11" />
             </div>
             <div className="flex flex-col">
               <h1 className="text-[#fff] xl:text-xl">
