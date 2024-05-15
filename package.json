@@ -23,6 +23,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@splidejs/react-splide": "^0.7.12",
     "@svgr/rollup": "^8.1.0",
+    "@wojtekmaj/react-daterange-picker": "^6.0.0",
     "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -47,6 +48,7 @@
     "react-toastify": "^10.0.4",
     "react-youtube": "^10.1.0",
     "reactstrap": "^9.2.2",
+    "recharts": "^2.12.7",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0"
