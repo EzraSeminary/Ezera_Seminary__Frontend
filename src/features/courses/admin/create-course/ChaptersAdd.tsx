@@ -37,7 +37,9 @@ function ChaptersAdd() {
 
   // show element popup
   const [showElementPopup, setShowElementPopup] = useState(false);
-  const [currentElement, setCurrentElement] = useState<string | null>("");
+  const [currentElement, setCurrentElement] = useState<
+    string | null | string[] | boolean
+  >("");
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -178,7 +180,7 @@ function ChaptersAdd() {
           value: [],
         })
       );
-      setCurrentElement("");
+      setCurrentElement([]);
     } else if (
       (currentElement && currentElement === "quiz") ||
       currentElement === "dnd"
@@ -191,7 +193,7 @@ function ChaptersAdd() {
           value: [],
         })
       );
-      setCurrentElement("");
+      setCurrentElement([]);
     } else if (
       (currentElement && currentElement === "accordion") ||
       currentElement === "reveal"
@@ -204,7 +206,17 @@ function ChaptersAdd() {
           value: [],
         })
       );
-      setCurrentElement("");
+      setCurrentElement([]);
+    } else if (currentElement && currentElement === "range") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: false,
+        })
+      );
+      setCurrentElement(false);
     }
   };
 
