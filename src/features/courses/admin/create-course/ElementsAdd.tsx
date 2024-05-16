@@ -5,7 +5,7 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addElementToSlide,
+  // addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
@@ -218,13 +218,13 @@ function ElementsAdd({
     setCorrectAnswer(value);
   };
 
-  const saveQuizToRedux = () => {
+  const saveQuizToRedux = (id: string) => {
     if (quizQuestion && quizChoices.length > 0) {
       dispatch(
-        addElementToSlide({
+        updateElement({
           chapterIndex,
           slideIndex,
-          elementType: "quiz",
+          elementId: id,
           value: {
             question: quizQuestion,
             choices: quizChoices.map((text) => ({ text })),
@@ -233,9 +233,9 @@ function ElementsAdd({
         })
       );
       // Reset quiz state
-      setQuizQuestion("");
-      setQuizChoices([]);
-      setCorrectAnswer("");
+      // setQuizQuestion("");
+      // setQuizChoices([]);
+      // setCorrectAnswer("");
     }
     setCurrentElement("");
   };
@@ -309,8 +309,8 @@ function ElementsAdd({
       );
 
       // Reset state
-      setRevealTitles([]);
-      setRevealContents([]);
+      // setRevealTitles([]);
+      // setRevealContents([]);
     }
     setCurrentElement("");
   };
@@ -336,13 +336,13 @@ function ElementsAdd({
     setCorrectDndAnswer(value);
   };
 
-  const saveDndToRedux = () => {
+  const saveDndToRedux = (id: string) => {
     if (dndQuestion && dndChoices.length > 0) {
       dispatch(
-        addElementToSlide({
+        updateElement({
           chapterIndex,
           slideIndex,
-          elementType: "dnd",
+          elementId: id,
           value: {
             question: dndQuestion,
             choices: dndChoices.map((text) => ({ text })),
@@ -351,9 +351,9 @@ function ElementsAdd({
         })
       );
       // Reset quiz state
-      setDndQuestion("");
-      setDndChoices([]);
-      setCorrectDndAnswer("");
+      // setDndQuestion("");
+      // setDndChoices([]);
+      // setCorrectDndAnswer("");
     }
     setCurrentElement("");
   };
@@ -601,7 +601,7 @@ function ElementsAdd({
                     Add
                   </button>
                   <button
-                    onClick={saveQuizToRedux}
+                    onClick={() => saveQuizToRedux(element.id)}
                     className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                   >
                     <File
@@ -899,7 +899,7 @@ function ElementsAdd({
                     Add
                   </button>
                   <button
-                    onClick={saveDndToRedux}
+                    onClick={() => saveDndToRedux(element.id)}
                     className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                   >
                     <File
