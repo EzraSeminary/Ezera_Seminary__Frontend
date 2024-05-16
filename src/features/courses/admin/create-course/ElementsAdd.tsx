@@ -74,6 +74,17 @@ function ElementsAdd({
     }
   };
 
+  const handleDeleteButtonClick = (elementId: string) => {
+    dispatch(
+      deleteElement({
+        chapterIndex,
+        slideIndex,
+        elementId,
+      })
+    );
+  };
+
+  // Elements
   const [listItems, setListItems] = useState<string[]>([]);
   const [currentListItem, setCurrentListItem] = useState<string>("");
   const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
@@ -85,6 +96,7 @@ function ElementsAdd({
   const [revealTitles, setRevealTitles] = useState<string[]>([]);
   const [revealContents, setRevealContents] = useState<string[]>([]);
 
+  // List related functions
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
@@ -96,26 +108,43 @@ function ElementsAdd({
     }
   };
 
-  const handleAddListElement = () => {
-    // if (listItems.length > 0) {
+  const saveListElementToRedux = (id: string) => {
     dispatch(
-      addElementToSlide({
+      updateElement({
         chapterIndex,
         slideIndex,
-        elementType: "list",
+        elementId: id,
         value: listItems,
       })
     );
-    setListItems([]); // reset the data in the input
-    // }
+    // setListItems([]); // reset the data in the input
     setCurrentElement(""); // reset the current element to avoid form re-rendering
   };
 
+  const handleDeleteListItem = (indexToDelete: number) => {
+    const updatedList = listItems.filter((_, index) => index !== indexToDelete);
+    setListItems(updatedList);
+  };
+
+  // Slide related functions
   const handleAddSlide = () => {
     if (currentSlideDetails) {
       setSlidesDetails([...slidesDetails, currentSlideDetails]);
       setCurrentSlideDetails("");
     }
+  };
+
+  const handleSaveSlides = (id: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: slidesDetails,
+      })
+    );
+    // setSlidesDetails([]); // Clear slides details after adding
+    setCurrentElement("");
   };
 
   const handleDeleteSlideItem = (indexToDelete: number) => {
@@ -125,24 +154,7 @@ function ElementsAdd({
     setSlidesDetails(updatedSlides);
   };
 
-  const handleSaveSlides = () => {
-    dispatch(
-      addElementToSlide({
-        chapterIndex,
-        slideIndex,
-        elementType: "slide",
-        value: slidesDetails,
-      })
-    );
-    setSlidesDetails([]); // Clear slides details after adding
-    setCurrentElement("");
-  };
-
-  const handleDeleteListItem = (indexToDelete: number) => {
-    const updatedList = listItems.filter((_, index) => index !== indexToDelete);
-    setListItems(updatedList);
-  };
-
+  // Accordion related functions
   const handleAccordionTitleChange = (index: number, text: string) => {
     setAccordionTitles(
       accordionTitles.map((title, i) => (i === index ? text : title))
@@ -181,16 +193,6 @@ function ElementsAdd({
       setAccordionContents([]);
     }
     setCurrentElement("");
-  };
-
-  const handleDeleteButtonClick = (elementId: string) => {
-    dispatch(
-      deleteElement({
-        chapterIndex,
-        slideIndex,
-        elementId,
-      })
-    );
   };
 
   // Quiz-related state and functions
@@ -475,7 +477,7 @@ function ElementsAdd({
                     Add
                   </button>
                   <button
-                    onClick={handleAddListElement}
+                    onClick={() => saveListElementToRedux(element.id)}
                     className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                   >
                     <File
@@ -536,7 +538,7 @@ function ElementsAdd({
                     Add
                   </button>
                   <button
-                    onClick={handleSaveSlides}
+                    onClick={() => handleSaveSlides(element.id)}
                     className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                   >
                     <File
