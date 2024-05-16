@@ -1,4 +1,4 @@
-import { updateElement } from "@/redux/courseSlice";
+import { CustomElement, updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
@@ -9,11 +9,7 @@ export interface ElementTypeProps {
   setCurrentElement: React.Dispatch<
     React.SetStateAction<string | null | string[] | boolean>
   >;
-  element: {
-    type: string;
-    id: string;
-    value: string | string[] | boolean | null;
-  };
+  element: CustomElement;
 }
 
 function List({
