@@ -462,9 +462,6 @@ function ElementsAdd({
         } else if (element.type === "list") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-                Bulleted List
-              </h1>
               <div className="flex flex-col items-center w-[100%] gap-1 py-3">
                 <input
                   type="text"
@@ -525,9 +522,6 @@ function ElementsAdd({
         } else if (element.type === "slide") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-                Horizontal Series
-              </h1>
               <div className="flex flex-col items-center w-[100%] gap-1 py-4">
                 <textarea
                   value={currentSlideDetails}
@@ -587,9 +581,6 @@ function ElementsAdd({
         } else if (element.type === "quiz") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
-                Multiple Choice
-              </h1>
               <div className="flex flex-col items-center w-[100%] gap-1 py-4">
                 <input
                   type="text"
@@ -677,9 +668,6 @@ function ElementsAdd({
         } else if (element.type === "accordion") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-                Expandable List
-              </h1>
               <div className="flex justify-between items-center gap-2 w-full py-4">
                 <button
                   onClick={handleAddAccordionItem}
@@ -748,9 +736,6 @@ function ElementsAdd({
         } else if (element.type === "sequence") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-                Sequence
-              </h1>
               <div className="flex flex-col items-center w-[100%] gap-1 py-3">
                 <input
                   type="text"
@@ -811,9 +796,6 @@ function ElementsAdd({
         } else if (element.type === "reveal") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-3 px-1 py-3">
-                Reveal
-              </h1>
               <div className="flex justify-between items-center gap-2 w-full py-4">
                 <button
                   onClick={handleAddRevealItem}
@@ -884,9 +866,6 @@ function ElementsAdd({
         } else if (element.type === "dnd") {
           elementComponent = (
             <div id={element.id}>
-              <h1 className="text-xl border-b-2 border-secondary-4 px-1 py-3">
-                Missing Words
-              </h1>
               <div className="flex flex-col items-center w-[100%] gap-1 py-4">
                 <input
                   type="text"
