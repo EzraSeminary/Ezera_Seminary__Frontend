@@ -33,13 +33,13 @@ function DragAndDrop({
     setCorrectDndAnswer(value);
   };
 
-  const saveDndToRedux = (id: string) => {
+  const saveDndToRedux = () => {
     if (dndQuestion && dndChoices.length > 0) {
       dispatch(
         updateElement({
           chapterIndex,
           slideIndex,
-          elementId: id,
+          elementId: element.id,
           value: {
             question: dndQuestion,
             choices: dndChoices.map((text) => ({ text })),
@@ -79,7 +79,7 @@ function DragAndDrop({
             Add
           </button>
           <button
-            onClick={() => saveDndToRedux(element.id)}
+            onClick={saveDndToRedux}
             className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <File

@@ -11,7 +11,7 @@ import {
   CourseState,
   // selectElements,
 } from "../../../../redux/courseSlice";
-import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+import { Trash } from "@phosphor-icons/react";
 import List from "../../Elements/List";
 import Slide from "../../Elements/Slide";
 import Quiz from "../../Elements/Quiz";
