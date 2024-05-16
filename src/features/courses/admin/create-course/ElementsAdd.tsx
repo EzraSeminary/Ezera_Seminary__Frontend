@@ -12,6 +12,7 @@ import {
   // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+// import { element } from "prop-types";
 
 interface ElementsAddProps {
   chapterIndex: number;
@@ -360,26 +361,36 @@ function ElementsAdd({
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
-  // const renderForm = () => {
-  //   switch (currentElement) {
-  //     case "list":
-  //       return renderListForm();
-  //     case "slide":
-  //       return renderSlideForm();
-  //     case "quiz":
-  //       return renderQuizForm();
-  //     case "accordion":
-  //       return renderAccordionForm();
-  //     case "sequence":
-  //       return renderSequenceForm();
-  //     case "reveal":
-  //       return renderRevealForm();
-  //     case "dnd":
-  //       return renderDndForm();
-  //     default:
-  //       return null;
-  //   }
-  // };
+  const elementName = (elementType: string) => {
+    switch (elementType) {
+      case "title":
+        return "Title";
+      case "sub":
+        return "Sub Title";
+      case "text":
+        return "Paragraph";
+      case "img":
+        return "Image";
+      case "list":
+        return "Bulleted list";
+      case "slide":
+        return "Horizontal series";
+      case "quiz":
+        return "Multiple choice";
+      case "accordion":
+        return "Expandable list";
+      case "sequence":
+        return "Sequence";
+      case "reveal":
+        return "Reveal";
+      case "range":
+        return "Slider";
+      case "dnd":
+        return "Missing Words";
+      default:
+        return "";
+    }
+  };
 
   // useEffect(() => {
   //   setCurrentElement("");
@@ -407,7 +418,6 @@ function ElementsAdd({
       key={uniqueKey}
       className="bg-secondary-1 w-full h-full overflow-y-auto px-4 border border-secondary-3"
     >
-      {/* {renderForm()} */}
       {elements.map((element, index) => {
         let elementComponent;
         if (
@@ -967,13 +977,13 @@ function ElementsAdd({
         return (
           <div key={index} className="py-2">
             <div className="flex flex-col justify-between pb-2">
-              <div className="flex justify-between items-center border-b-2 border-secondary-3 px-1 py-3 mb-1">
-                <h2 className="text-secondary-7 font-bold">
-                  {element.type.toUpperCase()}
+              <div className="flex justify-between items-center border-b-2 border-secondary-4 px-1 py-3 mb-1">
+                <h2 className="text-secondary-7 font-bold text-xl">
+                  {elementName(element.type)}
                 </h2>
                 <Trash
                   onClick={() => handleDeleteButtonClick(element.id)}
-                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
                   weight="fill"
                   size={18}
                 />
