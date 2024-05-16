@@ -180,7 +180,7 @@ const ManageUsers: React.FC = () => {
               >
                 <td className="px-4 py-2">
                   <img
-                    src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
+                    src={`https://64.23.192.24/images/${user.avatar}`}
                     alt={`${user.firstName} ${user.lastName}`}
                     className="w-12 h-12 rounded-full  "
                   />
@@ -244,7 +244,7 @@ const ManageUsers: React.FC = () => {
                   src={
                     selectedAvatar
                       ? URL.createObjectURL(selectedAvatar)
-                      : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
+                      : `https://64.23.192.24/images/${editingUser.avatar}`
                   }
                   alt={`${editingUser.firstName} ${editingUser.lastName}`}
                   className="w-20 h-20 rounded-full mr-4  border-2 border-accent-6 p-1 "
