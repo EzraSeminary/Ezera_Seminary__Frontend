@@ -1,15 +1,9 @@
-import {
-  useState,
-  ChangeEvent,
-  // useEffect
-} from "react";
+import { useState, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // addElementToSlide,
   updateElement,
   deleteElement,
   CourseState,
-  // selectElements,
 } from "../../../../redux/courseSlice";
 import { Trash } from "@phosphor-icons/react";
 import List from "../../Elements/List";
@@ -19,12 +13,10 @@ import Accordion from "../../Elements/Accordion";
 import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
-// import { element } from "prop-types";
 
 export interface ElementsAddProps {
   chapterIndex: number;
   slideIndex: number;
-  // currentElement: string | null | string[] | boolean;
   setCurrentElement: React.Dispatch<
     React.SetStateAction<string | null | string[] | boolean>
   >;
@@ -33,12 +25,8 @@ export interface ElementsAddProps {
 function ElementsAdd({
   chapterIndex,
   slideIndex,
-  // currentElement,
   setCurrentElement,
 }: ElementsAddProps) {
-  // console.log("chapter", chapterIndex);
-  // console.log("slide", slideIndex);
-
   const dispatch = useDispatch();
 
   const chapters = useSelector(
@@ -92,8 +80,6 @@ function ElementsAdd({
     );
   };
 
-  // Elements
-
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
   const elementName = (elementType: string) => {
@@ -126,27 +112,6 @@ function ElementsAdd({
         return "";
     }
   };
-
-  // useEffect(() => {
-  //   setCurrentElement("");
-  // }, [chapterIndex, slideIndex]);
-
-  // useEffect(() => {
-  //   console.log("Effect ran: Checking new slide elements");
-  //   const newSlideElements =
-  //     chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
-  //   console.log("New slide elements:", newSlideElements);
-
-  //   if (newSlideElements.length > 0) {
-  //     console.log("First element type:", newSlideElements[[1]].type);
-  //     setCurrentElement(newSlideElements[[1]].type);
-  //   } else {
-  //     console.log("No elements found, resetting currentElement");
-  //     setCurrentElement("");
-  //   }
-  // }, [chapterIndex, slideIndex, chapters, setCurrentElement]);
-
-  // console.log("Current element before rendering form:", currentElement);
 
   return (
     <div
@@ -183,7 +148,6 @@ function ElementsAdd({
                 rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
-
               {imagePreviewUrl && (
                 <img
                   key={element.type}
