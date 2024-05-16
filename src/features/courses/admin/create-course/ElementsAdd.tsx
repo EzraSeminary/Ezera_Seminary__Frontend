@@ -12,12 +12,13 @@ import {
   // selectElements,
 } from "../../../../redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+import List from "../../Elements/List";
 // import { element } from "prop-types";
 
-interface ElementsAddProps {
+export interface ElementsAddProps {
   chapterIndex: number;
   slideIndex: number;
-  currentElement: string | null | string[] | boolean;
+  // currentElement: string | null | string[] | boolean;
   setCurrentElement: React.Dispatch<
     React.SetStateAction<string | null | string[] | boolean>
   >;
@@ -86,8 +87,6 @@ function ElementsAdd({
   };
 
   // Elements
-  const [listItems, setListItems] = useState<string[]>([]);
-  const [currentListItem, setCurrentListItem] = useState<string>("");
   const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
   const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
   const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
@@ -96,36 +95,6 @@ function ElementsAdd({
   const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
   const [revealTitles, setRevealTitles] = useState<string[]>([]);
   const [revealContents, setRevealContents] = useState<string[]>([]);
-
-  // List related functions
-  const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCurrentListItem(event.target.value);
-  };
-
-  const handleAddListItem = () => {
-    if (currentListItem) {
-      setListItems([...listItems, currentListItem]);
-      setCurrentListItem("");
-    }
-  };
-
-  const saveListElementToRedux = (id: string) => {
-    dispatch(
-      updateElement({
-        chapterIndex,
-        slideIndex,
-        elementId: id,
-        value: listItems,
-      })
-    );
-    // setListItems([]); // reset the data in the input
-    setCurrentElement(""); // reset the current element to avoid form re-rendering
-  };
-
-  const handleDeleteListItem = (indexToDelete: number) => {
-    const updatedList = listItems.filter((_, index) => index !== indexToDelete);
-    setListItems(updatedList);
-  };
 
   // Slide related functions
   const handleAddSlide = () => {
@@ -461,63 +430,13 @@ function ElementsAdd({
           );
         } else if (element.type === "list") {
           elementComponent = (
-            <div id={element.id}>
-              <div className="flex flex-col items-center w-[100%] gap-1 py-3">
-                <input
-                  type="text"
-                  value={currentListItem}
-                  onChange={handleListInputChange}
-                  placeholder="Enter list item"
-                  className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
-                />
-
-                <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
-                  <button
-                    onClick={handleAddListItem}
-                    className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
-                  >
-                    <PlusCircle
-                      className="text-primary-6  transition-all"
-                      size={16}
-                      weight="fill"
-                    />
-                    Add
-                  </button>
-                  <button
-                    onClick={() => saveListElementToRedux(element.id)}
-                    className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
-                  >
-                    <File
-                      className="text-primary-6  transition-all"
-                      size={16}
-                      weight="fill"
-                    />
-                    Save
-                  </button>
-                </div>
-              </div>
-              <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
-                {listItems.map((item, index) => (
-                  <label className="text-accent-6 ">
-                    List Item {index + 1}:
-                    <li
-                      key={index}
-                      className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
-                    >
-                      {item}{" "}
-                      <span>
-                        <Trash
-                          onClick={() => handleDeleteListItem(index)}
-                          className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
-                          weight="fill"
-                          size={22}
-                        />
-                      </span>
-                    </li>
-                  </label>
-                ))}
-              </ul>
-            </div>
+            <List
+              key={index}
+              chapterIndex={chapterIndex}
+              slideIndex={slideIndex}
+              setCurrentElement={setCurrentElement}
+              element={element}
+            />
           );
         } else if (element.type === "slide") {
           elementComponent = (
