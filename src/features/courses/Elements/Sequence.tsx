@@ -27,13 +27,13 @@ function Sequence({
     }
   };
 
-  const handleAddSequenceElement = (id: string) => {
+  const handleAddSequenceElement = () => {
     if (sequenceItems.length > 0) {
       dispatch(
         updateElement({
           chapterIndex,
           slideIndex,
-          elementId: id,
+          elementId: element.id,
           value: sequenceItems,
         })
       );
@@ -72,7 +72,7 @@ function Sequence({
             Add
           </button>
           <button
-            onClick={() => handleAddSequenceElement(element.id)}
+            onClick={handleAddSequenceElement}
             className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <File
