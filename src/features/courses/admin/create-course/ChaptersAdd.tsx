@@ -167,33 +167,11 @@ function ChaptersAdd() {
     } else if (
       (currentElement && currentElement === "list") ||
       currentElement === "slide" ||
-      currentElement === "sequence"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: [],
-        })
-      );
-      setCurrentElement([]);
-    } else if (
-      (currentElement && currentElement === "quiz") ||
+      currentElement === "quiz" ||
+      currentElement === "accordion" ||
+      currentElement === "sequence" ||
+      currentElement === "reveal" ||
       currentElement === "dnd"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: [],
-        })
-      );
-      setCurrentElement([]);
-    } else if (
-      (currentElement && currentElement === "accordion") ||
-      currentElement === "reveal"
     ) {
       dispatch(
         addElementToSlide({
