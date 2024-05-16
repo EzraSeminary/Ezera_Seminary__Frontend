@@ -33,7 +33,7 @@ function Reveal({
     setRevealContents([...revealContents, ""]);
   };
 
-  const saveRevealToRedux = (id: string) => {
+  const saveRevealToRedux = () => {
     if (revealTitles.length > 0 && revealContents.length > 0) {
       const revealItems = revealTitles.map((title, index) => ({
         title,
@@ -44,7 +44,7 @@ function Reveal({
         updateElement({
           chapterIndex,
           slideIndex,
-          elementId: id,
+          elementId: element.id,
           value: revealItems,
         })
       );
@@ -71,7 +71,7 @@ function Reveal({
           Add
         </button>
         <button
-          onClick={() => saveRevealToRedux(element.id)}
+          onClick={saveRevealToRedux}
           className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
         >
           <File
