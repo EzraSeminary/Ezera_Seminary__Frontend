@@ -1,7 +1,6 @@
 import { updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 
 export interface ElementTypeProps {
