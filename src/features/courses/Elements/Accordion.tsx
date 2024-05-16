@@ -33,7 +33,7 @@ function Accordion({
     setAccordionContents([...accordionContents, ""]);
   };
 
-  const saveAccordionToRedux = (id: string) => {
+  const saveAccordionToRedux = () => {
     if (accordionTitles.length > 0 && accordionContents.length > 0) {
       const accordionItems = accordionTitles.map((title, index) => ({
         title,
@@ -44,7 +44,7 @@ function Accordion({
         updateElement({
           chapterIndex,
           slideIndex,
-          elementId: id,
+          elementId: element.id,
           value: accordionItems,
         })
       );
@@ -70,7 +70,7 @@ function Accordion({
           Add
         </button>
         <button
-          onClick={() => saveAccordionToRedux(element.id)}
+          onClick={saveAccordionToRedux}
           className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
         >
           <File
