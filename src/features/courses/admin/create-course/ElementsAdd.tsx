@@ -297,7 +297,7 @@ function ElementsAdd({
             />
           );
         } else if (element.type === "range") {
-          elementComponent = null; // Here you can define what the 'range' type should render
+          elementComponent = null;
         } else if (element.type === "dnd") {
           elementComponent = (
             <div id={element.id}>
