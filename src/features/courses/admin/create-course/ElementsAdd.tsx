@@ -172,7 +172,7 @@ function ElementsAdd({
     setAccordionContents([...accordionContents, ""]);
   };
 
-  const saveAccordionToRedux = () => {
+  const saveAccordionToRedux = (id: string) => {
     if (accordionTitles.length > 0 && accordionContents.length > 0) {
       const accordionItems = accordionTitles.map((title, index) => ({
         title,
@@ -180,10 +180,10 @@ function ElementsAdd({
       }));
 
       dispatch(
-        addElementToSlide({
+        updateElement({
           chapterIndex,
           slideIndex,
-          elementType: "accordion",
+          elementId: id,
           value: accordionItems,
         })
       );
@@ -252,17 +252,17 @@ function ElementsAdd({
     }
   };
 
-  const handleAddSequenceElement = () => {
+  const handleAddSequenceElement = (id: string) => {
     if (sequenceItems.length > 0) {
       dispatch(
-        addElementToSlide({
+        updateElement({
           chapterIndex,
           slideIndex,
-          elementType: "sequence",
+          elementId: id,
           value: sequenceItems,
         })
       );
-      setSequenceItems([]);
+      // setSequenceItems([]); // remove the lists
     }
     setCurrentElement("");
   };
@@ -683,7 +683,7 @@ function ElementsAdd({
                   Add
                 </button>
                 <button
-                  onClick={saveAccordionToRedux}
+                  onClick={() => saveAccordionToRedux(element.id)}
                   className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                 >
                   <File
@@ -763,7 +763,7 @@ function ElementsAdd({
                     Add
                   </button>
                   <button
-                    onClick={handleAddSequenceElement}
+                    onClick={() => handleAddSequenceElement(element.id)}
                     className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
                   >
                     <File
