@@ -7,8 +7,9 @@ import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
 import {
   ArrowLeft,
   CheckCircle,
+  DotsThreeVertical,
+  X,
   XCircle,
-  ArrowRight,
   CheckFat,
   Lock,
   CornersOut,
@@ -377,9 +378,9 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex  mt-6 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-full lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
+      <div className="flex   md:flex-row  justify-center items-center w-full lg:mt-0  absolute top-0 bottom-0 z-50 h-full">
         {/* Back button */}
-        <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
+        {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
             className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
             onClick={submitProgress}
@@ -390,42 +391,37 @@ function SlidesDisplay() {
             />
             <p className="text-accent-6 text-xs font-nokia-bold">ዘግተህ ውጣ</p>
           </button>
-        </div>
+        </div> */}
         {/* Slides side bar for mobile and tablet*/}
         <div
           ref={ref}
           className={`lg:hidden ${
             open
-              ? "absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]"
+              ? "absolute left-0 top-0 flex flex-col justify-start items-center w-full  z-50 h-full"
               : "w-0 h-0"
           }`}
           style={{ transition: "width 0.3s" }}
         >
           {open ? (
-            <ArrowLeft
+            <X
               onClick={handleArrowClick}
-              className="text-white z-50 text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer"
+              className="text-primary-3 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
             />
-          ) : (
-            <ArrowRight
-              onClick={handleArrowClick}
-              className="text-white z-50 text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -left-3  top-36 md:top-44 cursor-pointer"
-            />
-          )}
+          ) : null}
 
           {/* Course title and description*/}
-          <div className="w-[100%] h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
-            <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
+          <div className="w-[100%] h-full bg-secondary-6 opacity-95 pb-3 rounded-b-lg pt-3 ">
+            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+            <p className="text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
               {courseData?.description}
             </p>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
+              <h1 className="font-nokia-bold text-primary-6 pb-1 text-xs lg:text-sm">
                 ትምህርት {currentSlideNumber}/{totalDataNumber}
               </h1>
               <hr className="border-accent-5 border-b-2 w-[30%] " />
@@ -452,8 +448,8 @@ function SlidesDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-center">
-                      <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
+                    <div className="flex flex-col items-start justify-start w-[90%] ">
+                      <h2 className="font-nokia-bold text-secondary-6 text-left text-xs lg:text-sm">
                         {slides.slide}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
@@ -531,7 +527,7 @@ function SlidesDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-start w-[80%] text-justify">
+                    <div className="flex flex-col items-start justify-start w-[90%] text-left">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm  ">
                         {slides.slide}
                       </h2>
@@ -561,25 +557,31 @@ function SlidesDisplay() {
           </div>
         </div>
         {/* slides display window*/}
-        <div className="lg:w-[73%]  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center  rounded-lg lg:rounded-none lg:h-full relative">
+        <div className="lg:w-[73%]  w-full h-full chapter-img-1 bg-no-repeat bg-cover bg-center  relative">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
             <div>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-                  <img
-                    src={logo}
-                    className="w-8 h-5 md:w-10 md:h-6  z-30"
-                    alt=""
-                  />
+                <div className="  h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+                  <img src={logo} className="w-8 h-5 md:w-10 md:h-6 " alt="" />
                   <h3 className="text-white font-nokia-bold text-xs md:text-sm ">
                     <strong>Ezra</strong> Seminary
                   </h3>
                 </div>
-                <p className="font-nokia-bold text-primary-6 text-xs lg:text-sm">
+                <p className="hidden lg:block font-nokia-bold text-primary-6 text-xs lg:text-sm">
                   {currentSlideNumber} / {totalDataNumber}
                 </p>
+                <div className="flex lg:hidden items-center">
+                  <DotsThreeVertical
+                    onClick={handleArrowClick}
+                    className="block lg:hidden font-bold text-xl cursor-pointer text-primary-6 transition-all "
+                  />
+                  <X
+                    onClick={submitProgress}
+                    className="  text-primary-3  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
+                  />
+                </div>
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
             </div>
@@ -597,7 +599,7 @@ function SlidesDisplay() {
                         slides.elements.some(
                           (element) => element.type === "text"
                         )
-                          ? " overflow-y-auto h-auto pb-3 justify-start"
+                          ? " overflow-y-auto h-auto pb-3 justify-start "
                           : "py-0 justify-center"
                       }`}
                     >
@@ -627,7 +629,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold   self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2"
+                              className="text-secondary-3 font-nokia-bold  w-[90%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 "
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -736,7 +738,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-2 font-nokia-bold text-sm lg:text-lg">
+                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm lg:text-lg">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -986,6 +988,13 @@ function SlidesDisplay() {
                 >
                   ተመለስ
                 </button>
+                <p
+                  className={`block lg:hidden font-nokia-bold text-primary-6 text-xs lg:text-sm pt-2 ${
+                    activeIndex === 0 ? "hidden" : "block"
+                  }`}
+                >
+                  {currentSlideNumber} / {totalDataNumber}
+                </p>
                 <button
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     activeIndex === data.length - 1 ? "hidden" : "block"
