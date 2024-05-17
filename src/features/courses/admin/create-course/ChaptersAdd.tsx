@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCourse,
+  // selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -24,7 +24,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
+  // const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -101,7 +101,6 @@ function ChaptersAdd() {
       chapter: chapterIndex,
       slide: slideIndex,
     });
-    // setCurrentElement("");
   };
 
   const handleChapterClick = (chapterIndex: number) => {
@@ -141,8 +140,6 @@ function ChaptersAdd() {
     chapterIndex: number,
     slideIndex: number
   ) => {
-    // console.log("Current Element inside function:", currentElement);
-
     if (
       (currentElement && currentElement === "title") ||
       currentElement === "sub" ||
@@ -170,33 +167,11 @@ function ChaptersAdd() {
     } else if (
       (currentElement && currentElement === "list") ||
       currentElement === "slide" ||
-      currentElement === "sequence"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: [],
-        })
-      );
-      setCurrentElement([]);
-    } else if (
-      (currentElement && currentElement === "quiz") ||
+      currentElement === "quiz" ||
+      currentElement === "accordion" ||
+      currentElement === "sequence" ||
+      currentElement === "reveal" ||
       currentElement === "dnd"
-    ) {
-      dispatch(
-        addElementToSlide({
-          chapterIndex,
-          slideIndex,
-          elementType: currentElement,
-          value: [],
-        })
-      );
-      setCurrentElement([]);
-    } else if (
-      (currentElement && currentElement === "accordion") ||
-      currentElement === "reveal"
     ) {
       dispatch(
         addElementToSlide({
@@ -227,13 +202,11 @@ function ChaptersAdd() {
         editingSlideIndex.chapter,
         editingSlideIndex.slide
       );
-      // setCurrentElement("");
     }
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  console.log("course", course);
-  // console.log("currentElement before conditional rendering:", currentElement);
+  // console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -346,14 +319,6 @@ function ChaptersAdd() {
         })}
       </div>
 
-      {/* display elements popup here */}
-      {showElementPopup && (
-        <ElementPopup
-          closeElementPopup={closeElementPopup}
-          onSelectElement={handleSelectElement}
-        />
-      )}
-
       <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
@@ -364,21 +329,24 @@ function ChaptersAdd() {
         )}
       </div>
 
-      {/* {console.log(
-        "Editing Slide Index before rendering ElementsAdd:",
-        editingSlideIndex
-      )} */}
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd
             key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
             chapterIndex={editingSlideIndex.chapter}
             slideIndex={editingSlideIndex.slide}
-            currentElement={currentElement}
             setCurrentElement={setCurrentElement}
           />
         )}
       </div>
+
+      {/* display elements popup over this whole file */}
+      {showElementPopup && (
+        <ElementPopup
+          closeElementPopup={closeElementPopup}
+          onSelectElement={handleSelectElement}
+        />
+      )}
     </div>
   );
 }
