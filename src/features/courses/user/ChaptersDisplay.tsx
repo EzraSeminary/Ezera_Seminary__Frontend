@@ -294,11 +294,11 @@ function ChaptersDisplay() {
           </div>
         </div>
         {/* Chapters side bar for desktop*/}
-        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
+        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[27%] lg:h-full">
           <NavLink to={"/courses"}>
             <ArrowLeft
               onClick={handleArrowClick}
-              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
+              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
             />{" "}
           </NavLink>
 
@@ -361,7 +361,7 @@ function ChaptersDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start text-left w-[80%] mx-auto">
+                    <div className="flex flex-col items-start text-left w-[90%] ">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
                       </h2>
@@ -381,7 +381,7 @@ function ChaptersDisplay() {
           </div>
         </div>
         {/* Chapter display window*/}
-        <div className=" lg:w-[70%]   items-center  h-full chapter-img-1 bg-no-repeat bg-cover bg-center">
+        <div className=" lg:w-[73%]   items-center  h-full chapter-img-1 bg-no-repeat bg-cover bg-center">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between w-full h-full relative">
             {/* Header */}

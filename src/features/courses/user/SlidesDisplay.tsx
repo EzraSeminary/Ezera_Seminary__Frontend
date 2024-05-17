@@ -378,7 +378,7 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex   md:flex-row  justify-center items-center w-full lg:mt-0  absolute top-0 bottom-0 z-50 h-full">
+      <div className="flex   md:flex-row  justify-center items-center w-full   absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
         {/* Back button */}
         {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
@@ -478,13 +478,13 @@ function SlidesDisplay() {
           </div>
         </div>
         {/* Slides side bar for desktop*/}
-        <div className="hidden w-[15%] h-full lg:flex flex-col justify-start items-center bg-primary-7  z-40 lg:w-[27%] lg:h-full">
+        <div className="hidden  h-full lg:flex flex-col justify-start items-center bg-primary-7  z-40 lg:w-[27%] ">
           {/* Short information*/}
 
           <div className="flex   py-2 bg-secondary-5  pl-12 w-full text-xs1  lg:text-xs z-50">
             <ArrowLeft
               onClick={submitProgress}
-              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-2 cursor-pointer "
+              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-2.5 cursor-pointer "
             />
 
             <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow   items-center ">
