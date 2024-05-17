@@ -90,19 +90,19 @@ function List({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {listItems.map((item, index) => (
-          <label className="text-accent-6 ">
-            List Item {index + 1}:
+          <label>
+            <h2 className="text-secondary-6 py-3">List Item {index + 1}:</h2>
             <li
               key={index}
-              className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
+              className="flex justify-between border border-secondary-3 rounded px-2 py-1 bg-primary-1 text-secondary-6"
             >
               {item}{" "}
               <span>
                 <Trash
                   onClick={() => handleDeleteListItem(index)}
-                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
                   weight="fill"
-                  size={22}
+                  size={18}
                 />
               </span>
             </li>

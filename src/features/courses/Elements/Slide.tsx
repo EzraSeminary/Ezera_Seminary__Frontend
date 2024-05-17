@@ -58,7 +58,7 @@ function Slide({
         >
           <button className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all">
             <PlusCircle
-              className="text-primary-6  transition-all"
+              className="text-primary-6 transition-all"
               size={16}
               weight="fill"
             />
@@ -79,20 +79,19 @@ function Slide({
       </div>
       <ul className="w-[100%]  pb-4 cursor-pointer overflow-y-auto">
         {slidesDetails.map((details, index) => (
-          <label className="text-accent-6 ">
-            {" "}
-            Slide {index + 1}:
+          <label>
+            <h2 className="text-secondary-6 py-3">Slide {index + 1}:</h2>
             <li
               key={index}
-              className="flex justify-between break-words border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
+              className="flex justify-between break-words border border-secondary-3 rounded px-2 py-1 bg-primary-1 text-secondary-6"
             >
               {details}{" "}
               <span>
                 <Trash
                   onClick={() => handleDeleteSlideItem(index)}
-                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
+                  className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
                   weight="fill"
-                  size={22}
+                  size={18}
                 />
               </span>
             </li>
