@@ -84,24 +84,11 @@ function Reveal({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {revealTitles.map((title, index) => (
-          <label className="text-accent-6 ">
-            Reveal Item {index + 1}:
-            <li key={index} className="flex flex-col space-y-2 mb-4">
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => handleRevealTitleChange(index, e.target.value)}
-                placeholder={`Title ${index + 1}`}
-                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
-              />
-              <textarea
-                value={revealContents[index]}
-                onChange={(e) =>
-                  handleRevealContentChange(index, e.target.value)
-                }
-                placeholder={`Content ${index + 1}`}
-                className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
-              />
+          <div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-secondary-6 text-xl">
+                Reveal Item {index + 1}:
+              </h2>
               <Trash
                 onClick={() => {
                   setRevealTitles(revealTitles.filter((_, i) => i !== index));
@@ -109,12 +96,38 @@ function Reveal({
                     revealContents.filter((_, i) => i !== index)
                   );
                 }}
-                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1 self-end"
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
                 weight="fill"
                 size={22}
               />
+            </div>
+            <li
+              key={index}
+              className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4"
+            >
+              <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 rounded-t-md">
+                TITLE
+              </label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => handleRevealTitleChange(index, e.target.value)}
+                placeholder={`Title ${index + 1}`}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+              />
+              <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 mt-2 rounded-t-md">
+                CONTENT
+              </label>
+              <textarea
+                value={revealContents[index]}
+                onChange={(e) =>
+                  handleRevealContentChange(index, e.target.value)
+                }
+                placeholder={`Content ${index + 1}`}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+              />
             </li>
-          </label>
+          </div>
         ))}
       </ul>
     </div>
