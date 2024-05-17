@@ -91,7 +91,7 @@ function List({
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {listItems.map((item, index) => (
           <label>
-            <h2 className="text-secondary-6 py-3">List Item {index + 1}:</h2>
+            <h2 className="text-secondary-6 py-3">List {index + 1}:</h2>
             <li
               key={index}
               className="flex justify-between border border-secondary-3 rounded px-2 py-1 bg-primary-1 text-secondary-6"
