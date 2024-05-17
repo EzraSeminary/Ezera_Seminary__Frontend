@@ -63,7 +63,7 @@ function DragAndDrop({
           value={dndQuestion}
           onChange={handleDndQuestionChange}
           placeholder="Enter quiz question"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -102,7 +102,7 @@ function DragAndDrop({
                 value={choice}
                 onChange={(e) => handleDndChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
-                className="mt-1 border-2 border-secondary-3 rounded-md text-secondary-6 font-bold px-2 py-1 w-full"
+                className="mt-1 border-2 border-secondary-3 rounded-md text-secondary-6 font-Lato-Regular px-2 py-1 w-full"
               />
               <Trash
                 onClick={() => {
