@@ -27,6 +27,12 @@ function Sequence({
     }
   };
 
+  const handleSequenceItemChange = (index: number, text: string) => {
+    setSequenceItems(
+      sequenceItems.map((item, i) => (i === index ? text : item))
+    );
+  };
+
   const handleAddSequenceElement = () => {
     if (sequenceItems.length > 0) {
       dispatch(
@@ -56,7 +62,7 @@ function Sequence({
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -88,20 +94,22 @@ function Sequence({
         {sequenceItems.map((item, index) => (
           <label>
             <h2 className="text-secondary-6 py-3">Sequence {index + 1}:</h2>
-            <li
-              key={index}
-              className="flex justify-between border border-secondary-3 rounded px-2 py-1 bg-primary-1 text-secondary-6"
-            >
-              {item}{" "}
-              <span>
-                <Trash
-                  onClick={() => handleDeleteSequenceItem(index)}
-                  className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
-                  weight="fill"
-                  size={18}
-                />
-              </span>
-            </li>
+            <div key={index} className="flex justify-between">
+              <input
+                type="text"
+                value={item}
+                onChange={(e) =>
+                  handleSequenceItemChange(index, e.target.value)
+                }
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => handleDeleteSequenceItem(index)}
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
+                weight="fill"
+                size={18}
+              />
+            </div>
           </label>
         ))}
       </ul>

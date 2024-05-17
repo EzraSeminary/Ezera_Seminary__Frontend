@@ -23,6 +23,12 @@ function Slide({
     }
   };
 
+  const handleSlideDetailChange = (index: number, text: string) => {
+    setSlidesDetails(
+      slidesDetails.map((details, i) => (i === index ? text : details))
+    );
+  };
+
   const handleSaveSlides = () => {
     dispatch(
       updateElement({
@@ -50,13 +56,13 @@ function Slide({
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
           onClick={handleAddSlide}
         >
-          <button className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all">
+          <button className="flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all">
             <PlusCircle
               className="text-primary-6 transition-all"
               size={16}
@@ -77,24 +83,24 @@ function Slide({
           </button>
         </div>
       </div>
-      <ul className="w-[100%]  pb-4 cursor-pointer overflow-y-auto">
+      <ul className="w-[100%] pb-4 cursor-pointer overflow-y-auto">
         {slidesDetails.map((details, index) => (
           <label>
             <h2 className="text-secondary-6 py-3">Slide {index + 1}:</h2>
-            <li
-              key={index}
-              className="flex justify-between break-words border border-secondary-3 rounded px-2 py-1 bg-primary-1 text-secondary-6"
-            >
-              {details}{" "}
-              <span>
-                <Trash
-                  onClick={() => handleDeleteSlideItem(index)}
-                  className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
-                  weight="fill"
-                  size={18}
-                />
-              </span>
-            </li>
+            <div key={index} className="flex justify-between">
+              <input
+                type="text"
+                value={details}
+                onChange={(e) => handleSlideDetailChange(index, e.target.value)}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => handleDeleteSlideItem(index)}
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
+                weight="fill"
+                size={18}
+              />
+            </div>
           </label>
         ))}
       </ul>
