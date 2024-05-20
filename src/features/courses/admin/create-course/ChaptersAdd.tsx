@@ -37,7 +37,9 @@ function ChaptersAdd() {
 
   // show element popup
   const [showElementPopup, setShowElementPopup] = useState(false);
-  const [currentElement, setCurrentElement] = useState("");
+  const [currentElement, setCurrentElement] = useState<
+    string | null | string[] | boolean
+  >("");
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -99,7 +101,6 @@ function ChaptersAdd() {
       chapter: chapterIndex,
       slide: slideIndex,
     });
-    // setCurrentElement("");
   };
 
   const handleChapterClick = (chapterIndex: number) => {
@@ -139,18 +140,10 @@ function ChaptersAdd() {
     chapterIndex: number,
     slideIndex: number
   ) => {
-    console.log("Current Element inside function:", currentElement);
-
     if (
-      currentElement &&
-      currentElement !== "list" &&
-      currentElement !== "slide" &&
-      currentElement !== "img" &&
-      currentElement !== "quiz" &&
-      currentElement !== "accordion" &&
-      currentElement !== "sequence" &&
-      currentElement !== "reveal" &&
-      currentElement !== "dnd"
+      (currentElement && currentElement === "title") ||
+      currentElement === "sub" ||
+      currentElement === "text"
     ) {
       dispatch(
         addElementToSlide({
@@ -170,22 +163,50 @@ function ChaptersAdd() {
           value: null,
         })
       );
+      setCurrentElement(null);
+    } else if (
+      (currentElement && currentElement === "list") ||
+      currentElement === "slide" ||
+      currentElement === "quiz" ||
+      currentElement === "accordion" ||
+      currentElement === "sequence" ||
+      currentElement === "reveal" ||
+      currentElement === "dnd"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: [],
+        })
+      );
+      setCurrentElement([]);
+    } else if (currentElement && currentElement === "range") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: false,
+        })
+      );
+      setCurrentElement(false);
     }
   };
 
+  // Display elements when click a slide
   useEffect(() => {
     if (currentElement && editingSlideIndex) {
       handleAddElementToRedux(
         editingSlideIndex.chapter,
         editingSlideIndex.slide
       );
-      // setCurrentElement("");
     }
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
   // console.log("course", course);
-  // console.log("currentElement before conditional rendering:", currentElement);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -298,14 +319,6 @@ function ChaptersAdd() {
         })}
       </div>
 
-      {/* display elements popup here */}
-      {showElementPopup && (
-        <ElementPopup
-          closeElementPopup={closeElementPopup}
-          onSelectElement={handleSelectElement}
-        />
-      )}
-
       <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
@@ -316,21 +329,24 @@ function ChaptersAdd() {
         )}
       </div>
 
-      {/* {console.log(
-        "Editing Slide Index before rendering ElementsAdd:",
-        editingSlideIndex
-      )} */}
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd
             key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
             chapterIndex={editingSlideIndex.chapter}
             slideIndex={editingSlideIndex.slide}
-            currentElement={currentElement}
             setCurrentElement={setCurrentElement}
           />
         )}
       </div>
+
+      {/* display elements popup over this whole file */}
+      {showElementPopup && (
+        <ElementPopup
+          closeElementPopup={closeElementPopup}
+          onSelectElement={handleSelectElement}
+        />
+      )}
     </div>
   );
 }

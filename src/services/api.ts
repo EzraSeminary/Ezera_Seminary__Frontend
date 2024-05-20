@@ -137,7 +137,7 @@ export type DndElementValue = {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech/",
+    baseUrl: "https://64.23.192.24/",
     // baseUrl: "http://localhost:5100/",
   }),
   endpoints: (builder) => ({
