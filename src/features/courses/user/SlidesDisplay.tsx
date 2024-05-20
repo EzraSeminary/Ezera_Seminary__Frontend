@@ -862,43 +862,48 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "range") {
                           return (
-                            <div className="w-[80%] mt-10">
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={1}
-                                marks={sliderMarks}
-                                valueLabelDisplay="on"
-                                valueLabelFormat={(value) =>
-                                  value === 2.5 ? "Touch to slide" : value
-                                }
-                                value={sliderValue}
-                                onChange={handleSliderChange}
-                                sx={{
-                                  color: "#424242",
-                                  "& .MuiSlider-track": {
-                                    backgroundColor: "#424242",
-                                  },
-                                  "& .MuiSlider-thumb": {
-                                    backgroundColor: "white",
-                                  },
-                                  "& .MuiSlider-mark": {
-                                    backgroundColor: "white",
-                                  },
-                                  "& .MuiSlider-markLabel": {
-                                    color: "white",
-                                  },
-                                }}
-                              />
-                              <div className="flex justify-between">
-                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                            <>
+                              <div className="w-[80%] pt-8 mx-auto">
+                                <Slider
+                                  min={0}
+                                  max={5}
+                                  step={1}
+                                  marks={sliderMarks}
+                                  valueLabelDisplay="on"
+                                  valueLabelFormat={(value) =>
+                                    value === 2.5 ? "Touch to slide" : value
+                                  }
+                                  value={sliderValue}
+                                  onChange={handleSliderChange}
+                                  sx={{
+                                    color: "#EA9215",
+                                    "& .MuiSlider-track": {
+                                      backgroundColor: "",
+                                    },
+                                    "& .MuiSlider-thumb": {
+                                      backgroundColor: "#AAB0B4",
+                                    },
+                                    "& .MuiSlider-mark": {
+                                      backgroundColor: "#EEEEEE",
+                                    },
+                                    "& .MuiSlider-markLabel": {
+                                      color: "#EEEEEE",
+                                    },
+                                    "& .MuiSlider-valueLabel": {
+                                      color: "#EEEEEE",
+                                    },
+                                  }}
+                                />
+                              </div>
+                              <div className="flex justify-between w-full">
+                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   ምንም አልተማርኩም
                                 </button>
-                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   በጣም ተምሬያለሁ
                                 </button>
                               </div>
-                            </div>
+                            </>
                           );
                         } else if (element.type === "dnd") {
                           return (
