@@ -130,7 +130,7 @@ footer {
   width: 100%;
 }
 .chapter-img-1 {
-  background-image: url("./assets/chapter-img-1.webp");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/chapter-img-1.webp");
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
@@ -192,7 +192,8 @@ footer {
 }
 
 .scrollbar-thin::-webkit-scrollbar {
-  width: 8px; /* width of the vertical scrollbar */
+  width: 4px; /* width of the vertical scrollbar */
+   height: auto; 
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
@@ -243,4 +244,8 @@ footer {
 
 #fileInput::-webkit-file-upload-button {
   color:  #EA9215; /* Change button text color */
+}
+
+.custom-list-color li::marker {
+ color: #EA9215; /* Apply Tailwind text color class */
 }

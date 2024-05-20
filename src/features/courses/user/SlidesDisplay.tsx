@@ -4,12 +4,13 @@ import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
+import "@/index.css";
 import {
   ArrowLeft,
   CheckCircle,
+  DotsThreeVertical,
+  X,
   XCircle,
-  ArrowRight,
-  CaretCircleLeft,
   CheckFat,
   Lock,
   CornersOut,
@@ -44,6 +45,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
+import ChapterNotFound from "@/components/ChapterNotFound";
 
 interface FlipState {
   [index: number]: boolean;
@@ -156,7 +158,7 @@ function SlidesDisplay() {
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
-    return <p>Chapter not found</p>;
+    return <ChapterNotFound />;
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;
@@ -184,6 +186,7 @@ function SlidesDisplay() {
   // slide number
   const currentSlideNumber = activeIndex + 1;
   const totalDataNumber = data.length;
+
   const isLastSlide = activeIndex === totalDataNumber - 1;
 
   const isSlideUnlocked = (index: number) => {
@@ -307,15 +310,17 @@ function SlidesDisplay() {
 
   if (progressLoading)
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="h-screen flex justify-center items-center bg-secondary-6">
         <PuffLoader
-          color={"#707070"}
+          color={"#EA9215"}
           loading
-          size={80}
+          size={56}
           aria-label="Loading Spinner"
           data-testid="loader"
         />
-        <h1 className="text-secondary-6 font-nokia-bold text-3xl">Saving</h1>
+        <h1 className="text-accent-6 font-nokia-bold text-2xl">
+          Saving your progress
+        </h1>
       </div>
     );
 
@@ -374,9 +379,9 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex  mt-16 md:flex-row w-[80%] mx-auto justify-center items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full">
+      <div className="flex   md:flex-row  justify-center items-center w-full   absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
         {/* Back button */}
-        <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
+        {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
             className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
             onClick={submitProgress}
@@ -385,51 +390,45 @@ function SlidesDisplay() {
               size={22}
               className="text-white bg-accent-6 border p-1 rounded-lg"
             />
-            <p className="text-accent-6 text-xs font-nokia-bold">ተመለስ</p>
+            <p className="text-accent-6 text-xs font-nokia-bold">ዘግተህ ውጣ</p>
           </button>
-        </div>
-
+        </div> */}
         {/* Slides side bar for mobile and tablet*/}
         <div
           ref={ref}
           className={`lg:hidden ${
             open
-              ? "absolute left-0 top-[10%]  lg:left-[4%] lg:top-[10%] flex flex-col justify-start items-center w-[80%] md:w-[50%] lg:w-[30%] z-40 h-[80%]"
+              ? "absolute left-0 top-0 flex flex-col justify-start items-center w-full  z-50 h-full"
               : "w-0 h-0"
           }`}
           style={{ transition: "width 0.3s" }}
         >
           {open ? (
-            <ArrowLeft
+            <X
               onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14 cursor-pointer"
+              className="text-primary-3 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
             />
-          ) : (
-            <ArrowRight
-              onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute -left-3  top-36 md:top-44 cursor-pointer"
-            />
-          )}
+          ) : null}
 
           {/* Course title and description*/}
-          <div className="w-[100%] h-full bg-white opacity-90 pb-3 rounded-b-lg">
-            <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
+          <div className="w-[100%] h-full bg-secondary-6 opacity-95 pb-3 rounded-b-lg pt-3 ">
+            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+            <p className="text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
               {courseData?.description}
             </p>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
+              <h1 className="font-nokia-bold text-primary-6 pb-1 text-xs lg:text-sm">
                 ትምህርት {currentSlideNumber}/{totalDataNumber}
               </h1>
               <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
             {/* slide list */}
-            <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
+            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
               {data.map((slides, index) => {
                 const unlocked = isSlideUnlocked(index - 1);
                 const isActive = index === activeIndex;
@@ -441,7 +440,7 @@ function SlidesDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
                     onClick={() => {
@@ -450,8 +449,8 @@ function SlidesDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-center">
-                      <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
+                    <div className="flex flex-col items-start justify-start w-[90%] ">
+                      <h2 className="font-nokia-bold text-secondary-6 text-left text-xs lg:text-sm">
                         {slides.slide}
                       </h2>
                       <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
@@ -468,7 +467,7 @@ function SlidesDisplay() {
               })}
             </div>
 
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
+            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
               <button
                 className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
                 onClick={submitProgress}
@@ -476,33 +475,39 @@ function SlidesDisplay() {
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-2xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div>
+            </div> */}
           </div>
         </div>
-        {/* Slides side bar for mdesktop*/}
-        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
+        {/* Slides side bar for desktop*/}
+        <div className="hidden  h-full lg:flex flex-col justify-start items-center bg-primary-7  z-40 lg:w-[27%] ">
           {/* Short information*/}
-          <div className="flex  px-4 py-2 bg-secondary-5  gap-12 justify-between items-center w-full text-xs1  lg:text-xs z-50">
-            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow  items-center ">
+
+          <div className="flex   py-2 bg-secondary-5  pl-12 w-full text-xs1  lg:text-xs z-50">
+            <ArrowLeft
+              onClick={submitProgress}
+              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-2.5 cursor-pointer "
+            />
+
+            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow   items-center ">
               {courseData?.title}
             </h1>
           </div>
 
           {/* Course title and description*/}
-          <div className="flex flex-col w-full h-full bg-white opacity-90 pb-3 rounded-b-lg">
-            <p className="text-secondary-5 text-xs1 font-nokia-bold xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-sm ">
+          <div className="flex flex-col w-full h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
+            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ">
               {courseData?.description}
             </p>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-lg">
+              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
                 ትምህርቶች {currentSlideNumber}/{totalDataNumber}
               </h1>
               <hr className="border-accent-5 border-b-2 w-[30%] " />
             </div>
             {/* slide list */}
-            <div className="flex flex-col h-[65%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
+            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto ">
               {data.map((slides, index) => {
                 const unlocked = isSlideUnlocked(index - 1);
                 const isActive = index === activeIndex;
@@ -514,7 +519,7 @@ function SlidesDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
                     onClick={() => {
@@ -523,7 +528,7 @@ function SlidesDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-start w-[80%] text-justify">
+                    <div className="flex flex-col items-start justify-start w-[90%] text-left">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm  ">
                         {slides.slide}
                       </h2>
@@ -541,7 +546,7 @@ function SlidesDisplay() {
               })}
             </div>
 
-            <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
+            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
               <button
                 className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
                 onClick={submitProgress}
@@ -549,25 +554,34 @@ function SlidesDisplay() {
                 ዘግተህ ውጣ
               </button>
               <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div>
+            </div> */}
           </div>
         </div>
         {/* slides display window*/}
-        <div className="lg:w-[70%] items-center h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full relative">
+        <div className="lg:w-[73%]  w-full h-full chapter-img-1 bg-no-repeat bg-cover bg-center  relative">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
             <div>
               <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <div className=" z-30 h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-                  <img
-                    src={logo}
-                    className="w-8 h-5 md:w-10 md:h-6  z-30"
-                    alt=""
-                  />
+                <div className="  h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
+                  <img src={logo} className="w-8 h-5 md:w-10 md:h-6 " alt="" />
                   <h3 className="text-white font-nokia-bold text-xs md:text-sm ">
                     <strong>Ezra</strong> Seminary
                   </h3>
+                </div>
+                <p className="hidden lg:block font-nokia-bold text-primary-6 text-xs lg:text-sm">
+                  {currentSlideNumber} / {totalDataNumber}
+                </p>
+                <div className="flex lg:hidden items-center">
+                  <DotsThreeVertical
+                    onClick={handleArrowClick}
+                    className="block lg:hidden font-bold text-xl cursor-pointer text-primary-6 transition-all "
+                  />
+                  <X
+                    onClick={submitProgress}
+                    className="  text-primary-3  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
+                  />
                 </div>
               </div>
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
@@ -579,10 +593,18 @@ function SlidesDisplay() {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col justify-center items-center w-[80%] mx-auto h-full overflow-y-hidden"
+                    className=" flex flex-col justify-center items-center w-full px-2 md:w-[90%] mx-auto h-full overflow-y-hidden py-5"
                   >
-                    <div className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin py-2">
-                      <h1 className="text-lg lg:text-2xl text-[#fff] text-center pt-2 mb-4 font-nokia-bold">
+                    <div
+                      className={`flex flex-col  items-center w-full h-full overflow-y-auto  rounded-lg bg-black bg-opacity-20 scrollbar-thin px-2 space-y-1 ${
+                        slides.elements.some(
+                          (element) => element.type === "text"
+                        )
+                          ? " overflow-y-auto h-auto pb-3 justify-start  lg:justify-center"
+                          : "py-0 justify-center"
+                      }`}
+                    >
+                      <h1 className="text-lg lg:text-lg xl:text-2xl text-accent-6 text-center pt-4   font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -590,7 +612,7 @@ function SlidesDisplay() {
                           return (
                             <h1
                               key={element._id}
-                              className="text-white text-sm lg:text-lg font-nokia-bold pb-2 "
+                              className="text-accent-5 text-sm lg:text-lg font-nokia-bold pt-2 "
                             >
                               {element.value}
                             </h1>
@@ -599,7 +621,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-white font-nokia-bold  self-center tracking-wide text-center text-sm"
+                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-sm w-[90%] mx-auto "
                             >
                               {element.value}
                             </p>
@@ -608,14 +630,14 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-white font-nokia-bold self-center tracking-wide text-justify text-xs1 lg:text-xs "
+                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 "
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
                           );
                         } else if (element.type === "img") {
                           return (
-                            <div className="w-full h-full">
+                            <div className="w-full h-auto">
                               {isFullScreen ? (
                                 <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
                                   <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
@@ -657,7 +679,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className="text-white font-nokia-bold w-[100%] tracking-wide text-left text-xs"
+                                className=" text-secondary-3 pt-2  font-nokia-bold w-[100%] tracking-wide   text-xs lg:text-sm"
                               >
                                 {listItem}
                               </li>
@@ -665,11 +687,8 @@ function SlidesDisplay() {
                           );
 
                           return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center ml-8"
-                            >
-                              <ul className="list-disc mt-2">
+                            <div key={element._id} className="w-[70%] mx-auto">
+                              <ul className="flex w-full flex-col justify-center items-center list-disc my-2 custom-list-color ">
                                 {listItemsComponent}
                               </ul>
                             </div>
@@ -679,7 +698,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-white font-nokia-bold w-full h-auto text-justify px-4 tracking-wide text-xs1 md:text-xs "
+                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-sm "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -687,25 +706,30 @@ function SlidesDisplay() {
                           );
 
                           return (
-                            <div
-                              key={element._id}
-                              className=" flex  w-[50%] md:w-[80%] lg:w-[90%] mx-auto h-auto"
-                            >
-                              <Splide
-                                options={{
-                                  perPage: 1,
-                                  width: "100%",
-                                  height: "100%",
-                                  autoWidth: true,
-                                  arrows: true, // Enable arrow navigation
-                                  pagination: false,
-                                  focus: "center",
-                                  trimSpace: true,
-                                  isNavigation: false,
-                                }}
+                            <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin ">
+                              <div
+                                key={element._id}
+                                className="w-full  mx-auto h-auto px-2"
                               >
-                                {listItemsComponent}
-                              </Splide>
+                                <Splide
+                                  options={{
+                                    perPage: 1,
+                                    type: "fade",
+                                    height: "auto",
+                                    width: "100%",
+                                    cursor: "pointer",
+                                    autoWidth: false,
+                                    arrows: true, // Enable arrow navigation
+                                    pagination: true,
+                                    focus: "center",
+                                    trimSpace: true,
+                                    isNavigation: false,
+                                    gap: "1rem",
+                                  }}
+                                >
+                                  {listItemsComponent}
+                                </Splide>
+                              </div>
                             </div>
                           );
                         } else if (element.type === "quiz") {
@@ -715,12 +739,12 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-white font-nokia-bold text-sm lg:text-xl">
+                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm xl:text-lg">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
                               {element.value.choices && (
-                                <div className="flex flex-col mt-2">
+                                <div className="flex flex-col mt-2 space-y-2">
                                   {element.value.choices.map(
                                     (
                                       choice: { text: string },
@@ -733,7 +757,7 @@ function SlidesDisplay() {
                                         >
                                           <input
                                             type="radio"
-                                            className="w-5 h-5 appearance-none bg-white focus:bg-orange-400 rounded-full transition-all"
+                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 focus-within:animate-pulse rounded-full transition-all pt-2 cursor-pointer"
                                             checked={
                                               selectedChoice === choiceIndex
                                             }
@@ -745,7 +769,7 @@ function SlidesDisplay() {
                                               )
                                             }
                                           />
-                                          <span className="text-white font-nokia-bold text-xs lg:text-lg ml-2">
+                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg ml-2 ">
                                             {choice.text}
                                           </span>
                                         </label>
@@ -755,9 +779,9 @@ function SlidesDisplay() {
                                 </div>
                               )}
                               {/* Correct Answer */}
-                              <div className="flex mt-2">
+                              <div className="flex mt-4">
                                 <button
-                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max  rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
                                   onClick={() => setShowQuizResult(true)}
                                 >
                                   Check Answer
@@ -783,35 +807,32 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "sequence") {
                           return (
-                            <Carousel
-                              orientation="vertical"
-                              opts={{
-                                align: "start",
-                              }}
-                              key={element._id}
-                              className="w-full mt-12"
-                            >
-                              <CarouselContent className="-mt-1 h-[200px]">
-                                {element.value.map(
-                                  (sequenceItem: string, index: number) => (
-                                    <CarouselItem
-                                      key={index}
-                                      className="pt-1 md:basis-1/2"
-                                    >
-                                      <div className="p-1">
-                                        <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
-                                          <span className="text-secondary-9 text-xl font-nokia-bold">
+                            <div className="h-[65%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
+                              <Carousel
+                                orientation="vertical"
+                                opts={{
+                                  align: "center",
+                                }}
+                                key={element._id}
+                                className="w-full flex justify-center items-center h-auto"
+                              >
+                                <CarouselContent className=" h-[200px] md:h-[150px] ">
+                                  {element.value.map(
+                                    (sequenceItem: string, index: number) => (
+                                      <CarouselItem key={index}>
+                                        <div className="flex items-center justify-center p-6 bg-secondary-4 bg-opacity-25 w-full rounded-xl shadow-2xl  h-full">
+                                          <span className="text-accent-5 text-lg lg:text-xl text-justify font-nokia-bold ">
                                             {sequenceItem}
                                           </span>
                                         </div>
-                                      </div>
-                                    </CarouselItem>
-                                  )
-                                )}
-                              </CarouselContent>
-                              <CarouselPrevious />
-                              <CarouselNext />
-                            </Carousel>
+                                      </CarouselItem>
+                                    )
+                                  )}
+                                </CarouselContent>
+                                <CarouselPrevious />
+                                <CarouselNext />
+                              </Carousel>
+                            </div>
                           );
                         } else if (element.type === "reveal") {
                           return (
@@ -821,16 +842,17 @@ function SlidesDisplay() {
                                   isFlipped={flip[index] || false}
                                   flipDirection="vertical"
                                   key={index}
+                                  containerClassName="w-full h-auto flex flex-col justify-center items-center "
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1"
                                   >
                                     {revealItem.title}
                                   </div>
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-start justify-center text-center bg-secondary-2 border-2 border-secondary-2 shadow-2xl  px-2 text-accent-8 text-lg hover:bg-secondary-3  cursor-pointer transition-all rounded-lg my-1"
                                   >
                                     {revealItem.content}
                                   </div>
@@ -840,52 +862,57 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "range") {
                           return (
-                            <div className="w-[80%] mt-10">
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={1}
-                                marks={sliderMarks}
-                                valueLabelDisplay="on"
-                                valueLabelFormat={(value) =>
-                                  value === 2.5 ? "Touch to slide" : value
-                                }
-                                value={sliderValue}
-                                onChange={handleSliderChange}
-                                sx={{
-                                  color: "#424242",
-                                  "& .MuiSlider-track": {
-                                    backgroundColor: "#424242",
-                                  },
-                                  "& .MuiSlider-thumb": {
-                                    backgroundColor: "white",
-                                  },
-                                  "& .MuiSlider-mark": {
-                                    backgroundColor: "white",
-                                  },
-                                  "& .MuiSlider-markLabel": {
-                                    color: "white",
-                                  },
-                                }}
-                              />
-                              <div className="flex justify-between">
-                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                            <>
+                              <div className="w-[80%] pt-8 mx-auto">
+                                <Slider
+                                  min={0}
+                                  max={5}
+                                  step={1}
+                                  marks={sliderMarks}
+                                  valueLabelDisplay="on"
+                                  valueLabelFormat={(value) =>
+                                    value === 2.5 ? "Touch to slide" : value
+                                  }
+                                  value={sliderValue}
+                                  onChange={handleSliderChange}
+                                  sx={{
+                                    color: "#EA9215",
+                                    "& .MuiSlider-track": {
+                                      backgroundColor: "",
+                                    },
+                                    "& .MuiSlider-thumb": {
+                                      backgroundColor: "#AAB0B4",
+                                    },
+                                    "& .MuiSlider-mark": {
+                                      backgroundColor: "#EEEEEE",
+                                    },
+                                    "& .MuiSlider-markLabel": {
+                                      color: "#EEEEEE",
+                                    },
+                                    "& .MuiSlider-valueLabel": {
+                                      color: "#EEEEEE",
+                                    },
+                                  }}
+                                />
+                              </div>
+                              <div className="flex justify-between w-full">
+                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   ምንም አልተማርኩም
                                 </button>
-                                <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
+                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   በጣም ተምሬያለሁ
                                 </button>
                               </div>
-                            </div>
+                            </>
                           );
                         } else if (element.type === "dnd") {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center mt-6 mb-4"
+                              className="flex flex-col justify-center items-center  w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-primary-6 font-nokia-bold text-xl">
+                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -896,35 +923,39 @@ function SlidesDisplay() {
                                   sensors={sensors}
                                   collisionDetection={closestCenter}
                                 >
-                                  <div className="flex my-4">
+                                  <div className="flex w-[80%] flex-wrap justify-center  items-center gap-3 mx-auto  pt-4">
                                     {element.value.choices.map(
                                       (choice, choiceIndex) => {
                                         if (droppedChoice !== choice.text) {
                                           return (
                                             // dragable item
-                                            <DraggableItem
-                                              key={choiceIndex}
-                                              choice={choice}
-                                              choiceIndex={choiceIndex}
-                                              id="draggable"
-                                            />
+                                            <div className="text-sm bg-secondary-6 bg-opacity-20">
+                                              <DraggableItem
+                                                key={choiceIndex}
+                                                choice={choice}
+                                                choiceIndex={choiceIndex}
+                                                id="draggable"
+                                              />
+                                            </div>
                                           );
                                         }
                                       }
                                     )}
                                   </div>
                                   {/* dropable area */}
-                                  <DroppableArea
-                                    key={`droppable_${element._id}`}
-                                    droppedChoice={droppedChoice}
-                                    id="droppable"
-                                  />
+                                  <div className="flex justify-center items-center w-[80%] h-[100px] mx-auto">
+                                    <DroppableArea
+                                      key={`droppable_${element._id}`}
+                                      droppedChoice={droppedChoice}
+                                      id="droppable"
+                                    />
+                                  </div>
                                 </DndContext>
                               )}
                               {/* Correct Answer */}
                               <div className="flex mt-2">
                                 <button
-                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-sm lg:py-1 px-2"
                                   onClick={handleCheckAnswer}
                                 >
                                   Check Answer
@@ -936,15 +967,6 @@ function SlidesDisplay() {
                         }
                       })}
                     </div>
-
-                    {isLastSlide && (
-                      <button
-                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 mb-4 transition-all text-xs1"
-                        onClick={submitProgress}
-                      >
-                        ዘግተህ ውጣ
-                      </button>
-                    )}
                   </div>
                 );
               } else {
@@ -954,7 +976,7 @@ function SlidesDisplay() {
 
             <div className="mb-4">
               <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center w-full ">
                 <button
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     activeIndex === 0 ? "hidden" : "block"
@@ -965,15 +987,30 @@ function SlidesDisplay() {
                 >
                   ተመለስ
                 </button>
+                <p
+                  className={`block lg:hidden font-nokia-bold text-primary-6 text-xs lg:text-sm pt-2 ${
+                    activeIndex === 0 ? "hidden" : "block"
+                  } ${isLastSlide ? "hidden" : "block"}`}
+                >
+                  {currentSlideNumber} / {totalDataNumber}
+                </p>
                 <button
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
-                    activeIndex === data.length - 1 ? "hidden" : "block"
+                    isLastSlide ? "hidden" : "block"
                   }`} // hidding the next button for the last slide
                   onClick={() => {
                     updateIndex(activeIndex + 1);
                   }}
                 >
                   ቀጥል
+                </button>
+                <button
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                    isLastSlide ? "block" : "hidden"
+                  }`}
+                  onClick={submitProgress}
+                >
+                  ዘግተህ ውጣ
                 </button>
               </div>
             </div>

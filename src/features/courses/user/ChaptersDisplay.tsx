@@ -5,6 +5,8 @@ import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import {
   ArrowLeft,
   CheckCircle,
+  X,
+  DotsThreeVertical,
   XCircle,
   ArrowRight,
   Lock,
@@ -173,9 +175,9 @@ function ChaptersDisplay() {
     // Chapters Section
     <>
       {/* Chapters container */}
-      <div className="flex   mt-6  w-[80%] mx-auto justify-between items-center h-screen relative lg:w-[100%] lg:mt-0  lg:absolute lg:top-0 lg:bottom-0 lg:z-50 lg:h-full ">
+      <div className="flex justify-between items-center   w-full absolute top-0 bottom-0 z-50 h-full ">
         {/* Back button */}
-        <div className="absolute top-3 -left-28  pl-24 flex justify-start w-full mb-2 lg:hidden">
+        {/* <div className="absolute top-3 -left-28  pl-24 flex justify-start w-full mb-2 lg:hidden">
           <NavLink
             to={"/courses"}
             className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
@@ -188,68 +190,62 @@ function ChaptersDisplay() {
               ተመለስ
             </button>
           </NavLink>
-        </div>
-
+        </div> */}
         {/* Chapters side bar for mobile and tablet*/}
         <div
           ref={ref}
           className={`lg:hidden ${
             open
-              ? "absolute left-0 top-[10%] flex flex-col justify-start items-center w-[80%] md:w-[50%] lg:top-0  z-40 h-[80%] lg:absolute-none "
+              ? "absolute left-0 bottom-0 top-0 flex flex-col justify-start items-center w-full  z-40 h-full lg:absolute-none "
               : "w-0 h-0"
           }`}
           style={{ transition: "width 0.3s" }}
         >
           {open ? (
-            <ArrowLeft
+            <X
               onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute -right-2 md:-right-3 lg:-right-2 xl:-right-3 top-14  cursor-pointer "
+              className="text-primary-3 text-2xl xl:text-3xl bg-accent-6 border p-1 rounded-full absolute right-2 top-1.5  cursor-pointer "
             />
-          ) : (
-            <ArrowRight
-              onClick={handleArrowClick}
-              className="text-white text-2xl xl:text-3xl  bg-accent-6 border p-1 rounded-full absolute  -left-3  top-36 md:top-44 cursor-pointer "
-            />
-          )}
+          ) : null}
 
           {/* Bible image container*/}
           <div className="w-[100%]">
             <img
               src={`https://64.23.192.24/images/` + courseData?.image}
               alt=""
-              className="w-full rounded-t-lg"
+              className="w-full rounded-t-lg object-cover h-[35vh] bg-secondary-3"
             />
           </div>
 
           {/* Short information*/}
           <div
-            className={`  pl-2 py-1 bg-primary-7  gap-2 justify-between items-center  w-full text-xs1  lg:text-xs ${
+            className={`  pl-2 py-1 bg-primary-7  gap-2  items-center  w-full text-xs1  lg:text-xs ${
               open ? "flex" : "hidden"
             }`}
           >
-            <div className="p-1 bg-accent-6 rounded">
+            <div className="p-1 bg-accent-6 rounded w-max">
               <p className="font-Lato-Bold text-primary-1 ">
                 {progressValue()}%
               </p>
             </div>
-            <p className="font-Lato-Bold text-secondary-6 leading-none">
+            <p className="font-Lato-Bold text-secondary-6 leading-none text-xs1">
               Pass 100% of your lessons to complete this course
             </p>
           </div>
 
           {/* Course title and description*/}
-          <div className="w-[100%] overflow-y-auto bg-white opacity-85 pb-3 rounded-b-lg  ">
-            <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
+          <div className="w-[100%] overflow-y-auto bg-secondary-6 opacity-95 pb-3 rounded-b-lg ">
+            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
+            <p className="text-accent-5  text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
               {courseData?.description}
             </p>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
+              <h1 className="font-nokia-bold text-primary-6 pb-1 text-xs lg:text-sm">
                 ትምህርቶች {currentDataNumber}/{totalDataNumber}
               </h1>
               <hr className="border-accent-5 border-b-2 w-[30%] " />
@@ -268,7 +264,7 @@ function ChaptersDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
@@ -276,7 +272,7 @@ function ChaptersDisplay() {
                     }}
                     disabled={!unlocked}
                   >
-                    <div className="flex flex-col items-start justify-center">
+                    <div className="flex flex-col items-start text-left w-[80%] mx-auto">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
                       </h2>
@@ -285,9 +281,9 @@ function ChaptersDisplay() {
                       </p>
                     </div>
                     {unlocked ? (
-                      <CheckCircle size={16} weight="fill" color={"#EA9215"} />
+                      <CheckCircle size={14} weight="fill" color={"#EA9215"} />
                     ) : (
-                      <Lock size={16} color={"#EC4000"} />
+                      <Lock size={14} color={"#EC4000"} />
                     )}
                   </button>
                 );
@@ -295,13 +291,12 @@ function ChaptersDisplay() {
             </div>
           </div>
         </div>
-
         {/* Chapters side bar for desktop*/}
-        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[30%] lg:h-full">
+        <div className="hidden w-[30%] h-full lg:flex flex-col justify-start items-center bg-primary-7 z-40 lg:w-[27%] lg:h-full">
           <NavLink to={"/courses"}>
             <ArrowLeft
               onClick={handleArrowClick}
-              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
+              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
             />{" "}
           </NavLink>
 
@@ -326,7 +321,7 @@ function ChaptersDisplay() {
           </div>
 
           {/* Course title and description*/}
-          <div className="w-[100%] overflow-y-auto bg-white opacity-85 pb-3 rounded-b-lg  ">
+          <div className="w-[100%] overflow-y-auto bg-primary-3 opacity-85 pb-3 rounded-b-lg  ">
             <h1 className="text-secondary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
@@ -356,7 +351,7 @@ function ChaptersDisplay() {
                       unlocked
                         ? "text-secondary-6"
                         : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-gray-200"}
+                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
                     `} // Locked slide to gray
                     onClick={() => {
                       updateIndex(index);
@@ -364,7 +359,7 @@ function ChaptersDisplay() {
                     }}
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
-                    <div className="flex flex-col items-start justify-center">
+                    <div className="flex flex-col items-start text-left w-[90%] ">
                       <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm">
                         {chapter.chapter}
                       </h2>
@@ -383,9 +378,8 @@ function ChaptersDisplay() {
             </div>
           </div>
         </div>
-
         {/* Chapter display window*/}
-        <div className=" lg:w-[70%]   items-center  h-[80%] chapter-img-1 bg-no-repeat bg-cover bg-center rounded-lg lg:rounded-none lg:h-full">
+        <div className=" lg:w-[73%]   items-center  h-full chapter-img-1 bg-no-repeat bg-cover bg-center">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between w-full h-full relative">
             {/* Header */}
@@ -402,14 +396,17 @@ function ChaptersDisplay() {
                     <strong>Ezra</strong> Seminary
                   </h3>
                 </div>
-                <NavLink to={"/courses"}>
-                  <XCircle
-                    size={24}
-                    color={"white"}
-                    className="z-20 cursor-pointer"
+                <div className="flex lg:hidden items-center">
+                  <DotsThreeVertical
+                    onClick={handleArrowClick}
+                    className="block lg:hidden font-bold text-xl cursor-pointer text-primary-6 transition-all "
                   />
-                </NavLink>
+                  <NavLink to={"/courses"}>
+                    <X className="  text-primary-3  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer" />
+                  </NavLink>
+                </div>
               </div>
+
               <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
             </>
 
@@ -449,13 +446,13 @@ function ChaptersDisplay() {
                       </button>
                     </div>
                     {/* footer */}
-                    <div className="pl-2 py-1 bg-primary-7 gap-2 flex justify-center items-center w-full text-xs lg:text-sm absolute bottom-0">
-                      <div className="p-1 bg-accent-6 rounded">
+                    <div className="pl-2 py-1 bg-secondary-4 gap-2 flex justify-center items-center w-full text-xs lg:text-sm absolute bottom-0">
+                      <div className="px-1 bg-accent-6 rounded">
                         <p className="font-Lato-Bold text-primary-1">
                           {progressPercent}
                         </p>
                       </div>
-                      <p className="font-Lato-Bold text-secondary-6 leading-none">
+                      <p className="font-Lato-Bold text-primary-6 leading-none">
                         {chapterStatus}
                       </p>
                     </div>

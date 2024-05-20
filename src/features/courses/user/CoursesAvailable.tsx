@@ -267,8 +267,10 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
+
                       src={`https://64.23.192.24/images/` + course.image}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
+
                       alt=""
                     />
                   </div>
@@ -337,8 +339,10 @@ function CoursesAvailable() {
                     className="w-full p-2 h-full"
                   >
                     <img
+
                       src={`https://64.23.192.24/images/` + course.image}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
+
                       alt=""
                     />
                   </motion.div>
