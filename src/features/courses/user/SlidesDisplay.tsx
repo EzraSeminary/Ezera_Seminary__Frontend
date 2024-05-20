@@ -310,7 +310,7 @@ function SlidesDisplay() {
 
   if (progressLoading)
     return (
-      <div className="h-screen flex justify-center items-center bg-primary-6">
+      <div className="h-screen flex justify-center items-center bg-secondary-6">
         <PuffLoader
           color={"#EA9215"}
           loading
@@ -318,7 +318,7 @@ function SlidesDisplay() {
           aria-label="Loading Spinner"
           data-testid="loader"
         />
-        <h1 className="text-secondary-6 font-nokia-bold text-3xl">
+        <h1 className="text-accent-6 font-nokia-bold text-2xl">
           Saving your progress
         </h1>
       </div>
@@ -909,10 +909,10 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center mt-6 mb-4"
+                              className="flex flex-col justify-center items-center  w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-primary-6 font-nokia-bold text-xl">
+                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -923,35 +923,39 @@ function SlidesDisplay() {
                                   sensors={sensors}
                                   collisionDetection={closestCenter}
                                 >
-                                  <div className="flex my-4">
+                                  <div className="flex w-[80%] flex-wrap justify-center  items-center gap-3 mx-auto  pt-4">
                                     {element.value.choices.map(
                                       (choice, choiceIndex) => {
                                         if (droppedChoice !== choice.text) {
                                           return (
                                             // dragable item
-                                            <DraggableItem
-                                              key={choiceIndex}
-                                              choice={choice}
-                                              choiceIndex={choiceIndex}
-                                              id="draggable"
-                                            />
+                                            <div className="text-sm bg-secondary-6 bg-opacity-20">
+                                              <DraggableItem
+                                                key={choiceIndex}
+                                                choice={choice}
+                                                choiceIndex={choiceIndex}
+                                                id="draggable"
+                                              />
+                                            </div>
                                           );
                                         }
                                       }
                                     )}
                                   </div>
                                   {/* dropable area */}
-                                  <DroppableArea
-                                    key={`droppable_${element._id}`}
-                                    droppedChoice={droppedChoice}
-                                    id="droppable"
-                                  />
+                                  <div className="flex justify-center items-center w-[80%] h-[100px] mx-auto">
+                                    <DroppableArea
+                                      key={`droppable_${element._id}`}
+                                      droppedChoice={droppedChoice}
+                                      id="droppable"
+                                    />
+                                  </div>
                                 </DndContext>
                               )}
                               {/* Correct Answer */}
                               <div className="flex mt-2">
                                 <button
-                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-sm lg:py-1 px-2"
                                   onClick={handleCheckAnswer}
                                 >
                                   Check Answer
@@ -963,15 +967,14 @@ function SlidesDisplay() {
                         }
                       })}
                     </div>
-
-                    {isLastSlide && (
+                    {/* {isLastSlide && (
                       <button
-                        className="text-white font-nokia-bold bg-accent-6 hover:bg-accent-7 rounded-xl py-1 px-4 mt-2 mb-4 transition-all text-xs1"
+                        className="text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2 "
                         onClick={submitProgress}
                       >
                         ዘግተህ ውጣ
                       </button>
-                    )}
+                    )} */}
                   </div>
                 );
               } else {
@@ -981,7 +984,7 @@ function SlidesDisplay() {
 
             <div className="mb-4">
               <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center w-full ">
                 <button
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     activeIndex === 0 ? "hidden" : "block"
@@ -995,19 +998,27 @@ function SlidesDisplay() {
                 <p
                   className={`block lg:hidden font-nokia-bold text-primary-6 text-xs lg:text-sm pt-2 ${
                     activeIndex === 0 ? "hidden" : "block"
-                  } ${activeIndex === data.length - 1 ? "hidden" : "block"}`}
+                  } ${isLastSlide ? "hidden" : "block"}`}
                 >
                   {currentSlideNumber} / {totalDataNumber}
                 </p>
                 <button
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
-                    activeIndex === data.length - 1 ? "hidden" : "block"
+                    isLastSlide ? "hidden" : "block"
                   }`} // hidding the next button for the last slide
                   onClick={() => {
                     updateIndex(activeIndex + 1);
                   }}
                 >
                   ቀጥል
+                </button>
+                <button
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                    isLastSlide ? "block" : "hidden"
+                  }`}
+                  onClick={submitProgress}
+                >
+                  ዘግተህ ውጣ
                 </button>
               </div>
             </div>
