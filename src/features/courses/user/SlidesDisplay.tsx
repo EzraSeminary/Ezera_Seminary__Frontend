@@ -590,32 +590,21 @@ function SlidesDisplay() {
             {/* Slide content */}
             {data.map((slides, index) => {
               if (index === activeIndex) {
-                // Check if there are any text elements
-                const hasTextElements = slides.elements.some(
-                  (element) => element.type === "text"
-                );
-
-                // Check if the text elements fit within the container height
-                const textFits = !slides.elements.some((element) => {
-                  if (element.type === "text") {
-                    const elementHeight = element.value.length; // Replace getElementHeight(element.value) with the length of the text element
-                    return elementHeight > innerHeight; // Adjust this logic based on your requirements
-                  }
-                  return false;
-                });
                 return (
                   <div
                     key={index}
                     className=" flex flex-col justify-center items-center w-full px-2 md:w-[90%] mx-auto h-full overflow-y-hidden py-5"
                   >
                     <div
-                      className={`flex flex-col  items-center w-full h-full overflow-y-auto  rounded-lg bg-black bg-opacity-20 scrollbar-thin px-2 ${
-                        hasTextElements && textFits
-                          ? " overflow-y-auto h-auto pb-3 justify-center "
+                      className={`flex flex-col  items-center w-full h-full overflow-y-auto  rounded-lg bg-black bg-opacity-20 scrollbar-thin px-2 space-y-1 ${
+                        slides.elements.some(
+                          (element) => element.type === "text"
+                        )
+                          ? " overflow-y-auto h-auto pb-3 justify-start  lg:justify-center"
                           : "py-0 justify-center"
                       }`}
                     >
-                      <h1 className="text-lg lg:text-lg xl:text-2xl text-accent-6 text-center pt-6   font-nokia-bold">
+                      <h1 className="text-lg lg:text-lg xl:text-2xl text-accent-6 text-center pt-4   font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -623,7 +612,7 @@ function SlidesDisplay() {
                           return (
                             <h1
                               key={element._id}
-                              className="text-primary-6 text-sm lg:text-lg font-nokia-bold pb-2 "
+                              className="text-accent-5 text-sm lg:text-lg font-nokia-bold pt-2 "
                             >
                               {element.value}
                             </h1>
@@ -632,7 +621,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-primary-6 font-nokia-bold  self-center tracking-wide text-center text-sm"
+                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-sm w-[90%] mx-auto "
                             >
                               {element.value}
                             </p>
@@ -641,7 +630,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  w-[90%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 "
+                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 "
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -709,7 +698,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-full text-justify px-14 md:px-16 pt-2 tracking-wide text-xs lg:text-sm "
+                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-sm "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -717,7 +706,7 @@ function SlidesDisplay() {
                           );
 
                           return (
-                            <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin">
+                            <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin ">
                               <div
                                 key={element._id}
                                 className="w-full  mx-auto h-auto px-2"
@@ -725,14 +714,17 @@ function SlidesDisplay() {
                                 <Splide
                                   options={{
                                     perPage: 1,
+                                    type: "fade",
+                                    height: "auto",
                                     width: "100%",
-                                    height: "100%",
-                                    autoWidth: true,
+                                    cursor: "pointer",
+                                    autoWidth: false,
                                     arrows: true, // Enable arrow navigation
-                                    pagination: false,
+                                    pagination: true,
                                     focus: "center",
                                     trimSpace: true,
                                     isNavigation: false,
+                                    gap: "1rem",
                                   }}
                                 >
                                   {listItemsComponent}
@@ -815,35 +807,32 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "sequence") {
                           return (
-                            <Carousel
-                              orientation="vertical"
-                              opts={{
-                                align: "start",
-                              }}
-                              key={element._id}
-                              className="w-full mt-16"
-                            >
-                              <CarouselContent className="-mt-1 h-[200px] ">
-                                {element.value.map(
-                                  (sequenceItem: string, index: number) => (
-                                    <CarouselItem
-                                      key={index}
-                                      className="pt-1 py-6 h-auto"
-                                    >
-                                      <div className="p-1">
-                                        <div className="flex items-center justify-start p-6 bg-secondary-1 border-2 border-secondary-3 rounded-xl shadow-2xl">
-                                          <span className="text-accent-6 text-lg lg:text-xl text-justify font-nokia-bold">
+                            <div className="h-[60%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
+                              <Carousel
+                                orientation="vertical"
+                                opts={{
+                                  align: "center",
+                                }}
+                                key={element._id}
+                                className="w-full flex justify-center items-center h-auto"
+                              >
+                                <CarouselContent className=" h-[200px] md:h-[150px] ">
+                                  {element.value.map(
+                                    (sequenceItem: string, index: number) => (
+                                      <CarouselItem key={index}>
+                                        <div className="flex items-center justify-center p-6 bg-secondary-4 bg-opacity-25 w-full rounded-xl shadow-2xl  h-full">
+                                          <span className="text-accent-5 text-lg lg:text-xl text-justify font-nokia-bold ">
                                             {sequenceItem}
                                           </span>
                                         </div>
-                                      </div>
-                                    </CarouselItem>
-                                  )
-                                )}
-                              </CarouselContent>
-                              <CarouselPrevious />
-                              <CarouselNext />
-                            </Carousel>
+                                      </CarouselItem>
+                                    )
+                                  )}
+                                </CarouselContent>
+                                <CarouselPrevious />
+                                <CarouselNext />
+                              </Carousel>
+                            </div>
                           );
                         } else if (element.type === "reveal") {
                           return (
