@@ -4,6 +4,7 @@ import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
+import "@/index.css";
 import {
   ArrowLeft,
   CheckCircle,
@@ -589,6 +590,19 @@ function SlidesDisplay() {
             {/* Slide content */}
             {data.map((slides, index) => {
               if (index === activeIndex) {
+                // Check if there are any text elements
+                const hasTextElements = slides.elements.some(
+                  (element) => element.type === "text"
+                );
+
+                // Check if the text elements fit within the container height
+                const textFits = !slides.elements.some((element) => {
+                  if (element.type === "text") {
+                    const elementHeight = element.value.length; // Replace getElementHeight(element.value) with the length of the text element
+                    return elementHeight > innerHeight; // Adjust this logic based on your requirements
+                  }
+                  return false;
+                });
                 return (
                   <div
                     key={index}
@@ -596,14 +610,12 @@ function SlidesDisplay() {
                   >
                     <div
                       className={`flex flex-col  items-center w-full h-full overflow-y-auto  rounded-lg bg-black bg-opacity-20 scrollbar-thin px-2 ${
-                        slides.elements.some(
-                          (element) => element.type === "text"
-                        )
-                          ? " overflow-y-auto h-auto pb-3 justify-start "
+                        hasTextElements && textFits
+                          ? " overflow-y-auto h-auto pb-3 justify-center "
                           : "py-0 justify-center"
                       }`}
                     >
-                      <h1 className="text-lg lg:text-2xl text-accent-6 text-center pt-6   font-nokia-bold">
+                      <h1 className="text-lg lg:text-lg xl:text-2xl text-accent-6 text-center pt-6   font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -678,7 +690,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className="text-secondary-3 pt-2  font-nokia-bold w-[100%] tracking-wide  text-left text-xs lg:text-sm"
+                                className=" text-secondary-3 pt-2  font-nokia-bold w-[100%] tracking-wide   text-xs lg:text-sm"
                               >
                                 {listItem}
                               </li>
@@ -686,11 +698,8 @@ function SlidesDisplay() {
                           );
 
                           return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center"
-                            >
-                              <ul className="list-disc mt-2">
+                            <div key={element._id} className="w-[70%] mx-auto">
+                              <ul className="flex w-full flex-col justify-center items-center list-disc my-2 custom-list-color ">
                                 {listItemsComponent}
                               </ul>
                             </div>
@@ -700,7 +709,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-secondary-2 font-nokia-bold w-[100%] h-full text-justify px-14 md:px-16 pt-2 tracking-wide text-xs lg:text-sm "
+                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-full text-justify px-14 md:px-16 pt-2 tracking-wide text-xs lg:text-sm "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -738,12 +747,12 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm lg:text-lg">
+                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm xl:text-lg">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
                               {element.value.choices && (
-                                <div className="flex flex-col mt-2">
+                                <div className="flex flex-col mt-2 space-y-2">
                                   {element.value.choices.map(
                                     (
                                       choice: { text: string },
@@ -756,7 +765,7 @@ function SlidesDisplay() {
                                         >
                                           <input
                                             type="radio"
-                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 rounded-full transition-all"
+                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 focus-within:animate-pulse rounded-full transition-all pt-2 cursor-pointer"
                                             checked={
                                               selectedChoice === choiceIndex
                                             }
@@ -768,7 +777,7 @@ function SlidesDisplay() {
                                               )
                                             }
                                           />
-                                          <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg ml-2">
+                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg ml-2 ">
                                             {choice.text}
                                           </span>
                                         </label>
@@ -778,9 +787,9 @@ function SlidesDisplay() {
                                 </div>
                               )}
                               {/* Correct Answer */}
-                              <div className="flex mt-2">
+                              <div className="flex mt-4">
                                 <button
-                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max  rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
                                   onClick={() => setShowQuizResult(true)}
                                 >
                                   Check Answer
@@ -991,7 +1000,7 @@ function SlidesDisplay() {
                 <p
                   className={`block lg:hidden font-nokia-bold text-primary-6 text-xs lg:text-sm pt-2 ${
                     activeIndex === 0 ? "hidden" : "block"
-                  }`}
+                  } ${activeIndex === data.length - 1 ? "hidden" : "block"}`}
                 >
                   {currentSlideNumber} / {totalDataNumber}
                 </p>

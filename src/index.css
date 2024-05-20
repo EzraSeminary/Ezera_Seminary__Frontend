@@ -246,3 +246,6 @@ footer {
   color:  #EA9215; /* Change button text color */
 }
 
+.custom-list-color li::marker {
+ color: #EA9215; /* Apply Tailwind text color class */
+}
