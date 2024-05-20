@@ -8,6 +8,8 @@ import { useOnClickOutside } from "../hooks/useOnClickOutside";
 // import { Button } from "./ui/button";
 import bgImage from "../assets/header-img.webp";
 import { RootState } from "@/redux/store";
+import LogoImage from "@/assets/Logo Ion.png";
+import DarkLogoImage from "@/assets/Dark Logo Ion.png";
 
 const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -95,7 +97,7 @@ const Header: React.FC = () => {
               <div className="  flex justify-between items-center  w-[90%] md:w-[90%] lg:w-[85%] mx-auto ">
                 <div className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer ">
                   <img
-                    src="src/assets/Dark Logo Ion.png"
+                    src={DarkLogoImage}
                     className="w-4  md:w-5  lg:w-6  xl:w-7 "
                     alt=""
                   />
@@ -243,11 +245,16 @@ const Header: React.FC = () => {
                   ) : (
                     <>
                       <li className="hover:text-gray-400 tracking-wide">
-                        <NavLink to="/logIn" className={({ isActive }: { isActive: boolean }) =>
-                        `hover:text-accent-6 tracking-wide transition-all ${
-                          isActive && "text-accent-6 font-nokia-bold"
-                        }`
-                      }>Log In</NavLink>
+                        <NavLink
+                          to="/logIn"
+                          className={({ isActive }: { isActive: boolean }) =>
+                            `hover:text-accent-6 tracking-wide transition-all ${
+                              isActive && "text-accent-6 font-nokia-bold"
+                            }`
+                          }
+                        >
+                          Log In
+                        </NavLink>
                       </li>
                       <li className="hover:text-gray-400 text-base ">
                         <NavLink to="/signup">
@@ -285,7 +292,7 @@ const Header: React.FC = () => {
               className="flex justify-center items-center gap-2 md:space-x-0   xl:space-x-1 cursor-pointer "
             >
               <img
-                src="src/assets/Logo Ion.png"
+                src={LogoImage}
                 className="w-4  md:w-5  lg:w-6  xl:w-7 "
                 alt=""
               />
@@ -446,7 +453,7 @@ const Header: React.FC = () => {
                     {showAccountModal && (
                       <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10 text-primary-1">
                         <div className="px-4 py-2 border-b tracking-wide">
-                        {user.role}
+                          {user.role}
                         </div>
                         <div className="px-4 py-2 border-b tracking-wide">
                           <NavLink to="/profile">Settings</NavLink>
@@ -470,11 +477,16 @@ const Header: React.FC = () => {
                       transition={{ duration: 1, ease: "easeOut", delay: 0.9 }}
                       className="hover:text-accent-7 tracking-wide"
                     >
-                      <NavLink to="/logIn" className={({ isActive }: { isActive: boolean }) =>
-                        `hover:text-accent-6 tracking-wide transition-all ${
-                          isActive && "text-accent-6 font-nokia-bold"
-                        }`
-                      }>Log In</NavLink>
+                      <NavLink
+                        to="/logIn"
+                        className={({ isActive }: { isActive: boolean }) =>
+                          `hover:text-accent-6 tracking-wide transition-all ${
+                            isActive && "text-accent-6 font-nokia-bold"
+                          }`
+                        }
+                      >
+                        Log In
+                      </NavLink>
                     </motion.li>
                     <motion.li
                       initial={{ opacity: 0, y: 100 }}
@@ -490,7 +502,7 @@ const Header: React.FC = () => {
                           Create Account
                         </button>
                         {/* <Button
-                          
+
                           // className=" bg-accent-6 rounded-full text-xs   hover:bg-accent-7 cursor-pointer transition-all"
                         >
                           Create Account

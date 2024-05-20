@@ -6,6 +6,7 @@ import { DownloadSimple } from "@phosphor-icons/react";
 import { ShareNetwork } from "@phosphor-icons/react";
 import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
 import { PencilSimpleLine, Trash } from "@phosphor-icons/react";
+import prayerImage from "@/assets/prayerImg.png";
 
 import {
   selectDevotion,
@@ -61,7 +62,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   const handleDownload = () => {
     if (devotionToDisplay && devotionToDisplay.image) {
-      const imageUrl = `https://ezra-seminary.mybese.tech/download/${devotionToDisplay.image}`;
+      const imageUrl = `https://64.23.192.24/download/${devotionToDisplay.image}`;
       fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
@@ -271,7 +272,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   {devotionToDisplay.prayer}
                 </p>
                 <div className="absolute top-[30%] md:top-[25%] lg:top-[30%] xl:top-[20%] -left-5 bg-accent-6 rounded-full w-max  p-2">
-                  <img src="src/assets/prayerImg.png" alt="" className="w-6" />
+                  <img src={prayerImage} alt="" className="w-6" />
                 </div>
               </div>
             ) : (
@@ -280,7 +281,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   {devotionToDisplay && devotionToDisplay.prayer}
                 </p>
                 <div className="absolute top-4 -left-8 bg-accent-6 rounded-full w-max  p-2">
-                  <img src="src/assets/prayerImg.png" alt="" className="" />
+                  <img src={prayerImage} alt="" className="" />
                 </div>
               </div>
             )}
@@ -288,7 +289,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
             <img
-              src={`https://ezra-seminary.mybese.tech/images/${
+              src={`https://64.23.192.24/images/${
                 devotionToDisplay && devotionToDisplay.image
               }`}
               alt="Devotion Image"

@@ -37,7 +37,7 @@ const ProfileSettings = () => {
       setPassword(currentUser.password || "");
       setAvatarPreview(
         currentUser.avatar
-          ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
+          ? `https://64.23.192.24/images/${currentUser.avatar}`
           : defaultAvatar
       );
     }
@@ -93,7 +93,7 @@ const ProfileSettings = () => {
           setPassword(updatedUser.password);
           setAvatarPreview(
             updatedUser.avatar
-              ? `https://ezra-seminary.mybese.tech/images/${updatedUser.avatar}`
+              ? `https://64.23.192.24/images/${updatedUser.avatar}`
               : null
           );
           setSelectedFile(null);
@@ -154,7 +154,7 @@ const ProfileSettings = () => {
                 avatarPreview
                   ? avatarPreview
                   : currentUser?.avatar
-                  ? `https://ezra-seminary.mybese.tech/images/${currentUser.avatar}`
+                  ? `https://64.23.192.24/images/${currentUser.avatar}`
                   : defaultAvatar
               }
               alt="User Avatar"

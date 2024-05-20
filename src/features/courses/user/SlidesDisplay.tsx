@@ -648,7 +648,7 @@ function SlidesDisplay() {
                                       onClick={handleCloseFullScreen}
                                     />
                                     <img
-                                      src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                      src={`https://64.23.192.24/images/${element.value}`}
                                       alt="fullscreen content"
                                       className="w-full h-full object-contain rounded-3xl"
                                     />
@@ -661,7 +661,7 @@ function SlidesDisplay() {
                                 >
                                   <img
                                     key={element._id}
-                                    src={`http://ezra-seminary.mybese.tech/images/${element.value}`}
+                                    src={`https://64.23.192.24/images/${element.value}`}
                                     alt="no image"
                                     className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
                                   />
