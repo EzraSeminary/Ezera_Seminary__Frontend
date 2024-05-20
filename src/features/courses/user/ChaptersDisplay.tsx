@@ -7,8 +7,6 @@ import {
   CheckCircle,
   X,
   DotsThreeVertical,
-  XCircle,
-  ArrowRight,
   Lock,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
