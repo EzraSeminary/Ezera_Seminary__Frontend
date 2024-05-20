@@ -215,9 +215,7 @@ function ChaptersDisplay() {
           {/* Bible image container*/}
           <div className="w-[100%]">
             <img
-              src={
-                `http://ezra-seminary.mybese.tech/images/` + courseData?.image
-              }
+              src={`https://64.23.192.24/images/` + courseData?.image}
               alt=""
               className="w-full rounded-t-lg"
             />
@@ -310,7 +308,7 @@ function ChaptersDisplay() {
           {/* Bible image container*/}
 
           <img
-            src={`http://ezra-seminary.mybese.tech/images/` + courseData?.image}
+            src={`https://64.23.192.24/images/` + courseData?.image}
             alt=""
             className="w-full h-[30vh] object-cover"
           />
