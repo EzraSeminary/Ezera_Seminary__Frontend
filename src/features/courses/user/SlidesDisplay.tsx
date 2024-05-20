@@ -807,7 +807,7 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "sequence") {
                           return (
-                            <div className="h-[60%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
+                            <div className="h-[65%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
                               <Carousel
                                 orientation="vertical"
                                 opts={{
@@ -842,16 +842,17 @@ function SlidesDisplay() {
                                   isFlipped={flip[index] || false}
                                   flipDirection="vertical"
                                   key={index}
+                                  containerClassName="w-full h-auto flex flex-col justify-center items-center "
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1"
                                   >
                                     {revealItem.title}
                                   </div>
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-start justify-center text-center bg-secondary-2 border-2 border-secondary-2 shadow-2xl  px-2 text-accent-8 text-lg hover:bg-secondary-3  cursor-pointer transition-all rounded-lg my-1"
                                   >
                                     {revealItem.content}
                                   </div>
