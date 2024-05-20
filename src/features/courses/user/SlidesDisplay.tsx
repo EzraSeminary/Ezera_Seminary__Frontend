@@ -967,14 +967,6 @@ function SlidesDisplay() {
                         }
                       })}
                     </div>
-                    {/* {isLastSlide && (
-                      <button
-                        className="text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2 "
-                        onClick={submitProgress}
-                      >
-                        ዘግተህ ውጣ
-                      </button>
-                    )} */}
                   </div>
                 );
               } else {
