@@ -64,7 +64,7 @@ function Quiz({
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -72,7 +72,7 @@ function Quiz({
             className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <PlusCircle
-              className="text-primary-6  transition-all"
+              className="text-primary-6 transition-all"
               size={16}
               weight="fill"
             />
@@ -80,10 +80,10 @@ function Quiz({
           </button>
           <button
             onClick={saveQuizToRedux}
-            className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+            className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <File
-              className="text-primary-6  transition-all"
+              className="text-primary-6 transition-all"
               size={16}
               weight="fill"
             />
@@ -94,24 +94,24 @@ function Quiz({
       <ul className="space-y-2 py-4">
         {/* // Map over quizChoices to render choices */}
         {quizChoices.map((choice, index) => (
-          <label className="text-accent-6 ">
-            Choice {index + 1}:
+          <label>
+            <h2 className="text-secondary-6 pt-4">Choice {index + 1}:</h2>
             <li key={index} className="flex justify-between">
               <input
                 type="text"
                 value={choice}
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
-                className="mt-1 border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                className="mt-1 border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
               />
               <Trash
                 onClick={() => {
                   // Add a function to handle removing choices
                   setQuizChoices(quizChoices.filter((_, i) => i !== index));
                 }}
-                className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all mt-1"
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all mt-1"
                 weight="fill"
-                size={22}
+                size={18}
               />
             </li>
           </label>

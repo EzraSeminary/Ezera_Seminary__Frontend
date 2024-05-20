@@ -35,6 +35,10 @@ function List({
     }
   };
 
+  const handleListItemChange = (index: number, text: string) => {
+    setListItems(listItems.map((item, i) => (i === index ? text : item)));
+  };
+
   const saveListElementToRedux = () => {
     dispatch(
       updateElement({
@@ -60,7 +64,7 @@ function List({
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
-          className="border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -69,7 +73,7 @@ function List({
             className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
           >
             <PlusCircle
-              className="text-primary-6  transition-all"
+              className="text-primary-6 transition-all"
               size={16}
               weight="fill"
             />
@@ -90,22 +94,22 @@ function List({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {listItems.map((item, index) => (
-          <label className="text-accent-6 ">
-            List Item {index + 1}:
-            <li
-              key={index}
-              className="flex justify-between border border-accent-6 rounded px-2 py-1 bg-secondary-4 text-primary-6"
-            >
-              {item}{" "}
-              <span>
-                <Trash
-                  onClick={() => handleDeleteListItem(index)}
-                  className="text-red-600 hover:text-red-700 hover:cursor-pointer transition-all"
-                  weight="fill"
-                  size={22}
-                />
-              </span>
-            </li>
+          <label>
+            <h2 className="text-secondary-6 py-3">List {index + 1}:</h2>
+            <div key={index} className="flex justify-between">
+              <input
+                type="text"
+                value={item}
+                onChange={(e) => handleListItemChange(index, e.target.value)}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+              />
+              <Trash
+                onClick={() => handleDeleteListItem(index)}
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
+                weight="fill"
+                size={18}
+              />
+            </div>
           </label>
         ))}
       </ul>
