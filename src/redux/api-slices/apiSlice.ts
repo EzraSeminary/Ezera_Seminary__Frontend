@@ -13,7 +13,7 @@ interface AnalyticsData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://64.23.192.24",
+    baseUrl: "https://ezra-seminary.me",
     // baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
