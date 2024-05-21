@@ -7,6 +7,8 @@ import {
 } from "@/services/SabbathSchoolApi";
 import DateConverter from "./DateConverter";
 import { YoutubeLogo } from "@phosphor-icons/react";
+import LoadingPage from "@/pages/user/LoadingPage";
+
 function CurrentSSL() {
   const currentDate = new Date().toISOString().slice(0, 10);
   const [quarter, week] = useCalculateLessonIndex(currentDate);
@@ -29,9 +31,11 @@ function CurrentSSL() {
     }
   }, [lessonDetails]);
 
-  if (lessonIsLoading || quarterIsLoading) return <div>Loading...</div>;
-  if (lessonError && 'message' in lessonError) return <div>Error: {lessonError.message}</div>;
-  if (quarterError && 'message' in quarterError) return <div>Error: {quarterError.message}</div>;
+  if (lessonIsLoading || quarterIsLoading) return <LoadingPage />;
+  if (lessonError && "message" in lessonError)
+    return <div>Error: {lessonError.message}</div>;
+  if (quarterError && "message" in quarterError)
+    return <div>Error: {quarterError.message}</div>;
   if (!quarterDetails || !lessonDetails) return <div>Missing data...</div>;
 
   return (
@@ -74,22 +78,30 @@ function CurrentSSL() {
             <div className="flex flex-col gap-2 items-end w-[45%] space-y-1">
               <Link
                 className="px-4 py-1 bg-accent-6 text-primary-1 rounded-full text-xs xl:text-lg hover:bg-accent-7 transition-all"
-                to={{
-                  pathname: `/sabbathSchool/${quarter}/lessons/${week}`,
-                  state: {
-                    quarterlyTitle: quarterDetails.quarterly.title,
-                    quarterlyCover: quarterDetails.quarterly.cover,
-                  },
-                } as { pathname: string, state: { quarterlyTitle: string, quarterlyCover: string } } }
+                to={
+                  {
+                    pathname: `/sabbathSchool/${quarter}/lessons/${week}`,
+                    state: {
+                      quarterlyTitle: quarterDetails.quarterly.title,
+                      quarterlyCover: quarterDetails.quarterly.cover,
+                    },
+                  } as {
+                    pathname: string;
+                    state: { quarterlyTitle: string; quarterlyCover: string };
+                  }
+                }
               >
                 ትምህርቱን ክፈት
               </Link>
               <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
-                Watch on YouTube <YoutubeLogo  weight="fill" className="text-lg md:text-xl"/>
+                Watch on YouTube{" "}
+                <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
               </button>
             </div>
           </div>
-          <p className="text-xs xl:text-sm">{quarterDetails.quarterly.description}</p>
+          <p className="text-xs xl:text-sm">
+            {quarterDetails.quarterly.description}
+          </p>
         </div>
       </div>
     </div>
