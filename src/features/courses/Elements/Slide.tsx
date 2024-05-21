@@ -88,8 +88,7 @@ function Slide({
           <label>
             <h2 className="text-secondary-6 py-3">Slide {index + 1}:</h2>
             <div key={index} className="flex justify-between">
-              <input
-                type="text"
+              <textarea
                 value={details}
                 onChange={(e) => handleSlideDetailChange(index, e.target.value)}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
