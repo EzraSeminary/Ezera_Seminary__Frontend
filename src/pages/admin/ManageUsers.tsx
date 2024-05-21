@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { User } from "@/redux/types";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
 import { AxiosError } from "axios";
+import LoadingPage from "../user/LoadingPage";
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ const ManageUsers: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (
