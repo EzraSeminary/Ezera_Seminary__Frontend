@@ -1,5 +1,6 @@
 import React from "react";
 import { useGetAnalyticsQuery } from "@/redux/api-slices/apiSlice";
+import LoadingPage from "@/pages/user/LoadingPage";
 
 const Analytics: React.FC = () => {
   const { data: analyticsData, isLoading, error } = useGetAnalyticsQuery();
@@ -7,7 +8,7 @@ const Analytics: React.FC = () => {
   console.log(analyticsData);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
