@@ -95,8 +95,7 @@ function Sequence({
           <label>
             <h2 className="text-secondary-6 py-3">Sequence {index + 1}:</h2>
             <div key={index} className="flex justify-between">
-              <input
-                type="text"
+              <textarea
                 value={item}
                 onChange={(e) =>
                   handleSequenceItemChange(index, e.target.value)
