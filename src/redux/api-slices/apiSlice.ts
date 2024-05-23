@@ -177,6 +177,7 @@ export const {
   useCreateUserMutation,
   useGetUsersQuery,
   useLoginMutation,
+  useForgotPasswordMutation,
   useUpdateUserMutation,
   useGetUserByIdQuery,
   useDeleteUserMutation,
