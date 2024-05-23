@@ -153,7 +153,12 @@ const Login = () => {
                   />
                   <label>Show Password</label>
                 </div>
-                <p className="self-end">Forgot Password?</p>
+                <Link
+                  to="/forgot-password"
+                  className="self-end text-xs xl:text-xl"
+                >
+                  Forgot Password?
+                </Link>
               </div>
               <div className="flex mt-4 gap-2">
                 <input
