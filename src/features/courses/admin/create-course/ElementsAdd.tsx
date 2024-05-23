@@ -120,13 +120,19 @@ function ElementsAdd({
     >
       {elements.map((element, index) => {
         let elementComponent;
-        if (
-          element.type === "title" ||
-          element.type === "sub" ||
-          element.type === "text"
-        ) {
+        if (element.type === "title" || element.type === "sub") {
           elementComponent = (
             <input
+              id={element.id}
+              placeholder={`Enter ${element.type}`}
+              value={element.value?.toString()}
+              onChange={(e) => handleInputChange(element.id, e.target.value)}
+              className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+            />
+          );
+        } else if (element.type === "text") {
+          elementComponent = (
+            <textarea
               id={element.id}
               placeholder={`Enter ${element.type}`}
               value={element.value?.toString()}
