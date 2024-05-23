@@ -22,6 +22,7 @@ const Devotion = lazy(() => import("@/pages/user/Devotion"));
 const AboutUs = lazy(() => import("@/pages/user/AboutUs"));
 const ContactUs = lazy(() => import("@/pages/user/ContactUs"));
 const Login = lazy(() => import("@/pages/user/Login"));
+const ForgotPassword = lazy(() => import("@/pages/user/ForgotPassword"));
 const Signup = lazy(() => import("@/pages/user/Signup"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const ChaptersDisplay = lazy(
