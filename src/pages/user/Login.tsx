@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import Footer from "@/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ForgotPassword from "@/components/ForgotPassword";
+// import ForgotPassword from "@/pages/user/ForgotPassword";
 
 interface APIError extends Error {
   status: number;
