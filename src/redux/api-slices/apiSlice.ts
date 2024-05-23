@@ -46,6 +46,16 @@ export const apiSlice = createApi({
         body: JSON.stringify({ email }),
       }),
     }),
+    resetPassword: builder.mutation({
+      query: ({ token, newPassword }) => ({
+        url: `/users/reset-password/${token}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newPassword }),
+      }),
+    }),
     sendMessage: builder.mutation({
       query: ({ firstName, lastName, email, message }) => ({
         url: "/users/contact",
@@ -56,7 +66,6 @@ export const apiSlice = createApi({
         body: JSON.stringify({ firstName, lastName, email, message }),
       }),
     }),
-
     signup: builder.mutation({
       query: ({ firstName, lastName, email, password }) => ({
         url: "/users/signup",
@@ -178,6 +187,7 @@ export const {
   useGetUsersQuery,
   useLoginMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
   useUpdateUserMutation,
   useGetUserByIdQuery,
   useDeleteUserMutation,
