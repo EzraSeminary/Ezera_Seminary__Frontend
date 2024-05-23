@@ -36,6 +36,16 @@ export const apiSlice = createApi({
         body: JSON.stringify(credentials), // stringified the credentials
       }),
     }),
+    forgotPassword: builder.mutation({
+      query: (email) => ({
+        url: "/users/forgotpassword",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }),
+    }),
     sendMessage: builder.mutation({
       query: ({ firstName, lastName, email, message }) => ({
         url: "/users/contact",
