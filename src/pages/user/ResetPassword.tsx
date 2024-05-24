@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useResetPasswordMutation } from "@/redux/api-slices/apiSlice";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -29,22 +29,25 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="mt-5 mx-auto text-center">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit} className="flex-column">
-        <div className="mt-5">
-          <label>New Password: </label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="mt-5 p-4 bg-primary-5">
-          Reset Password
-        </button>
-      </form>
+    <div>
+      <ToastContainer />
+      <div className="mt-5 mx-auto text-center">
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit} className="flex-column">
+          <div className="mt-5">
+            <label>New Password: </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="mt-5 p-4 bg-primary-5">
+            Reset Password
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
