@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useResetPasswordMutation } from "@/redux/api-slices/apiSlice";
 import "react-toastify/dist/ReactToastify.css";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -10,6 +11,7 @@ const ResetPassword = () => {
   const [newPassword, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [resetPassword] = useResetPasswordMutation();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +37,10 @@ const ResetPassword = () => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="flex flex-col mt-[10%]">
       <ToastContainer
@@ -52,27 +58,47 @@ const ResetPassword = () => {
               <span className="text-secondary-6 text-center">Reset</span>{" "}
               Password
             </h3>
-            <div className="mt-4 flex flex-col gap-2 text-xs w-max lg:w-full xl:text-xl">
+            <div className="mt-4 flex flex-col gap-2 text-xs w-full lg:w-full xl:text-xl relative">
               <label>New Password</label>
               <input
-                type="password"
-                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 outline-accent-6 xl:text-sm"
+                type={showPassword ? "text" : "password"}
+                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 outline-accent-6 xl:text-sm pr-10"
                 placeholder="Enter new password"
                 value={newPassword}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <div
+                className="absolute mt-5 inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-accent-8"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <EyeSlash size={18} weight="fill" />
+                ) : (
+                  <Eye size={18} weight="fill" />
+                )}
+              </div>
             </div>
-            <div className="mt-4 flex flex-col gap-2 text-xs w-max lg:w-full xl:text-xl">
+            <div className="mt-4 flex flex-col gap-2 text-xs w-full lg:w-full xl:text-xl relative">
               <label>Confirm Password</label>
               <input
-                type="password"
-                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 outline-accent-6 xl:text-sm"
+                type={showPassword ? "text" : "password"}
+                className="border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 outline-accent-6 xl:text-sm pr-10"
                 placeholder="Confirm new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <div
+                className="absolute mt-5 inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-accent-8"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <EyeSlash size={18} weight="fill" />
+                ) : (
+                  <Eye size={18} weight="fill" />
+                )}
+              </div>
             </div>
             <div className="w-full mt-4 flex justify-center md:justify-between lg:items-start lg:justify-start gap-2 xl:text-xl">
               <button
