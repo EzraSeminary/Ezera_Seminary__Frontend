@@ -1,24 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useForgotPasswordMutation } from "@/redux/api-slices/apiSlice";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [forgotPassword] = useForgotPasswordMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await dispatch(forgotPassword(email)).unwrap();
+      await forgotPassword(email).unwrap();
       toast.success("Password reset instructions sent to your email.");
       navigate("/login");
     } catch (err) {
       console.error(err);
-      toast.error("An error occurred. Please try again later.");
+      if ((err as any).status === 400) {
+        toast.error("Invalid email address.");
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
     }
   };
 
