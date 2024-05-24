@@ -7,12 +7,17 @@ const ResetPassword = () => {
   const { token } = useParams();
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
-  const [resetPassword] = useResetPasswordMutation();
+  const [resetPassword, { isLoading, isError, error }] =
+    useResetPasswordMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await resetPassword({ token, newPassword }).unwrap();
+      const result = await resetPassword({ token, newPassword });
+      console.log(result);
+      if (result.error) {
+        throw result.error;
+      }
       toast.success(
         "Password reset successful. You can now log in with your new password."
       );
