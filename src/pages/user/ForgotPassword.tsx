@@ -23,19 +23,21 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
+    <div className="mt-5 mx-auto text-center">
       <h2>Forgot Password</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
+      <form onSubmit={handleSubmit} className="flex-column">
+        <div className="mt-5">
+          <label>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Send Password Reset Instructions</button>
+        </div>
+        <button type="submit" className="mt-5 p-4 bg-primary-5">
+          Send Password Reset Instructions
+        </button>
       </form>
     </div>
   );

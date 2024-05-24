@@ -1,41 +1,32 @@
-// Reset Password Component.
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useResetPasswordMutation } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
 
 const ResetPassword = () => {
-  const { token } = useParams(); // Get the reset token from the URL
+  const { token } = useParams();
   const [newPassword, setNewPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [resetPassword] = useResetPasswordMutation(); // Use the resetPassword mutation from the apiSlice
+  const [resetPassword] = useResetPasswordMutation();
 
-  // Handle the form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Call the resetPassword mutation with the token and new password
-      const result = await dispatch(
-        resetPassword({ token, newPassword })
-      ).unwrap();
-      // Show a success toast and navigate to the login page
+      await resetPassword({ token, newPassword }).unwrap();
       toast.success(
         "Password reset successful. You can now log in with your new password."
       );
       navigate("/login");
     } catch (err) {
       console.error(err);
-      // Show an error toast
       toast.error("An error occurred. Please try again later.");
     }
   };
 
   return (
-    <div>
+    <div className="mt-5 mx-auto text-center">
       <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex-column">
         <label>
           New Password:
           <input
