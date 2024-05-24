@@ -62,7 +62,7 @@ function App() {
   }, [dispatch, userData]);
 
   if (!isAuthReady) {
-    return <div>Loading...</div>; // Or a  loading spinner
+    return <LoadingPage />; // Or a  loading spinne
   }
 
   //catch error while fetching user data

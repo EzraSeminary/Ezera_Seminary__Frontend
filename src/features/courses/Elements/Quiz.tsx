@@ -97,8 +97,7 @@ function Quiz({
           <label>
             <h2 className="text-secondary-6 pt-4">Choice {index + 1}:</h2>
             <li key={index} className="flex justify-between">
-              <input
-                type="text"
+              <textarea
                 value={choice}
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
