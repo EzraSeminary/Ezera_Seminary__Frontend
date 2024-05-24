@@ -27,16 +27,18 @@ const ResetPassword = () => {
     <div className="mt-5 mx-auto text-center">
       <h2>Reset Password</h2>
       <form onSubmit={handleSubmit} className="flex-column">
-        <label>
-          New Password:
+        <div className="mt-5">
+          <label>New Password: </label>
           <input
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Reset Password</button>
+        </div>
+        <button type="submit" className="mt-5 p-4 bg-primary-5">
+          Reset Password
+        </button>
       </form>
     </div>
   );
