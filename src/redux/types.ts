@@ -9,6 +9,9 @@ export interface User {
   password: string | null;
   progress: Progress[];
   achievement: number;
+  createdAt: string;
+  deletedAt: string;
+  lastLogin: string;
 }
 
 export interface Progress {

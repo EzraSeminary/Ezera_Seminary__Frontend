@@ -1,13 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Devotion } from "@/redux/types";
 
+interface AnalyticsData {
+  newUsers: number;
+  totalUsers: number;
+  newCourses: number;
+  totalCourses: number;
+  accountsReached: number;
+  usersLeft: number;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.mybese.tech",
+    baseUrl: "https://ezra-seminary.me",
     // baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
-      // Get the user from localStorage
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = user ? user.token : "";
       if (token) {
@@ -148,6 +156,9 @@ export const apiSlice = createApi({
         method: "DELETE",
       }),
     }),
+    getAnalytics: builder.query<AnalyticsData, void>({
+      query: () => "/analytics",
+    }),
   }),
 });
 
@@ -167,4 +178,5 @@ export const {
   useDeleteDevotionMutation,
   useGetCurrentUserQuery,
   useSendMessageMutation,
+  useGetAnalyticsQuery,
 } = apiSlice;

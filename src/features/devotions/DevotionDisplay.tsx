@@ -7,6 +7,7 @@ import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
+import LoadingPage from "@/pages/user/LoadingPage";
 
 // Define the type for a devotion object
 
@@ -77,7 +78,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     refetch();
   }, [devotions, refetch]);
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <LoadingPage />;
   if (error) return `Error: ${(error as Error).message}`;
 
   if (!devotions || devotions.length === 0) {

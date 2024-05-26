@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { User } from "@/redux/types";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
 import { AxiosError } from "axios";
+import LoadingPage from "../user/LoadingPage";
 
 const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ const ManageUsers: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (
@@ -167,61 +168,63 @@ const ManageUsers: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user: User) => (
-            <tr
-              key={user._id}
-              className={`border-b ${
-                editingUser?._id === user._id
-                  ? "bg-primary-6 "
-                  : "text-primary-5 hover:bg-secondary-5 transition-all rounded-lg"
-              }`}
-            >
-              <td className="px-4 py-2">
-                <img
-                  src={`https://ezra-seminary.mybese.tech/images/${user.avatar}`}
-                  alt={`${user.firstName} ${user.lastName}`}
-                  className="w-12 h-12 rounded-full  "
-                />
-              </td>
-              <td className="px-4 py-2">{user.firstName}</td>
-              <td className="px-4 py-2">{user.lastName}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.role}</td>
-              <td className="px-4 py-2">
-                {editingUser?._id === user._id ? (
-                  <>
-                    <button
-                      onClick={handleUpdateUser}
-                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingUser(null)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleEditUser(user)}
-                      className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteUser(user._id as string)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Delete
-                    </button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
+          {users
+            ?.filter((user: User) => !user.deletedAt)
+            ?.map((user: User) => (
+              <tr
+                key={user._id}
+                className={`border-b ${
+                  editingUser?._id === user._id
+                    ? "bg-primary-6 "
+                    : "text-primary-5 hover:bg-secondary-5 transition-all rounded-lg"
+                }`}
+              >
+                <td className="px-4 py-2">
+                  <img
+                    src={`https://ezra-seminary.me/images/${user.avatar}`}
+                    alt={`${user.firstName} ${user.lastName}`}
+                    className="w-12 h-12 rounded-full  "
+                  />
+                </td>
+                <td className="px-4 py-2">{user.firstName}</td>
+                <td className="px-4 py-2">{user.lastName}</td>
+                <td className="px-4 py-2">{user.email}</td>
+                <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2">
+                  {editingUser?._id === user._id ? (
+                    <>
+                      <button
+                        onClick={handleUpdateUser}
+                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingUser(null)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEditUser(user)}
+                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(user._id as string)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {editingUser && (
@@ -242,7 +245,7 @@ const ManageUsers: React.FC = () => {
                   src={
                     selectedAvatar
                       ? URL.createObjectURL(selectedAvatar)
-                      : `https://ezra-seminary.mybese.tech/images/${editingUser.avatar}`
+                      : `https://ezra-seminary.me/images/${editingUser.avatar}`
                   }
                   alt={`${editingUser.firstName} ${editingUser.lastName}`}
                   className="w-20 h-20 rounded-full mr-4  border-2 border-accent-6 p-1 "

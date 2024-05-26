@@ -37,7 +37,9 @@ function ChaptersAdd() {
 
   // show element popup
   const [showElementPopup, setShowElementPopup] = useState(false);
-  const [currentElement, setCurrentElement] = useState("");
+  const [currentElement, setCurrentElement] = useState<
+    string | null | string[] | boolean
+  >("");
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -49,10 +51,33 @@ function ChaptersAdd() {
 
   const deleteChapterHandler = (chapterIndex: number) => {
     dispatch(deleteChapter({ chapterIndex }));
+    // Check if the current editingSlideIndex is within the chapter being deleted
+    if (editingSlideIndex && editingSlideIndex.chapter === chapterIndex) {
+      // Reset the editingSlideIndex since the current chapter is being deleted
+      setEditingSlideIndex(null);
+    } else if (editingSlideIndex && editingSlideIndex.chapter > chapterIndex) {
+      // Adjust the chapterIndex for the slide currently being edited.
+      setEditingSlideIndex((prevIndex) => {
+        // Ensure prevIndex is not null before trying to access its properties.
+        if (prevIndex) {
+          return { chapter: prevIndex.chapter - 1, slide: prevIndex.slide };
+        }
+        return null;
+      });
+    }
   };
 
   const deleteSlideHandler = (chapterIndex: number, slideIndex: number) => {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
+    // Check if the slide being edited is the one being deleted
+    if (
+      editingSlideIndex &&
+      editingSlideIndex.chapter === chapterIndex &&
+      editingSlideIndex.slide === slideIndex
+    ) {
+      // Reset the editingSlideIndex since the current slide is being deleted
+      setEditingSlideIndex(null);
+    }
   };
 
   const handleShowElementPopup = () => {
@@ -68,6 +93,14 @@ function ChaptersAdd() {
     value: string
   ) => {
     dispatch(updateSlide({ chapterIndex, slideIndex, value }));
+  };
+
+  // when click on slide title input
+  const handleSlideClick = (chapterIndex: number, slideIndex: number) => {
+    setEditingSlideIndex({
+      chapter: chapterIndex,
+      slide: slideIndex,
+    });
   };
 
   const handleChapterClick = (chapterIndex: number) => {
@@ -103,16 +136,14 @@ function ChaptersAdd() {
   };
 
   // add element to redux
-  const handleAddButtonClick = (chapterIndex: number, slideIndex: number) => {
-    console.log("Current Element:", currentElement);
-
+  const handleAddElementToRedux = (
+    chapterIndex: number,
+    slideIndex: number
+  ) => {
     if (
-      currentElement &&
-      currentElement !== "list" &&
-      currentElement !== "img" &&
-      currentElement !== "quiz" &&
-      currentElement !== "sequence" &&
-      currentElement !== "reveal"
+      (currentElement && currentElement === "title") ||
+      currentElement === "sub" ||
+      currentElement === "text"
     ) {
       dispatch(
         addElementToSlide({
@@ -132,19 +163,50 @@ function ChaptersAdd() {
           value: null,
         })
       );
+      setCurrentElement(null);
+    } else if (
+      (currentElement && currentElement === "list") ||
+      currentElement === "slide" ||
+      currentElement === "quiz" ||
+      currentElement === "accordion" ||
+      currentElement === "sequence" ||
+      currentElement === "reveal" ||
+      currentElement === "dnd"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: [],
+        })
+      );
+      setCurrentElement([]);
+    } else if (currentElement && currentElement === "range") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: currentElement,
+          value: false,
+        })
+      );
+      setCurrentElement(false);
     }
   };
 
+  // Display elements when click a slide
   useEffect(() => {
     if (currentElement && editingSlideIndex) {
-      handleAddButtonClick(editingSlideIndex.chapter, editingSlideIndex.slide);
-      setCurrentElement("");
+      handleAddElementToRedux(
+        editingSlideIndex.chapter,
+        editingSlideIndex.slide
+      );
     }
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentElement, editingSlideIndex]);
 
-  // console.log(course);
+  // console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -221,10 +283,7 @@ function ChaptersAdd() {
                             )
                           }
                           onClick={() =>
-                            setEditingSlideIndex({
-                              chapter: chapterIndex,
-                              slide: slideIndex,
-                            })
+                            handleSlideClick(chapterIndex, slideIndex)
                           }
                         />
                         <Trash
@@ -260,14 +319,6 @@ function ChaptersAdd() {
         })}
       </div>
 
-      {/* display elements popup here */}
-      {showElementPopup && (
-        <ElementPopup
-          closeElementPopup={closeElementPopup}
-          onSelectElement={handleSelectElement}
-        />
-      )}
-
       <div className="w-[50%]">
         {/* Pass selectedSlideIndex to SlideDataDisplay */}
         {editingSlideIndex !== null && (
@@ -277,16 +328,25 @@ function ChaptersAdd() {
           />
         )}
       </div>
+
       <div className="w-[25%]">
         {editingSlideIndex && (
           <ElementsAdd
+            key={`${editingSlideIndex.chapter}-${editingSlideIndex.slide}`}
             chapterIndex={editingSlideIndex.chapter}
             slideIndex={editingSlideIndex.slide}
-            currentElement={currentElement}
             setCurrentElement={setCurrentElement}
           />
         )}
       </div>
+
+      {/* display elements popup over this whole file */}
+      {showElementPopup && (
+        <ElementPopup
+          closeElementPopup={closeElementPopup}
+          onSelectElement={handleSelectElement}
+        />
+      )}
     </div>
   );
 }

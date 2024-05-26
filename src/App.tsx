@@ -60,12 +60,12 @@ function App() {
   }, [dispatch, userData]);
 
   if (!isAuthReady) {
-    return <div>Loading...</div>; // Or a  loading spinner
+    return <LoadingPage />; // Or a  loading spinne
   }
 
   //catch error while fetching user data
   if (userError) {
-    console.log(userError);
+    console.log(userError, userData);
   }
 
   const PrivateRoute = ({ children }: { children: React.ReactNode }) => {

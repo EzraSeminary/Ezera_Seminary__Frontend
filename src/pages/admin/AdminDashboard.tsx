@@ -33,7 +33,7 @@ const AdminDashboard = () => {
       >
         <AdminHeader />
         <Routes>
-          <Route path="/" element={<div>Admin Home</div>} />
+          <Route path="/" element={<Analytics />} />
           <Route path="analytics/usage" element={<Analytics />} />
           <Route path="course/edit" element={<ManageCourse />} />
           <Route path="courses/create" element={<CreateCourse />} />
