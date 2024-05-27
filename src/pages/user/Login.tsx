@@ -79,16 +79,13 @@ const Login = () => {
       // Send the access token to your backend here for verification and possibly retrieving user details
       // Here, it will depend on how you've set up your backend, a common endpoint could be /users/google-login
       try {
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/users/google-login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token: tokenResponse.access_token }),
-          }
-        );
+        const res = await fetch(`http://localhost:5100/auth/google`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: tokenResponse.access_token }),
+        });
 
         const result = await res.json();
 
@@ -228,14 +225,19 @@ const Login = () => {
                 <p>Sign Up</p>
               </Link>
             </div>
-            <div className="text-xs mt-4  xl:text-xl">
-              <p>Or signup with</p>
-              <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
-                <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"></GoogleLogo>
-                <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>
-              </div>
-            </div>
           </form>
+          <div className="text-xs mt-4  xl:text-xl">
+            <p>Or signup with</p>
+            <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
+              <button
+                onClick={() => googleLogin()}
+                className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"
+              >
+                <GoogleLogo />
+              </button>
+              <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />
