@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "./pages/user/ErrorPage.js";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 axios.defaults.baseURL = "https://ezra-seminary.me";
 // axios.defaults.baseURL = "http://localhost:5100";
@@ -15,10 +16,12 @@ axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ErrorBoundary FallbackComponent={ErrorPage}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ErrorBoundary>
+    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+      <ErrorBoundary FallbackComponent={ErrorPage}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ErrorBoundary>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
