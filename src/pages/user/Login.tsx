@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import Footer from "@/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGoogleLogin } from "@react-oauth/google";
 
 interface APIError extends Error {
   status: number;
@@ -69,6 +70,50 @@ const Login = () => {
           );
         }
       }
+    },
+  });
+
+  // Add the useGoogleLogin hook
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      // Send the access token to your backend here for verification and possibly retrieving user details
+      // Here, it will depend on how you've set up your backend, a common endpoint could be /users/google-login
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/users/google-login`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: tokenResponse.access_token }),
+          }
+        );
+
+        const result = await res.json();
+
+        if (result) {
+          // Handle successful sign in with the user object returned from your backend
+          localStorage.setItem("user", JSON.stringify(result));
+
+          dispatch(loginAction(result));
+
+          if (result.role === "Admin") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+
+          toast.success("Login successful!");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Google sign-in failed. Please try again.");
+      }
+    },
+    onError: () => {
+      // Handle errors
+      toast.error("Google sign-in failed. Please try again.");
     },
   });
 
