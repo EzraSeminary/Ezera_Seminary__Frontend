@@ -13,6 +13,7 @@ import Analytics from "@/features/courses/admin/analytics/Analytics";
 import AdminHeader from "./AdminHeader";
 import CreateUser from "./CreateUser";
 import ManageUser from "./ManageUsers";
+import PerformanceDashboard from "./PerformanceDashboard";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -35,6 +36,10 @@ const AdminDashboard = () => {
         <Routes>
           <Route path="/" element={<Analytics />} />
           <Route path="analytics/usage" element={<Analytics />} />
+          <Route
+            path="analytics/dashboard"
+            element={<PerformanceDashboard />}
+          />
           <Route path="course/edit" element={<ManageCourse />} />
           <Route path="courses/create" element={<CreateCourse />} />
           <Route path="courses/create/chapters" element={<AdminChapter />} />
