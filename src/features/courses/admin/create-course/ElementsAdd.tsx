@@ -13,6 +13,7 @@ import Accordion from "../../Elements/Accordion";
 import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
+import ScrollMix from "../../Elements/ScrollMix";
 
 export interface ElementsAddProps {
   chapterIndex: number;
@@ -229,6 +230,16 @@ function ElementsAdd({
         } else if (element.type === "dnd") {
           elementComponent = (
             <DragAndDrop
+              key={index}
+              chapterIndex={chapterIndex}
+              slideIndex={slideIndex}
+              setCurrentElement={setCurrentElement}
+              element={element}
+            />
+          );
+        } else if (element.type === "mix") {
+          elementComponent = (
+            <ScrollMix
               key={index}
               chapterIndex={chapterIndex}
               slideIndex={slideIndex}
