@@ -109,6 +109,8 @@ function ElementsAdd({
         return "Slider";
       case "dnd":
         return "Missing Words";
+      case "mix":
+        return "Scroll Mix";
       default:
         return "";
     }

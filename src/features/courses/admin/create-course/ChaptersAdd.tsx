@@ -171,7 +171,8 @@ function ChaptersAdd() {
       currentElement === "accordion" ||
       currentElement === "sequence" ||
       currentElement === "reveal" ||
-      currentElement === "dnd"
+      currentElement === "dnd" ||
+      currentElement === "mix"
     ) {
       dispatch(
         addElementToSlide({
