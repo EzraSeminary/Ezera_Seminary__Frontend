@@ -1,4 +1,52 @@
-function ScrollMix() {
+import { ElementTypeProps } from "./List";
+import { updateElement } from "@/redux/courseSlice";
+import { ChangeEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+
+function ScrollMix({
+  chapterIndex,
+  slideIndex,
+  setCurrentElement,
+  element,
+}: ElementTypeProps) {
+  const dispatch = useDispatch();
+
+  const handleInputChange = (id: string, value: string) => {
+    dispatch(
+      updateElement({
+        chapterIndex,
+        slideIndex,
+        elementId: id,
+        value: value,
+      })
+    );
+  };
+
+  // Image preview state
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]; // Get the first file from the input
+      if (file) {
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId: id,
+            value: file,
+          })
+        );
+        // Create a URL for the file
+        const fileUrl = URL.createObjectURL(file);
+        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+      }
+    }
+  };
+
   return (
     <div>
       <textarea
