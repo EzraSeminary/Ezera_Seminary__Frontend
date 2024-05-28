@@ -227,7 +227,7 @@ export const courseSlice = createSlice({
           | AccordionElementValue[]
           | RevealElementValue[]
           | DndElementValue
-          | MixElementValue[]
+          | MixElementValue
           | null;
       }>
     ) => {
@@ -333,7 +333,7 @@ export const courseSlice = createSlice({
           | AccordionElementValue[]
           | RevealElementValue[]
           | DndElementValue
-          | MixElementValue[];
+          | MixElementValue;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;

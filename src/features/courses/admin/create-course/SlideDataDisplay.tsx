@@ -524,23 +524,16 @@ function SlideDataDisplay({
                 } else if (element.type === "mix") {
                   elementComponent = (
                     <div key={index}>
-                      <p
-                        key={element.type}
-                        className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
-                      >
-                        {element.text1}
+                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
+                        {element.value.text1}
                       </p>
                       <img
-                        key={element.type}
                         src={imagePreviewUrl}
                         alt=""
                         className="w-[40%] mx-auto"
                       />
-                      <p
-                        key={element.type}
-                        className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
-                      >
-                        {element.text2}
+                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
+                        {element.value.text2}
                       </p>
                     </div>
                   );
