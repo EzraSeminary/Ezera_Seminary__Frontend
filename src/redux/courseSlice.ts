@@ -120,7 +120,7 @@ export type DndElementValue = {
 
 export interface MixElement extends Omit<Element, "value"> {
   type: "mix";
-  value: MixElementValue[];
+  value: MixElementValue;
 }
 
 export type MixElementValue = {
@@ -307,7 +307,7 @@ export const courseSlice = createSlice({
         break;
         case "mix":
           newElement.type = elementType;
-          newElement.value = value as MixElementValue[];
+          newElement.value = value as MixElementValue;
         break;
         default:
           // Handle unknown element type or throw error
@@ -375,7 +375,7 @@ export const courseSlice = createSlice({
             element.value = value as DndElementValue;
             break;
           case "mix":
-            element.value = value as MixElementValue[];
+            element.value = value as MixElementValue;
             break;  
           default:
             // Handle unknown element type or throw error

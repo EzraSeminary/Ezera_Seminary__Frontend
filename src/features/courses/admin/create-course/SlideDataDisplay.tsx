@@ -523,29 +523,25 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "mix") {
                   elementComponent = (
-                    <div>
-                      {element.value.map((mixItem, index) => (
-                        <div key={index}>
-                          <p
-                            key={element.type}
-                            className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
-                          >
-                            {mixItem.text1}
-                          </p>
-                          <img
-                            key={element.type}
-                            src={imagePreviewUrl}
-                            alt=""
-                            className="w-[40%] mx-auto"
-                          />
-                          <p
-                            key={element.type}
-                            className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
-                          >
-                            {mixItem.text2}
-                          </p>
-                        </div>
-                      ))}
+                    <div key={index}>
+                      <p
+                        key={element.type}
+                        className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
+                      >
+                        {element.text1}
+                      </p>
+                      <img
+                        key={element.type}
+                        src={imagePreviewUrl}
+                        alt=""
+                        className="w-[40%] mx-auto"
+                      />
+                      <p
+                        key={element.type}
+                        className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2"
+                      >
+                        {element.text2}
+                      </p>
                     </div>
                   );
                 }
