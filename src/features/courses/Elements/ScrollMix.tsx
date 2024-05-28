@@ -3,12 +3,7 @@ import { updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 
-function ScrollMix({
-  chapterIndex,
-  slideIndex,
-  setCurrentElement,
-  element,
-}: ElementTypeProps) {
+function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
   const dispatch = useDispatch();
 
   const handleInputChange = (id: string, value: string) => {
@@ -51,7 +46,7 @@ function ScrollMix({
     <div>
       <textarea
         id={element.id}
-        placeholder={`Enter ${element.type}`}
+        placeholder="Enter text"
         value={element.value?.toString()}
         onChange={(e) => handleInputChange(element.id, e.target.value)}
         className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
@@ -79,7 +74,7 @@ function ScrollMix({
       </div>
       <textarea
         id={element.id}
-        placeholder={`Enter ${element.type}`}
+        placeholder="Enter text"
         value={element.value?.toString()}
         onChange={(e) => handleInputChange(element.id, e.target.value)}
         className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
