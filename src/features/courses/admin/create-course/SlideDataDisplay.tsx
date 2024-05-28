@@ -144,14 +144,29 @@ function SlideDataDisplay({
   const isLastSlide = selectedSlideIndex.slide === totalSlides - 1;
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+
   useEffect(() => {
     if (selectedSlide && selectedSlide.elements) {
+      // If it's an img type element
       const imgElement = selectedSlide.elements.find(
         (element) => element.type === "img"
       );
       if (imgElement && imgElement.value instanceof File) {
         const objectUrl = URL.createObjectURL(imgElement.value);
         setImagePreviewUrl(objectUrl);
+
+        // Clean up the URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      }
+
+      // If it's a mix type element
+      const mixElement = selectedSlide.elements.find(
+        (element) => element.type === "mix"
+      );
+      if (mixElement && mixElement.value.file instanceof File) {
+        const objectUrl = URL.createObjectURL(mixElement.value.file);
+        setMixImagePreviewUrl(objectUrl); // Assuming you have a state for this
 
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
@@ -522,16 +537,16 @@ function SlideDataDisplay({
                     </div>
                   );
                 } else if (element.type === "mix") {
+                  const imageSrc =
+                    element.value.file instanceof File
+                      ? mixImagePreviewUrl
+                      : element.value.file;
                   elementComponent = (
                     <div key={index}>
                       <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
                         {element.value.text1}
                       </p>
-                      <img
-                        src={imagePreviewUrl}
-                        alt=""
-                        className="w-[40%] mx-auto"
-                      />
+                      <img src={imageSrc} alt="" className="w-[40%] mx-auto" />
                       <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
                         {element.value.text2}
                       </p>

@@ -33,7 +33,7 @@ function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[[1]]; // Get the first file from the input
+      const file = e.target.files[[0]]; // Get the first file from the input
       const updatedValue = { ...mixValue, file: file };
       setMixValue(updatedValue);
 
