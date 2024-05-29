@@ -34,7 +34,8 @@ export type CustomElement =
   | SequenceElement
   | RevealElement
   | RangeElement
-  | DndElement;
+  | DndElement
+  | MixElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -132,6 +133,17 @@ export type DndElementValue = {
   choices: { text: string }[];
   correctDndAnswer: string;
   _id: string;
+};
+
+export interface MixElement extends Omit<Element, "value"> {
+  type: "mix";
+  value: MixElementValue;
+}
+
+export type MixElementValue = {
+  text1: string;
+  file: File | string;
+  text2: string;
 };
 
 export const api = createApi({
