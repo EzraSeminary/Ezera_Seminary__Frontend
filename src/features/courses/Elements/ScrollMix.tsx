@@ -6,10 +6,12 @@ import { useDispatch } from "react-redux";
 function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
   const dispatch = useDispatch();
 
+  const mixElementValue = element.value as MixElementValue;
+
   const [mixValue, setMixValue] = useState<MixElementValue>({
-    text1: element.value?.text1 || "",
-    file: element.value?.file || "",
-    text2: element.value?.text2 || "",
+    text1: mixElementValue?.text1 || "",
+    file: mixElementValue?.file || "",
+    text2: mixElementValue?.text2 || "",
   });
 
   const handleTextChange = (textKey: keyof MixElementValue, value: string) => {
@@ -28,12 +30,12 @@ function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
 
   // Image preview state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(
-    typeof element.value?.file === "string" ? element.value.file : ""
+    typeof mixElementValue?.file === "string" ? mixElementValue.file : ""
   );
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[[0]]; // Get the first file from the input
+      const file = e.target.files[0];
       const updatedValue = { ...mixValue, file: file };
       setMixValue(updatedValue);
 

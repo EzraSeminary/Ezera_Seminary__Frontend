@@ -8,6 +8,7 @@ import {
   QuizElement,
   DndElement,
   Slide,
+  MixElement,
 } from "../../../../redux/courseSlice";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
 import { RootState } from "../../../../redux/store";
@@ -162,7 +163,7 @@ function SlideDataDisplay({
 
       // If it's a mix type element
       const mixElement = selectedSlide.elements.find(
-        (element) => element.type === "mix"
+        (element): element is MixElement => element.type === "mix"
       );
       if (mixElement && mixElement.value.file instanceof File) {
         const objectUrl = URL.createObjectURL(mixElement.value.file);
