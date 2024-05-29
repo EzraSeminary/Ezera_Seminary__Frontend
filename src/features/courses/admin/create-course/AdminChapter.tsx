@@ -39,11 +39,20 @@ function AdminChapter() {
     course.chapters.forEach((chapter, chapterIndex) => {
       chapter.slides.forEach((slide, slideIndex) => {
         slide.elements.forEach((element) => {
+          // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
             formData.append(
               `chapter_${chapterIndex}_slide_${slideIndex}_image`,
               element.value,
               `${chapterIndex}_${slideIndex}_${element.value.name}`
+            );
+          }
+          // If it's a mix type element
+          if (element.type === "mix" && element.value.file instanceof File) {
+            formData.append(
+              `chapter_${chapterIndex}_slide_${slideIndex}_image`,
+              element.value.file,
+              `${chapterIndex}_${slideIndex}_${element.value.file.name}`
             );
           }
         });
