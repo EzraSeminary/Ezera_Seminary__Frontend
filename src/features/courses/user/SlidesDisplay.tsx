@@ -82,6 +82,7 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
+  console.log(courseData);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -964,55 +965,57 @@ function SlidesDisplay() {
                               </div>
                             </div>
                           );
+                        } else if (element.type === "mix") {
+                          return (
+                            <div key={element._id}>
+                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {element.value.text1}
+                              </p>
+                              <div className="w-full h-auto">
+                                {isFullScreen ? (
+                                  <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
+                                    <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
+                                      <ArrowLeft
+                                        size={40}
+                                        className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                        weight="bold"
+                                        onClick={handleCloseFullScreen}
+                                      />
+                                      <img
+                                        src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                        alt="fullscreen content"
+                                        className="w-full h-full object-contain rounded-3xl"
+                                      />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
+                                    onClick={handleOpenFullScreen}
+                                  >
+                                    <img
+                                      src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                      alt="no image"
+                                      className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
+                                    />
+                                    <CornersOut
+                                      size={28}
+                                      className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                      weight="bold"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {element.value.text2}
+                              </p>
+                            </div>
+                          );
                         }
                       })}
                     </div>
-                  </div>
-                );
-              } else if (element.type === "mix") {
-                return (
-                  <div key={element._id}>
-                    <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 ">
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value.text1}
-                    </p>
-                    <div className="w-full h-auto">
-                      {isFullScreen ? (
-                        <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
-                          <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
-                            <ArrowLeft
-                              size={40}
-                              className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                              weight="bold"
-                              onClick={handleCloseFullScreen}
-                            />
-                            <img
-                              src={`https://ezra-seminary.me/images/${element.value.file}`}
-                              alt="fullscreen content"
-                              className="w-full h-full object-contain rounded-3xl"
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div
-                          className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
-                          onClick={handleOpenFullScreen}
-                        >
-                          <img
-                            src={`https://ezra-seminary.me/images/${element.value.file}`}
-                            alt="no image"
-                            className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
-                          />
-                          <CornersOut
-                            size={28}
-                            className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                            weight="bold"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 ">
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value.text2}
-                    </p>
                   </div>
                 );
               } else {

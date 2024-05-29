@@ -138,12 +138,14 @@ export type DndElementValue = {
 export interface MixElement extends Omit<Element, "value"> {
   type: "mix";
   value: MixElementValue;
+  _id: string;
 }
 
 export type MixElementValue = {
   text1: string;
   file: File | string;
   text2: string;
+  _id: string;
 };
 
 export const api = createApi({
