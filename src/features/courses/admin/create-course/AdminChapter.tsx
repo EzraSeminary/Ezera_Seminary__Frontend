@@ -2,7 +2,11 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ChaptersAdd from "./ChaptersAdd";
-import { selectCourse, togglePublished } from "../../../../redux/courseSlice";
+import {
+  MixElement,
+  selectCourse,
+  togglePublished,
+} from "../../../../redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,7 +42,7 @@ function AdminChapter() {
 
     course.chapters.forEach((chapter, chapterIndex) => {
       chapter.slides.forEach((slide, slideIndex) => {
-        slide.elements.forEach((element) => {
+        slide.elements.forEach((element, elementIndex) => {
           // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
             formData.append(
@@ -48,12 +52,21 @@ function AdminChapter() {
             );
           }
           // If it's a mix type element
-          if (element.type === "mix" && element.value.file instanceof File) {
-            formData.append(
-              `chapter_${chapterIndex}_slide_${slideIndex}_image`,
-              element.value.file,
-              `${chapterIndex}_${slideIndex}_${element.value.file.name}`
-            );
+          if (element.type === "mix") {
+            const mixElement = element as MixElement;
+            if (mixElement.value.file instanceof File) {
+              formData.append(
+                `chapter_${chapterIndex}_slide_${slideIndex}_mix_file`,
+                mixElement.value.file,
+                `${chapterIndex}_${slideIndex}_${mixElement.value.file.name}`
+              );
+            } else {
+              console.error(
+                "File missing in Mix Element:",
+                elementIndex,
+                mixElement.value.file
+              );
+            }
           }
         });
       });
