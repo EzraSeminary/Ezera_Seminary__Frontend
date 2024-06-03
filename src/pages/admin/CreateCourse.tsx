@@ -102,12 +102,12 @@ function CreateCourse() {
             id="fileInput"
             className="relative z-10 w-[100%] lg:px-[35%] lg:py-[30%]
             md:px-[30%] md:py-[30%]
-            text-accent-6
-            file:mr-4 file:py-2 file:px-4
+            text-white
+            file:py-2 file:px-4
             file:rounded-md file:border-0
             file:text-sm file:font-semibold
-            file:bg-accent-6 file:text-primary-6 file:font-nokia-bold
-            hover:file:bg-accent-7 rounded-xs bg-transparent
+            file:font-nokia-bold
+            hover:file:bg-secondary-2 rounded-xs bg-transparent
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
             onChange={handleImageChange}

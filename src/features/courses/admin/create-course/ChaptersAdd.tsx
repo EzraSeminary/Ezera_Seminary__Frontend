@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // selectCourse,
+  selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -24,7 +24,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  // const course = useSelector(selectCourse);
+  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -171,7 +171,8 @@ function ChaptersAdd() {
       currentElement === "accordion" ||
       currentElement === "sequence" ||
       currentElement === "reveal" ||
-      currentElement === "dnd"
+      currentElement === "dnd" ||
+      currentElement === "mix"
     ) {
       dispatch(
         addElementToSlide({
@@ -206,7 +207,7 @@ function ChaptersAdd() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  // console.log("course", course);
+  console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">

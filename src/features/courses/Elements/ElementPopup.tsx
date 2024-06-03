@@ -21,7 +21,7 @@ function ElementPopup({
             className="cursor-pointer"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 w-[60%] h-[90%]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 w-[60%] h-[90%] overflow-auto">
           {elementData.map((element: ElementData, index: number) => (
             <div
               key={index}
