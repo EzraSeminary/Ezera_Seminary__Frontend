@@ -151,8 +151,8 @@ export type MixElementValue = {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.me/",
-    // baseUrl: "http://localhost:5100/",
+    // baseUrl: "https://ezra-seminary.me/",
+    baseUrl: "http://localhost:5100/",
   }),
   endpoints: (builder) => ({
     getCourses: builder.query<ApiState[], void>({
