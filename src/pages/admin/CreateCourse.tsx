@@ -10,6 +10,7 @@ import {
 import { Button } from "../../components/ui/button";
 import { CourseState } from "../../redux/courseSlice";
 import "../../index.css";
+import CustomInput from "@/components/CustomInput";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -124,7 +125,7 @@ function CreateCourse() {
         <div className="w-[80%] space-y-6">
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Course Title:</label>
-            <input
+            <CustomInput
               type="text"
               className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 ${
                 validationErrors.title ? "border-red-500" : "border-accent-6"
@@ -141,6 +142,7 @@ function CreateCourse() {
                 }));
               }}
               required
+              maxLength={30}
             />
             {/* Conditionally render an error message */}
             {validationErrors.title && (
