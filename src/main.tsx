@@ -9,8 +9,7 @@ import store from "./redux/store";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "./pages/user/ErrorPage.js";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-const ClientID =
-  "772374983893-9j4rltjf7un83bo7qsvb6atd6piphpbd.apps.googleusercontent.com";
+const ClientID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 // axios.defaults.baseURL = "https://ezra-seminary.me";
 axios.defaults.baseURL = "http://localhost:5100";
