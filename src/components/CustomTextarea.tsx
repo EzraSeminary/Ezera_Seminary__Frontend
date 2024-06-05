@@ -1,9 +1,15 @@
+import { useState, ChangeEvent, TextareaHTMLAttributes } from "react";
 interface CustomTextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   maxLength?: number;
 }
 
-function CustomTextarea({ maxLength, ...props }: CustomTextareaProps) {
+function CustomTextarea({
+  maxLength,
+  value,
+  onChange,
+  ...props
+}: CustomTextareaProps) {
   return <textarea {...props} maxLength={maxLength} />;
 }
 

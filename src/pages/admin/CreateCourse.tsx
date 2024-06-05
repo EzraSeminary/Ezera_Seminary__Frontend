@@ -142,7 +142,7 @@ function CreateCourse() {
                 }));
               }}
               required
-              maxLength={10}
+              maxLength={30}
             />
             {/* Conditionally render an error message */}
             {validationErrors.title && (

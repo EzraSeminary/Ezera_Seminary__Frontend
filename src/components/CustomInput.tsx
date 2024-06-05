@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, ChangeEvent, InputHTMLAttributes } from "react";
 
-interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   maxLength?: number;
 }
 
@@ -12,14 +12,13 @@ function CustomInput({
 }: CustomInputProps) {
   const [error, setError] = useState("");
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (maxLength && value.length > maxLength) {
       setError(`Input cannot exceed ${maxLength} characters`);
-      console.log("error");
     } else {
       setError("");
-
+      // Call the passed onChange handler from the parent component
       if (onChange) {
         onChange(event);
       }
