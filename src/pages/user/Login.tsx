@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
+import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/redux/api-slices/apiSlice";
