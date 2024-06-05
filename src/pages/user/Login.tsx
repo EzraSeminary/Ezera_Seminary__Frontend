@@ -76,10 +76,8 @@ const Login = () => {
   // Add the useGoogleLogin hook
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      // Send the access token to your backend here for verification and possibly retrieving user details
-      // Here, it will depend on how you've set up your backend, a common endpoint could be /users/google-login
       try {
-        const res = await fetch(`http://localhost:5100/auth/google`, {
+        const res = await fetch(`http://localhost:5100/auth/google/verify`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,7 +90,6 @@ const Login = () => {
         if (result) {
           // Handle successful sign in with the user object returned from your backend
           localStorage.setItem("user", JSON.stringify(result));
-
           dispatch(loginAction(result));
 
           if (result.role === "Admin") {
@@ -225,19 +222,18 @@ const Login = () => {
                 <p>Sign Up</p>
               </Link>
             </div>
-          </form>
-          <div className="text-xs mt-4  xl:text-xl">
-            <p>Or signup with</p>
-            <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
-              <button
-                onClick={() => googleLogin()}
-                className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"
-              >
-                <GoogleLogo />
-              </button>
-              <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>
+            <div className="text-xs mt-4  xl:text-xl">
+              <p>Or signup with</p>
+              <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
+                <div
+                  onClick={() => googleLogin()}
+                  className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"
+                >
+                  <GoogleLogo />
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <Footer />

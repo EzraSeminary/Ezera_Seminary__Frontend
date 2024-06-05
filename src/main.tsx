@@ -12,9 +12,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const ClientID =
   "772374983893-9j4rltjf7un83bo7qsvb6atd6piphpbd.apps.googleusercontent.com";
 
-axios.defaults.baseURL = "https://ezra-seminary.me";
-// axios.defaults.baseURL = "http://localhost:5100";
-axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
+// axios.defaults.baseURL = "https://ezra-seminary.me";
+axios.defaults.baseURL = "http://localhost:5100";
+axios.defaults.headers.common["Content-Type"] = "application/json";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
