@@ -19,7 +19,7 @@ interface APIError extends Error {
   };
 }
 
-const Login = () => {
+const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation(); // use the hook
   const navigate = useNavigate();
@@ -46,16 +46,13 @@ const Login = () => {
         if (result) {
           // save the user to local storage
           localStorage.setItem("user", JSON.stringify(result));
-
           // update the auth context
           dispatch(loginAction(result)); // dispatch the login action from authSlice
-
           if (result.role === "Admin") {
             navigate("/admin");
           } else {
             navigate("/");
           }
-
           // Show success toast
           toast.success("Login successful!");
         }
@@ -77,13 +74,16 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch(`http://localhost:5100/auth/google/verify`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token: tokenResponse.access_token }),
-        });
+        const res = await fetch(
+          `http://localhost:5100/users/auth/google/verify`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: tokenResponse.access_token }),
+          }
+        );
 
         const result = await res.json();
 
@@ -97,7 +97,6 @@ const Login = () => {
           } else {
             navigate("/");
           }
-
           toast.success("Login successful!");
         }
       } catch (err) {
