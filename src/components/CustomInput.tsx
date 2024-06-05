@@ -28,7 +28,7 @@ function CustomInput({
   return (
     <div>
       <input {...props} value={value} onChange={handleChange} />
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="text-red-500 text-xs italic">{error}</div>}
     </div>
   );
 }
