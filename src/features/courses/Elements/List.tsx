@@ -2,6 +2,8 @@ import { CustomElement, updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 export interface ElementTypeProps {
   chapterIndex: number;
@@ -48,7 +50,7 @@ function List({
         value: listItems,
       })
     );
-    // setListItems([]); // reset the data in the input
+    // setListItems([]); // reset the data in the CustomInput
     setCurrentElement(""); // reset the current element to avoid form re-rendering
   };
 
@@ -59,7 +61,7 @@ function List({
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-3">
-        <input
+        <CustomInput
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
@@ -97,7 +99,7 @@ function List({
           <label>
             <h2 className="text-secondary-6 py-3">List {index + 1}:</h2>
             <div key={index} className="flex justify-between">
-              <textarea
+              <CustomTextarea
                 value={item}
                 onChange={(e) => handleListItemChange(index, e.target.value)}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
