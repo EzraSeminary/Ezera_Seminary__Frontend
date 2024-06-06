@@ -17,6 +17,7 @@ import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import EditElements from "./EditElements";
 import AdminCourseDisplay from "./AdminCourseDisplay";
 import { EditingSlideIndex } from "../create-course/ChaptersAdd";
+import CustomInput from "@/components/CustomInput";
 
 function EditChapters() {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ function EditChapters() {
                     weight="fill"
                     className="text-accent-6 rounded-full w-8 h-8"
                   />
-                  <input
+                  <CustomInput
                     type="text"
                     name={`chapter-${chapterIndex}`}
                     placeholder="Chapter Title"
@@ -125,6 +126,7 @@ function EditChapters() {
                     onChange={(e) =>
                       updateChapterHandler(chapterIndex, e.target.value)
                     }
+                    maxLength={35}
                   />
                 </div>
                 <Trash
@@ -142,7 +144,7 @@ function EditChapters() {
                         <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
                           {slideIndex + 1}
                         </p>
-                        <input
+                        <CustomInput
                           type="text"
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
@@ -162,6 +164,7 @@ function EditChapters() {
                               slide: slideIndex,
                             })
                           }
+                          maxLength={75}
                         />
                         <Trash
                           onClick={() =>
