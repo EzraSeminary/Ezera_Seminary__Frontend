@@ -1,3 +1,4 @@
+import CustomTextarea from "@/components/CustomTextarea";
 import { ElementTypeProps } from "./List";
 import { updateElement, MixElementValue } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
@@ -55,12 +56,13 @@ function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
 
   return (
     <div>
-      <textarea
+      <CustomTextarea
         id={`${element.id}-text1`}
         placeholder="Enter text"
         value={mixValue.text1}
         onChange={(e) => handleTextChange("text1", e.target.value)}
         className="w-[100%] h-[25vh] font-Lato-Regular border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+        maxLength={300}
       />
       <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
         <input
@@ -73,12 +75,13 @@ function ScrollMix({ chapterIndex, slideIndex, element }: ElementTypeProps) {
           <img src={imagePreviewUrl} alt="" className="rounded-b-md" />
         )}
       </div>
-      <textarea
+      <CustomTextarea
         id={`${element.id}-text2`}
         placeholder="Enter text"
         value={mixValue.text2}
         onChange={(e) => handleTextChange("text2", e.target.value)}
         className="w-[100%] h-[25vh] font-Lato-Regular border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+        maxLength={300}
       />
     </div>
   );

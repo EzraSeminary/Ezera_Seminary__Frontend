@@ -14,6 +14,8 @@ import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
 import ScrollMix from "../../Elements/ScrollMix";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 export interface ElementsAddProps {
   chapterIndex: number;
@@ -125,22 +127,24 @@ function ElementsAdd({
         let elementComponent;
         if (element.type === "title" || element.type === "sub") {
           elementComponent = (
-            <input
+            <CustomInput
               id={element.id}
               placeholder={`Enter ${element.type}`}
               value={element.value?.toString()}
               onChange={(e) => handleInputChange(element.id, e.target.value)}
               className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              maxLength={50}
             />
           );
         } else if (element.type === "text") {
           elementComponent = (
-            <textarea
+            <CustomTextarea
               id={element.id}
               placeholder={`Enter ${element.type}`}
               value={element.value?.toString()}
               onChange={(e) => handleInputChange(element.id, e.target.value)}
               className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              maxLength={300}
             />
           );
         } else if (element.type === "img") {
