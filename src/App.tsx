@@ -83,10 +83,12 @@ function App() {
 
   // Public Route (redirect if logged in)
   const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+    const user = useSelector((state: RootState) => state.auth.user);
+
     if (user && user.role === "Admin") {
       return <Navigate to="/admin" replace={true} />;
     }
-    return !user ? children : <Navigate to="/" replace={true} />;
+    return !user ? children : <Navigate to="/google/success" replace={false} />;
   };
 
   PublicRoute.propTypes = {
@@ -94,6 +96,8 @@ function App() {
   };
 
   const isAdmin = user && user.role === "Admin";
+
+  console.log(user);
 
   return (
     <BrowserRouter>

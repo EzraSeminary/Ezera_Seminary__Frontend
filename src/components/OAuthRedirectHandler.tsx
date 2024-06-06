@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { login as loginAction } from "@/redux/authSlice";
 import { toast } from "react-toastify";
+import { login as loginAction } from "@/redux/authSlice";
 
 const OAuthRedirectHandler = () => {
   const location = useLocation();
@@ -10,8 +10,10 @@ const OAuthRedirectHandler = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("OAuthRedirectHandler executed");
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
+    console.log("token", token);
 
     if (token) {
       const fetchUser = async () => {
@@ -20,7 +22,7 @@ const OAuthRedirectHandler = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`, // Ensure this token is valid
             },
           });
 
@@ -28,8 +30,9 @@ const OAuthRedirectHandler = () => {
 
           if (response.ok) {
             localStorage.setItem("user", JSON.stringify(result));
+            console.log("here is $result");
             dispatch(loginAction(result));
-            navigate("/");
+            navigate("/google/suceess");
             toast.success("Login successful!");
           } else {
             toast.error(

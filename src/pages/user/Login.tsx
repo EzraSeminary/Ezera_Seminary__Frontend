@@ -74,6 +74,7 @@ const Login: React.FC = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
+        // This is where you extract the token
         const res = await fetch(
           `http://localhost:5100/users/auth/google/verify`,
           {
@@ -81,7 +82,7 @@ const Login: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ token: tokenResponse.access_token }),
+            body: JSON.stringify({ token: tokenResponse.access_token }), // Check the token here
           }
         );
 
@@ -95,7 +96,7 @@ const Login: React.FC = () => {
           if (result.role === "Admin") {
             navigate("/admin");
           } else {
-            navigate("/");
+            navigate("/"); // Navigate to /google/success
           }
           toast.success("Login successful!");
         }
@@ -105,7 +106,6 @@ const Login: React.FC = () => {
       }
     },
     onError: () => {
-      // Handle errors
       toast.error("Google sign-in failed. Please try again.");
     },
   });
