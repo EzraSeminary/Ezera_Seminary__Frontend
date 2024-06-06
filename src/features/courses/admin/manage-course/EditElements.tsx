@@ -8,6 +8,8 @@ import {
   Chapter,
 } from "@/redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+import CustomTextarea from "@/components/CustomTextarea";
+import CustomInput from "@/components/CustomInput";
 
 interface EditElementsProps {
   chapterIndex: number;
@@ -63,7 +65,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderListForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
@@ -124,7 +126,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     id: string
   ) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
+      const file = e.target.files[0]; // Get the first file from the CustomInput
       if (file) {
         dispatch(
           updateElement({
@@ -221,7 +223,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderSlideForm = () => (
     <div className="">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <textarea
+        <CustomTextarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
@@ -325,7 +327,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderQuizForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
@@ -364,7 +366,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
-              <input
+              <CustomInput
                 type="text"
                 value={choice}
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
@@ -444,7 +446,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderSequenceForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
@@ -575,14 +577,14 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Reveal Item {index + 1}:
             <li key={index} className="flex flex-col space-y-2 mb-4">
-              <input
+              <CustomInput
                 type="text"
                 value={title}
                 onChange={(e) => handleRevealTitleChange(index, e.target.value)}
                 placeholder={`Title ${index + 1}`}
                 className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
               />
-              <textarea
+              <CustomTextarea
                 value={revealContents[index]}
                 onChange={(e) =>
                   handleRevealContentChange(index, e.target.value)
@@ -654,7 +656,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderDndForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={dndQuestion}
           onChange={handleDndQuestionChange}
@@ -693,7 +695,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
-              <input
+              <CustomInput
                 type="text"
                 value={choice}
                 onChange={(e) => handleDndChoiceChange(index, e.target.value)}
@@ -789,7 +791,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
               />
             </div>
             {element.type === "img" ? (
-              <input
+              <CustomInput
                 type="file"
                 id={element.id}
                 onChange={(e) => handleFileInputChange(e, element.id)}
@@ -799,7 +801,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
             ) : element.type === "range" ? null : (
-              <input
+              <CustomTextarea
                 id={element.id}
                 placeholder={`Enter ${element.type}`}
                 value={
@@ -809,6 +811,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={300}
               />
             )}
           </div>
