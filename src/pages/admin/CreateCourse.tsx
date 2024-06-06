@@ -11,6 +11,7 @@ import { Button } from "../../components/ui/button";
 import { CourseState } from "../../redux/courseSlice";
 import "../../index.css";
 import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -153,7 +154,7 @@ function CreateCourse() {
           </div>
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Description:</label>
-            <textarea
+            <CustomTextarea
               className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border bg-primary-6 ${
                 validationErrors.description
                   ? "border-red-500"
@@ -171,6 +172,7 @@ function CreateCourse() {
                 }));
               }}
               required
+              maxLength={500}
             />
             {validationErrors.description && (
               <p className="text-red-500 text-xs italic">
