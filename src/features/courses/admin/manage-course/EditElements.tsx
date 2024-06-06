@@ -71,6 +71,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           onChange={handleListInputChange}
           placeholder="Enter list item"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={100}
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -228,6 +229,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={150}
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -333,6 +335,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={150}
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -372,6 +375,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
                 className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+                maxLength={50}
               />
               <Trash
                 onClick={() => {
