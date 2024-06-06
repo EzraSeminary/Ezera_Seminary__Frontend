@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 function Reveal({
   chapterIndex,
@@ -108,23 +110,25 @@ function Reveal({
               <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 rounded-t-md">
                 TITLE
               </label>
-              <input
+              <CustomInput
                 type="text"
                 value={title}
                 onChange={(e) => handleRevealTitleChange(index, e.target.value)}
                 placeholder={`Title ${index + 1}`}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+                maxLength={50}
               />
               <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 mt-2 rounded-t-md">
                 CONTENT
               </label>
-              <textarea
+              <CustomTextarea
                 value={revealContents[index]}
                 onChange={(e) =>
                   handleRevealContentChange(index, e.target.value)
                 }
                 placeholder={`Content ${index + 1}`}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+                maxLength={200}
               />
             </li>
           </div>

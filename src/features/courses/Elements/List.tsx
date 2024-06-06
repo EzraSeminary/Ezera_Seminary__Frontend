@@ -67,6 +67,7 @@ function List({
           onChange={handleListInputChange}
           placeholder="Enter list item"
           className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          maxLength={100}
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -103,6 +104,7 @@ function List({
                 value={item}
                 onChange={(e) => handleListItemChange(index, e.target.value)}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={100}
               />
               <Trash
                 onClick={() => handleDeleteListItem(index)}
