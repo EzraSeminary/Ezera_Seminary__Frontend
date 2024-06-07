@@ -172,7 +172,7 @@ function CreateCourse() {
                 }));
               }}
               required
-              maxLength={500}
+              maxLength={150}
             />
             {validationErrors.description && (
               <p className="text-red-500 text-xs italic">

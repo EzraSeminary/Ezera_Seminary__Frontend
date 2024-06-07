@@ -100,7 +100,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
               autoComplete="off"
               value={description}
               onChange={(e) => dispatch(setDescription(e.target.value))}
-              maxLength={500}
+              maxLength={150}
             />
           </div>
           <div className="col-span-12">
