@@ -33,7 +33,8 @@ export type CustomElement =
   | SequenceElement
   | RevealElement
   | RangeElement
-  | DndElement;
+  | DndElement
+  | MixElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -115,6 +116,17 @@ export type DndElementValue = {
   question: string;
   choices: { text: string }[];
   correctDndAnswer: string;
+};
+
+export interface MixElement extends Omit<Element, "value"> {
+  type: "mix";
+  value: MixElementValue;
+}
+
+export type MixElementValue = {
+  text1: string;
+  file: File | string;
+  text2: string;
 };
 
 // Define the initial state using `CourseState`
@@ -215,6 +227,7 @@ export const courseSlice = createSlice({
           | AccordionElementValue[]
           | RevealElementValue[]
           | DndElementValue
+          | MixElementValue
           | null;
       }>
     ) => {
@@ -292,6 +305,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as DndElementValue;
         break;
+        case "mix":
+          newElement.type = elementType;
+          newElement.value = value as MixElementValue;
+        break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -315,7 +332,8 @@ export const courseSlice = createSlice({
           | QuizElementValue
           | AccordionElementValue[]
           | RevealElementValue[]
-          | DndElementValue;
+          | DndElementValue
+          | MixElementValue;
       }>
     ) => {
       const { chapterIndex, slideIndex, elementId, value } = action.payload;
@@ -356,6 +374,9 @@ export const courseSlice = createSlice({
           case "dnd":
             element.value = value as DndElementValue;
             break;
+          case "mix":
+            element.value = value as MixElementValue;
+            break;  
           default:
             // Handle unknown element type or throw error
             throw new Error(

@@ -17,4 +17,5 @@ export interface ElementData {
     { title: "Reveal", description: 'Show a list of concepts',value:"reveal" },
     { title: "Slider", description: 'Select a single value' ,value:"range"},
     { title: "Missing Words", description: 'Fill the missing words' ,value:"dnd"},
+    { title: "Scroll Mix", description: 'Show a mix of text and media' ,value:"mix"},
   ];

@@ -10,6 +10,8 @@ import {
 import { Button } from "../../components/ui/button";
 import { CourseState } from "../../redux/courseSlice";
 import "../../index.css";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -102,12 +104,12 @@ function CreateCourse() {
             id="fileInput"
             className="relative z-10 w-[100%] lg:px-[35%] lg:py-[30%]
             md:px-[30%] md:py-[30%]
-            text-accent-6
-            file:mr-4 file:py-2 file:px-4
+            text-white
+            file:py-2 file:px-4
             file:rounded-md file:border-0
             file:text-sm file:font-semibold
-            file:bg-accent-6 file:text-primary-6 file:font-nokia-bold
-            hover:file:bg-accent-7 rounded-xs bg-transparent
+            file:font-nokia-bold
+            hover:file:bg-secondary-2 rounded-xs bg-transparent
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
             onChange={handleImageChange}
@@ -124,7 +126,7 @@ function CreateCourse() {
         <div className="w-[80%] space-y-6">
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Course Title:</label>
-            <input
+            <CustomInput
               type="text"
               className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 ${
                 validationErrors.title ? "border-red-500" : "border-accent-6"
@@ -141,6 +143,7 @@ function CreateCourse() {
                 }));
               }}
               required
+              maxLength={30}
             />
             {/* Conditionally render an error message */}
             {validationErrors.title && (
@@ -151,7 +154,7 @@ function CreateCourse() {
           </div>
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Description:</label>
-            <textarea
+            <CustomTextarea
               className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border bg-primary-6 ${
                 validationErrors.description
                   ? "border-red-500"
@@ -169,6 +172,7 @@ function CreateCourse() {
                 }));
               }}
               required
+              maxLength={500}
             />
             {validationErrors.description && (
               <p className="text-red-500 text-xs italic">
