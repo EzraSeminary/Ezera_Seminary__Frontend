@@ -36,6 +36,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
+import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
 
 interface FlipState {
   [index: number]: boolean;
@@ -371,6 +372,22 @@ function AdminCourseDisplay({
                       >
                         {listItemsComponent}
                       </Splide>
+                    </div>
+                  );
+                } else if (element.type === "accordion") {
+                  const accordionItemsComponent = element.value.map(
+                    (accordionItem, index) => (
+                      <AccordionItemDisplay
+                        key={`${uniqueKey}-accordion-${index}`}
+                        title={accordionItem.title}
+                        content={accordionItem.content}
+                      />
+                    )
+                  );
+
+                  elementComponent = (
+                    <div className="flex flex-col justify-center items-center w-full">
+                      {accordionItemsComponent}
                     </div>
                   );
                 } else if (element.type === "sequence") {

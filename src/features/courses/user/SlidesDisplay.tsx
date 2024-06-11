@@ -306,6 +306,8 @@ function SlidesDisplay() {
             navigate(`/courses/get/${courseId}`);
           }, 3000);
         });
+    } else {
+      navigate(`/courses/get/${courseId}`);
     }
   };
 

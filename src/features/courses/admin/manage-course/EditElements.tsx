@@ -894,6 +894,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="img">Image</option>
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
+          <option value="accordion">Accordion</option>
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
