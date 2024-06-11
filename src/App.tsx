@@ -88,7 +88,7 @@ function App() {
     if (user && user.role === "Admin") {
       return <Navigate to="/admin" replace={true} />;
     }
-    return !user ? children : <Navigate to="/google/success" replace={false} />;
+    return !user ? children : <Navigate to="/" replace={false} />;
   };
 
   PublicRoute.propTypes = {
