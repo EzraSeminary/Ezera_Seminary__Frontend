@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { ArrowRight } from "@phosphor-icons/react";
-import { ArrowLeft } from "@phosphor-icons/react";
 import { Devotion } from "@/redux/types";
 
 const gridContainerVariants = {
