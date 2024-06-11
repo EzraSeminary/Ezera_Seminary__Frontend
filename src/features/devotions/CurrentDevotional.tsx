@@ -321,16 +321,6 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   className="text-primary-1 animate-pulse text-sm md:text-lg lg:text-xl xl:text-2xl"
                 />
               </button>
-              <button
-                className="flex w-max text-xs xl:text-lg items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1 "
-                // onClick={handleShare}>
-              >
-                ምስሉን አጋራ
-                <ShareNetwork
-                  weight="bold"
-                  className="text-primary-1 animate-pulse text-sm md:text-lg lg:text-xl xl:text-2xl"
-                />
-              </button>
             </div>
           </div>
         </div>
