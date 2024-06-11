@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { DownloadSimple } from "@phosphor-icons/react";
-import { ShareNetwork } from "@phosphor-icons/react";
 import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
 import { PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import prayerImage from "@/assets/prayerImg.png";
