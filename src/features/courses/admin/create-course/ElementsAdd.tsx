@@ -267,6 +267,17 @@ function ElementsAdd({
                 focus:outline-none focus:border-accent-8 cursor-pointer"
             />
           );
+        } else if (element.type === "video") {
+          elementComponent = (
+            <CustomInput
+              id={element.id}
+              placeholder="Add video Link here"
+              value={element.value?.toString()}
+              onChange={(e) => handleInputChange(element.id, e.target.value)}
+              className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              maxLength={50}
+            />
+          );
         }
 
         return (
