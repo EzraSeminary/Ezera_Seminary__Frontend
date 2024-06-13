@@ -9,6 +9,7 @@ import {
   CustomElement,
   QuizElement,
   DndElement,
+  MixElement,
 } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -147,12 +148,27 @@ function AdminCourseDisplay({
 
   //Display image from state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+
   useEffect(() => {
     if (selectedSlide && selectedSlide?.elements) {
+      // If it's an img type element
       const imgElement = selectedSlide.elements.find((e) => e.type === "img");
       if (imgElement && imgElement.value instanceof File) {
         const objectUrl = URL.createObjectURL(imgElement.value as File);
         setImagePreviewUrl(objectUrl);
+
+        // Clean up the URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      }
+
+      // If it's a mix type element
+      const mixElement = selectedSlide.elements.find(
+        (element): element is MixElement => element.type === "mix"
+      );
+      if (mixElement && mixElement.value.file instanceof File) {
+        const objectUrl = URL.createObjectURL(mixElement.value.file);
+        setMixImagePreviewUrl(objectUrl); // Assuming you have a state for this
 
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
