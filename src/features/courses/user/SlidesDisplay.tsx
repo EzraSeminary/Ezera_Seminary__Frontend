@@ -875,7 +875,7 @@ function SlidesDisplay() {
                                   isFlipped={flip[index] || false}
                                   flipDirection="vertical"
                                   key={index}
-                                  containerClassName="w-full h-auto flex flex-col justify-center items-center "
+                                  containerClassName="w-full h-auto flex flex-col justify-center items-center font-nokia-bold "
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
