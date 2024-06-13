@@ -13,7 +13,7 @@ import LoadingPage from "./pages/user/LoadingPage";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import LoggedInHome from "./features/home/LoggedInHome";
 import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
-import OAuthRedirectHandler from "@/components/OAuthRedirectHandler";
+// import OAuthRedirectHandler from "@/components/OAuthRedirectHandler";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -172,14 +172,14 @@ function App() {
               </PublicRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/google/success"
             element={
               <PublicRoute>
                 <OAuthRedirectHandler />
               </PublicRoute>
             }
-          />
+          /> */}
           <Route
             path="/reset-password/:token"
             element={
