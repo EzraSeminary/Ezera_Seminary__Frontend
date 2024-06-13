@@ -34,7 +34,8 @@ export type CustomElement =
   | RevealElement
   | RangeElement
   | DndElement
-  | MixElement;
+  | MixElement
+  | AudioElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -128,6 +129,11 @@ export type MixElementValue = {
   file: File | string;
   text2: string;
 };
+
+export interface AudioElement extends Omit<Element, "value"> {
+  type: "audio";
+  value: File | string;
+}
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
@@ -308,6 +314,10 @@ export const courseSlice = createSlice({
         case "mix":
           newElement.type = elementType;
           newElement.value = value as MixElementValue;
+        break;
+        case "audio":
+          newElement.type = elementType;
+          newElement.value = value as string | File;
         break;
         default:
           // Handle unknown element type or throw error
