@@ -539,6 +539,22 @@ function AdminCourseDisplay({
                       </div>
                     </div>
                   );
+                } else if (element.type === "mix") {
+                  const imageSrc =
+                    element.value.file instanceof File
+                      ? mixImagePreviewUrl
+                      : element.value.file;
+                  elementComponent = (
+                    <div key={index}>
+                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
+                        {element.value.text1}
+                      </p>
+                      <img src={imageSrc} alt="" className="w-[40%] mx-auto" />
+                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
+                        {element.value.text2}
+                      </p>
+                    </div>
+                  );
                 }
 
                 return elementComponent;

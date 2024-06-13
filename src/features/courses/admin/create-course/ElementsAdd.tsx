@@ -113,6 +113,10 @@ function ElementsAdd({
         return "Missing Words";
       case "mix":
         return "Scroll Mix";
+      case "audio":
+        return "Audio";
+      case "video":
+        return "Video";
       default:
         return "";
     }
