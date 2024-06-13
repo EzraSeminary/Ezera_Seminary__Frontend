@@ -17,6 +17,12 @@ import LoadingPage from "@/pages/user/LoadingPage";
 function ChaptersDisplay() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   {
     /* State to control account modal  */
   }
@@ -236,10 +242,23 @@ function ChaptersDisplay() {
             <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
               {courseData?.title}
             </h1>
+
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-accent-5  text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
-              {courseData?.description}
-            </p>
+            <div className="w-[90%] mx-auto mt-2  flex flex-col">
+              <p
+                className={`text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2  text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ${
+                  isExpanded ? "line-clamp-none" : "line-clamp-3"
+                } text-justify leading-tight lg:text-xs`}
+              >
+                {courseData?.description}
+              </p>
+              <button
+                onClick={toggleExpand}
+                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
+              >
+                {isExpanded ? "Less" : "More"}
+              </button>
+            </div>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
@@ -324,9 +343,21 @@ function ChaptersDisplay() {
               {courseData?.title}
             </h1>
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
-              {courseData?.description}
-            </p>
+            <div className="w-[90%] mx-auto mt-2  flex flex-col">
+              <p
+                className={`text-secondary-5 text-xs1 font-nokia-bold xl:text-lg ${
+                  isExpanded ? "line-clamp-none" : "line-clamp-3"
+                } text-justify leading-tight lg:text-xs`}
+              >
+                {courseData?.description}
+              </p>
+              <button
+                onClick={toggleExpand}
+                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
+              >
+                {isExpanded ? "Less" : "More"}
+              </button>
+            </div>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">

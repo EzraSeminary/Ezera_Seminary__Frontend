@@ -128,7 +128,7 @@ function CreateCourse() {
             <label className="block text-accent-6 mb-1">Course Title:</label>
             <CustomInput
               type="text"
-              className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 ${
+              className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 font-nokia-bold ${
                 validationErrors.title ? "border-red-500" : "border-accent-6"
               } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-4 placeholder:text-sm`}
               name="title"
@@ -155,7 +155,7 @@ function CreateCourse() {
           <div className="col-span-12">
             <label className="block text-accent-6 mb-1">Description:</label>
             <CustomTextarea
-              className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border bg-primary-6 ${
+              className={`w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border bg-primary-6 font-nokia-bold  ${
                 validationErrors.description
                   ? "border-red-500"
                   : "border-accent-6"
