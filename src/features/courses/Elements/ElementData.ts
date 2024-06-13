@@ -18,4 +18,5 @@ export interface ElementData {
     { title: "Slider", description: 'Select a single value' ,value:"range"},
     { title: "Missing Words", description: 'Fill the missing words' ,value:"dnd"},
     { title: "Scroll Mix", description: 'Show a mix of text and media' ,value:"mix"},
+    { title: "Audio", description: 'Add an audio file' ,value:"audio"},
   ];

@@ -386,6 +386,9 @@ export const courseSlice = createSlice({
             break;
           case "mix":
             element.value = value as MixElementValue;
+            break;
+          case "audio":
+            element.value = value as string | File;
             break;  
           default:
             // Handle unknown element type or throw error
