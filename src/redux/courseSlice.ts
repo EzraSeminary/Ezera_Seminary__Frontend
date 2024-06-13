@@ -35,7 +35,8 @@ export type CustomElement =
   | RangeElement
   | DndElement
   | MixElement
-  | AudioElement;
+  | AudioElement
+  | VideoElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -133,6 +134,11 @@ export type MixElementValue = {
 export interface AudioElement extends Omit<Element, "value"> {
   type: "audio";
   value: File | string;
+}
+
+export interface VideoElement extends Omit<Element, "value"> {
+  type: "video";
+  value: string;
 }
 
 // Define the initial state using `CourseState`
@@ -319,6 +325,10 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as string | File;
         break;
+        case "video":
+          newElement.type = elementType;
+          newElement.value = value as string;
+        break;
         default:
           // Handle unknown element type or throw error
           throw new Error(`Unknown element type: ${elementType}`);
@@ -389,7 +399,10 @@ export const courseSlice = createSlice({
             break;
           case "audio":
             element.value = value as string | File;
-            break;  
+            break;
+          case "video":
+            element.value = value as string;
+            break;
           default:
             // Handle unknown element type or throw error
             throw new Error(
