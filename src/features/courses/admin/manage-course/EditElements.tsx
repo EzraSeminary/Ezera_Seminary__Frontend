@@ -917,8 +917,6 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "sequence" && renderSequenceForm()}
       {currentElement === "reveal" && renderRevealForm()}
       {currentElement === "dnd" && renderDndForm()}
-      {currentElement === "audio" && renderAudioForm()}
-      {currentElement === "video" && renderVideoForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
@@ -932,7 +930,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 size={18}
               />
             </div>
-            {element.type === "img" ? (
+            {element.type === "img" || element.type === "audio" ? (
               <CustomInput
                 type="file"
                 id={element.id}
