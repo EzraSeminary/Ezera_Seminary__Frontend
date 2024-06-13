@@ -253,6 +253,20 @@ function ElementsAdd({
               element={element}
             />
           );
+        } else if (element.type === "audio") {
+          elementComponent = (
+            <input
+              type="file"
+              id={element.id}
+              onChange={(e) => handleFileInputChange(e, element.id)}
+              className="w-[100%]
+                file:rounded-md text-sm
+                file:text-lg  text-secondary-6 font-bold p-2
+                file:font-nokia-bold
+                rounded-xs bg-transparent hover:text-secondary-5
+                focus:outline-none focus:border-accent-8 cursor-pointer"
+            />
+          );
         }
 
         return (
