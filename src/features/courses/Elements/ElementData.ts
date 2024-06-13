@@ -19,4 +19,5 @@ export interface ElementData {
     { title: "Missing Words", description: 'Fill the missing words' ,value:"dnd"},
     { title: "Scroll Mix", description: 'Show a mix of text and media' ,value:"mix"},
     { title: "Audio", description: 'Add an audio file' ,value:"audio"},
+    { title: "Video", description: 'Show a video file',value:"video" },
   ];
