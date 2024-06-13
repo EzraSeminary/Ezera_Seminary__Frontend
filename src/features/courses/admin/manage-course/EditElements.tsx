@@ -899,6 +899,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
           <option value="dnd">Missing Words</option>
+          <option value="audio">Audio</option>
+          <option value="video">Video</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -915,6 +917,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
       {currentElement === "sequence" && renderSequenceForm()}
       {currentElement === "reveal" && renderRevealForm()}
       {currentElement === "dnd" && renderDndForm()}
+      {currentElement === "audio" && renderAudioForm()}
+      {currentElement === "video" && renderVideoForm()}
 
       {elements.map((element, index) => (
         <div key={index} className="py-2">
