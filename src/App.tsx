@@ -13,6 +13,7 @@ import LoadingPage from "./pages/user/LoadingPage";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import LoggedInHome from "./features/home/LoggedInHome";
 import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
+// import OAuthRedirectHandler from "@/components/OAuthRedirectHandler";
 
 // using React.lazy for dynamic imports
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
@@ -82,10 +83,12 @@ function App() {
 
   // Public Route (redirect if logged in)
   const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+    const user = useSelector((state: RootState) => state.auth.user);
+
     if (user && user.role === "Admin") {
       return <Navigate to="/admin" replace={true} />;
     }
-    return !user ? children : <Navigate to="/" replace={true} />;
+    return !user ? children : <Navigate to="/" replace={false} />;
   };
 
   PublicRoute.propTypes = {
@@ -93,6 +96,8 @@ function App() {
   };
 
   const isAdmin = user && user.role === "Admin";
+
+  console.log(user);
 
   return (
     <BrowserRouter>
@@ -167,6 +172,14 @@ function App() {
               </PublicRoute>
             }
           />
+          {/* <Route
+            path="/google/success"
+            element={
+              <PublicRoute>
+                <OAuthRedirectHandler />
+              </PublicRoute>
+            }
+          /> */}
           <Route
             path="/reset-password/:token"
             element={

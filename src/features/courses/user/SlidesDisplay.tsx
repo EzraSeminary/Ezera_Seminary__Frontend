@@ -55,6 +55,11 @@ function SlidesDisplay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -419,9 +424,22 @@ function SlidesDisplay() {
               {courseData?.title}
             </h1>
             <hr className="border-accent-5 border w-[90%] mx-auto" />
-            <p className="text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs ">
-              {courseData?.description}
-            </p>
+
+            <div className="w-[90%] mx-auto mt-2  flex flex-col">
+              <p
+                className={`text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2  text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ${
+                  isExpanded ? "line-clamp-none" : "line-clamp-3"
+                } text-justify leading-tight lg:text-xs`}
+              >
+                {courseData?.description}
+              </p>
+              <button
+                onClick={toggleExpand}
+                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
+              >
+                {isExpanded ? "Less" : "More"}
+              </button>
+            </div>
 
             {/* Header */}
             <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
@@ -498,12 +516,24 @@ function SlidesDisplay() {
 
           {/* Course title and description*/}
           <div className="flex flex-col w-full h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
-            <p className="text-secondary-5 text-xs1 font-nokia-Regular xl:text-lg mt-2 line-clamp-3 text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ">
-              {courseData?.description}
-            </p>
+            <div className="w-[90%] mx-auto mt-2  flex flex-col">
+              <p
+                className={`text-secondary-5 text-xs1 font-nokia-bold xl:text-lg ${
+                  isExpanded ? "line-clamp-none" : "line-clamp-3"
+                } text-justify leading-tight lg:text-xs`}
+              >
+                {courseData?.description}
+              </p>
+              <button
+                onClick={toggleExpand}
+                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
+              >
+                {isExpanded ? "Less" : "More"}
+              </button>
+            </div>
 
             {/* Header */}
-            <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
+            <div className="flex flex-col  border-accent-5 border-b  w-[95%] mx-auto">
               <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
                 ትምህርቶች {currentSlideNumber}/{totalDataNumber}
               </h1>
@@ -646,7 +676,7 @@ function SlidesDisplay() {
                                   <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
                                     <ArrowLeft
                                       size={40}
-                                      className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                      className="absolute top-4 left-4 text-primary-5 bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
                                       weight="bold"
                                       onClick={handleCloseFullScreen}
                                     />
@@ -666,11 +696,11 @@ function SlidesDisplay() {
                                     key={element._id}
                                     src={`https://ezra-seminary.me/images/${element.value}`}
                                     alt="no image"
-                                    className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
+                                    className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                   />
                                   <CornersOut
                                     size={28}
-                                    className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                    className="absolute bottom-1 right-1 text-primary-5 bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
                                     weight="bold"
                                   />
                                 </div>
@@ -845,7 +875,7 @@ function SlidesDisplay() {
                                   isFlipped={flip[index] || false}
                                   flipDirection="vertical"
                                   key={index}
-                                  containerClassName="w-full h-auto flex flex-col justify-center items-center "
+                                  containerClassName="w-full h-auto flex flex-col justify-center items-center font-nokia-bold "
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
@@ -980,7 +1010,7 @@ function SlidesDisplay() {
                                     <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
                                       <ArrowLeft
                                         size={40}
-                                        className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                        className="absolute top-4 left-4 text-primary-5 bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
                                         weight="bold"
                                         onClick={handleCloseFullScreen}
                                       />
@@ -999,11 +1029,11 @@ function SlidesDisplay() {
                                     <img
                                       src={`https://ezra-seminary.me/images/${element.value.file}`}
                                       alt="no image"
-                                      className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
+                                      className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                     />
                                     <CornersOut
                                       size={28}
-                                      className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                      className="absolute bottom-1 right-1 text-primary-5 bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
                                       weight="bold"
                                     />
                                   </div>
@@ -1039,7 +1069,7 @@ function SlidesDisplay() {
                   ተመለስ
                 </button>
                 <p
-                  className={`block lg:hidden font-nokia-bold text-primary-6 text-xs lg:text-sm pt-2 ${
+                  className={`block lg:hidden font-nokia-bold text-primary-5 text-xs lg:text-sm pt-2 ${
                     activeIndex === 0 ? "hidden" : "block"
                   } ${isLastSlide ? "hidden" : "block"}`}
                 >
@@ -1056,7 +1086,7 @@ function SlidesDisplay() {
                   ቀጥል
                 </button>
                 <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                  className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     isLastSlide ? "block" : "hidden"
                   }`}
                   onClick={submitProgress}

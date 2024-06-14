@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import Footer from "@/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useGoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 
 interface APIError extends Error {
   status: number;
@@ -19,7 +19,7 @@ interface APIError extends Error {
   };
 }
 
-const Login = () => {
+const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation(); // use the hook
   const navigate = useNavigate();
@@ -46,16 +46,13 @@ const Login = () => {
         if (result) {
           // save the user to local storage
           localStorage.setItem("user", JSON.stringify(result));
-
           // update the auth context
           dispatch(loginAction(result)); // dispatch the login action from authSlice
-
           if (result.role === "Admin") {
             navigate("/admin");
           } else {
             navigate("/");
           }
-
           // Show success toast
           toast.success("Login successful!");
         }
@@ -74,42 +71,44 @@ const Login = () => {
   });
 
   // Add the useGoogleLogin hook
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        const res = await fetch(`http://localhost:5100/auth/google/verify`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token: tokenResponse.access_token }),
-        });
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: async (tokenResponse) => {
+  //     try {
+  //       // This is where you extract the token
+  //       const res = await fetch(
+  //         `http://localhost:5100/users/auth/google/verify`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({ token: tokenResponse.access_token }), // Check the token here
+  //         }
+  //       );
 
-        const result = await res.json();
+  //       const result = await res.json();
 
-        if (result) {
-          // Handle successful sign in with the user object returned from your backend
-          localStorage.setItem("user", JSON.stringify(result));
-          dispatch(loginAction(result));
+  //       if (result) {
+  //         // Handle successful sign in with the user object returned from your backend
+  //         localStorage.setItem("user", JSON.stringify(result));
+  //         dispatch(loginAction(result));
 
-          if (result.role === "Admin") {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-
-          toast.success("Login successful!");
-        }
-      } catch (err) {
-        console.error(err);
-        toast.error("Google sign-in failed. Please try again.");
-      }
-    },
-    onError: () => {
-      // Handle errors
-      toast.error("Google sign-in failed. Please try again.");
-    },
-  });
+  //         if (result.role === "Admin") {
+  //           navigate("/admin");
+  //         } else {
+  //           navigate("/"); // Navigate to /google/success
+  //         }
+  //         toast.success("Login successful!");
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       toast.error("Google sign-in failed. Please try again.");
+  //     }
+  //   },
+  //   onError: () => {
+  //     toast.error("Google sign-in failed. Please try again.");
+  //   },
+  // });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -226,7 +225,7 @@ const Login = () => {
               <p>Or signup with</p>
               <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
                 <div
-                  onClick={() => googleLogin()}
+                  // onClick={() => googleLogin()}
                   className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"
                 >
                   <GoogleLogo />

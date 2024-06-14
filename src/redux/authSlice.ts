@@ -37,10 +37,9 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-
-      // Store the token in localStorage
-      localStorage.setItem("token", action.payload.token || "");
+      // Store the user details in local storage
       localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem("token", action.payload.token || "");
     },
     signup: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
@@ -61,6 +60,7 @@ const authSlice = createSlice({
 
       // Remove the token from localStorage
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     setAuthReady: (state, action: PayloadAction<boolean>) => {
       state.isAuthReady = action.payload;

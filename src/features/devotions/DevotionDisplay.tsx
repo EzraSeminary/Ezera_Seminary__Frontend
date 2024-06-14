@@ -1,20 +1,17 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
 import PreviousDevotionals from "./PreviousDevotionals";
-// import Footer from "@/components/Footer";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
 import LoadingPage from "@/pages/user/LoadingPage";
 
-// Define the type for a devotion object
-
 export interface DevotionDisplayProps {
   showControls: boolean;
-  devotions: Devotion[] | undefined; // Add this line
-  toggleForm: () => void; // Add this line
+  devotions: Devotion[] | undefined;
+  toggleForm: () => void;
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
@@ -26,10 +23,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   );
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
-
-  // Explicitly type the useState hook to use Devotion | null
-  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery(); // Fix the argument type
-
+  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery();
   const ethiopianMonths = useMemo(
     () => [
       "", // There is no month 0
@@ -50,6 +44,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     []
   );
 
+  const topRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (selectedDevotionFromHome) {
       setSelectedDevotion(selectedDevotionFromHome);
@@ -63,13 +59,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       const [, month, day] = ethiopianDate;
       const ethiopianMonth = ethiopianMonths[month];
 
-      // Find today's devotion
       const todaysDevotion = devotions.find(
         (devotion) =>
           devotion.month === ethiopianMonth && Number(devotion.day) === day
       );
 
-      // If there's no devotion for today, use the most recent one
       setSelectedDevotion(todaysDevotion || devotions[0]);
     }
   }, [devotions, selectedDevotionFromHome, ethiopianMonths]);
@@ -78,6 +72,12 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     refetch();
   }, [devotions, refetch]);
 
+  useEffect(() => {
+    if (selectedDevotion) {
+      topRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [selectedDevotion]);
+
   if (isLoading) return <LoadingPage />;
   if (error) return `Error: ${(error as Error).message}`;
 
@@ -85,19 +85,19 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return <div>No devotions available</div>;
   }
 
-  const devotionToDisplay = selectedDevotion || devotions[0];
+  const devotionToDisplay = selectedDevotion || devotions[1];
 
   const previousDevotions = devotions.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
   return (
-    <div className="flex flex-col min-h-screen mx-auto">
+    <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
       <div className="w-[100%] h-full font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12 flex-1">
         <CurrentDevotional
           devotionToDisplay={devotionToDisplay}
           showControls={showControls}
-          toogleForm={toggleForm} // Add this line
+          toogleForm={toggleForm}
         />
         <PreviousDevotionals
           previousDevotions={previousDevotions}
@@ -107,7 +107,6 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
         />
         <Categories title="Lessons Available" />
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };
