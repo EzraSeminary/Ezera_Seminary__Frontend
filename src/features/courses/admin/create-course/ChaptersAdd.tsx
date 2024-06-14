@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsAdd from "./ElementsAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // selectCourse,
+  selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -16,6 +16,7 @@ import {
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
 import ElementPopup from "../../Elements/ElementPopup";
+import CustomInput from "@/components/CustomInput";
 
 export interface EditingSlideIndex {
   chapter: number;
@@ -24,7 +25,7 @@ export interface EditingSlideIndex {
 
 function ChaptersAdd() {
   const dispatch = useDispatch();
-  // const course = useSelector(selectCourse);
+  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) || [];
   const allSlides = useSelector(selectAllSlides);
 
@@ -95,7 +96,7 @@ function ChaptersAdd() {
     dispatch(updateSlide({ chapterIndex, slideIndex, value }));
   };
 
-  // when click on slide title input
+  // when click on slide title CustomInput
   const handleSlideClick = (chapterIndex: number, slideIndex: number) => {
     setEditingSlideIndex({
       chapter: chapterIndex,
@@ -171,7 +172,8 @@ function ChaptersAdd() {
       currentElement === "accordion" ||
       currentElement === "sequence" ||
       currentElement === "reveal" ||
-      currentElement === "dnd"
+      currentElement === "dnd" ||
+      currentElement === "mix"
     ) {
       dispatch(
         addElementToSlide({
@@ -206,7 +208,7 @@ function ChaptersAdd() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  // console.log("course", course);
+  console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -241,7 +243,7 @@ function ChaptersAdd() {
                     weight="fill"
                     className="text-accent-6 rounded-full w-8 h-8"
                   />
-                  <input
+                  <CustomInput
                     type="text"
                     name={`chapter-${chapterIndex}`}
                     placeholder="Chapter Title"
@@ -251,6 +253,7 @@ function ChaptersAdd() {
                     onChange={(e) =>
                       updateChapterHandler(chapterIndex, e.target.value)
                     }
+                    maxLength={35}
                   />
                 </div>
                 <Trash
@@ -268,7 +271,7 @@ function ChaptersAdd() {
                         <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
                           {slideIndex + 1}.
                         </p>
-                        <input
+                        <CustomInput
                           type="text"
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
@@ -285,6 +288,7 @@ function ChaptersAdd() {
                           onClick={() =>
                             handleSlideClick(chapterIndex, slideIndex)
                           }
+                          maxLength={75}
                         />
                         <Trash
                           onClick={() =>

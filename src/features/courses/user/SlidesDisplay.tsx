@@ -82,6 +82,7 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
+  console.log(courseData);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -305,6 +306,8 @@ function SlidesDisplay() {
             navigate(`/courses/get/${courseId}`);
           }, 3000);
         });
+    } else {
+      navigate(`/courses/get/${courseId}`);
     }
   };
 
@@ -529,10 +532,10 @@ function SlidesDisplay() {
                     disabled={!unlocked} // Disable the button if the slide is locked
                   >
                     <div className="flex flex-col items-start justify-start w-[90%] text-left">
-                      <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm  ">
+                      <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm xl:text-lg">
                         {slides.slide}
                       </h2>
-                      <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
+                      <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-sm xl:text-lg">
                         {index + 1}/{totalDataNumber} Slides
                       </p>
                     </div>
@@ -604,7 +607,7 @@ function SlidesDisplay() {
                           : "py-0 justify-center"
                       }`}
                     >
-                      <h1 className="text-lg lg:text-lg xl:text-2xl text-accent-6 text-center pt-4   font-nokia-bold">
+                      <h1 className="text-lg lg:text-3xl xl:text-3xl text-accent-6 text-center pt-4 font-nokia-bold">
                         {slides.slide}
                       </h1>
                       {slides.elements.map((element) => {
@@ -612,7 +615,7 @@ function SlidesDisplay() {
                           return (
                             <h1
                               key={element._id}
-                              className="text-accent-5 text-sm lg:text-lg font-nokia-bold pt-2 "
+                              className="text-accent-5 text-sm lg:text-2xl xl:text-3xl font-nokia-bold pt-2"
                             >
                               {element.value}
                             </h1>
@@ -621,7 +624,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-sm w-[90%] mx-auto "
+                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
                             >
                               {element.value}
                             </p>
@@ -630,7 +633,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-sm lg:pt-2 "
+                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -679,7 +682,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className=" text-secondary-3 pt-2  font-nokia-bold w-[100%] tracking-wide   text-xs lg:text-sm"
+                                className=" text-secondary-3 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
                               >
                                 {listItem}
                               </li>
@@ -698,7 +701,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-sm "
+                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -739,7 +742,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center mb-4"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm xl:text-lg">
+                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm lg:text-lg xl:text-xl">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -769,7 +772,7 @@ function SlidesDisplay() {
                                               )
                                             }
                                           />
-                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg ml-2 ">
+                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg xl:text-xl ml-2 ">
                                             {choice.text}
                                           </span>
                                         </label>
@@ -781,7 +784,7 @@ function SlidesDisplay() {
                               {/* Correct Answer */}
                               <div className="flex mt-4">
                                 <button
-                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max  rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
+                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2"
                                   onClick={() => setShowQuizResult(true)}
                                 >
                                   Check Answer
@@ -896,10 +899,10 @@ function SlidesDisplay() {
                                 />
                               </div>
                               <div className="flex justify-between w-full">
-                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   ምንም አልተማርኩም
                                 </button>
-                                <button className="text-primary-6 text-sm bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   በጣም ተምሬያለሁ
                                 </button>
                               </div>
@@ -909,10 +912,10 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center  w-[90%] mx-auto h-full"
+                              className="flex flex-col justify-center items-center w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm ">
+                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -923,7 +926,7 @@ function SlidesDisplay() {
                                   sensors={sensors}
                                   collisionDetection={closestCenter}
                                 >
-                                  <div className="flex w-[80%] flex-wrap justify-center  items-center gap-3 mx-auto  pt-4">
+                                  <div className="flex w-[80%] flex-wrap justify-center items-center gap-3 mx-auto pt-4">
                                     {element.value.choices.map(
                                       (choice, choiceIndex) => {
                                         if (droppedChoice !== choice.text) {
@@ -955,13 +958,61 @@ function SlidesDisplay() {
                               {/* Correct Answer */}
                               <div className="flex mt-2">
                                 <button
-                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-sm lg:py-1 px-2"
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-lg xl:text-xl lg:py-1 px-2"
                                   onClick={handleCheckAnswer}
                                 >
                                   Check Answer
                                 </button>
                                 {renderDndResult()}
                               </div>
+                            </div>
+                          );
+                        } else if (element.type === "mix") {
+                          return (
+                            <div key={element._id}>
+                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {element.value.text1}
+                              </p>
+                              <div className="w-full h-auto">
+                                {isFullScreen ? (
+                                  <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
+                                    <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
+                                      <ArrowLeft
+                                        size={40}
+                                        className="absolute top-4 left-4 text-white bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                        weight="bold"
+                                        onClick={handleCloseFullScreen}
+                                      />
+                                      <img
+                                        src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                        alt="fullscreen content"
+                                        className="w-full h-full object-contain rounded-3xl"
+                                      />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
+                                    onClick={handleOpenFullScreen}
+                                  >
+                                    <img
+                                      src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                      alt="no image"
+                                      className="w-full h-full object-contain shadow-xl rounded-xl text-white text-center"
+                                    />
+                                    <CornersOut
+                                      size={28}
+                                      className="absolute bottom-1 right-1 text-white bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
+                                      weight="bold"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {element.value.text2}
+                              </p>
                             </div>
                           );
                         }
@@ -978,7 +1029,7 @@ function SlidesDisplay() {
               <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
               <div className="flex justify-between items-center w-full ">
                 <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
                     activeIndex === 0 ? "hidden" : "block"
                   }`} // hidding the previous button for the first slide
                   onClick={() => {
@@ -995,9 +1046,9 @@ function SlidesDisplay() {
                   {currentSlideNumber} / {totalDataNumber}
                 </p>
                 <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
                     isLastSlide ? "hidden" : "block"
-                  }`} // hidding the next button for the last slide
+                  }`}
                   onClick={() => {
                     updateIndex(activeIndex + 1);
                   }}

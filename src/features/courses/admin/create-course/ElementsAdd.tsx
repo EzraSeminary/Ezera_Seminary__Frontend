@@ -13,6 +13,9 @@ import Accordion from "../../Elements/Accordion";
 import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
+import ScrollMix from "../../Elements/ScrollMix";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 export interface ElementsAddProps {
   chapterIndex: number;
@@ -108,6 +111,8 @@ function ElementsAdd({
         return "Slider";
       case "dnd":
         return "Missing Words";
+      case "mix":
+        return "Scroll Mix";
       default:
         return "";
     }
@@ -122,35 +127,37 @@ function ElementsAdd({
         let elementComponent;
         if (element.type === "title" || element.type === "sub") {
           elementComponent = (
-            <input
+            <CustomInput
               id={element.id}
               placeholder={`Enter ${element.type}`}
               value={element.value?.toString()}
               onChange={(e) => handleInputChange(element.id, e.target.value)}
               className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              maxLength={50}
             />
           );
         } else if (element.type === "text") {
           elementComponent = (
-            <textarea
+            <CustomTextarea
               id={element.id}
               placeholder={`Enter ${element.type}`}
               value={element.value?.toString()}
               onChange={(e) => handleInputChange(element.id, e.target.value)}
-              className="w-[100%] border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+              maxLength={300}
             />
           );
         } else if (element.type === "img") {
           elementComponent = (
-            <div className="flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
+            <div className="bg-white flex flex-col my-3 border-2 border-secondary-3 rounded-md hover:border-accent-5">
               <input
                 type="file"
                 id={element.id}
                 onChange={(e) => handleFileInputChange(e, element.id)}
-                className="w-[100%] file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0 text-sm
-                file:text-lg  text-secondary-6 font-bold p-2 file:bg-accent-6
-                file:text-primary-6 file:font-nokia-bold  hover:file:bg-accent-7
+                className="w-[100%]
+                file:rounded-md text-sm
+                file:text-lg  text-secondary-6 font-bold p-2
+                file:font-nokia-bold
                 rounded-xs bg-transparent hover:text-secondary-5
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
@@ -159,7 +166,7 @@ function ElementsAdd({
                   key={element.type}
                   src={imagePreviewUrl}
                   alt=""
-                  className="rounded-b-md"
+                  className="rounded-b-md w-[20vw] m-auto"
                 />
               )}
             </div>
@@ -229,6 +236,16 @@ function ElementsAdd({
         } else if (element.type === "dnd") {
           elementComponent = (
             <DragAndDrop
+              key={index}
+              chapterIndex={chapterIndex}
+              slideIndex={slideIndex}
+              setCurrentElement={setCurrentElement}
+              element={element}
+            />
+          );
+        } else if (element.type === "mix") {
+          elementComponent = (
+            <ScrollMix
               key={index}
               chapterIndex={chapterIndex}
               slideIndex={slideIndex}

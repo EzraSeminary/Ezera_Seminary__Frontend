@@ -8,6 +8,8 @@ import {
   Chapter,
 } from "@/redux/courseSlice";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
+import CustomTextarea from "@/components/CustomTextarea";
+import CustomInput from "@/components/CustomInput";
 
 interface EditElementsProps {
   chapterIndex: number;
@@ -63,12 +65,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderListForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={currentListItem}
           onChange={handleListInputChange}
           placeholder="Enter list item"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={100}
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -124,7 +127,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
     id: string
   ) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
+      const file = e.target.files[0]; // Get the first file from the CustomInput
       if (file) {
         dispatch(
           updateElement({
@@ -221,11 +224,12 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderSlideForm = () => (
     <div className="">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <textarea
+        <CustomTextarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={150}
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -272,6 +276,133 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
               </span>
             </li>
           </label>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
+  const [accordionContents, setAccordionContents] = useState<string[]>([]);
+
+  // Accordion related functions
+  const handleAccordionTitleChange = (index: number, text: string) => {
+    setAccordionTitles(
+      accordionTitles.map((title, i) => (i === index ? text : title))
+    );
+  };
+
+  const handleAccordionContentChange = (index: number, text: string) => {
+    setAccordionContents(
+      accordionContents.map((content, i) => (i === index ? text : content))
+    );
+  };
+
+  const handleAddAccordionItem = () => {
+    setAccordionTitles([...accordionTitles, ""]);
+    setAccordionContents([...accordionContents, ""]);
+  };
+
+  const saveAccordionToRedux = () => {
+    if (accordionTitles.length > 0 && accordionContents.length > 0) {
+      const accordionItems = accordionTitles.map((title, index) => ({
+        title,
+        content: accordionContents[index],
+      }));
+
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: "accordion",
+          value: accordionItems,
+        })
+      );
+
+      // Reset accordion state
+      // setAccordionTitles([]);
+      // setAccordionContents([]);
+    }
+    setCurrentElement("");
+  };
+
+  const renderAccordionForm = () => (
+    <div className="pb-4">
+      <div className="flex justify-between items-center gap-2 w-full py-4">
+        <button
+          onClick={handleAddAccordionItem}
+          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <PlusCircle
+            className="text-primary-6  transition-all"
+            size={16}
+            weight="fill"
+          />
+          Add
+        </button>
+        <button
+          onClick={saveAccordionToRedux}
+          className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+        >
+          <File
+            className="text-primary-6  transition-all"
+            size={16}
+            weight="fill"
+          />
+          Save
+        </button>
+      </div>
+      <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
+        {accordionTitles.map((title, index) => (
+          <div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-secondary-6 text-xl">
+                Accordion {index + 1}:
+              </h2>
+              <Trash
+                onClick={() => {
+                  setAccordionTitles(
+                    accordionTitles.filter((_, i) => i !== index)
+                  );
+                  setAccordionContents(
+                    accordionContents.filter((_, i) => i !== index)
+                  );
+                }}
+                className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all"
+                weight="fill"
+                size={18}
+              />
+            </div>
+            <li
+              key={index}
+              className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4"
+            >
+              <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 rounded-t-md">
+                TITLE
+              </label>
+              <CustomInput
+                type="text"
+                value={title}
+                onChange={(e) =>
+                  handleAccordionTitleChange(index, e.target.value)
+                }
+                placeholder={`Title ${index + 1}`}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+                maxLength={50}
+              />
+              <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 mt-2 rounded-t-md">
+                CONTENT
+              </label>
+              <CustomTextarea
+                value={accordionContents[index]}
+                onChange={(e) =>
+                  handleAccordionContentChange(index, e.target.value)
+                }
+                placeholder={`Content ${index + 1}`}
+                className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-b-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-4"
+                maxLength={200}
+              />
+            </li>
+          </div>
         ))}
       </ul>
     </div>
@@ -325,12 +456,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderQuizForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={150}
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -364,12 +496,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
-              <input
+              <CustomInput
                 type="text"
                 value={choice}
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
                 className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+                maxLength={50}
               />
               <Trash
                 onClick={() => {
@@ -444,12 +577,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderSequenceForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={100}
         />
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
           <button
@@ -575,20 +709,22 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Reveal Item {index + 1}:
             <li key={index} className="flex flex-col space-y-2 mb-4">
-              <input
+              <CustomInput
                 type="text"
                 value={title}
                 onChange={(e) => handleRevealTitleChange(index, e.target.value)}
                 placeholder={`Title ${index + 1}`}
                 className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={50}
               />
-              <textarea
+              <CustomTextarea
                 value={revealContents[index]}
                 onChange={(e) =>
                   handleRevealContentChange(index, e.target.value)
                 }
                 placeholder={`Content ${index + 1}`}
                 className="mt-1  border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6 rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={200}
               />
               <Trash
                 onClick={() => {
@@ -654,12 +790,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
   const renderDndForm = () => (
     <div className="pb-4">
       <div className="flex flex-col items-center w-[100%] gap-1">
-        <input
+        <CustomInput
           type="text"
           value={dndQuestion}
           onChange={handleDndQuestionChange}
           placeholder="Enter quiz question"
           className="border outline-accent-6 border-accent-5 bg-primary-4 text-secondary-6  rounded-md  font-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          maxLength={150}
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">
@@ -693,12 +830,13 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <label className="text-accent-6 ">
             Choice {index + 1}:
             <li key={index} className="flex justify-between">
-              <input
+              <CustomInput
                 type="text"
                 value={choice}
                 onChange={(e) => handleDndChoiceChange(index, e.target.value)}
                 placeholder={`Choice ${index + 1}`}
                 className="mt-1 border-2 border-accent-6 rounded-md text-accent-6 font-bold px-2 py-1 w-[75%]"
+                maxLength={50}
               />
               <Trash
                 onClick={() => {
@@ -756,6 +894,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="img">Image</option>
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
+          <option value="accordion">Accordion</option>
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
@@ -771,6 +910,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
 
       {currentElement === "list" && renderListForm()}
       {currentElement === "slide" && renderSlideForm()}
+      {currentElement === "accordion" && renderAccordionForm()}
       {currentElement === "quiz" && renderQuizForm()}
       {currentElement === "sequence" && renderSequenceForm()}
       {currentElement === "reveal" && renderRevealForm()}
@@ -789,7 +929,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
               />
             </div>
             {element.type === "img" ? (
-              <input
+              <CustomInput
                 type="file"
                 id={element.id}
                 onChange={(e) => handleFileInputChange(e, element.id)}
@@ -799,7 +939,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 focus:outline-none focus:border-accent-8 cursor-pointer"
               />
             ) : element.type === "range" ? null : (
-              <input
+              <CustomTextarea
                 id={element.id}
                 placeholder={`Enter ${element.type}`}
                 value={
@@ -809,6 +949,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 }
                 onChange={(e) => handleInputChange(element.id, e.target.value)}
                 className="w-[100%] border border-accent-5 rounded-md text-accent-6 outline-accent-6 bg-primary-4 font-bold px-2 py-1 placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={300}
               />
             )}
           </div>

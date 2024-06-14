@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
+import CustomTextarea from "@/components/CustomTextarea";
 
 function Slide({
   chapterIndex,
@@ -52,11 +53,12 @@ function Slide({
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-4">
-        <textarea
+        <CustomTextarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
           className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          maxLength={150}
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -88,10 +90,11 @@ function Slide({
           <label>
             <h2 className="text-secondary-6 py-3">Slide {index + 1}:</h2>
             <div key={index} className="flex justify-between">
-              <textarea
+              <CustomTextarea
                 value={details}
                 onChange={(e) => handleSlideDetailChange(index, e.target.value)}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+                maxLength={150}
               />
               <Trash
                 onClick={() => handleDeleteSlideItem(index)}

@@ -7,6 +7,8 @@ import {
   selectCourse,
 } from "@/redux/courseSlice";
 import { Button } from "@/components/ui/button";
+import CustomInput from "@/components/CustomInput";
+import CustomTextarea from "@/components/CustomTextarea";
 
 type EditCourseFirstProps = {
   setShowComponent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -78,7 +80,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
         <div className="w-[80%] space-y-6">
           <div className="col-span-12">
             <label className="block text-accent-6">Course Title</label>
-            <input
+            <CustomInput
               type="text"
               className="w-full px-3 py-2 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2"
               name="title"
@@ -86,17 +88,19 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
               autoComplete="off"
               value={title}
               onChange={(e) => dispatch(setTitle(e.target.value))}
+              maxLength={30}
             />
           </div>
           <div className="col-span-12">
             <label className="block text-accent-6">Description</label>
-            <textarea
+            <CustomTextarea
               className="w-full px-3 pt-2 pb-12 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-2"
               name="description"
               placeholder="Add a description"
               autoComplete="off"
               value={description}
               onChange={(e) => dispatch(setDescription(e.target.value))}
+              maxLength={150}
             />
           </div>
           <div className="col-span-12">
