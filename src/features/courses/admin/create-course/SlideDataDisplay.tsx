@@ -553,6 +553,18 @@ function SlideDataDisplay({
                       </p>
                     </div>
                   );
+                } else if (element.type === "audio") {
+                  elementComponent = (
+                    <div
+                      key={element.type}
+                      className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
+                    >
+                      <audio controls className="w-full">
+                        <source src={element.value.file} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  );
                 }
 
                 return elementComponent;
