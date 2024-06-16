@@ -92,11 +92,14 @@ function CreateCourse() {
           }`}
         >
           {imagePreviewUrl && (
+            <>
             <img
               src={imagePreviewUrl}
               alt="Preview"
-              className="absolute inset-0 w-full h-full object-cover rounded-md"
-            />
+              className="absolute inset-0 w-full h-full object-cover rounded-md bg-red bg-opacity-30"
+              />
+              <div className="absolute inset-0 bg-accent-8 bg-opacity-70 rounded-md"></div>
+              </>
           )}
 
           <input
