@@ -146,6 +146,7 @@ function SlideDataDisplay({
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+  const [audioPlayUrl, setAudioPlayUrl] = useState<string>("");
 
   useEffect(() => {
     if (selectedSlide && selectedSlide.elements) {
@@ -567,13 +568,17 @@ function SlideDataDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
+                  const src =
+                    typeof element.value === "string"
+                      ? element.value
+                      : URL.createObjectURL(element.value);
                   elementComponent = (
                     <div
-                      key={element.type}
+                      key={index}
                       className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
                     >
                       <audio controls className="w-full">
-                        <source src={element.value.file} type="audio/mpeg" />
+                        <source src={src} type="audio/mpeg" />
                         Your browser does not support the audio element.
                       </audio>
                     </div>
