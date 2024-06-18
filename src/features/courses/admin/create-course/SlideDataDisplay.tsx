@@ -173,6 +173,18 @@ function SlideDataDisplay({
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
       }
+
+      // If it's an audio type element
+      const audioElement = selectedSlide.elements.find(
+        (element) => element.type === "audio"
+      );
+      if (audioElement && audioElement.value instanceof File) {
+        const objectUrl = URL.createObjectURL(audioElement.value);
+        setAudioPlayUrl(objectUrl);
+
+        // Clean up the URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      }
     }
     setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
@@ -568,17 +580,13 @@ function SlideDataDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  const src =
-                    typeof element.value === "string"
-                      ? element.value
-                      : URL.createObjectURL(element.value);
                   elementComponent = (
                     <div
                       key={index}
                       className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
                     >
                       <audio controls className="w-full">
-                        <source src={src} type="audio/mpeg" />
+                        <source src={audioPlayUrl} type="audio/mpeg" />
                         Your browser does not support the audio element.
                       </audio>
                     </div>
