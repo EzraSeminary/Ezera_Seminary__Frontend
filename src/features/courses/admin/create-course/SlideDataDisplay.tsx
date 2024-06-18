@@ -227,6 +227,19 @@ function SlideDataDisplay({
     })
   );
 
+  // Get video id from youtube link
+  const getYoutubeVideoId = (url: string) => {
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  };
+
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
       <div className="flex flex-col justify-between w-full h-full">
@@ -564,6 +577,20 @@ function SlideDataDisplay({
                         Your browser does not support the audio element.
                       </audio>
                     </div>
+                  );
+                } else if (element.type === "video") {
+                  const videoId = getYoutubeVideoId(element.value);
+                  const thumbnailUrl = videoId
+                    ? getYoutubeThumbnailUrl(videoId)
+                    : null;
+                  elementComponent = (
+                    <a href={element.value}>
+                      {thumbnailUrl ? (
+                        <img src={thumbnailUrl} alt="YouTube Thumbnail" />
+                      ) : (
+                        <p>Invalid YouTube URL</p>
+                      )}
+                    </a>
                   );
                 }
 
