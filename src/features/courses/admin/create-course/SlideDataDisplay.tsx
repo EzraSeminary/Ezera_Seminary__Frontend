@@ -16,7 +16,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
-import { XCircle, CheckFat } from "@phosphor-icons/react";
+import { XCircle, CheckFat, YoutubeLogo } from "@phosphor-icons/react";
 import {
   Carousel,
   CarouselContent,
@@ -230,7 +230,7 @@ function SlideDataDisplay({
   // Get video id from youtube link
   const getYoutubeVideoId = (url: string) => {
     const regExp =
-      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
   };
@@ -584,11 +584,26 @@ function SlideDataDisplay({
                     ? getYoutubeThumbnailUrl(videoId)
                     : null;
                   elementComponent = (
-                    <a href={element.value}>
+                    <a
+                      href={element.value}
+                      key={index}
+                      className="relative inline-block"
+                    >
                       {thumbnailUrl ? (
-                        <img src={thumbnailUrl} alt="YouTube Thumbnail" />
+                        <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
+                          <img
+                            src={thumbnailUrl}
+                            alt="YouTube Thumbnail"
+                            className="rounded-xl"
+                          />
+                          <YoutubeLogo
+                            size={48}
+                            color="#FF0000"
+                            className="absolute inset-0 m-auto text-red-600"
+                          />
+                        </div>
                       ) : (
-                        <p>Invalid YouTube URL</p>
+                        <p className="text-white">Invalid YouTube URL</p>
                       )}
                     </a>
                   );
