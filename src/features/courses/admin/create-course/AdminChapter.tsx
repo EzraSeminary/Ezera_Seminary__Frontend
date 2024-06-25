@@ -51,6 +51,7 @@ function AdminChapter() {
               `${chapterIndex}_${slideIndex}_${element.value.name}`
             );
           }
+
           // If it's a mix type element
           if (element.type === "mix") {
             const mixElement = element as MixElement;
@@ -67,6 +68,15 @@ function AdminChapter() {
                 mixElement.value.file
               );
             }
+          }
+
+          // If it's an audio type element
+          if (element.type === "audio" && element.value instanceof File) {
+            formData.append(
+              `chapter_${chapterIndex}_slide_${slideIndex}_audio`,
+              element.value,
+              `${chapterIndex}_${slideIndex}_${element.value.name}`
+            );
           }
         });
       });
