@@ -14,6 +14,7 @@ import {
   CheckFat,
   Lock,
   CornersOut,
+  YoutubeLogo,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
@@ -1044,6 +1045,58 @@ function SlidesDisplay() {
                                 {element.value.text2}
                               </p>
                             </div>
+                          );
+                        } else if (element.type === "audio") {
+                          return (
+                            element.value && (
+                              <div
+                                key={index}
+                                className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
+                              >
+                                <audio controls className="w-full">
+                                  <source
+                                    src={`https://ezra-seminary.me/images/${element.value}`}
+                                    type="audio/mpeg"
+                                  />
+                                  Your browser does not support the audio
+                                  element.
+                                </audio>
+                              </div>
+                            )
+                          );
+                        } else if (element.type === "video") {
+                          const videoId = getYoutubeVideoId(element.value);
+                          const thumbnailUrl = videoId
+                            ? getYoutubeThumbnailUrl(videoId)
+                            : undefined;
+
+                          return (
+                            element.value && (
+                              <a
+                                href={element.value}
+                                key={index}
+                                className="relative inline-block"
+                              >
+                                {videoId ? (
+                                  <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
+                                    <img
+                                      src={thumbnailUrl}
+                                      alt="YouTube Thumbnail"
+                                      className="rounded-xl"
+                                    />
+                                    <YoutubeLogo
+                                      size={48}
+                                      color="#FF0000"
+                                      className="absolute inset-0 m-auto text-red-600"
+                                    />
+                                  </div>
+                                ) : (
+                                  <p className="text-white">
+                                    Invalid YouTube URL
+                                  </p>
+                                )}
+                              </a>
+                            )
                           );
                         }
                       })}
