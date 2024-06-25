@@ -381,6 +381,19 @@ function SlidesDisplay() {
     setDraggedItem(null);
   };
 
+  // Get video id from youtube link
+  const getYoutubeVideoId = (url: string) => {
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  };
+
   if (isLoading) return <LoadingPage />;
 
   if (error) return <div>Something went wrong.</div>;
