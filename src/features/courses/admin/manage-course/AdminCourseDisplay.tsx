@@ -15,7 +15,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
-import { XCircle, CheckFat } from "@phosphor-icons/react";
+import { XCircle, CheckFat, YoutubeLogo } from "@phosphor-icons/react";
 import {
   Carousel,
   CarouselContent,
@@ -149,6 +149,7 @@ function AdminCourseDisplay({
   //Display image from state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+  const [audioPlayUrl, setAudioPlayUrl] = useState<string>("");
 
   useEffect(() => {
     if (selectedSlide && selectedSlide?.elements) {
@@ -172,6 +173,21 @@ function AdminCourseDisplay({
 
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
+      }
+
+      // If it's an audio type element
+      const audioElement = selectedSlide.elements.find(
+        (element) => element.type === "audio"
+      );
+      if (audioElement && audioElement.value instanceof File) {
+        const objectUrl = URL.createObjectURL(audioElement.value);
+        setAudioPlayUrl(objectUrl);
+
+        // Clean up the URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      } else {
+        // Reset URL if no audio element is present
+        setAudioPlayUrl("");
       }
     }
     setShowQuizResult(false); // Reset the showQuizResult state
