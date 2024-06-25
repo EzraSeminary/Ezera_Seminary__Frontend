@@ -601,13 +601,17 @@ function AdminCourseDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  elementComponent = audioPlayUrl && (
+                  const audioSrcValue =
+                    audioPlayUrl ||
+                    `https://ezra-seminary.me/images/` + element.value;
+
+                  elementComponent = (
                     <div
                       key={uniqueKey}
                       className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
                     >
                       <audio controls className="w-full">
-                        <source src={audioPlayUrl} type="audio/mpeg" />
+                        <source src={audioSrcValue} type="audio/mpeg" />
                         Your browser does not support the audio element.
                       </audio>
                     </div>
