@@ -184,6 +184,9 @@ function SlideDataDisplay({
 
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
+      } else {
+        // Reset URL if no audio element is present
+        setAudioPlayUrl("");
       }
     }
     setShowQuizResult(false); // Reset the showQuizResult state
@@ -580,9 +583,9 @@ function SlideDataDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  elementComponent = (
+                  elementComponent = audioPlayUrl && (
                     <div
-                      key={index}
+                      key={uniqueKey}
                       className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
                     >
                       <audio controls className="w-full">
