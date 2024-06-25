@@ -899,6 +899,8 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
           <option value="reveal">Reveal</option>
           <option value="range">Range</option>
           <option value="dnd">Missing Words</option>
+          <option value="audio">Audio</option>
+          <option value="video">Video</option>
         </select>
         <button
           onClick={handleAddButtonClick}
@@ -928,7 +930,7 @@ function EditElements({ chapterIndex, slideIndex }: EditElementsProps) {
                 size={18}
               />
             </div>
-            {element.type === "img" ? (
+            {element.type === "img" || element.type === "audio" ? (
               <CustomInput
                 type="file"
                 id={element.id}

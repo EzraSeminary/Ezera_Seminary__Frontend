@@ -77,10 +77,20 @@ function EditCourse() {
     course.chapters.forEach((chapter, chapterIndex) => {
       chapter.slides.forEach((slide, slideIndex) => {
         slide.elements.forEach((element) => {
+          // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
             // Append the file using chapter and slide indices to help reference the file on the server-side
             formData.append(
               `chapter_${chapterIndex}_slide_${slideIndex}_image`,
+              element.value,
+              `${chapterIndex}_${slideIndex}_${element.value.name}`
+            );
+          }
+
+          // If it's an audio type element
+          if (element.type === "audio" && element.value instanceof File) {
+            formData.append(
+              `chapter_${chapterIndex}_slide_${slideIndex}_audio`,
               element.value,
               `${chapterIndex}_${slideIndex}_${element.value.name}`
             );

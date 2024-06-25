@@ -14,6 +14,7 @@ import {
   CheckFat,
   Lock,
   CornersOut,
+  YoutubeLogo,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
@@ -378,6 +379,19 @@ function SlidesDisplay() {
     }
 
     setDraggedItem(null);
+  };
+
+  // Get video id from youtube link
+  const getYoutubeVideoId = (url: string) => {
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
   if (isLoading) return <LoadingPage />;
@@ -1044,6 +1058,55 @@ function SlidesDisplay() {
                                 {element.value.text2}
                               </p>
                             </div>
+                          );
+                        } else if (element.type === "audio") {
+                          return (
+                            <div
+                              key={element.id}
+                              className="flex flex-col items-center justify-center w-[80%] bg-gray-100 rounded-3xl shadow-md"
+                            >
+                              <audio controls className="w-full">
+                                <source
+                                  src={`https://ezra-seminary.me/images/${element.value}`}
+                                  type="audio/mpeg"
+                                />
+                                Your browser does not support the audio element.
+                              </audio>
+                            </div>
+                          );
+                        } else if (element.type === "video") {
+                          const videoId = getYoutubeVideoId(element.value);
+                          const thumbnailUrl = videoId
+                            ? getYoutubeThumbnailUrl(videoId)
+                            : undefined;
+
+                          return (
+                            element.value && (
+                              <a
+                                href={element.value}
+                                key={index}
+                                className="relative inline-block"
+                              >
+                                {videoId ? (
+                                  <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
+                                    <img
+                                      src={thumbnailUrl}
+                                      alt="YouTube Thumbnail"
+                                      className="rounded-xl"
+                                    />
+                                    <YoutubeLogo
+                                      size={48}
+                                      color="#FF0000"
+                                      className="absolute inset-0 m-auto text-red-600"
+                                    />
+                                  </div>
+                                ) : (
+                                  <p className="text-white">
+                                    Invalid YouTube URL
+                                  </p>
+                                )}
+                              </a>
+                            )
                           );
                         }
                       })}

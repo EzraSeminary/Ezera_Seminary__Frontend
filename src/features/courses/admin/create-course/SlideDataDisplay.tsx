@@ -16,7 +16,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 import "@splidejs/react-splide/css/core";
-import { XCircle, CheckFat } from "@phosphor-icons/react";
+import { XCircle, CheckFat, YoutubeLogo } from "@phosphor-icons/react";
 import {
   Carousel,
   CarouselContent,
@@ -146,6 +146,7 @@ function SlideDataDisplay({
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+  const [audioPlayUrl, setAudioPlayUrl] = useState<string>("");
 
   useEffect(() => {
     if (selectedSlide && selectedSlide.elements) {
@@ -171,6 +172,21 @@ function SlideDataDisplay({
 
         // Clean up the URL when the component unmounts
         return () => URL.revokeObjectURL(objectUrl);
+      }
+
+      // If it's an audio type element
+      const audioElement = selectedSlide.elements.find(
+        (element) => element.type === "audio"
+      );
+      if (audioElement && audioElement.value instanceof File) {
+        const objectUrl = URL.createObjectURL(audioElement.value);
+        setAudioPlayUrl(objectUrl);
+
+        // Clean up the URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      } else {
+        // Reset URL if no audio element is present
+        setAudioPlayUrl("");
       }
     }
     setShowQuizResult(false); // Reset the showQuizResult state
@@ -226,6 +242,19 @@ function SlideDataDisplay({
       },
     })
   );
+
+  // Get video id from youtube link
+  const getYoutubeVideoId = (url: string) => {
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  };
 
   return (
     <div className=" h-screen chapter-img-1 bg-no-repeat bg-cover bg-center rounded-b-lg">
@@ -552,6 +581,48 @@ function SlideDataDisplay({
                         {element.value.text2}
                       </p>
                     </div>
+                  );
+                } else if (element.type === "audio") {
+                  elementComponent = audioPlayUrl && (
+                    <div
+                      key={uniqueKey}
+                      className="flex flex-col items-center justify-center w-full p-4 bg-gray-100 rounded-lg shadow-md"
+                    >
+                      <audio controls className="w-full">
+                        <source src={audioPlayUrl} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  );
+                } else if (element.type === "video") {
+                  const videoId = getYoutubeVideoId(element.value);
+                  const thumbnailUrl = videoId
+                    ? getYoutubeThumbnailUrl(videoId)
+                    : undefined;
+
+                  elementComponent = element.value && (
+                    <a
+                      href={element.value}
+                      key={index}
+                      className="relative inline-block"
+                    >
+                      {videoId ? (
+                        <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
+                          <img
+                            src={thumbnailUrl}
+                            alt="YouTube Thumbnail"
+                            className="rounded-xl"
+                          />
+                          <YoutubeLogo
+                            size={48}
+                            color="#FF0000"
+                            className="absolute inset-0 m-auto text-red-600"
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-white">Invalid YouTube URL</p>
+                      )}
+                    </a>
                   );
                 }
 

@@ -35,7 +35,9 @@ export type CustomElement =
   | RevealElement
   | RangeElement
   | DndElement
-  | MixElement;
+  | MixElement
+  | AudioElement
+  | VideoElement;
 
 export interface TitleElement extends Omit<Element, "value"> {
   type: "title";
@@ -147,6 +149,16 @@ export type MixElementValue = {
   text2: string;
   _id: string;
 };
+
+export interface AudioElement extends Omit<Element, "value"> {
+  type: "audio";
+  value: File | string;
+}
+
+export interface VideoElement extends Omit<Element, "value"> {
+  type: "video";
+  value: string;
+}
 
 export const api = createApi({
   reducerPath: "api",

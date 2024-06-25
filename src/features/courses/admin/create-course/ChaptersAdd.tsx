@@ -144,7 +144,8 @@ function ChaptersAdd() {
     if (
       (currentElement && currentElement === "title") ||
       currentElement === "sub" ||
-      currentElement === "text"
+      currentElement === "text" ||
+      currentElement === "video"
     ) {
       dispatch(
         addElementToSlide({
@@ -155,7 +156,10 @@ function ChaptersAdd() {
         })
       );
       setCurrentElement("");
-    } else if (currentElement && currentElement === "img") {
+    } else if (
+      (currentElement && currentElement === "img") ||
+      currentElement === "audio"
+    ) {
       dispatch(
         addElementToSlide({
           chapterIndex,
