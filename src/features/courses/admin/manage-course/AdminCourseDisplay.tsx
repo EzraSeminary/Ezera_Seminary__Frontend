@@ -616,14 +616,15 @@ function AdminCourseDisplay({
                   const videoId = getYoutubeVideoId(element.value);
                   const thumbnailUrl = videoId
                     ? getYoutubeThumbnailUrl(videoId)
-                    : null;
-                  elementComponent = (
+                    : undefined;
+
+                  elementComponent = element.value && (
                     <a
                       href={element.value}
                       key={index}
                       className="relative inline-block"
                     >
-                      {thumbnailUrl ? (
+                      {videoId ? (
                         <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
                           <img
                             src={thumbnailUrl}
