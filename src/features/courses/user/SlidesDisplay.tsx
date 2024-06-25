@@ -1088,7 +1088,7 @@ function SlidesDisplay() {
                                 className="relative inline-block"
                               >
                                 {videoId ? (
-                                  <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
+                                  <div className="relative w-[70%] mx-auto rounded-xl border-2 hover:border-accent-5 hover:opacity-90 transition-all">
                                     <img
                                       src={thumbnailUrl}
                                       alt="YouTube Thumbnail"
@@ -1096,8 +1096,8 @@ function SlidesDisplay() {
                                     />
                                     <YoutubeLogo
                                       size={48}
-                                      color="#FF0000"
-                                      className="absolute inset-0 m-auto text-red-600"
+                                      weight="fill"
+                                      className="absolute inset-0 m-auto text-[#FF0000]"
                                     />
                                   </div>
                                 ) : (
