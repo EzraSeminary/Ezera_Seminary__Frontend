@@ -394,6 +394,19 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  // Define State for Each Condition of Next button
+  const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
+  const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
+  const [isLastSequenceItemVisible, setIsLastSequenceItemVisible] =
+    useState<boolean>(false);
+  const [isRevealFlipped, setIsRevealFlipped] = useState<
+    Record<number, boolean>
+  >({});
+  const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
+  const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
+  const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
+  const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
+
   if (isLoading) return <LoadingPage />;
 
   if (error) return <div>Something went wrong.</div>;
