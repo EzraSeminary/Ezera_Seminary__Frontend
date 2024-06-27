@@ -77,6 +77,19 @@ function SlidesDisplay() {
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
 
+  // Define State for Each Condition of Next button
+  const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
+  const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
+  const [isLastSequenceItemVisible, setIsLastSequenceItemVisible] =
+    useState<boolean>(false);
+  const [isRevealFlipped, setIsRevealFlipped] = useState<
+    Record<number, boolean>
+  >({});
+  const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
+  const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
+  const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
+  const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
+
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
@@ -394,18 +407,16 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
-  // Define State for Each Condition of Next button
-  const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
-  const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
-  const [isLastSequenceItemVisible, setIsLastSequenceItemVisible] =
-    useState<boolean>(false);
-  const [isRevealFlipped, setIsRevealFlipped] = useState<
-    Record<number, boolean>
-  >({});
-  const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
-  const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
-  const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
-  const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
+  // Conditional Rendering of Next Button
+  const shouldShowNextButton =
+    isSlideComplete ||
+    isQuizAnswered ||
+    isLastSequenceItemVisible ||
+    Object.values(isRevealFlipped).some(Boolean) ||
+    isRangeChanged ||
+    isDndCompleted ||
+    isAudioPlayed ||
+    isVideoClicked;
 
   if (isLoading) return <LoadingPage />;
 
@@ -786,6 +797,12 @@ function SlidesDisplay() {
                                     isNavigation: false,
                                     gap: "1rem",
                                   }}
+                                  // Add an event listener to Splide to track when you are on the last slide
+                                  onMoved={(_, newIndex) => {
+                                    if (newIndex === element.value.length - 1) {
+                                      setIsSlideComplete(true);
+                                    }
+                                  }}
                                 >
                                   {listItemsComponent}
                                 </Splide>
@@ -1151,16 +1168,18 @@ function SlidesDisplay() {
                 >
                   {currentSlideNumber} / {totalDataNumber}
                 </p>
-                <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
-                    isLastSlide ? "hidden" : "block"
-                  }`}
-                  onClick={() => {
-                    updateIndex(activeIndex + 1);
-                  }}
-                >
-                  ቀጥል
-                </button>
+                {shouldShowNextButton && (
+                  <button
+                    className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
+                      isLastSlide ? "hidden" : "block"
+                    }`}
+                    onClick={() => {
+                      updateIndex(activeIndex + 1);
+                    }}
+                  >
+                    ቀጥል
+                  </button>
+                )}
                 <button
                   className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     isLastSlide ? "block" : "hidden"
