@@ -241,6 +241,7 @@ function SlidesDisplay() {
     }
 
     setShowQuizResult(true);
+    setIsDndCompleted(true); // Next button available when the check answer is confirmed
   };
 
   //isCorrect switch
@@ -367,6 +368,7 @@ function SlidesDisplay() {
   const handleSliderChange = (_: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setSliderValue(newValue);
+      setIsRangeChanged(true);
     }
   };
 
@@ -859,7 +861,10 @@ function SlidesDisplay() {
                               <div className="flex mt-4">
                                 <button
                                   className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2"
-                                  onClick={() => setShowQuizResult(true)}
+                                  onClick={() => {
+                                    setShowQuizResult(true);
+                                    setIsQuizAnswered(true); //Next button available when the check answer button is clicked
+                                  }}
                                 >
                                   Check Answer
                                 </button>
