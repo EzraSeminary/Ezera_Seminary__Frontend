@@ -82,9 +82,9 @@ function SlidesDisplay() {
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
   const [isLastSequenceItemVisible, setIsLastSequenceItemVisible] =
     useState<boolean>(false);
-  const [isRevealFlipped, setIsRevealFlipped] = useState<
-    Record<number, boolean>
-  >({});
+  // const [isRevealFlipped, setIsRevealFlipped] = useState<
+  //   Record<number, boolean>
+  // >({});
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
   const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
@@ -368,7 +368,7 @@ function SlidesDisplay() {
   const handleSliderChange = (_: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setSliderValue(newValue);
-      setIsRangeChanged(true);
+      setIsRangeChanged(true); // Next button available when slider value is changed
     }
   };
 
@@ -409,12 +409,29 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  const isNonInteractiveType = () => {
+    if (!selectedSlide || !selectedSlide.elements) return false;
+    return selectedSlide.elements.every((element) => {
+      return [
+        "title",
+        "sub",
+        "text",
+        "img",
+        "list",
+        "accordion",
+        "mix",
+        "reveal",
+      ].includes(element.type);
+    });
+  };
+
   // Conditional Rendering of Next Button
   const shouldShowNextButton =
+    isNonInteractiveType() ||
     isSlideComplete ||
     isQuizAnswered ||
     isLastSequenceItemVisible ||
-    Object.values(isRevealFlipped).some(Boolean) ||
+    // Object.values(isRevealFlipped).some(Boolean) ||
     isRangeChanged ||
     isDndCompleted ||
     isAudioPlayed ||
@@ -1100,7 +1117,11 @@ function SlidesDisplay() {
                               key={element.id}
                               className="flex flex-col items-center justify-center w-[80%] bg-gray-100 rounded-3xl shadow-md"
                             >
-                              <audio controls className="w-full">
+                              <audio
+                                controls
+                                className="w-full"
+                                onPlay={() => setIsAudioPlayed(true)} // Next button available when played
+                              >
                                 <source
                                   src={`https://ezra-seminary.me/images/${element.value}`}
                                   type="audio/mpeg"
@@ -1121,6 +1142,7 @@ function SlidesDisplay() {
                                 href={element.value}
                                 key={index}
                                 className="relative inline-block"
+                                onClick={() => setIsVideoClicked(true)} // Next button available when clicked
                               >
                                 {videoId ? (
                                   <div className="relative w-[70%] mx-auto rounded-xl border-2 hover:border-accent-5 hover:opacity-90 transition-all">
