@@ -410,11 +410,12 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  // Next button onClick
   const moveToNextSlide = () => {
     // Move to next slide logic
     updateIndex(activeIndex + 1);
 
-    // Reset Next button availability states
+    // Reset Next button conditional states
     setIsSlideComplete(false);
     setIsQuizAnswered(false);
     setIsSequenceCompleted(false);
@@ -424,6 +425,7 @@ function SlidesDisplay() {
     setIsVideoClicked(false);
   };
 
+  // Element types whose Next button is always available
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
@@ -442,15 +444,15 @@ function SlidesDisplay() {
 
   // Conditional Rendering of Next Button
   const shouldShowNextButton =
-    // !isLastSlide ||
-    isNonInteractiveType() ||
-    isSlideComplete ||
-    isQuizAnswered ||
-    isSequenceCompleted ||
-    isRangeChanged ||
-    isDndCompleted ||
-    isAudioPlayed ||
-    isVideoClicked;
+    !isLastSlide &&
+    (isNonInteractiveType() ||
+      isSlideComplete ||
+      isQuizAnswered ||
+      isSequenceCompleted ||
+      isRangeChanged ||
+      isDndCompleted ||
+      isAudioPlayed ||
+      isVideoClicked);
   // Object.values(isRevealFlipped).some(Boolean);
 
   if (isLoading) return <LoadingPage />;
