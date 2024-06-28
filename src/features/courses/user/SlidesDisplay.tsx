@@ -82,13 +82,13 @@ function SlidesDisplay() {
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
   const [isSequenceCompleted, setIsSequenceCompleted] =
     useState<boolean>(false);
-  // const [isRevealFlipped, setIsRevealFlipped] = useState<
-  //   Record<number, boolean>
-  // >({});
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
   const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
   const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
+  // const [isRevealFlipped, setIsRevealFlipped] = useState<
+  //   Record<number, boolean>
+  // >({});
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -410,6 +410,20 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  const moveToNextSlide = () => {
+    // Move to next slide logic
+    updateIndex(activeIndex + 1);
+
+    // Reset Next button availability states
+    setIsSlideComplete(false);
+    setIsQuizAnswered(false);
+    setIsSequenceCompleted(false);
+    setIsRangeChanged(false);
+    setIsDndCompleted(false);
+    setIsAudioPlayed(false);
+    setIsVideoClicked(false);
+  };
+
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
@@ -428,16 +442,16 @@ function SlidesDisplay() {
 
   // Conditional Rendering of Next Button
   const shouldShowNextButton =
-    !isLastSlide ||
+    // !isLastSlide ||
     isNonInteractiveType() ||
     isSlideComplete ||
     isQuizAnswered ||
     isSequenceCompleted ||
-    // Object.values(isRevealFlipped).some(Boolean) ||
     isRangeChanged ||
     isDndCompleted ||
     isAudioPlayed ||
     isVideoClicked;
+  // Object.values(isRevealFlipped).some(Boolean);
 
   if (isLoading) return <LoadingPage />;
 
@@ -1205,9 +1219,7 @@ function SlidesDisplay() {
                   className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
                     shouldShowNextButton ? "block" : "hidden"
                   }`}
-                  onClick={() => {
-                    updateIndex(activeIndex + 1);
-                  }}
+                  onClick={moveToNextSlide}
                 >
                   ቀጥል
                 </button>
