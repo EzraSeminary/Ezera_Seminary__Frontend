@@ -80,6 +80,7 @@ function SlidesDisplay() {
   // Define State for Each Condition of Next button
   const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
+  const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
   const [isSequenceCompleted, setIsSequenceCompleted] =
     useState<boolean>(false);
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
@@ -410,6 +411,14 @@ function SlidesDisplay() {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  // Update the state indicating whether the accordion is expanded for Next button.
+  const handleAccordionToggle = (values: string[]) => {
+    // Set `isAccordionExpanded` to true if the accordion has ever been expanded
+    if (values.includes("item-1")) {
+      setIsAccordionExpanded(true);
+    }
+  };
+
   // Next button onClick
   const moveToNextSlide = () => {
     // Move to next slide logic
@@ -418,6 +427,7 @@ function SlidesDisplay() {
     // Reset Next button conditional states
     setIsSlideComplete(false);
     setIsQuizAnswered(false);
+    setIsAccordionExpanded(false);
     setIsSequenceCompleted(false);
     setIsRangeChanged(false);
     setIsDndCompleted(false);
@@ -429,16 +439,9 @@ function SlidesDisplay() {
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
-      return [
-        "title",
-        "sub",
-        "text",
-        "img",
-        "list",
-        "accordion",
-        "mix",
-        "reveal",
-      ].includes(element.type);
+      return ["title", "sub", "text", "img", "list", "mix", "reveal"].includes(
+        element.type
+      );
     });
   };
 
@@ -448,6 +451,7 @@ function SlidesDisplay() {
     (isNonInteractiveType() ||
       isSlideComplete ||
       isQuizAnswered ||
+      isAccordionExpanded ||
       isSequenceCompleted ||
       isRangeChanged ||
       isDndCompleted ||
@@ -914,6 +918,7 @@ function SlidesDisplay() {
                                 key={`$accordion-${index}`}
                                 title={accordionItem.title}
                                 content={accordionItem.content}
+                                onToggle={handleAccordionToggle}
                               />
                             )
                           );
