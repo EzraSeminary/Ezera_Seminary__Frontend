@@ -428,7 +428,7 @@ function SlidesDisplay() {
 
   // Conditional Rendering of Next Button
   const shouldShowNextButton =
-    isLastSlide ||
+    !isLastSlide ||
     isNonInteractiveType() ||
     isSlideComplete ||
     isQuizAnswered ||
