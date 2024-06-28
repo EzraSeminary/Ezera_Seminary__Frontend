@@ -80,7 +80,7 @@ function SlidesDisplay() {
   // Define State for Each Condition of Next button
   const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
-  const [isLastSequenceItemVisible, setIsLastSequenceItemVisible] =
+  const [isSequenceCompleted, setIsSequenceCompleted] =
     useState<boolean>(false);
   // const [isRevealFlipped, setIsRevealFlipped] = useState<
   //   Record<number, boolean>
@@ -427,10 +427,11 @@ function SlidesDisplay() {
 
   // Conditional Rendering of Next Button
   const shouldShowNextButton =
+    isLastSlide ||
     isNonInteractiveType() ||
     isSlideComplete ||
     isQuizAnswered ||
-    isLastSequenceItemVisible ||
+    isSequenceCompleted ||
     // Object.values(isRevealFlipped).some(Boolean) ||
     isRangeChanged ||
     isDndCompleted ||
@@ -912,6 +913,9 @@ function SlidesDisplay() {
                                 opts={{
                                   align: "center",
                                 }}
+                                onLastItemVisible={(visible) =>
+                                  setIsSequenceCompleted(visible)
+                                } // Next button available when the carouselItem is on the last sequenceItem.
                                 key={element._id}
                                 className="w-full flex justify-center items-center h-auto"
                               >
@@ -1195,18 +1199,18 @@ function SlidesDisplay() {
                 >
                   {currentSlideNumber} / {totalDataNumber}
                 </p>
-                {shouldShowNextButton && (
-                  <button
-                    className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
-                      isLastSlide ? "hidden" : "block"
-                    }`}
-                    onClick={() => {
-                      updateIndex(activeIndex + 1);
-                    }}
-                  >
-                    ቀጥል
-                  </button>
-                )}
+
+                <button
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
+                    shouldShowNextButton ? "block" : "hidden"
+                  }`}
+                  onClick={() => {
+                    updateIndex(activeIndex + 1);
+                  }}
+                >
+                  ቀጥል
+                </button>
+
                 <button
                   className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
                     isLastSlide ? "block" : "hidden"
