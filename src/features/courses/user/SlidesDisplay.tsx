@@ -81,15 +81,13 @@ function SlidesDisplay() {
   const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
   const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
+  const [isRevealFlipped, setIsRevealFlipped] = useState<boolean>(false);
   const [isSequenceCompleted, setIsSequenceCompleted] =
     useState<boolean>(false);
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
   const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
   const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
-  // const [isRevealFlipped, setIsRevealFlipped] = useState<
-  //   Record<number, boolean>
-  // >({});
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -360,10 +358,17 @@ function SlidesDisplay() {
 
   // Flip divs on Reveal Element
   const handleFlip = (index: number) => {
-    setFlip((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index], // Toggle the state
-    }));
+    setFlip((prevState) => {
+      const isFlipped = !prevState[index]; // Toggle the state
+      const newState = { ...prevState, [index]: isFlipped };
+
+      // If any item is flipped, update the 'IsRevealFlipped' state for Next button
+      if (isFlipped) {
+        setIsRevealFlipped(true);
+      }
+
+      return newState;
+    });
   };
 
   // Save the state of the slider
@@ -412,7 +417,7 @@ function SlidesDisplay() {
   };
 
   // Update the state indicating whether the accordion is expanded for Next button.
-  const handleAccordionToggle = (values: string[]) => {
+  const handleAccordionToggle = (values: string) => {
     // Set `isAccordionExpanded` to true if the accordion has ever been expanded
     if (values.includes("item-1")) {
       setIsAccordionExpanded(true);
@@ -428,6 +433,7 @@ function SlidesDisplay() {
     setIsSlideComplete(false);
     setIsQuizAnswered(false);
     setIsAccordionExpanded(false);
+    setIsRevealFlipped(false);
     setIsSequenceCompleted(false);
     setIsRangeChanged(false);
     setIsDndCompleted(false);
@@ -439,7 +445,7 @@ function SlidesDisplay() {
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
-      return ["title", "sub", "text", "img", "list", "mix", "reveal"].includes(
+      return ["title", "sub", "text", "img", "list", "mix"].includes(
         element.type
       );
     });
@@ -452,12 +458,12 @@ function SlidesDisplay() {
       isSlideComplete ||
       isQuizAnswered ||
       isAccordionExpanded ||
+      isRevealFlipped ||
       isSequenceCompleted ||
       isRangeChanged ||
       isDndCompleted ||
       isAudioPlayed ||
       isVideoClicked);
-  // Object.values(isRevealFlipped).some(Boolean);
 
   if (isLoading) return <LoadingPage />;
 
