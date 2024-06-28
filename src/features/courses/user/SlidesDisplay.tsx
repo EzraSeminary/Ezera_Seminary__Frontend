@@ -424,12 +424,8 @@ function SlidesDisplay() {
     }
   };
 
-  // Next button onClick
-  const moveToNextSlide = () => {
-    // Move to next slide logic
-    updateIndex(activeIndex + 1);
-
-    // Reset Next button conditional states
+  // Reset Next button conditional states
+  const resetInteractions = () => {
     setIsSlideComplete(false);
     setIsQuizAnswered(false);
     setIsAccordionExpanded(false);
@@ -439,6 +435,12 @@ function SlidesDisplay() {
     setIsDndCompleted(false);
     setIsAudioPlayed(false);
     setIsVideoClicked(false);
+  };
+
+  // Next button onClick
+  const moveToNextSlide = () => {
+    updateIndex(activeIndex + 1); // Navigate to the next slide
+    resetInteractions(); // Reset Next button conditional states
   };
 
   // Element types whose Next button is always available
