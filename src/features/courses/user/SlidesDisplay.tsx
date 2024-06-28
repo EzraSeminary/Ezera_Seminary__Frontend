@@ -46,7 +46,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
-import ChapterNotFound from "@/components/ChapterNotFound";
+// import ChapterNotFound from "@/components/ChapterNotFound";
 
 interface FlipState {
   [index: number]: boolean;
@@ -178,7 +178,8 @@ function SlidesDisplay() {
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
-    return <ChapterNotFound />;
+    // return <ChapterNotFound />;
+    return <LoadingPage />;
   }
   // Setting the data to slides if the chapter is found
   const data = chapter.slides;

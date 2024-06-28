@@ -19,7 +19,7 @@ type CarouselProps = {
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
   setApi?: (api: CarouselApi) => void;
-  onLastItemVisible?: (visible: boolean) => void;
+  onLastItemVisible?: (visible: boolean) => void; // Add an additional prop for Next button
 };
 
 type CarouselContextProps = {
@@ -81,6 +81,7 @@ const Carousel = React.forwardRef<
         setCanScrollPrev(_canScrollPrev);
         setCanScrollNext(_canScrollNext);
 
+        // invoke the onLastItemVisible callback for Next button
         if (props.onLastItemVisible) {
           props.onLastItemVisible(!_canScrollNext); // When it cannot scroll next, it's the last item
         }
