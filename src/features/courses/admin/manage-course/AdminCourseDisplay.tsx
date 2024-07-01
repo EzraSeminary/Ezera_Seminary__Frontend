@@ -316,7 +316,7 @@ function AdminCourseDisplay({
                   // display new image from redux or previous image from server
                   const srcValue =
                     imagePreviewUrl ||
-                    `https://ezra-seminary.me/images/` + element.value;
+                    `https://ezrabackend.online/images/` + element.value;
 
                   elementComponent = (
                     <img
@@ -603,7 +603,7 @@ function AdminCourseDisplay({
                 } else if (element.type === "audio") {
                   const audioSrcValue =
                     audioPlayUrl ||
-                    `https://ezra-seminary.me/images/` + element.value;
+                    `https://ezrabackend.online/images/` + element.value;
 
                   elementComponent = (
                     <div

@@ -114,7 +114,7 @@ const LoggedInHome = () => {
               <div className="h-48  lg:h-52  xl:h-64">
                 <img
                   src={
-                    `https://ezra-seminary.me/images/${latestDevotion.image}` ||
+                    `https://ezrabackend.online/images/${latestDevotion.image}` ||
                     `${bible}`
                   }
                   className="w-full h-full object-cover rounded-lg"
@@ -290,7 +290,7 @@ const LoggedInHome = () => {
                 >
                   <img
                     src={
-                      `https://ezra-seminary.me/images/${devotion.image}` ||
+                      `https://ezrabackend.online/images/${devotion.image}` ||
                       `${bible}`
                     }
                     alt={devotion.title}

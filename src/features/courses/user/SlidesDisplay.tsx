@@ -695,7 +695,7 @@ function SlidesDisplay() {
                                       onClick={handleCloseFullScreen}
                                     />
                                     <img
-                                      src={`https://ezra-seminary.me/images/${element.value}`}
+                                      src={`https://ezrabackend.online/images/${element.value}`}
                                       alt="fullscreen content"
                                       className="w-full h-full object-contain rounded-3xl"
                                     />
@@ -708,7 +708,7 @@ function SlidesDisplay() {
                                 >
                                   <img
                                     key={element._id}
-                                    src={`https://ezra-seminary.me/images/${element.value}`}
+                                    src={`https://ezrabackend.online/images/${element.value}`}
                                     alt="no image"
                                     className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                   />
@@ -1029,7 +1029,7 @@ function SlidesDisplay() {
                                         onClick={handleCloseFullScreen}
                                       />
                                       <img
-                                        src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                        src={`https://ezrabackend.online/images/${element.value.file}`}
                                         alt="fullscreen content"
                                         className="w-full h-full object-contain rounded-3xl"
                                       />
@@ -1041,7 +1041,7 @@ function SlidesDisplay() {
                                     onClick={handleOpenFullScreen}
                                   >
                                     <img
-                                      src={`https://ezra-seminary.me/images/${element.value.file}`}
+                                      src={`https://ezrabackend.online/images/${element.value.file}`}
                                       alt="no image"
                                       className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                     />
@@ -1067,7 +1067,7 @@ function SlidesDisplay() {
                             >
                               <audio controls className="w-full">
                                 <source
-                                  src={`https://ezra-seminary.me/images/${element.value}`}
+                                  src={`https://ezrabackend.online/images/${element.value}`}
                                   type="audio/mpeg"
                                 />
                                 Your browser does not support the audio element.

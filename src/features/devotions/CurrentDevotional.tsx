@@ -61,7 +61,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   const handleDownload = () => {
     if (devotionToDisplay && devotionToDisplay.image) {
-      const imageUrl = `https://ezra-seminary.me/download/${devotionToDisplay.image}`;
+      const imageUrl = `https://ezrabackend.online/download/${devotionToDisplay.image}`;
       fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
@@ -288,7 +288,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
             <img
-              src={`https://ezra-seminary.me/images/${
+              src={`https://ezrabackend.online/images/${
                 devotionToDisplay && devotionToDisplay.image
               }`}
               alt="Devotion Image"

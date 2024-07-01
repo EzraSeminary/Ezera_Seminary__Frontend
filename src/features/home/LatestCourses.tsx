@@ -80,7 +80,7 @@ const LatestCourses = () => {
               className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full bg-secondary-6 bg-opacity-90 text-center pb-4 font-nokia-bold cursor-pointer"
             >
               <img
-                src={`https://ezra-seminary.me/images/${course.image}`}
+                src={`https://ezrabackend.online/images/${course.image}`}
                 className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                 alt=""
               />

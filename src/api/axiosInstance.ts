@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 function createAxiosInstance(token?: string): AxiosInstance {
   const instance = axios.create({
     // baseURL: "https://localhost:5100",
-    baseURL: "https://ezra-seminary.me",
+    baseURL: "https://ezrabackend.online",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",

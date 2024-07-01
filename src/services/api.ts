@@ -163,7 +163,7 @@ export interface VideoElement extends Omit<Element, "value"> {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezra-seminary.me/",
+    baseUrl: "https://ezrabackend.online/",
     // baseUrl: "http://localhost:5100/",
   }),
   endpoints: (builder) => ({

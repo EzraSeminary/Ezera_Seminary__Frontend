@@ -130,7 +130,7 @@ const PreviousDevotionals = ({
               {/* devotion Images */}
               <div className="h-full w-full">
                 <img
-                  src={`https://ezra-seminary.me/images/${devotion.image}`}
+                  src={`https://ezrabackend.online/images/${devotion.image}`}
                   alt="Devotion Image"
                   className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                   onClick={() => {
@@ -176,7 +176,7 @@ const PreviousDevotionals = ({
               {/* devotion Images */}
               <div className="h-full w-full">
                 <img
-                  src={`https://ezra-seminary.me/images/${devotion.image}`}
+                  src={`https://ezrabackend.online/images/${devotion.image}`}
                   alt="Devotion Image"
                   className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                   onClick={() => {
@@ -236,7 +236,7 @@ const PreviousDevotionals = ({
               {/* devotion Images */}
               <div className="h-full w-full">
                 <img
-                  src={`https://ezra-seminary.me/images/${devotion.image}`}
+                  src={`https://ezrabackend.online/images/${devotion.image}`}
                   alt="Devotion Image"
                   className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-t-xl bg-secondary-1"
                   onClick={() => {
