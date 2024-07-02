@@ -426,6 +426,9 @@ function AdminCourseDisplay({
                         key={`${uniqueKey}-accordion-${index}`}
                         title={accordionItem.title}
                         content={accordionItem.content}
+                        onToggle={(): void => {
+                          throw new Error("Function not implemented.");
+                        }}
                       />
                     )
                   );

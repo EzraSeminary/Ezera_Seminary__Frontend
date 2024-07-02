@@ -408,6 +408,9 @@ function SlideDataDisplay({
                         key={`${uniqueKey}-accordion-${index}`}
                         title={accordionItem.title}
                         content={accordionItem.content}
+                        onToggle={function (_value: string): void {
+                          throw new Error("Function not implemented.");
+                        }}
                       />
                     )
                   );
