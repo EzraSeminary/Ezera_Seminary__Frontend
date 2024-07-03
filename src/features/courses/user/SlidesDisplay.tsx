@@ -1175,9 +1175,6 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "video") {
                           const videoId = getYoutubeVideoId(element.value);
-                          const thumbnailUrl = videoId
-                            ? getYoutubeThumbnailUrl(videoId)
-                            : undefined;
 
                           return (
                             element.value && (
