@@ -38,7 +38,7 @@ import {
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
-import YouTube from "react-youtube";
+import YouTube, { YouTubeProps } from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -253,9 +253,17 @@ function AdminCourseDisplay({
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  // Get the youtube image
-  const getYoutubeThumbnailUrl = (videoId: string) => {
-    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  // access to player in all event handlers via event.target
+  const videoOnReady: YouTubeProps["onReady"] = (event) => {
+    event.target.pauseVideo();
+  };
+
+  const opts = {
+    height: "390",
+    width: "640",
+    playerVars: {
+      autoplay: 1,
+    },
   };
 
   return (

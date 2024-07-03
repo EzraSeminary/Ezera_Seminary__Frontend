@@ -47,7 +47,7 @@ import {
 import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 // import ChapterNotFound from "@/components/ChapterNotFound";
-import YouTube from "react-youtube";
+import YouTube, { YouTubeProps } from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -413,7 +413,7 @@ function SlidesDisplay() {
   };
 
   // access to player in all event handlers via event.target
-  const videoOnReady = (event) => {
+  const videoOnReady: YouTubeProps["onReady"] = (event) => {
     event.target.pauseVideo();
   };
 
