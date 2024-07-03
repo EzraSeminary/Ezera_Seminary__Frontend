@@ -255,12 +255,23 @@ function AdminCourseDisplay({
     return match && match[2].length === 11 ? match[2] : null;
   };
 
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  };
+
+  // Youtube component options
   const opts = {
-    height: "390",
-    width: "640",
+    height: "260",
+    width: "427",
     playerVars: {
       autoplay: 1,
     },
+  };
+
+  // Switch from the image to the video
+  const handleImageClick = () => {
+    setIsVideoVisible(true);
   };
 
   return (
