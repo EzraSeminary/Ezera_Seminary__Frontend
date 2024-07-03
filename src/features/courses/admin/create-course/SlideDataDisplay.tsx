@@ -38,7 +38,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -69,6 +69,8 @@ function SlideDataDisplay({
   const [flip, setFlip] = useState<FlipState>({});
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
+
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   //Quiz Related functions
   //radio input switch
@@ -250,11 +252,6 @@ function SlideDataDisplay({
       /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
-  };
-
-  // access to player in all event handlers via event.target
-  const videoOnReady: YouTubeProps["onReady"] = (event) => {
-    event.target.pauseVideo();
   };
 
   const opts = {

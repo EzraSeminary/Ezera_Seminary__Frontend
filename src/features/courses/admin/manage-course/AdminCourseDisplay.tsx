@@ -38,7 +38,7 @@ import {
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -71,6 +71,8 @@ function AdminCourseDisplay({
 
   //show quiz result
   const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   //Quiz Related functions
   //radio input switch
@@ -251,11 +253,6 @@ function AdminCourseDisplay({
       /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
-  };
-
-  // access to player in all event handlers via event.target
-  const videoOnReady: YouTubeProps["onReady"] = (event) => {
-    event.target.pauseVideo();
   };
 
   const opts = {
