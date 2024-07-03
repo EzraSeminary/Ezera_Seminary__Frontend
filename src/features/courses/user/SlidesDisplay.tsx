@@ -404,6 +404,8 @@ function SlidesDisplay() {
     setDraggedItem(null);
   };
 
+  const [videoVisible, setVideoVisible] = useState(false);
+
   // Get video id from youtube link
   const getYoutubeVideoId = (url: string) => {
     const regExp =
@@ -412,17 +414,23 @@ function SlidesDisplay() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  // access to player in all event handlers via event.target
-  const videoOnReady: YouTubeProps["onReady"] = (event) => {
-    event.target.pauseVideo();
+  // Get the youtube image
+  const getYoutubeThumbnailUrl = (videoId: string) => {
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
+  // Youtube component options
   const opts = {
     height: "390",
     width: "640",
     playerVars: {
       autoplay: 1,
     },
+  };
+
+  // Switch from the image to the video
+  const handleImageClick = () => {
+    setVideoVisible(true);
   };
 
   // Update the state indicating whether the accordion is expanded for Next button.
@@ -1175,35 +1183,32 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "video") {
                           const videoId = getYoutubeVideoId(element.value);
+                          const thumbnailUrl = videoId
+                            ? getYoutubeThumbnailUrl(videoId)
+                            : undefined;
 
-                          return (
-                            element.value && (
-                              <a
-                                href={element.value}
-                                key={index}
-                                className="relative inline-block"
-                                onClick={() => setIsVideoClicked(true)} // Next button available when clicked
+                          return videoId ? (
+                            videoVisible ? (
+                              <YouTube videoId={videoId} opts={opts} />
+                            ) : (
+                              <div
+                                className="relative mx-auto rounded-xl border-2 hover:border-accent-5 hover:opacity-90 transition-all"
+                                onClick={handleImageClick}
                               >
-                                {videoId ? (
-                                  <div className="relative w-[70%] mx-auto rounded-xl border-2 hover:border-accent-5 hover:opacity-90 transition-all">
-                                    <img
-                                      src={thumbnailUrl}
-                                      alt="YouTube Thumbnail"
-                                      className="rounded-xl"
-                                    />
-                                    <YoutubeLogo
-                                      size={48}
-                                      weight="fill"
-                                      className="absolute inset-0 m-auto text-[#FF0000]"
-                                    />
-                                  </div>
-                                ) : (
-                                  <p className="text-white">
-                                    Invalid YouTube URL
-                                  </p>
-                                )}
-                              </a>
+                                <img
+                                  src={thumbnailUrl}
+                                  alt="YouTube Thumbnail"
+                                  className="rounded-xl"
+                                />
+                                <YoutubeLogo
+                                  size={48}
+                                  weight="fill"
+                                  className="absolute inset-0 m-auto text-[#FF0000]"
+                                />
+                              </div>
                             )
+                          ) : (
+                            <p className="text-white">Invalid YouTube URL</p>
                           );
                         }
                       })}
