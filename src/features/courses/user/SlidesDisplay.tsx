@@ -47,7 +47,7 @@ import {
 import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 // import ChapterNotFound from "@/components/ChapterNotFound";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -88,7 +88,6 @@ function SlidesDisplay() {
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
   const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
-  const [isVideoClicked, setIsVideoClicked] = useState<boolean>(false);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -404,7 +403,7 @@ function SlidesDisplay() {
     setDraggedItem(null);
   };
 
-  const [videoVisible, setVideoVisible] = useState(false);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   // Get video id from youtube link
   const getYoutubeVideoId = (url: string) => {
@@ -421,8 +420,8 @@ function SlidesDisplay() {
 
   // Youtube component options
   const opts = {
-    height: "390",
-    width: "640",
+    height: "260",
+    width: "427",
     playerVars: {
       autoplay: 1,
     },
@@ -430,7 +429,7 @@ function SlidesDisplay() {
 
   // Switch from the image to the video
   const handleImageClick = () => {
-    setVideoVisible(true);
+    setIsVideoVisible(true);
   };
 
   // Update the state indicating whether the accordion is expanded for Next button.
@@ -451,7 +450,7 @@ function SlidesDisplay() {
     setIsRangeChanged(false);
     setIsDndCompleted(false);
     setIsAudioPlayed(false);
-    setIsVideoClicked(false);
+    setIsVideoVisible(false);
   };
 
   // Next button onClick
@@ -482,7 +481,7 @@ function SlidesDisplay() {
       isRangeChanged ||
       isDndCompleted ||
       isAudioPlayed ||
-      isVideoClicked);
+      isVideoVisible);
 
   if (isLoading) return <LoadingPage />;
 
@@ -1188,17 +1187,16 @@ function SlidesDisplay() {
                             : undefined;
 
                           return videoId ? (
-                            videoVisible ? (
+                            isVideoVisible ? (
                               <YouTube videoId={videoId} opts={opts} />
                             ) : (
                               <div
-                                className="relative mx-auto rounded-xl border-2 hover:border-accent-5 hover:opacity-90 transition-all"
+                                className="relative w-[400px] mx-auto hover:opacity-80 transition-all"
                                 onClick={handleImageClick}
                               >
                                 <img
                                   src={thumbnailUrl}
                                   alt="YouTube Thumbnail"
-                                  className="rounded-xl"
                                 />
                                 <YoutubeLogo
                                   size={48}
