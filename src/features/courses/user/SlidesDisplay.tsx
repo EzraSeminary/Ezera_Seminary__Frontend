@@ -88,6 +88,7 @@ function SlidesDisplay() {
   const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
   const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -402,8 +403,6 @@ function SlidesDisplay() {
 
     setDraggedItem(null);
   };
-
-  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   // Get video id from youtube link
   const getYoutubeVideoId = (url: string) => {
