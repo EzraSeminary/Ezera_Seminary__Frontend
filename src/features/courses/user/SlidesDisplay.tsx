@@ -412,9 +412,17 @@ function SlidesDisplay() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  // Get the youtube image
-  const getYoutubeThumbnailUrl = (videoId: string) => {
-    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  // access to player in all event handlers via event.target
+  const videoOnReady = (event) => {
+    event.target.pauseVideo();
+  };
+
+  const opts = {
+    height: "390",
+    width: "640",
+    playerVars: {
+      autoplay: 1,
+    },
   };
 
   // Update the state indicating whether the accordion is expanded for Next button.
