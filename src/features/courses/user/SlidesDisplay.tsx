@@ -47,6 +47,7 @@ import {
 import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 // import ChapterNotFound from "@/components/ChapterNotFound";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;

@@ -38,6 +38,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;

@@ -38,6 +38,7 @@ import {
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
