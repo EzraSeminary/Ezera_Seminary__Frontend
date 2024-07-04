@@ -419,8 +419,8 @@ function SlidesDisplay() {
 
   // Youtube component options
   const opts = {
-    height: "260",
-    width: "427",
+    height: "100%",
+    width: "100%",
     playerVars: {
       autoplay: 1,
     },
@@ -1187,15 +1187,22 @@ function SlidesDisplay() {
 
                           return videoId ? (
                             isVideoVisible ? (
-                              <YouTube videoId={videoId} opts={opts} />
+                              <div className="w-full md:w-3/4 lg:w-1/2 aspect-video">
+                                <YouTube
+                                  videoId={videoId}
+                                  opts={opts}
+                                  className="w-full h-full"
+                                />
+                              </div>
                             ) : (
                               <div
-                                className="relative w-[400px] mx-auto hover:opacity-80 transition-all"
+                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all"
                                 onClick={handleImageClick}
                               >
                                 <img
                                   src={thumbnailUrl}
                                   alt="YouTube Thumbnail"
+                                  className="w-full h-full object-cover"
                                 />
                                 <YoutubeLogo
                                   size={48}
