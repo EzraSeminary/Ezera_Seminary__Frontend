@@ -38,6 +38,7 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
+import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -68,6 +69,8 @@ function SlideDataDisplay({
   const [flip, setFlip] = useState<FlipState>({});
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
+
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
 
   //Quiz Related functions
   //radio input switch
@@ -254,6 +257,20 @@ function SlideDataDisplay({
   // Get the youtube image
   const getYoutubeThumbnailUrl = (videoId: string) => {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  };
+
+  // Youtube component options
+  const opts = {
+    height: "260",
+    width: "427",
+    playerVars: {
+      autoplay: 1,
+    },
+  };
+
+  // Switch from the image to the video
+  const handleImageClick = () => {
+    setIsVideoVisible(true);
   };
 
   return (
@@ -603,29 +620,24 @@ function SlideDataDisplay({
                     ? getYoutubeThumbnailUrl(videoId)
                     : undefined;
 
-                  elementComponent = element.value && (
-                    <a
-                      href={element.value}
-                      key={index}
-                      className="relative inline-block"
-                    >
-                      {videoId ? (
-                        <div className="relative w-[80%] mx-auto rounded-xl border-2 hover:border-accent-5 transition-all">
-                          <img
-                            src={thumbnailUrl}
-                            alt="YouTube Thumbnail"
-                            className="rounded-xl"
-                          />
-                          <YoutubeLogo
-                            size={48}
-                            color="#FF0000"
-                            className="absolute inset-0 m-auto text-red-600"
-                          />
-                        </div>
-                      ) : (
-                        <p className="text-white">Invalid YouTube URL</p>
-                      )}
-                    </a>
+                  elementComponent = videoId ? (
+                    isVideoVisible ? (
+                      <YouTube videoId={videoId} opts={opts} />
+                    ) : (
+                      <div
+                        className="relative w-[400px] mx-auto hover:opacity-80 transition-all"
+                        onClick={handleImageClick}
+                      >
+                        <img src={thumbnailUrl} alt="YouTube Thumbnail" />
+                        <YoutubeLogo
+                          size={48}
+                          weight="fill"
+                          className="absolute inset-0 m-auto text-[#FF0000]"
+                        />
+                      </div>
+                    )
+                  ) : (
+                    <p className="text-white">Invalid YouTube URL</p>
                   );
                 }
 
