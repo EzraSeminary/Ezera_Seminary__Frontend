@@ -1,5 +1,5 @@
 import "./SSLStyles.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingPage from "@/pages/user/LoadingPage";
@@ -55,7 +55,7 @@ function DisplaySSLLesson() {
     fetchYoutubeLink();
   }, [quarter, id]);
 
-  const handleAddYoutubeLink = async (newLink) => {
+  const handleAddYoutubeLink = async (newLink: SetStateAction<string>) => {
     setYoutubeLink(newLink);
     setShowAddLinkForm(false);
   };
@@ -195,8 +195,8 @@ function DisplaySSLLesson() {
               onSubmit={handleAddYoutubeLink}
               onCancel={() => setShowAddLinkForm(false)}
               year={new Date().getFullYear()}
-              quarter={quarter}
-              lesson={id}
+              quarter={quarter || ""}
+              lesson={id || ""}
             />
           </div>
         </div>
