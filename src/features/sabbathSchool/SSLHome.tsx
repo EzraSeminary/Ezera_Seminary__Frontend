@@ -4,6 +4,7 @@ import { useGetSSLsQuery } from "./../../services/SabbathSchoolApi"; // Ensure t
 import { motion } from "framer-motion";
 import LoadingPage from "@/pages/user/LoadingPage";
 import axios from "axios";
+import { YoutubeLogo } from "@phosphor-icons/react";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -53,7 +54,6 @@ const SSLHome = () => {
   if (isLoading) return <LoadingPage />;
 
   return (
-    // <div className="">
     <motion.div
       variants={gridContainerVariants}
       initial="hidden"
@@ -76,30 +76,23 @@ const SSLHome = () => {
             className="flex bg-white shadow-2xl rounded-md border border-accent-6 p-1 gap-2 h-48 md:h-52 lg:h-60"
             to={(item as { id?: string }).id ?? ""}
           >
-            <img
-              src={(item as { cover: string; title: string }).cover}
-              alt={(item as { title: string }).title}
-              className="rounded-md  w-1/2 object-fit"
-            />
-            <div
-              className="flex flex-col py-2 h-full space-y-1"
-              style={{ maxHeight: "300px" }}
-            >
-              <p className="text-accent-6 text-sm xl:text-lg">
-                {(item as { human_date: string }).human_date}
-              </p>
-              <h2 className="text-xl md:text-xl xl:text-2xl text-secondary-6  ">
-                {(item as { title: string }).title}
-              </h2>
-              <p className="text-secondary-5 text-xs xl:text-sm overflow-hidden overflow-ellipsis text-justify px-1">
-                {(item as { description: string }).description}
-              </p>
-            </div>
+            {/* ... (keep your existing code) */}
+            {videoLinks[item.id] && (
+              <a
+                href={videoLinks[item.id]}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
+                  Watch on YouTube{" "}
+                  <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
+                </button>
+              </a>
+            )}
           </Link>
         </motion.div>
       ))}
     </motion.div>
-    // </div>
   );
 };
 
