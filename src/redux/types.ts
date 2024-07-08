@@ -68,7 +68,9 @@ export interface DevotionsState {
 }
 
 export interface LinkType {
-  id: string;
+  quarter: any;
+  lesson: any;
+  id?: string;
   videoUrl: string;
 }
 

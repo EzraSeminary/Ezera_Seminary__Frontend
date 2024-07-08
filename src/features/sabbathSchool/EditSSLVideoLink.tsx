@@ -19,10 +19,20 @@ const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`/sslLinks/${link.id}`, { videoUrl });
+      const response = await axios.put(
+        `/sslLinks/${link.quarter}/${link.lesson}`,
+        { videoUrl }
+      );
       onSubmit(response.data);
-    } catch (error) {
-      alert("Error updating video link: " + error.message);
+    } catch (error: any) {
+      console.error(
+        "Error updating video link:",
+        error.response?.data || error
+      );
+      alert(
+        "Error updating video link: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
 

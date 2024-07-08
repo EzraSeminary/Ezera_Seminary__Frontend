@@ -25,7 +25,7 @@ function DisplaySSLLesson() {
     [key: string]: string;
   }
 
-  const { quarter = "", id, day } = useParams<Params>();
+  const { quarter = "", id = "", day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
   const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
   const {
@@ -82,14 +82,20 @@ function DisplaySSLLesson() {
 
   const handleEditYoutubeLink = async (updatedLink: string) => {
     try {
-      await axios.put(`/sslLinks/${quarter}/${id}`, {
+      const response = await axios.put(`/sslLinks/${quarter}/${id}`, {
         videoUrl: updatedLink,
       });
-      setYoutubeLink(updatedLink);
+      setYoutubeLink(response.data.videoUrl);
       setEditingLink(null);
-    } catch (error) {
-      console.error("Error updating YouTube link:", error);
-      alert("Failed to update YouTube link. Please try again.");
+    } catch (error: any) {
+      console.error(
+        "Error updating YouTube link:",
+        error.response?.data || error
+      );
+      alert(
+        "Failed to update YouTube link. Please try again. " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
 
@@ -98,9 +104,15 @@ function DisplaySSLLesson() {
       try {
         await axios.delete(`/sslLinks/${quarter}/${id}`);
         setYoutubeLink("");
-      } catch (error) {
-        console.error("Error deleting YouTube link:", error);
-        alert("Failed to delete YouTube link. Please try again.");
+      } catch (error: any) {
+        console.error(
+          "Error deleting YouTube link:",
+          error.response?.data || error
+        );
+        alert(
+          "Failed to delete YouTube link. Please try again. " +
+            (error.response?.data?.message || error.message)
+        );
       }
     }
   };
