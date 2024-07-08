@@ -2,11 +2,11 @@
 import { useState } from "react";
 import axios from "axios";
 
-const AddSSLVideoLinks = ({ onSubmit, onCancel }) => {
+const AddSSLVideoLinks = ({ onSubmit, onCancel, year, quarter, lesson }) => {
   const [formData, setFormData] = useState({
-    year: new Date().getFullYear(),
-    quarter: "1",
-    lesson: "1",
+    year: year || new Date().getFullYear(),
+    quarter: quarter || "1",
+    lesson: lesson || "1",
     videoUrl: "",
   });
 
@@ -28,7 +28,11 @@ const AddSSLVideoLinks = ({ onSubmit, onCancel }) => {
   const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">
+        Add YouTube Link
+      </h2>
+
       <div>
         <label
           htmlFor="year"
@@ -114,19 +118,19 @@ const AddSSLVideoLinks = ({ onSubmit, onCancel }) => {
         />
       </div>
 
-      <div className="flex justify-end space-x-2">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Add Link
-        </button>
+      <div className="flex justify-end space-x-2 pt-4">
         <button
           type="button"
           onClick={onCancel}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
           Cancel
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-accent-6 text-white rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Add Link
         </button>
       </div>
     </form>

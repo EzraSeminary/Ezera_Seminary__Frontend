@@ -135,7 +135,9 @@ function DisplaySSLLesson() {
     return <div>Error: {dayError.message}</div>;
 
   return (
-    <div>
+    <div className="relative">
+      {" "}
+      {/* Add relative positioning to the parent div */}
       <div
         className="flex flex-col justify-between rounded-md w-[100%] h-64 text-primary-1 px-8 py-4"
         style={{
@@ -162,15 +164,6 @@ function DisplaySSLLesson() {
             </button>
           )}
         </div>
-        {showAddLinkForm && (
-          <AddSSLVideoLinks
-            onSubmit={handleAddYoutubeLink}
-            onCancel={() => setShowAddLinkForm(false)}
-            year={new Date().getFullYear()}
-            quarter={quarter}
-            lesson={id}
-          />
-        )}
         <div className="flex flex-col space-y-1">
           <p className="flex flex-row text-primary-5 text-sm lg:text-lg">
             {daysOfWeek[(Number(day) ?? 0) % 7]}፣&nbsp;&nbsp;
@@ -194,6 +187,20 @@ function DisplaySSLLesson() {
       <div className="text-secondary-6 text-justify wrapper my-4 ">
         {modifyContentForDisplay(lessonDetails.content)}
       </div>
+      {/* Add the overlay and AddSSLVideoLinks component */}
+      {showAddLinkForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <AddSSLVideoLinks
+              onSubmit={handleAddYoutubeLink}
+              onCancel={() => setShowAddLinkForm(false)}
+              year={new Date().getFullYear()}
+              quarter={quarter}
+              lesson={id}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
