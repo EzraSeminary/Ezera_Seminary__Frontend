@@ -273,7 +273,11 @@ function DisplaySSLLesson() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <EditSSLVideoLink
-              link={{ videoUrl: editingLink }}
+              link={{
+                videoUrl: editingLink,
+                quarter: quarter || "",
+                lesson: id || "",
+              }}
               onSubmit={handleEditYoutubeLink}
               onCancel={() => setEditingLink(null)}
             />
