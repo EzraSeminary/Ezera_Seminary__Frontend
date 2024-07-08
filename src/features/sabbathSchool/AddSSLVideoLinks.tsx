@@ -2,60 +2,46 @@
 import { useState } from "react";
 import axios from "axios";
 
-const AddSSLVideoLinks = () => {
-  const [formData, setFormData] = useState({
-    year: "",
-    quarter: "",
-    lesson: "",
-    videoUrl: "",
-  });
+const AddSSLVideoLinks = ({ onSubmit, onCancel, year, quarter, lesson }) => {
+  const [videoUrl, setVideoUrl] = useState("");
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/sslLinks", formData);
-      alert("Video link added successfully");
-      setFormData({ year: "", quarter: "", lesson: "", videoUrl: "" });
+      const response = await axios.post("/sslLinks", {
+        year,
+        quarter,
+        lesson,
+        videoUrl,
+      });
+      onSubmit(response.data.videoUrl);
     } catch (error) {
       alert("Error adding video link");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mt-4">
       <input
-        name="year"
-        value={formData.year}
-        onChange={handleChange}
-        placeholder="Year"
-        required
-      />
-      <input
-        name="quarter"
-        value={formData.quarter}
-        onChange={handleChange}
-        placeholder="Quarter"
-        required
-      />
-      <input
-        name="lesson"
-        value={formData.lesson}
-        onChange={handleChange}
-        placeholder="Lesson"
-        required
-      />
-      <input
-        name="videoUrl"
-        value={formData.videoUrl}
-        onChange={handleChange}
+        value={videoUrl}
+        onChange={(e) => setVideoUrl(e.target.value)}
         placeholder="YouTube URL"
         required
+        className="px-2 py-1 border rounded mr-2"
       />
-      <button type="submit">Add Video Link</button>
+      <button
+        type="submit"
+        className="px-2 py-1 bg-blue-500 text-white rounded mr-2"
+      >
+        Add Link
+      </button>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="px-2 py-1 bg-gray-300 rounded"
+      >
+        Cancel
+      </button>
     </form>
   );
 };

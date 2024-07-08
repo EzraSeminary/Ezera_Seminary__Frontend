@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetSSLsQuery } from "./../../services/SabbathSchoolApi"; // Ensure this path is correct
 import { motion } from "framer-motion";
 import LoadingPage from "@/pages/user/LoadingPage";
-import axios from "axios";
-import { YoutubeLogo } from "@phosphor-icons/react";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -23,27 +20,6 @@ const gridSquareVariants = {
 
 const SSLHome = () => {
   const { data: ssl, error, isLoading } = useGetSSLsQuery({});
-  const [videoLinks, setVideoLinks] = useState({});
-
-  useEffect(() => {
-    const fetchVideoLinks = async () => {
-      if (ssl) {
-        const links = {};
-        for (const item of ssl) {
-          const [year, quarter] = item.id.split("-");
-          try {
-            const response = await axios.get(`/sslLinks/${year}/${quarter}/1`);
-            links[item.id] = response.data.videoUrl;
-          } catch (error) {
-            console.error("Error fetching video link:", error);
-          }
-        }
-        setVideoLinks(links);
-      }
-    };
-
-    fetchVideoLinks();
-  }, [ssl]);
 
   const sabbathSchoolLessons = ssl ?? [];
 
@@ -52,6 +28,7 @@ const SSLHome = () => {
   if (isLoading) return <LoadingPage />;
 
   return (
+    // <div className="">
     <motion.div
       variants={gridContainerVariants}
       initial="hidden"
@@ -93,22 +70,11 @@ const SSLHome = () => {
                 {(item as { description: string }).description}
               </p>
             </div>
-            {videoLinks[item.id] && (
-              <a
-                href={videoLinks[item.id]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
-                  Watch on YouTube{" "}
-                  <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
-                </button>
-              </a>
-            )}
           </Link>
         </motion.div>
       ))}
     </motion.div>
+    // </div>
   );
 };
 

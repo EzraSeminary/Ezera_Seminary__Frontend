@@ -1,6 +1,7 @@
 import "./SSLStyles.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import LoadingPage from "@/pages/user/LoadingPage";
 import {
   useGetSSLOfDayLessonQuery,
@@ -10,6 +11,7 @@ import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
+import AddSSLVideoLinks from "./AddSSLVideoLinks";
 
 function DisplaySSLLesson() {
   interface Params {
@@ -37,6 +39,26 @@ function DisplaySSLLesson() {
   });
   const [selectedVerse, setSelectedVerse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [youtubeLink, setYoutubeLink] = useState("");
+  const [showAddLinkForm, setShowAddLinkForm] = useState(false);
+
+  useEffect(() => {
+    const fetchYoutubeLink = async () => {
+      try {
+        const response = await axios.get(`/sslLinks/${quarter}/${id}/1`);
+        setYoutubeLink(response.data.videoUrl);
+      } catch (error) {
+        console.error("Failed to fetch YouTube link:", error);
+      }
+    };
+
+    fetchYoutubeLink();
+  }, [quarter, id]);
+
+  const handleAddYoutubeLink = async (newLink) => {
+    setYoutubeLink(newLink);
+    setShowAddLinkForm(false);
+  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -121,11 +143,34 @@ function DisplaySSLLesson() {
           backgroundSize: "cover",
         }}
       >
-        <div className="flex justify-end mt-2 md:mt-4">
-          <button className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all">
-            Watch on YouTube <YoutubeLogo size={24} weight="fill" />
-          </button>
+        <div className="flex justify-end mt-2 md:mt-4 space-x-2">
+          {youtubeLink ? (
+            <a
+              href={youtubeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+            >
+              Watch on YouTube <YoutubeLogo size={24} weight="fill" />
+            </a>
+          ) : (
+            <button
+              onClick={() => setShowAddLinkForm(true)}
+              className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+            >
+              Add YouTube Link
+            </button>
+          )}
         </div>
+        {showAddLinkForm && (
+          <AddSSLVideoLinks
+            onSubmit={handleAddYoutubeLink}
+            onCancel={() => setShowAddLinkForm(false)}
+            year={new Date().getFullYear()}
+            quarter={quarter}
+            lesson={id}
+          />
+        )}
         <div className="flex flex-col space-y-1">
           <p className="flex flex-row text-primary-5 text-sm lg:text-lg">
             {daysOfWeek[(Number(day) ?? 0) % 7]}፣&nbsp;&nbsp;
