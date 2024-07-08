@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditSSLVideoLink = ({ link, onSubmit, onCancel }) => {
+import { LinkType } from "../types"; // Assuming you have a type definition for 'LinkType'
+
+const EditSSLVideoLink = ({ link }: { link: LinkType }, onSubmit, onCancel) => {
   const [videoUrl, setVideoUrl] = useState(link.videoUrl);
 
   const handleSubmit = async (e) => {
