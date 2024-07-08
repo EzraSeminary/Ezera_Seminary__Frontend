@@ -4,19 +4,24 @@ import axios from "axios";
 
 import { LinkType } from "@/redux/types"; // Assuming you have a type definition for 'LinkType'
 
-const EditSSLVideoLink = (
-  { link }: { link: LinkType },
-  onSubmit: (arg0: any) => void,
-  onCancel: MouseEventHandler<HTMLButtonElement> | undefined
-) => {
+interface EditSSLVideoLinkProps {
+  link: LinkType;
+  onSubmit: (data: any) => void;
+  onCancel: () => void;
+}
+const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
+  link,
+  onSubmit,
+  onCancel,
+}) => {
   const [videoUrl, setVideoUrl] = useState(link.videoUrl);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.put(`/sslLinks/${link.id}`, { videoUrl });
       onSubmit(response.data);
-    } catch (error: any) {
+    } catch (error) {
       alert("Error updating video link: " + error.message);
     }
   };

@@ -12,6 +12,7 @@ import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
 import AddSSLVideoLinks from "./AddSSLVideoLinks";
+import EditSSLVideoLink from "./EditSSLVideoLink";
 
 function DisplaySSLLesson() {
   interface Params {
@@ -24,7 +25,7 @@ function DisplaySSLLesson() {
     [key: string]: string;
   }
 
-  const { quarter, id, day } = useParams<Params>();
+  const { quarter = "", id, day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
   const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
   const {
@@ -41,23 +42,67 @@ function DisplaySSLLesson() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
+  const [editingLink, setEditingLink] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchYoutubeLink = async () => {
-      try {
-        const response = await axios.get(`/sslLinks/${quarter}/${id}/1`);
-        setYoutubeLink(response.data.videoUrl);
-      } catch (error) {
-        console.error("Failed to fetch YouTube link:", error);
-      }
-    };
-
     fetchYoutubeLink();
   }, [quarter, id]);
 
-  const handleAddYoutubeLink = async (newLink: SetStateAction<string>) => {
-    setYoutubeLink(newLink);
-    setShowAddLinkForm(false);
+  const fetchYoutubeLink = async () => {
+    try {
+      const response = await axios.get(`/sslLinks/${quarter}/${id}`);
+      setYoutubeLink(response.data.videoUrl);
+    } catch (error) {
+      console.error("Failed to fetch YouTube link:", error);
+    }
+  };
+
+  const handleAddYoutubeLink = async (newLink: string) => {
+    try {
+      const currentYear = new Date().getFullYear();
+      const response = await axios.post(`/sslLinks`, {
+        videoUrl: newLink,
+        quarter: parseInt(quarter),
+        lesson: parseInt(id),
+        year: currentYear,
+      });
+      setYoutubeLink(response.data.videoUrl);
+      setShowAddLinkForm(false);
+    } catch (error) {
+      console.error(
+        "Error adding YouTube link:",
+        error.response?.data || error
+      );
+      alert(
+        "Failed to add YouTube link. Please try again. " +
+          (error.response?.data?.message || error.message)
+      );
+    }
+  };
+
+  const handleEditYoutubeLink = async (updatedLink: string) => {
+    try {
+      await axios.put(`/sslLinks/${quarter}/${id}`, {
+        videoUrl: updatedLink,
+      });
+      setYoutubeLink(updatedLink);
+      setEditingLink(null);
+    } catch (error) {
+      console.error("Error updating YouTube link:", error);
+      alert("Failed to update YouTube link. Please try again.");
+    }
+  };
+
+  const handleDeleteYoutubeLink = async () => {
+    if (window.confirm("Are you sure you want to delete this YouTube link?")) {
+      try {
+        await axios.delete(`/sslLinks/${quarter}/${id}`);
+        setYoutubeLink("");
+      } catch (error) {
+        console.error("Error deleting YouTube link:", error);
+        alert("Failed to delete YouTube link. Please try again.");
+      }
+    }
   };
 
   const toggleModal = () => {
@@ -136,8 +181,6 @@ function DisplaySSLLesson() {
 
   return (
     <div className="relative">
-      {" "}
-      {/* Add relative positioning to the parent div */}
       <div
         className="flex flex-col justify-between rounded-md w-[100%] h-64 text-primary-1 px-8 py-4"
         style={{
@@ -147,14 +190,28 @@ function DisplaySSLLesson() {
       >
         <div className="flex justify-end mt-2 md:mt-4 space-x-2">
           {youtubeLink ? (
-            <a
-              href={youtubeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
-            >
-              Watch on YouTube <YoutubeLogo size={24} weight="fill" />
-            </a>
+            <>
+              <a
+                href={youtubeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+              >
+                Watch on YouTube <YoutubeLogo size={24} weight="fill" />
+              </a>
+              <button
+                onClick={() => setEditingLink(youtubeLink)}
+                className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+              >
+                Edit Link
+              </button>
+              <button
+                onClick={handleDeleteYoutubeLink}
+                className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+              >
+                Delete Link
+              </button>
+            </>
           ) : (
             <button
               onClick={() => setShowAddLinkForm(true)}
@@ -187,7 +244,6 @@ function DisplaySSLLesson() {
       <div className="text-secondary-6 text-justify wrapper my-4 ">
         {modifyContentForDisplay(lessonDetails.content)}
       </div>
-      {/* Add the overlay and AddSSLVideoLinks component */}
       {showAddLinkForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
@@ -197,6 +253,17 @@ function DisplaySSLLesson() {
               year={new Date().getFullYear()}
               quarter={quarter || ""}
               lesson={id || ""}
+            />
+          </div>
+        </div>
+      )}
+      {editingLink && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <EditSSLVideoLink
+              link={{ videoUrl: editingLink }}
+              onSubmit={handleEditYoutubeLink}
+              onCancel={() => setEditingLink(null)}
             />
           </div>
         </div>

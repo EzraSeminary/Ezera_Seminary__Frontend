@@ -19,13 +19,17 @@ const AddSSLVideoLinks = ({
 }: AddSSLVideoLinksProps) => {
   const [formData, setFormData] = useState({
     year: year || new Date().getFullYear(),
-    quarter: quarter || "1",
-    lesson: lesson || "1",
+    quarter: parseInt(quarter) || 1,
+    lesson: parseInt(lesson) || 1,
     videoUrl: "",
   });
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: { target: { name: string; value: string } }) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "videoUrl" ? value : parseInt(value),
+    }));
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -34,7 +38,14 @@ const AddSSLVideoLinks = ({
       const response = await axios.post("/sslLinks", formData);
       onSubmit(response.data.videoUrl);
     } catch (error: any) {
-      alert("Error adding video link: " + error.message);
+      console.error(
+        "Error adding video link:",
+        error.response?.data || error.message
+      );
+      alert(
+        "Error adding video link: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
 
