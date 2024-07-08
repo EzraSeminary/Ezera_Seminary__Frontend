@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useGetSSLsQuery } from "./../../services/SabbathSchoolApi"; // Ensure this path is correct
 import { motion } from "framer-motion";
 import LoadingPage from "@/pages/user/LoadingPage";
+import axios from "axios";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -22,6 +23,28 @@ const gridSquareVariants = {
 const SSLHome = () => {
   const { data: ssl, error, isLoading } = useGetSSLsQuery({});
   const [videoLinks, setVideoLinks] = useState({});
+
+  useEffect(() => {
+    const fetchVideoLinks = async () => {
+      if (ssl) {
+        const links = {};
+        for (const item of ssl) {
+          const [year, quarter] = item.id.split("-");
+          try {
+            const response = await axios.get(
+              `/api/videoLinks/${year}/${quarter}/1`
+            );
+            links[item.id] = response.data.videoUrl;
+          } catch (error) {
+            console.error("Error fetching video link:", error);
+          }
+        }
+        setVideoLinks(links);
+      }
+    };
+
+    fetchVideoLinks();
+  }, [ssl]);
 
   const sabbathSchoolLessons = ssl ?? [];
 
