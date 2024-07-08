@@ -17,7 +17,7 @@ const AddSSLVideoLinks = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      await axios.post("/api/videoLinks", formData);
+      await axios.post("/sslLinks", formData);
       alert("Video link added successfully");
       setFormData({ year: "", quarter: "", lesson: "", videoUrl: "" });
     } catch (error) {

@@ -32,9 +32,7 @@ const SSLHome = () => {
         for (const item of ssl) {
           const [year, quarter] = item.id.split("-");
           try {
-            const response = await axios.get(
-              `/api/videoLinks/${year}/${quarter}/1`
-            );
+            const response = await axios.get(`/sslLinks/${year}/${quarter}/1`);
             links[item.id] = response.data.videoUrl;
           } catch (error) {
             console.error("Error fetching video link:", error);
@@ -76,7 +74,25 @@ const SSLHome = () => {
             className="flex bg-white shadow-2xl rounded-md border border-accent-6 p-1 gap-2 h-48 md:h-52 lg:h-60"
             to={(item as { id?: string }).id ?? ""}
           >
-            {/* ... (keep your existing code) */}
+            <img
+              src={(item as { cover: string; title: string }).cover}
+              alt={(item as { title: string }).title}
+              className="rounded-md  w-1/2 object-fit"
+            />
+            <div
+              className="flex flex-col py-2 h-full space-y-1"
+              style={{ maxHeight: "300px" }}
+            >
+              <p className="text-accent-6 text-sm xl:text-lg">
+                {(item as { human_date: string }).human_date}
+              </p>
+              <h2 className="text-xl md:text-xl xl:text-2xl text-secondary-6  ">
+                {(item as { title: string }).title}
+              </h2>
+              <p className="text-secondary-5 text-xs xl:text-sm overflow-hidden overflow-ellipsis text-justify px-1">
+                {(item as { description: string }).description}
+              </p>
+            </div>
             {videoLinks[item.id] && (
               <a
                 href={videoLinks[item.id]}
