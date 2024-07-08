@@ -24,16 +24,16 @@ const AddSSLVideoLinks = ({
     videoUrl: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       const response = await axios.post("/sslLinks", formData);
       onSubmit(response.data.videoUrl);
-    } catch (error) {
+    } catch (error: any) {
       alert("Error adding video link: " + error.message);
     }
   };
