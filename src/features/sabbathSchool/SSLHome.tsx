@@ -20,6 +20,7 @@ const gridSquareVariants = {
 
 const SSLHome = () => {
   const { data: ssl, error, isLoading } = useGetSSLsQuery({});
+  const [videoLinks, setVideoLinks] = useState({});
 
   const sabbathSchoolLessons = ssl ?? [];
 
