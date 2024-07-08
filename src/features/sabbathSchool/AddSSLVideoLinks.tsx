@@ -2,7 +2,21 @@
 import { useState } from "react";
 import axios from "axios";
 
-const AddSSLVideoLinks = ({ onSubmit, onCancel, year, quarter, lesson }) => {
+type AddSSLVideoLinksProps = {
+  onSubmit: (videoUrl: string) => void;
+  onCancel: () => void;
+  year: number;
+  quarter: string;
+  lesson: string;
+};
+
+const AddSSLVideoLinks = ({
+  onSubmit,
+  onCancel,
+  year,
+  quarter,
+  lesson,
+}: AddSSLVideoLinksProps) => {
   const [formData, setFormData] = useState({
     year: year || new Date().getFullYear(),
     quarter: quarter || "1",
