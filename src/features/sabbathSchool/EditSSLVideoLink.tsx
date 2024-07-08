@@ -1,18 +1,22 @@
 // components/EditSSLVideoLink.tsx
-import { useState, useEffect } from "react";
+import { useState, MouseEventHandler } from "react";
 import axios from "axios";
 
-import { LinkType } from "../types"; // Assuming you have a type definition for 'LinkType'
+import { LinkType } from "@/redux/types"; // Assuming you have a type definition for 'LinkType'
 
-const EditSSLVideoLink = ({ link }: { link: LinkType }, onSubmit, onCancel) => {
+const EditSSLVideoLink = (
+  { link }: { link: LinkType },
+  onSubmit: (arg0: any) => void,
+  onCancel: MouseEventHandler<HTMLButtonElement> | undefined
+) => {
   const [videoUrl, setVideoUrl] = useState(link.videoUrl);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       const response = await axios.put(`/sslLinks/${link.id}`, { videoUrl });
       onSubmit(response.data);
-    } catch (error) {
+    } catch (error: any) {
       alert("Error updating video link: " + error.message);
     }
   };
