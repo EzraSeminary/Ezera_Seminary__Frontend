@@ -292,7 +292,12 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                 devotionToDisplay && devotionToDisplay.image
               }`}
               alt="Devotion Image"
-              className="h-full rounded-xl p-1"
+              className="h-full rounded-xl p-1 object-cover"
+              style={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+              }}
             />
             {devotionToDisplay &&
               typeof devotionToDisplay.previewUrl === "string" && (
@@ -308,7 +313,6 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                 className="hidden"
               />
             )}
-
             <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
               <button
                 className="flex  text-xs xl:text-lg  w-max  items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
