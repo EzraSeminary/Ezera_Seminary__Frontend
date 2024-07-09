@@ -292,7 +292,12 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                 devotionToDisplay && devotionToDisplay.image
               }`}
               alt="Devotion Image"
-              className="h-full rounded-xl p-1"
+              className="h-full rounded-xl p-1 object-cover"
+              style={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+              }}
             />
             {devotionToDisplay &&
               typeof devotionToDisplay.previewUrl === "string" && (
