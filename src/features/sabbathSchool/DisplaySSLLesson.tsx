@@ -55,15 +55,22 @@ function DisplaySSLLesson() {
   const fetchYoutubeLink = useCallback(async () => {
     try {
       const response = await axios.get(`/sslLinks/${quarter}/${id}`);
-      setYoutubeLink(response.data);
+      if (
+        response.data &&
+        typeof response.data.year === "number" &&
+        typeof response.data.quarter === "number" &&
+        typeof response.data.lesson === "number"
+      ) {
+        setYoutubeLink(response.data);
+      } else {
+        console.error("Invalid data received from server:", response.data);
+        setYoutubeLink(null);
+      }
     } catch (error) {
       console.error("Failed to fetch YouTube link:", error);
+      setYoutubeLink(null);
     }
   }, [quarter, id]);
-
-  useEffect(() => {
-    fetchYoutubeLink();
-  }, [fetchYoutubeLink]);
 
   const handleAddYoutubeLink = useCallback(
     async (newLink: string, year: number, quarter: number, lesson: number) => {
