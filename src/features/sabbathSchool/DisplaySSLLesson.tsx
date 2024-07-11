@@ -40,7 +40,14 @@ function DisplaySSLLesson() {
   });
   const [selectedVerse, setSelectedVerse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [youtubeLink, setYoutubeLink] = useState("");
+  interface YoutubeLink {
+    year: number;
+    quarter: number;
+    lesson: number;
+    videoUrl: string;
+  }
+
+  const [youtubeLink, setYoutubeLink] = useState<YoutubeLink | null>(null);
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [editingLink, setEditingLink] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -112,6 +119,14 @@ function DisplaySSLLesson() {
   const handleDeleteYoutubeLink = async () => {
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
+        if (
+          !youtubeLink ||
+          typeof youtubeLink.year !== "number" ||
+          typeof youtubeLink.quarter !== "number" ||
+          typeof youtubeLink.lesson !== "number"
+        ) {
+          throw new Error("Invalid YouTube link data");
+        }
         await axios.delete(
           `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
         );
@@ -285,11 +300,7 @@ function DisplaySSLLesson() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <EditSSLVideoLink
-              link={{
-                videoUrl: editingLink,
-                quarter: quarter || "",
-                lesson: id || "",
-              }}
+              link={youtubeLink}
               onSubmit={handleEditYoutubeLink}
               onCancel={() => setEditingLink(null)}
             />
