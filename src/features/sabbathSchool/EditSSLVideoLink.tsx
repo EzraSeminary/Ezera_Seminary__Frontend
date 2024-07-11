@@ -19,8 +19,9 @@ const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const currentYear = new Date().getFullYear();
       const response = await axios.put(
-        `/sslLinks/${link.quarter}/${link.lesson}`,
+        `/sslLinks/${currentYear}/${link.quarter}/${link.lesson}`,
         { videoUrl }
       );
       onSubmit(response.data);

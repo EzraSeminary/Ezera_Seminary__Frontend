@@ -1,9 +1,13 @@
 // components/AddSSLVideoLinks.jsx
-import { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useCallback } from "react";
 
 type AddSSLVideoLinksProps = {
-  onSubmit: (videoUrl: string) => void;
+  onSubmit: (
+    videoUrl: string,
+    year: number,
+    quarter: number,
+    lesson: number
+  ) => void;
   onCancel: () => void;
   year: number;
   quarter: string;
@@ -24,30 +28,38 @@ const AddSSLVideoLinks = ({
     videoUrl: "",
   });
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const { name, value } = e.target;
+  useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "videoUrl" ? value : parseInt(value),
+      year: year || new Date().getFullYear(),
+      quarter: parseInt(quarter) || 1,
+      lesson: parseInt(lesson) || 1,
     }));
-  };
+  }, [year, quarter, lesson]);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("/sslLinks", formData);
-      onSubmit(response.data.videoUrl);
-    } catch (error: any) {
-      console.error(
-        "Error adding video link:",
-        error.response?.data || error.message
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: name === "videoUrl" ? value : parseInt(value),
+      }));
+    },
+    []
+  );
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      onSubmit(
+        formData.videoUrl,
+        formData.year,
+        formData.quarter,
+        formData.lesson
       );
-      alert(
-        "Error adding video link: " +
-          (error.response?.data?.message || error.message)
-      );
-    }
-  };
+    },
+    [formData, onSubmit]
+  );
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
@@ -162,4 +174,4 @@ const AddSSLVideoLinks = ({
   );
 };
 
-export default AddSSLVideoLinks;
+export default React.memo(AddSSLVideoLinks);

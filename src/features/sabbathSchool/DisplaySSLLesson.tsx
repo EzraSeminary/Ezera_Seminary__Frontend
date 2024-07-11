@@ -1,5 +1,5 @@
 import "./SSLStyles.css";
-import { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingPage from "@/pages/user/LoadingPage";
@@ -43,48 +43,59 @@ function DisplaySSLLesson() {
   const [youtubeLink, setYoutubeLink] = useState("");
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [editingLink, setEditingLink] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    fetchYoutubeLink();
-  }, [quarter, id]);
-
-  const fetchYoutubeLink = async () => {
+  const fetchYoutubeLink = useCallback(async () => {
     try {
       const response = await axios.get(`/sslLinks/${quarter}/${id}`);
-      setYoutubeLink(response.data.videoUrl);
+      setYoutubeLink(response.data);
     } catch (error) {
       console.error("Failed to fetch YouTube link:", error);
     }
-  };
+  }, [quarter, id]);
 
-  const handleAddYoutubeLink = async (newLink: string) => {
-    try {
-      const currentYear = new Date().getFullYear();
-      const response = await axios.post(`/sslLinks`, {
-        videoUrl: newLink,
-        quarter: parseInt(quarter),
-        lesson: parseInt(id),
-        year: currentYear,
-      });
-      setYoutubeLink(response.data.videoUrl);
-      setShowAddLinkForm(false);
-    } catch (error) {
-      console.error(
-        "Error adding YouTube link:",
-        error.response?.data || error
-      );
-      alert(
-        "Failed to add YouTube link. Please try again. " +
-          (error.response?.data?.message || error.message)
-      );
-    }
-  };
+  useEffect(() => {
+    fetchYoutubeLink();
+  }, [fetchYoutubeLink]);
+
+  const handleAddYoutubeLink = useCallback(
+    async (newLink: string, year: number, quarter: number, lesson: number) => {
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+      try {
+        const response = await axios.post(`/sslLinks`, {
+          videoUrl: newLink,
+          quarter: quarter,
+          lesson: lesson,
+          year: year,
+        });
+        setYoutubeLink(response.data.videoUrl);
+        setShowAddLinkForm(false);
+      } catch (error: any) {
+        console.error(
+          "Error adding YouTube link:",
+          error.response?.data || error
+        );
+        alert(
+          "Failed to add YouTube link. Please try again. " +
+            (error.response?.data?.message || error.message)
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isSubmitting]
+  );
 
   const handleEditYoutubeLink = async (updatedLink: string) => {
     try {
-      const response = await axios.put(`/sslLinks/${quarter}/${id}`, {
-        videoUrl: updatedLink,
-      });
+      const currentYear = new Date().getFullYear();
+      const response = await axios.put(
+        `/sslLinks/${currentYear}/${quarter}/${id}`,
+        {
+          videoUrl: updatedLink,
+        }
+      );
       setYoutubeLink(response.data.videoUrl);
       setEditingLink(null);
     } catch (error: any) {
@@ -102,7 +113,8 @@ function DisplaySSLLesson() {
   const handleDeleteYoutubeLink = async () => {
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
-        await axios.delete(`/sslLinks/${quarter}/${id}`);
+        const currentYear = new Date().getFullYear();
+        await axios.delete(`/sslLinks/${currentYear}/${quarter}/${id}`);
         setYoutubeLink("");
       } catch (error: any) {
         console.error(
@@ -263,8 +275,8 @@ function DisplaySSLLesson() {
               onSubmit={handleAddYoutubeLink}
               onCancel={() => setShowAddLinkForm(false)}
               year={new Date().getFullYear()}
-              quarter={quarter || ""}
-              lesson={id || ""}
+              quarter={quarter}
+              lesson={id}
             />
           </div>
         </div>
