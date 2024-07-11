@@ -89,14 +89,13 @@ function DisplaySSLLesson() {
 
   const handleEditYoutubeLink = async (updatedLink: string) => {
     try {
-      const currentYear = new Date().getFullYear();
       const response = await axios.put(
-        `/sslLinks/${currentYear}/${quarter}/${id}`,
+        `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`,
         {
           videoUrl: updatedLink,
         }
       );
-      setYoutubeLink(response.data.videoUrl);
+      setYoutubeLink(response.data);
       setEditingLink(null);
     } catch (error: any) {
       console.error(
@@ -113,8 +112,9 @@ function DisplaySSLLesson() {
   const handleDeleteYoutubeLink = async () => {
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
-        const currentYear = new Date().getFullYear();
-        await axios.delete(`/sslLinks/${currentYear}/${quarter}/${id}`);
+        await axios.delete(
+          `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
+        );
         setYoutubeLink("");
       } catch (error: any) {
         console.error(

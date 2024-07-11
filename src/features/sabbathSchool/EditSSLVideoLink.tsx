@@ -5,10 +5,16 @@ import axios from "axios";
 import { LinkType } from "@/redux/types"; // Assuming you have a type definition for 'LinkType'
 
 interface EditSSLVideoLinkProps {
-  link: LinkType;
+  link: {
+    year: number;
+    quarter: number;
+    lesson: number;
+    videoUrl: string;
+  };
   onSubmit: (data: any) => void;
   onCancel: () => void;
 }
+
 const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
   link,
   onSubmit,
@@ -19,9 +25,8 @@ const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const currentYear = new Date().getFullYear();
       const response = await axios.put(
-        `/sslLinks/${currentYear}/${link.quarter}/${link.lesson}`,
+        `/sslLinks/${link.year}/${link.quarter}/${link.lesson}`,
         { videoUrl }
       );
       onSubmit(response.data);
