@@ -25,6 +25,13 @@ function DisplaySSLLesson() {
     [key: string]: string;
   }
 
+  interface YoutubeLink {
+    year: number;
+    quarter: number;
+    lesson: number;
+    videoUrl: string;
+  }
+
   const { quarter = "", id = "", day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
   const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
@@ -40,12 +47,6 @@ function DisplaySSLLesson() {
   });
   const [selectedVerse, setSelectedVerse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  interface YoutubeLink {
-    year: number;
-    quarter: number;
-    lesson: number;
-    videoUrl: string;
-  }
 
   const [youtubeLink, setYoutubeLink] = useState<YoutubeLink | null>(null);
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
@@ -54,7 +55,10 @@ function DisplaySSLLesson() {
 
   const fetchYoutubeLink = useCallback(async () => {
     try {
-      const response = await axios.get(`/sslLinks/${year}/${quarter}/${id}`);
+      const currentYear = new Date().getFullYear();
+      const response = await axios.get(
+        `/sslLinks/${currentYear}/${quarter}/${id}`
+      );
       if (response.data && response.data.videoUrl) {
         setYoutubeLink(response.data);
       } else {
@@ -65,42 +69,18 @@ function DisplaySSLLesson() {
       console.error("Failed to fetch YouTube link:", error);
       setYoutubeLink(null);
     }
-  }, [year, quarter, id]);
+  }, [quarter, id]);
 
-  const handleAddYoutubeLink = useCallback(
-    async (newLink: string, year: number, quarter: number, lesson: number) => {
-      if (isSubmitting) return;
-      setIsSubmitting(true);
-      try {
-        const response = await axios.post(`/sslLinks`, {
-          videoUrl: newLink,
-          quarter: quarter,
-          lesson: lesson,
-          year: year,
-        });
-        setYoutubeLink(response.data.videoUrl);
-        setShowAddLinkForm(false);
-      } catch (error: any) {
-        console.error(
-          "Error adding YouTube link:",
-          error.response?.data || error
-        );
-        alert(
-          "Failed to add YouTube link. Please try again. " +
-            (error.response?.data?.message || error.message)
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [isSubmitting]
-  );
-
-  const handleEditYoutubeLink = async (updatedLink: string) => {
-    if (!youtubeLink) return;
+  // Update the handleEditYoutubeLink function
+  const handleEditYoutubeLink = async (
+    updatedLink: string,
+    year: number,
+    quarter: number,
+    lesson: number
+  ) => {
     try {
       const response = await axios.put(
-        `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`,
+        `/sslLinks/${year}/${quarter}/${lesson}`,
         {
           videoUrl: updatedLink,
         }
@@ -140,6 +120,43 @@ function DisplaySSLLesson() {
       }
     }
   };
+
+  // Update the useEffect to include year, quarter, and id
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    if (currentYear && quarter && id) {
+      fetchYoutubeLink();
+    }
+  }, [fetchYoutubeLink, quarter, id]);
+
+  const handleAddYoutubeLink = useCallback(
+    async (newLink: string, year: number, quarter: number, lesson: number) => {
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+      try {
+        const response = await axios.post(`/sslLinks`, {
+          videoUrl: newLink,
+          quarter: quarter,
+          lesson: lesson,
+          year: year,
+        });
+        setYoutubeLink(response.data.videoUrl);
+        setShowAddLinkForm(false);
+      } catch (error: any) {
+        console.error(
+          "Error adding YouTube link:",
+          error.response?.data || error
+        );
+        alert(
+          "Failed to add YouTube link. Please try again. " +
+            (error.response?.data?.message || error.message)
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isSubmitting]
+  );
 
   // Add a useEffect to fetch the YouTube link when the component mounts
   useEffect(() => {

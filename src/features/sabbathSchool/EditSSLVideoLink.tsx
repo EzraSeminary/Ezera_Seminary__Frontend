@@ -8,7 +8,12 @@ interface EditSSLVideoLinkProps {
     lesson: number;
     videoUrl: string;
   };
-  onSubmit: (updatedLink: string) => void;
+  onSubmit: (
+    updatedLink: string,
+    year: number,
+    quarter: number,
+    lesson: number
+  ) => void;
   onCancel: () => void;
 }
 
@@ -21,7 +26,7 @@ const EditSSLVideoLink: React.FC<EditSSLVideoLinkProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(videoUrl);
+    onSubmit(videoUrl, link.year, link.quarter, link.lesson);
   };
 
   return (
