@@ -53,14 +53,24 @@ function DisplaySSLLesson() {
   const [editingLink, setEditingLink] = useState<YoutubeLink | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Update the fetchYoutubeLink function
   const fetchYoutubeLink = useCallback(async () => {
     try {
       const currentYear = new Date().getFullYear();
+      // Split the quarter string and use the second part to get the quarter number
+      const quarterNumber = quarter.split("-")[1];
+      console.log(`${currentYear}, ${quarterNumber}, ${id} `);
+
       const response = await axios.get(
-        `/sslLinks/${currentYear}/${quarter}/${id}`
+        `/sslLinks/${currentYear}/${quarterNumber}/${id}`
       );
       if (response.data && response.data.videoUrl) {
-        setYoutubeLink(response.data);
+        setYoutubeLink({
+          year: currentYear,
+          quarter: parseInt(quarterNumber),
+          lesson: parseInt(id),
+          videoUrl: response.data.videoUrl,
+        });
       } else {
         console.error("Invalid data received from server:", response.data);
         setYoutubeLink(null);
@@ -79,13 +89,12 @@ function DisplaySSLLesson() {
     lesson: number
   ) => {
     try {
-      const response = await axios.put(
-        `/sslLinks/${year}/${quarter}/${lesson}`,
-        {
-          videoUrl: updatedLink,
-        }
-      );
-      setYoutubeLink(response.data);
+      setYoutubeLink({
+        year,
+        quarter,
+        lesson,
+        videoUrl: updatedLink,
+      });
       setEditingLink(null);
     } catch (error: any) {
       console.error(
@@ -102,6 +111,9 @@ function DisplaySSLLesson() {
   // Update the handleDeleteYoutubeLink function
   const handleDeleteYoutubeLink = async () => {
     if (!youtubeLink) return;
+    console.log(
+      `Deleting SSL link: /sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
+    );
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
         await axios.delete(
@@ -258,11 +270,12 @@ function DisplaySSLLesson() {
                 Watch on YouTube <YoutubeLogo size={24} weight="fill" />
               </a>
               <button
-                onClick={() => setEditingLink(youtubeLink)}
+                onClick={() => youtubeLink && setEditingLink(youtubeLink)}
                 className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
               >
                 Edit Link
               </button>
+
               <button
                 onClick={handleDeleteYoutubeLink}
                 className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
