@@ -49,18 +49,13 @@ function DisplaySSLLesson() {
 
   const [youtubeLink, setYoutubeLink] = useState<YoutubeLink | null>(null);
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
-  const [editingLink, setEditingLink] = useState<string | null>(null);
+  const [editingLink, setEditingLink] = useState<YoutubeLink | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchYoutubeLink = useCallback(async () => {
     try {
-      const response = await axios.get(`/sslLinks/${quarter}/${id}`);
-      if (
-        response.data &&
-        typeof response.data.year === "number" &&
-        typeof response.data.quarter === "number" &&
-        typeof response.data.lesson === "number"
-      ) {
+      const response = await axios.get(`/sslLinks/${year}/${quarter}/${id}`);
+      if (response.data && response.data.videoUrl) {
         setYoutubeLink(response.data);
       } else {
         console.error("Invalid data received from server:", response.data);
@@ -70,7 +65,7 @@ function DisplaySSLLesson() {
       console.error("Failed to fetch YouTube link:", error);
       setYoutubeLink(null);
     }
-  }, [quarter, id]);
+  }, [year, quarter, id]);
 
   const handleAddYoutubeLink = useCallback(
     async (newLink: string, year: number, quarter: number, lesson: number) => {
@@ -102,6 +97,7 @@ function DisplaySSLLesson() {
   );
 
   const handleEditYoutubeLink = async (updatedLink: string) => {
+    if (!youtubeLink) return;
     try {
       const response = await axios.put(
         `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`,
@@ -123,21 +119,15 @@ function DisplaySSLLesson() {
     }
   };
 
+  // Update the handleDeleteYoutubeLink function
   const handleDeleteYoutubeLink = async () => {
+    if (!youtubeLink) return;
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
-        if (
-          !youtubeLink ||
-          typeof youtubeLink.year !== "number" ||
-          typeof youtubeLink.quarter !== "number" ||
-          typeof youtubeLink.lesson !== "number"
-        ) {
-          throw new Error("Invalid YouTube link data");
-        }
         await axios.delete(
           `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
         );
-        setYoutubeLink("");
+        setYoutubeLink(null);
       } catch (error: any) {
         console.error(
           "Error deleting YouTube link:",
@@ -150,6 +140,11 @@ function DisplaySSLLesson() {
       }
     }
   };
+
+  // Add a useEffect to fetch the YouTube link when the component mounts
+  useEffect(() => {
+    fetchYoutubeLink();
+  }, [fetchYoutubeLink]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -238,7 +233,7 @@ function DisplaySSLLesson() {
           {youtubeLink ? (
             <>
               <a
-                href={youtubeLink}
+                href={youtubeLink?.videoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
@@ -307,7 +302,7 @@ function DisplaySSLLesson() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <EditSSLVideoLink
-              link={youtubeLink}
+              link={editingLink}
               onSubmit={handleEditYoutubeLink}
               onCancel={() => setEditingLink(null)}
             />
