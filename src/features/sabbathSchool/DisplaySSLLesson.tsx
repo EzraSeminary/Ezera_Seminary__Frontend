@@ -52,25 +52,32 @@ function DisplaySSLLesson() {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [editingLink, setEditingLink] = useState<YoutubeLink | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const getQuarterNumber = useCallback((quarter: string) => {
+    const parts = quarter.split("-");
+    return parts.length > 1 ? parts[[1]] : quarter;
+  }, []);
 
   // Update the fetchYoutubeLink function
   const fetchYoutubeLink = useCallback(async () => {
     try {
       const currentYear = new Date().getFullYear();
-      // Split the quarter string and use the second part to get the quarter number
-      const quarterNumber = quarter.split("-")[1];
-      console.log(`${currentYear}, ${quarterNumber}, ${id} `);
+      const quarterNumber = getQuarterNumber(quarter);
+      console.log(`Fetching link for: ${currentYear}, ${quarterNumber}, ${id}`);
 
       const response = await axios.get(
         `/sslLinks/${currentYear}/${quarterNumber}/${id}`
       );
+      console.log("Fetched YouTube link data:", response.data);
+
       if (response.data && response.data.videoUrl) {
-        setYoutubeLink({
+        const linkData = {
           year: currentYear,
           quarter: parseInt(quarterNumber),
           lesson: parseInt(id),
           videoUrl: response.data.videoUrl,
-        });
+        };
+        console.log("Setting YouTube link state:", linkData);
+        setYoutubeLink(linkData);
       } else {
         console.error("Invalid data received from server:", response.data);
         setYoutubeLink(null);
@@ -79,7 +86,7 @@ function DisplaySSLLesson() {
       console.error("Failed to fetch YouTube link:", error);
       setYoutubeLink(null);
     }
-  }, [quarter, id]);
+  }, [quarter, id, getQuarterNumber]);
 
   // Update the handleEditYoutubeLink function
   const handleEditYoutubeLink = async (
@@ -110,36 +117,60 @@ function DisplaySSLLesson() {
 
   // Update the handleDeleteYoutubeLink function
   const handleDeleteYoutubeLink = async () => {
-    if (!youtubeLink) return;
+    if (
+      !youtubeLink ||
+      !youtubeLink.year ||
+      !youtubeLink.quarter ||
+      !youtubeLink.lesson
+    ) {
+      console.error("Invalid YouTube link data for deletion:", youtubeLink);
+      alert(
+        "Cannot delete YouTube link due to missing data. Please try refreshing the page."
+      );
+      return;
+    }
+
     console.log(
-      `Deleting SSL link: /sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
+      `Attempting to delete SSL link: /sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
     );
+
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
-        await axios.delete(
+        const response = await axios.delete(
           `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
         );
-        setYoutubeLink(null);
+        console.log("Delete response:", response);
+
+        if (response.status === 200) {
+          setYoutubeLink(null);
+          alert("YouTube link successfully deleted.");
+        } else {
+          throw new Error(`Unexpected response status: ${response.status}`);
+        }
       } catch (error: any) {
         console.error(
           "Error deleting YouTube link:",
           error.response?.data || error
         );
         alert(
-          "Failed to delete YouTube link. Please try again. " +
-            (error.response?.data?.message || error.message)
+          `Failed to delete YouTube link. Please try again. ${
+            error.response?.data?.message || error.message
+          }`
         );
       }
     }
   };
 
-  // Update the useEffect to include year, quarter, and id
   useEffect(() => {
     const currentYear = new Date().getFullYear();
     if (currentYear && quarter && id) {
       fetchYoutubeLink();
     }
   }, [fetchYoutubeLink, quarter, id]);
+
+  useEffect(() => {
+    console.log("Current YouTube link state:", youtubeLink);
+  }, [youtubeLink]);
 
   const handleAddYoutubeLink = useCallback(
     async (newLink: string, year: number, quarter: number, lesson: number) => {
@@ -169,11 +200,6 @@ function DisplaySSLLesson() {
     },
     [isSubmitting]
   );
-
-  // Add a useEffect to fetch the YouTube link when the component mounts
-  useEffect(() => {
-    fetchYoutubeLink();
-  }, [fetchYoutubeLink]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -276,12 +302,17 @@ function DisplaySSLLesson() {
                 Edit Link
               </button>
 
-              <button
-                onClick={handleDeleteYoutubeLink}
-                className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
-              >
-                Delete Link
-              </button>
+              {youtubeLink &&
+                youtubeLink.year &&
+                youtubeLink.quarter &&
+                youtubeLink.lesson && (
+                  <button
+                    onClick={handleDeleteYoutubeLink}
+                    className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+                  >
+                    Delete Link
+                  </button>
+                )}
             </>
           ) : (
             <button
