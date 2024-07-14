@@ -54,7 +54,7 @@ function DisplaySSLLesson() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const getQuarterNumber = useCallback((quarter: string) => {
     const parts = quarter.split("-");
-    return parts.length > 1 ? parts[[1]] : quarter;
+    return parts.length > 1 ? parts[1] : quarter;
   }, []);
 
   // Update the fetchYoutubeLink function

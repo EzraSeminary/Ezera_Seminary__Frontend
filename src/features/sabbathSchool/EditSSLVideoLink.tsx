@@ -1,5 +1,5 @@
 // components/EditSSLVideoLink.tsx
-import { useState, MouseEventHandler } from "react";
+import { useState } from "react";
 
 interface EditSSLVideoLinkProps {
   link: {
