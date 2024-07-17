@@ -900,6 +900,7 @@ function SlidesDisplay() {
                                       onChange={() =>
                                         handleRadioChange(choiceIndex, choice.text, element.value.correctAnswer)
                                       }
+                                      disabled={isQuizAnswered}
                                     />
                                     <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
                                       {choice.text}
