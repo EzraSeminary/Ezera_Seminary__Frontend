@@ -886,38 +886,27 @@ function SlidesDisplay() {
                               {/* Choices */}
                               {element.value.choices && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                  {element.value.choices.map(
-                                    (
-                                      choice: { text: string },
-                                      choiceIndex: number
-                                    ) => {
-                                      return (
-                                        <label
-                                          key={`${element._id}-choice-${choiceIndex}`}
-                                          className="inline-flex items-center"
-                                        >
-                                          <input
-                                            type="radio"
-                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 focus-within:animate-pulse rounded-full transition-all pt-2 cursor-pointer"
-                                            checked={
-                                              selectedChoice === choiceIndex
-                                            }
-                                            onChange={() =>
-                                              handleRadioChange(
-                                                choiceIndex,
-                                                choice.text,
-                                                element.value.correctAnswer
-                                              )
-                                            }
-                                          />
-                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg xl:text-xl ml-2 ">
-                                            {choice.text}
-                                          </span>
-                                        </label>
-                                      );
-                                    }
-                                  )}
-                                </div>
+                                {element.value.choices.map((choice, choiceIndex) => (
+                                  <label
+                                    key={`${element._id}-choice-${choiceIndex}`}
+                                    className="inline-flex items-center"
+                                  >
+                                    <input
+                                      type="radio"
+                                      className={`w-5 h-5 rounded-full transition-all pt-2 cursor-pointer border-2 ${
+                                        selectedChoice === choiceIndex ? 'bg-orange-400 border-orange-400' : 'bg-secondary-2 border-secondary-2'
+                                      }`}
+                                      checked={selectedChoice === choiceIndex}
+                                      onChange={() =>
+                                        handleRadioChange(choiceIndex, choice.text, element.value.correctAnswer)
+                                      }
+                                    />
+                                    <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
+                                      {choice.text}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
                               )}
                               {/* Correct Answer */}
                               <div className="flex mt-4">
