@@ -313,7 +313,7 @@ function ChaptersDisplay() {
           <NavLink to={"/courses"}>
             <ArrowLeft
               onClick={handleArrowClick}
-              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
+              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
             />{" "}
           </NavLink>
 
