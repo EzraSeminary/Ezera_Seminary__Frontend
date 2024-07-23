@@ -7,7 +7,6 @@ import {
   useGetSSLOfDayQuery,
 } from "../../services/SabbathSchoolApi";
 import parse from "html-react-parser";
-import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
 import ManageYouTubeLink from "./ManageYoutubLink";
@@ -129,8 +128,7 @@ function DisplaySSLLesson() {
             year={currentYear}
             quarter={Number(quarter)}
             lesson={Number(id)}
-          />{" "}
-          {/* Use the new component */}
+          />
         </div>
         <div className="flex flex-col space-y-1">
           <p className="flex flex-row text-primary-5 text-sm lg:text-lg">
@@ -138,7 +136,7 @@ function DisplaySSLLesson() {
             <DateConverter gregorianDate={lessonDetails.date} />
           </p>
           <div className="border-b border-accent-4 w-full mb-2" />
-          <div className="text-xl lg:text-3xl text-primary-0 ">
+          <div className="text-xl lg:text-3xl text-primary-0">
             {lessonDetails.title}
           </div>
         </div>
@@ -152,7 +150,7 @@ function DisplaySSLLesson() {
           {parse(selectedVerse, { trim: true })}
         </Modal>
       )}
-      <div className="text-secondary-6 text-justify wrapper my-4 ">
+      <div className="text-secondary-6 text-justify wrapper my-4">
         {modifyContentForDisplay(lessonDetails.content)}
       </div>
     </div>
