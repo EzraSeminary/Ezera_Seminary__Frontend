@@ -10,7 +10,7 @@ import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
-import ManageYouTubeLink from "./ManageYouTubeLink";
+import ManageYouTubeLink from "./ManageYoutubLink";
 
 function DisplaySSLLesson() {
   interface Params {
