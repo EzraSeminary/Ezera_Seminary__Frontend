@@ -1,4 +1,3 @@
-// ManageYouTubeLink.js
 import { useState, useEffect } from "react";
 import {
   useAddVideoLinkMutation,
@@ -8,13 +7,6 @@ import {
 } from "../../services/videoLinksApi";
 
 type ManageYouTubeLinkProps = {
-  // onSubmit: (
-  //   videoUrl: string,
-  //   year: number,
-  //   quarter: number,
-  //   lesson: number
-  // ) => void;
-  // onCancel: () => void;
   year: number;
   quarter: number;
   lesson: number;
