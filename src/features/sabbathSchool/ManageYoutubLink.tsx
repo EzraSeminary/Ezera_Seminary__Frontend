@@ -16,8 +16,8 @@ type ManageYouTubeLinkProps = {
   // ) => void;
   // onCancel: () => void;
   year: number;
-  quarter: string;
-  lesson: string;
+  quarter: number;
+  lesson: number;
 };
 
 const ManageYouTubeLink = ({
