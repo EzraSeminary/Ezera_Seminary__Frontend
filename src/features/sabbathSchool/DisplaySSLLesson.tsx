@@ -80,7 +80,7 @@ function DisplaySSLLesson() {
         console.log("Setting YouTube link state:", linkData);
         setYoutubeLink(linkData);
       } else {
-        console.error("Invalid data received from server:", response.data);
+        console.log("No YouTube link found for this lesson.");
         setYoutubeLink(null);
       }
     } catch (error) {
