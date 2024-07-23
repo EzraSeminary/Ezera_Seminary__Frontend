@@ -27,6 +27,7 @@ const ManageYouTubeLink = ({
   } = useGetVideoLinkQuery({ year, quarter, lesson });
 
   const [videoUrl, setVideoUrl] = useState("");
+  const [localVideoLink, setLocalVideoLink] = useState(videoLink);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [addVideoLink] = useAddVideoLinkMutation();
@@ -34,6 +35,7 @@ const ManageYouTubeLink = ({
   const [deleteVideoLink] = useDeleteVideoLinkMutation();
 
   useEffect(() => {
+    setLocalVideoLink(videoLink);
     if (videoLink) {
       setVideoUrl(videoLink.videoUrl);
     } else {
@@ -49,7 +51,7 @@ const ManageYouTubeLink = ({
 
   const handleAddOrUpdate = async () => {
     try {
-      if (videoLink) {
+      if (localVideoLink) {
         await updateVideoLink({ year, quarter, lesson, videoUrl });
       } else {
         await addVideoLink({ year, quarter, lesson, videoUrl });
@@ -63,6 +65,7 @@ const ManageYouTubeLink = ({
   const handleDelete = async () => {
     try {
       await deleteVideoLink({ year, quarter, lesson });
+      setLocalVideoLink(null); // Update local state to reflect deletion
       refetch();
     } catch (error) {
       console.error("Failed to delete video link:", error);
@@ -88,10 +91,10 @@ const ManageYouTubeLink = ({
     <div className="p-4">
       <h3 className="text-2xl font-semibold mb-4">YouTube Link</h3>
       <div className="flex justify-end mt-2 md:mt-4 space-x-2">
-        {videoLink ? (
+        {localVideoLink ? (
           <>
             <a
-              href={videoLink.videoUrl}
+              href={localVideoLink.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
@@ -129,7 +132,7 @@ const ManageYouTubeLink = ({
       >
         <div className="bg-white p-8 rounded shadow-lg max-w-md w-full">
           <h2 className="text-xl font-semibold mb-4">
-            {videoLink ? "Update" : "Add"} YouTube Link
+            {localVideoLink ? "Update" : "Add"} YouTube Link
           </h2>
           <input
             type="text"
@@ -143,7 +146,7 @@ const ManageYouTubeLink = ({
               onClick={handleAddOrUpdate}
               className="bg-accent-5 text-white px-4 py-2 rounded hover:bg-accent-8"
             >
-              {videoLink ? "Update" : "Add"} Link
+              {localVideoLink ? "Update" : "Add"} Link
             </button>
             <button
               onClick={() => setIsModalOpen(false)}
