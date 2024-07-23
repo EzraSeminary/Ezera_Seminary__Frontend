@@ -14,6 +14,11 @@ type ManageYouTubeLinkProps = {
   lesson: number;
 };
 
+interface ApiError {
+  status?: number;
+  message?: string;
+}
+
 const ManageYouTubeLink = ({
   year,
   quarter,
@@ -77,13 +82,16 @@ const ManageYouTubeLink = ({
   }
 
   if (error) {
-    if (error.status === 404) {
+    const apiError = error as ApiError; // Type assertion
+    if (apiError.status === 404) {
       console.warn(
         "Video link not found for the specified year, quarter, and lesson."
       );
     } else {
-      console.error("Error fetching video link:", error);
-      return <div>Error: {error.message}</div>;
+      console.error("Error fetching video link:", apiError);
+      return (
+        <div>Error: {apiError.message || "An unknown error occurred"}</div>
+      );
     }
   }
 
