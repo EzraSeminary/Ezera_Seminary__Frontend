@@ -1,7 +1,7 @@
 import "./SSLStyles.css";
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import axios from
+import axios from "axios";
 import LoadingPage from "@/pages/user/LoadingPage";
 import {
   useGetSSLOfDayLessonQuery,
@@ -24,7 +24,6 @@ function DisplaySSLLesson() {
   interface VerseMap {
     [key: string]: string;
   }
-﻿
 
   interface YoutubeLink {
     year: number;
@@ -33,7 +32,7 @@ function DisplaySSLLesson() {
     videoUrl: string;
   }
 
-    const { quarter = "", id = "", day } = useParams<Params>();
+  const { quarter = "", id = "", day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
   const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
   const {
@@ -42,7 +41,7 @@ function DisplaySSLLesson() {
     isLoading,
   } = useGetSSLOfDayLessonQuery({ path: quarter, id: id, day: day });
 
-  const {Details, error: dayError } = useGetSSLOfDayQuery({
+  const { Details, error: dayError } = useGetSSLOfDayQuery({
     path: quarter,
     id: id,
   });
