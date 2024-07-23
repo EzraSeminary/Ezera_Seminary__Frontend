@@ -7,7 +7,24 @@ import {
   useGetVideoLinkQuery,
 } from "../../services/videoLinksApi";
 
-const ManageYouTubeLink = ({ year, quarter, lesson }) => {
+type ManageYouTubeLinkProps = {
+  // onSubmit: (
+  //   videoUrl: string,
+  //   year: number,
+  //   quarter: number,
+  //   lesson: number
+  // ) => void;
+  // onCancel: () => void;
+  year: number;
+  quarter: string;
+  lesson: string;
+};
+
+const ManageYouTubeLink = ({
+  year,
+  quarter,
+  lesson,
+}: ManageYouTubeLinkProps) => {
   const {
     data: videoLink,
     error,
