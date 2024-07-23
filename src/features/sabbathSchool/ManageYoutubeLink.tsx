@@ -25,11 +25,13 @@ const ManageYouTubeLink = ({
     isLoading,
     refetch,
   } = useGetVideoLinkQuery({ year, quarter, lesson });
+
   const [videoUrl, setVideoUrl] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [addVideoLink] = useAddVideoLinkMutation();
   const [updateVideoLink] = useUpdateVideoLinkMutation();
   const [deleteVideoLink] = useDeleteVideoLinkMutation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (videoLink) {
@@ -39,6 +41,12 @@ const ManageYouTubeLink = ({
     }
   }, [videoLink]);
 
+  useEffect(() => {
+    if (!isModalOpen) {
+      refetch();
+    }
+  }, [isModalOpen, refetch]);
+
   const handleAddOrUpdate = async () => {
     try {
       if (videoLink) {
@@ -47,7 +55,6 @@ const ManageYouTubeLink = ({
         await addVideoLink({ year, quarter, lesson, videoUrl });
       }
       setIsModalOpen(false);
-      refetch();
     } catch (error) {
       console.error("Failed to add or update video link:", error);
     }
