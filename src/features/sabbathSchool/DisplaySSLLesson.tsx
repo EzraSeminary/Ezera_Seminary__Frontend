@@ -113,6 +113,8 @@ function DisplaySSLLesson() {
   if (dayError && "message" in dayError)
     return <div>Error: {dayError.message}</div>;
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <div>
       <div
