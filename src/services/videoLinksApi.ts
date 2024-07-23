@@ -1,9 +1,8 @@
-// videoLinksApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const videoLinksApi = createApi({
   reducerPath: "videoLinksApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5100/" }), // Make sure this matches your backend URL and port
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5100/" }), // Ensure this matches your backend URL and port
   endpoints: (builder) => ({
     getVideoLink: builder.query({
       query: ({ year, quarter, lesson }) =>
