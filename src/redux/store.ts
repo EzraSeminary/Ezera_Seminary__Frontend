@@ -23,6 +23,7 @@ const store = configureStore({
     auth: authReducer,
     [SSLapi.reducerPath]: SSLapi.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
+    [videoLinksApi.reducerPath]: videoLinksApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(SSLapi.middleware, apiSlice.middleware),
