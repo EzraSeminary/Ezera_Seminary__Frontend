@@ -7,6 +7,7 @@ import { apiSlice } from "./api-slices/apiSlice";
 import { SSLapi } from "./../services/SabbathSchoolApi";
 import { CourseState } from "./courseSlice";
 import DevotionsState from "./devotionsSlice";
+import { videoLinksApi } from "../services/videoLinksApi";
 
 export interface RootState {
   devotions: typeof DevotionsState;
