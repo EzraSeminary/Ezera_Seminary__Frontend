@@ -123,9 +123,12 @@ function DisplaySSLLesson() {
         }}
       >
         <div className="flex justify-end mt-2 md:mt-4">
-          <button className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all">
-            Watch on YouTube <YoutubeLogo size={24} weight="fill" />
-          </button>
+          <ManageYouTubeLink
+            year={currentYear}
+            quarter={Number(quarter)}
+            lesson={Number(id)}
+          />{" "}
+          {/* Use the new component */}
         </div>
         <div className="flex flex-col space-y-1">
           <p className="flex flex-row text-primary-5 text-sm lg:text-lg">
