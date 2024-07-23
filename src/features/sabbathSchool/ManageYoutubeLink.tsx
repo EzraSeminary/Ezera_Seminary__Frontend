@@ -59,8 +59,14 @@ const ManageYouTubeLink = ({
   }
 
   if (error) {
-    console.error("Error fetching video link:", error);
-    return <div>Error: {error.message}</div>;
+    if (error.status === 404) {
+      console.warn(
+        "Video link not found for the specified year, quarter, and lesson."
+      );
+    } else {
+      console.error("Error fetching video link:", error);
+      return <div>Error: {error.message}</div>;
+    }
   }
 
   return (
@@ -76,7 +82,14 @@ const ManageYouTubeLink = ({
         <button onClick={handleAddOrUpdate}>
           {videoLink ? "Update" : "Add"} Link
         </button>
-        {videoLink && <button onClick={handleDelete}>Delete Link</button>}
+        {videoLink && (
+          <>
+            <button onClick={handleDelete}>Delete Link</button>
+            <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+              <button>Watch on YouTube</button>
+            </a>
+          </>
+        )}
       </div>
     </div>
   );
