@@ -9,7 +9,7 @@ import {
 import parse from "html-react-parser";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
-import ManageYouTubeLink from "./ManageYouTubeLink";
+import ManageYouTubeLink from "./ManageYoutubeLink";
 
 function DisplaySSLLesson() {
   interface Params {
