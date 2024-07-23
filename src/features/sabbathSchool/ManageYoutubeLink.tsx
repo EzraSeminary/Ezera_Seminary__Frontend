@@ -34,16 +34,24 @@ const ManageYouTubeLink = ({
   }, [videoLink]);
 
   const handleAddOrUpdate = async () => {
-    if (videoLink) {
-      await updateVideoLink({ year, quarter, lesson, videoUrl });
-    } else {
-      await addVideoLink({ year, quarter, lesson, videoUrl });
+    try {
+      if (videoLink) {
+        await updateVideoLink({ year, quarter, lesson, videoUrl });
+      } else {
+        await addVideoLink({ year, quarter, lesson, videoUrl });
+      }
+    } catch (error) {
+      console.error("Failed to add or update video link:", error);
     }
   };
 
   const handleDelete = async () => {
-    await deleteVideoLink({ year, quarter, lesson });
-    setVideoUrl("");
+    try {
+      await deleteVideoLink({ year, quarter, lesson });
+      setVideoUrl("");
+    } catch (error) {
+      console.error("Failed to delete video link:", error);
+    }
   };
 
   if (isLoading) {
@@ -51,6 +59,7 @@ const ManageYouTubeLink = ({
   }
 
   if (error) {
+    console.error("Error fetching video link:", error);
     return <div>Error: {error.message}</div>;
   }
 
