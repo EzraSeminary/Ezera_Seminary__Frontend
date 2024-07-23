@@ -1,7 +1,6 @@
 import "./SSLStyles.css";
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useState, useEffect, useCallback, useParams } from "react";
+import axios from 
 import LoadingPage from "@/pages/user/LoadingPage";
 import {
   useGetSSLOfDayLessonQuery,
@@ -9,7 +8,7 @@ import {
 } from "../../services/SabbathSchoolApi";
 import parse from "html-react-parser";
 import { YoutubeLogo } from "@phosphor-icons/react";
-import DateConverter from "./DateConverter";
+import Date from "./DateConverter";
 import Modal from "./modal/Modal";
 import AddSSLVideoLinks from "./AddSSLVideoLinks";
 import EditSSLVideoLink from "./EditSSLVideoLink";
@@ -21,8 +20,8 @@ function DisplaySSLLesson() {
     day: string;
     [key: string]: string;
   }
-  interface VerseMap {
-    [key: string]: string;
+
+  interface VerseMapkey: string]: string;
   }
 
   interface YoutubeLink {
@@ -34,14 +33,13 @@ function DisplaySSLLesson() {
 
   const { quarter = "", id = "", day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
-  const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
-  const {
-    data: lessonDetails,
+  const daysOfWeekርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
+  const { lessonDetails,
     error: lessonError,
     isLoading,
   } = useGetSSLOfDayLessonQuery({ path: quarter, id: id, day: day });
 
-  const { data: dayDetails, error: dayError } = useGetSSLOfDayQuery({
+  const {Details, error: dayError } = useGetSSLOfDayQuery({
     path: quarter,
     id: id,
   });
@@ -52,6 +50,7 @@ function DisplaySSLLesson() {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [editingLink, setEditingLink] = useState<YoutubeLink | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const getQuarterNumber = useCallback((quarter: string) => {
     const parts = quarter.split("-");
     return parts.length > 1 ? parts[1] : quarter;
