@@ -45,7 +45,7 @@ function DisplaySSLLesson() {
     path: quarter,
     id: id,
   });
-  const [selectedVerse, setSelectedVerse] = useState("");
+   const [selectedVerse, setSelectedVerse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [youtubeLink, setYoutubeLink] = useState<YoutubeLink | null>(null);
@@ -58,7 +58,6 @@ function DisplaySSLLesson() {
     return parts.length > 1 ? parts[1] : quarter;
   }, []);
 
-  // Update the fetchYoutubeLink function
   const fetchYoutubeLink = useCallback(async () => {
     try {
       const currentYear = new Date().getFullYear();
@@ -89,7 +88,6 @@ function DisplaySSLLesson() {
     }
   }, [quarter, id, getQuarterNumber]);
 
-  // Update the handleEditYoutubeLink function
   const handleEditYoutubeLink = async (
     updatedLink: string,
     year: number,
@@ -97,12 +95,10 @@ function DisplaySSLLesson() {
     lesson: number
   ) => {
     try {
-      setYoutubeLink({
-        year,
-        quarter,
-        lesson,
+      const response = await axios.put(`/sslLinks/${year}/${quarter}/${lesson}`, {
         videoUrl: updatedLink,
       });
+      setYoutubeLink(response.data);
       setEditingLink(null);
     } catch (error: any) {
       console.error(
@@ -111,43 +107,31 @@ function DisplaySSLLesson() {
       );
       alert(
         "Failed to update YouTube link. Please try again. " +
-          (error.response?.data?.message || error.message)
+          (error.response?.data?. || error.message)
       );
     }
   };
 
-  // Update the handleDeleteYoutubeLink function
   const handleDeleteYoutubeLink = async () => {
     if (
       !youtubeLink ||
-      !youtubeLink.year ||
-      !youtubeLink.quarter ||
+      !youtubeLink.year ||beLink.quarter ||
       !youtubeLink.lesson
     ) {
       console.error("Invalid YouTube link data for deletion:", youtubeLink);
-      alert(
+      alert
         "Cannot delete YouTube link due to missing data. Please try refreshing the page."
       );
       return;
     }
 
-    console.log(
-      `Attempting to delete SSL link: /sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
-    );
-
     if (window.confirm("Are you sure you want to delete this YouTube link?")) {
       try {
-        const response = await axios.delete(
+        await axios.delete(
           `/sslLinks/${youtubeLink.year}/${youtubeLink.quarter}/${youtubeLink.lesson}`
         );
-        console.log("Delete response:", response);
-
-        if (response.status === 200) {
-          setYoutubeLink(null);
-          alert("YouTube link successfully deleted.");
-        } else {
-          throw new Error(`Unexpected response status: ${response.status}`);
-        }
+        setYoutubeLink(null);
+        alert("YouTube link successfully deleted.");
       } catch (error: any) {
         console.error(
           "Error deleting YouTube link:",
@@ -169,10 +153,6 @@ function DisplaySSLLesson() {
     }
   }, [fetchYoutubeLink, quarter, id]);
 
-  useEffect(() => {
-    console.log("Current YouTube link state:", youtubeLink);
-  }, [youtubeLink]);
-
   const handleAddYoutubeLink = useCallback(
     async (newLink: string, year: number, quarter: number, lesson: number) => {
       if (isSubmitting) return;
@@ -184,7 +164,7 @@ function DisplaySSLLesson() {
           lesson: lesson,
           year: year,
         });
-        setYoutubeLink(response.data.videoUrl);
+        setYoutubeLink(response.data);
         setShowAddLinkForm(false);
       } catch (error: any) {
         console.error(
