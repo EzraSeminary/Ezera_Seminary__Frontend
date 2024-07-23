@@ -26,7 +26,11 @@ const store = configureStore({
     [videoLinksApi.reducerPath]: videoLinksApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(SSLapi.middleware, apiSlice.middleware),
+    getDefaultMiddleware().concat(
+      SSLapi.middleware,
+      apiSlice.middleware,
+      videoLinksApi.middleware
+    ),
 });
 
 type AppDispatch = typeof store.dispatch;
