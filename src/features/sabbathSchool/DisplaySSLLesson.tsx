@@ -9,7 +9,7 @@ import {
 import parse from "html-react-parser";
 import DateConverter from "./DateConverter";
 import Modal from "./modal/Modal";
-import ManageYouTubeLink from "./ManageYoutubLink";
+import ManageYouTubeLink from "./ManageYouTubeLink";
 
 function DisplaySSLLesson() {
   interface Params {
@@ -113,6 +113,7 @@ function DisplaySSLLesson() {
     return <div>Error: {dayError.message}</div>;
 
   const currentYear = new Date().getFullYear();
+  const quarterNumber = quarter?.split("-")[1] ?? ""; // Extract the quarter number
 
   return (
     <div>
@@ -126,7 +127,7 @@ function DisplaySSLLesson() {
         <div className="flex justify-end mt-2 md:mt-4">
           <ManageYouTubeLink
             year={currentYear}
-            quarter={Number(quarter)}
+            quarter={Number(quarterNumber)} // Pass the quarter number
             lesson={Number(id)}
           />
         </div>
