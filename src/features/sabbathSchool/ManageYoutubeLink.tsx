@@ -6,7 +6,7 @@ import {
   useGetVideoLinkQuery,
 } from "../../services/videoLinksApi";
 import Modal from "react-modal";
-import { YoutubeLogo } from "phosphor-react"; // Assuming you're using Phosphor Icons
+import { YoutubeLogo } from "@phosphor-icons/react";
 
 type ManageYouTubeLinkProps = {
   year: number;
