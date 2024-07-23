@@ -21,9 +21,10 @@ function DisplaySSLLesson() {
     day: string;
     [key: string]: string;
   }
-
-  interface VerseMapkey: string]: string;
+  interface VerseMap {
+    [key: string]: string;
   }
+﻿
 
   interface YoutubeLink {
     year: number;
@@ -32,10 +33,11 @@ function DisplaySSLLesson() {
     videoUrl: string;
   }
 
-  const { quarter = "", id = "", day } = useParams<Params>();
+    const { quarter = "", id = "", day } = useParams<Params>();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
-  const daysOfWeekርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
-  const { lessonDetails,
+  const daysOfWeek = ["አርብ", "ቅዳሜ", "እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ"];
+  const {
+    data: lessonDetails,
     error: lessonError,
     isLoading,
   } = useGetSSLOfDayLessonQuery({ path: quarter, id: id, day: day });
