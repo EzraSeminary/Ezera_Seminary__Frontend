@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCourse,
   selectChapters,
   selectAllSlides,
   addChapter,
@@ -11,7 +10,6 @@ import {
   deleteChapter,
   deleteSlide,
   Chapter,
-  CourseState,
 } from "@/redux/courseSlice";
 import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
 import EditElements from "./EditElements";
@@ -21,7 +19,6 @@ import CustomInput from "@/components/CustomInput";
 
 function EditChapters() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse) as CourseState;
   const chapters = useSelector(selectChapters) as Chapter[];
   const allSlides = useSelector(selectAllSlides);
 
@@ -80,8 +77,6 @@ function EditChapters() {
       return prevSlideIndex;
     });
   };
-
-  console.log(course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -151,7 +146,9 @@ function EditChapters() {
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
                           autoComplete="off"
-                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4"
+                          className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
+                            isSelected ? "text-accent-6" : "text-primary-2"
+                          }`}
                           value={slide.slide}
                           onChange={(e) =>
                             updateSlideHandler(
