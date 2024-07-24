@@ -121,7 +121,9 @@ function EditChapters() {
                     name={`chapter-${chapterIndex}`}
                     placeholder="Chapter Title"
                     autoComplete="off"
-                    className="w-full text-lg font-bold border-accent-6 focus:outline-none bg-transparent placeholder:text-secodary-3 text-secondary-6"
+                    className={`w-full text-lg font-bold border-accent-6 focus:outline-none bg-transparent placeholder:text-secondary-4  ${
+                      isSelected ? "text-secondary-6" : "text-primary-2"
+                    }`}
                     value={chapter.chapter}
                     onChange={(e) =>
                       updateChapterHandler(chapterIndex, e.target.value)
