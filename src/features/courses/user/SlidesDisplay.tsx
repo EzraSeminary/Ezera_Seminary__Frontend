@@ -123,8 +123,8 @@ function SlidesDisplay() {
   //Resume chapter
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
-    console.log("Current chapter index:", chapterIndex);
-    console.log("User progress:", userProgress);
+    // console.log("Current chapter index:", chapterIndex);
+    // console.log("User progress:", userProgress);
     if (userProgress) {
       if (
         chapterIndex === userProgress.currentChapter &&
@@ -384,7 +384,7 @@ function SlidesDisplay() {
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id as string);
-    console.log(draggedItem);
+    // console.log(draggedItem);
     // Reset showResult when dragging starts
     setShowQuizResult(false);
   };
@@ -489,7 +489,7 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex   md:flex-row  justify-center items-center w-full   absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
+      <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
         {/* Back button */}
         {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
@@ -562,7 +562,7 @@ function SlidesDisplay() {
                     className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
                       unlocked
                         ? "text-secondary-6"
-                        : "text-secondary-3 hover:cursor-not-allowed"
+                        : "text-primary-3 hover:cursor-not-allowed"
                     }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
@@ -756,7 +756,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
+                              className="text-primary-3 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
                             >
                               {element.value}
                             </p>
@@ -765,7 +765,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
+                              className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -814,7 +814,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className=" text-secondary-3 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
+                                className=" text-primary-3 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
                               >
                                 {listItem}
                               </li>
@@ -833,7 +833,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
+                                className="flex justify-center items-center mx-auto text-primary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -1050,7 +1050,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
+                              <p className="text-primary-3 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -1105,7 +1105,7 @@ function SlidesDisplay() {
                         } else if (element.type === "mix") {
                           return (
                             <div key={element._id}>
-                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text1}
                               </p>
@@ -1144,7 +1144,7 @@ function SlidesDisplay() {
                                   </div>
                                 )}
                               </div>
-                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text2}
                               </p>
