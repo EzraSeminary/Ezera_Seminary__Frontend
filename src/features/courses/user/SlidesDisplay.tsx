@@ -101,7 +101,7 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
-  console.log(courseData);
+  // console.log(courseData);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -294,7 +294,7 @@ function SlidesDisplay() {
       setTimeout(() => {
         setProgressLoading(true);
       }, 3000);
-      console.log("CurrentUser Token:", token);
+      // console.log("CurrentUser Token:", token);
       axios
         .put(
           "/users/profile/" + userId,
@@ -516,7 +516,7 @@ function SlidesDisplay() {
           {open ? (
             <X
               onClick={handleArrowClick}
-              className="text-primary-3 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
+              className="text-primary-5 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
             />
           ) : null}
 
@@ -562,7 +562,7 @@ function SlidesDisplay() {
                     className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
                       unlocked
                         ? "text-secondary-6"
-                        : "text-primary-3 hover:cursor-not-allowed"
+                        : "text-primary-5 hover:cursor-not-allowed"
                     }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
@@ -715,7 +715,7 @@ function SlidesDisplay() {
                   />
                   <X
                     onClick={submitProgress}
-                    className="  text-primary-3  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
+                    className="  text-primary-5  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
                   />
                 </div>
               </div>
@@ -756,7 +756,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-primary-3 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
+                              className="text-primary-5 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
                             >
                               {element.value}
                             </p>
@@ -765,7 +765,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
+                              className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -814,7 +814,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className=" text-primary-3 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
+                                className=" text-primary-5 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
                               >
                                 {listItem}
                               </li>
@@ -833,7 +833,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-primary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
+                                className="flex justify-center items-center mx-auto text-primary-5 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -1050,7 +1050,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-primary-3 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
+                              <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -1105,7 +1105,7 @@ function SlidesDisplay() {
                         } else if (element.type === "mix") {
                           return (
                             <div key={element._id}>
-                              <p className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text1}
                               </p>
@@ -1144,7 +1144,7 @@ function SlidesDisplay() {
                                   </div>
                                 )}
                               </div>
-                              <p className="text-primary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text2}
                               </p>
