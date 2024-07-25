@@ -49,7 +49,7 @@ const AccordionContent = React.forwardRef<
   >
     <div
       className={cn(
-        "py-2 px-10 bg-accent-2 w-[16rem] sm:w-[20rem] md:w-[32rem] lg:w-[42rem] text-center",
+        "py-2 px-10 bg-secondary-1 w-[16rem] sm:w-[20rem] md:w-[32rem] lg:w-[42rem] text-center text-secondary-6 rounded-b-lg",
         className
       )}
     >
