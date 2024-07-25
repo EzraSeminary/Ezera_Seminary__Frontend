@@ -984,7 +984,7 @@ function SlidesDisplay() {
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
                                   >
                                     {revealItem.title}
                                   </div>
@@ -1033,14 +1033,14 @@ function SlidesDisplay() {
                                   }}
                                 />
                               </div>
-                              <div className="flex justify-between w-full">
-                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                              {/* <div className="flex justify-between w-full">
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   ምንም አልተማርኩም
                                 </button>
-                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
                                   በጣም ተምሬያለሁ
                                 </button>
-                              </div>
+                              </div> */}
                             </>
                           );
                         } else if (element.type === "dnd") {
