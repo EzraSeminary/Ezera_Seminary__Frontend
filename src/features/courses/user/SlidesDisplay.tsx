@@ -984,7 +984,7 @@ function SlidesDisplay() {
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-lg hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
                                   >
                                     {revealItem.title}
                                   </div>
@@ -1033,14 +1033,14 @@ function SlidesDisplay() {
                                   }}
                                 />
                               </div>
-                              {/* <div className="flex justify-between w-full">
+                              <div className="flex justify-between w-full md:px-14">
                                 <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
-                                  ምንም አልተማርኩም
+                                  ዝቅተኛ
                                 </button>
                                 <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
-                                  በጣም ተምሬያለሁ
+                                  ከፍተኛ
                                 </button>
-                              </div> */}
+                              </div>
                             </>
                           );
                         } else if (element.type === "dnd") {
@@ -1186,18 +1186,18 @@ function SlidesDisplay() {
                               </div>
                             ) : (
                               <div
-                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all"
+                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all border border-accent-6 border-opacity-50 p-2 rounded-lg"
                                 onClick={handleImageClick}
                               >
                                 <img
                                   src={thumbnailUrl}
                                   alt="YouTube Thumbnail"
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover shadow-lg"
                                 />
                                 <YoutubeLogo
                                   size={48}
                                   weight="fill"
-                                  className="absolute inset-0 m-auto text-[#FF0000]"
+                                  className="absolute inset-0 m-auto text-[#FF0000] drop-shadow-lg"
                                 />
                               </div>
                             )
