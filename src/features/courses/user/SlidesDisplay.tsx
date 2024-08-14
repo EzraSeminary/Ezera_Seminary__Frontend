@@ -165,6 +165,8 @@ function SlidesDisplay() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  
+  console.log(draggedItem);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
   // Define Drag & Drop sensors
