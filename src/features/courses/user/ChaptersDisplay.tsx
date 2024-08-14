@@ -313,7 +313,7 @@ function ChaptersDisplay() {
           <NavLink to={"/courses"}>
             <ArrowLeft
               onClick={handleArrowClick}
-              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
+              className="text-white text-3xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-4 cursor-pointer "
             />{" "}
           </NavLink>
 
@@ -328,7 +328,7 @@ function ChaptersDisplay() {
           {/* Short information*/}
           <div className="pl-2 py-1 bg-primary-7  gap-2 flex justify-between items-center  w-full text-xs1  lg:text-xs">
             <div className="p-1 bg-accent-6 rounded w-[8%]">
-              <p className="font-Lato-Bold text-primary-1 ">
+              <p className="font-Lato-Bold text-primary-1 text-center">
                 {progressValue()}%
               </p>
             </div>

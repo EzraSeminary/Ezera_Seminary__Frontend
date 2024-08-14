@@ -38,7 +38,7 @@ function EditCourse() {
               published: res.data.published,
             })
           );
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => console.log(err))
         .finally(() => {
@@ -99,10 +99,10 @@ function EditCourse() {
       });
     });
 
-    console.log(formData);
+    // console.log(formData);
 
-    const payload = Object.fromEntries(formData);
-    console.log("payload" + payload);
+    // const payload = Object.fromEntries(formData);
+    // console.log("payload" + payload);
 
     //update course
     instance
@@ -183,7 +183,7 @@ function EditCourse() {
                 Published
               </p>
             ) : (
-              <p className="text-secondary-9 font-nokia-bold text-sm pl-4">
+              <p className="text-primary-5 font-nokia-bold text-sm ml-4 py-1 px-4 border border-primary-5 rounded-full">
                 Draft
               </p>
             )}
