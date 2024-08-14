@@ -8,6 +8,7 @@ import {
 import Modal from "react-modal";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import { useSelector } from "react-redux"; // Import useSelector to access user state
+import { RootState } from "@/redux/store"; // Import the Rootstate for type checking
 
 type ManageYouTubeLinkProps = {
   year: number;
