@@ -165,6 +165,8 @@ function SlidesDisplay() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
+
+  console.log(draggedItem);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
   // Define Drag & Drop sensors
@@ -681,15 +683,6 @@ function SlidesDisplay() {
               })}
             </div>
 
-            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
-              <button
-                className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
-                onClick={submitProgress}
-              >
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div> */}
           </div>
         </div>
         {/* slides display window*/}
