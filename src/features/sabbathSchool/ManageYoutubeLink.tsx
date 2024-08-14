@@ -133,14 +133,18 @@ const ManageYouTubeLink = ({
             )}
           </>
         ) : (
-          isAdmin && (
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
-            >
-              Add YouTube Link
-            </button>
-          )
+          <>
+            {isAdmin ? (
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+              >
+                Add YouTube Link
+              </button>
+            ) : (
+              <div className="text-red-500">No YouTube video available.</div>
+            )}
+          </>
         )}
       </div>
       <Modal
