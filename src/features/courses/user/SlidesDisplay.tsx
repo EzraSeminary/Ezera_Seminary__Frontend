@@ -101,7 +101,7 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
-  console.log(courseData);
+  // console.log(courseData);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -123,8 +123,8 @@ function SlidesDisplay() {
   //Resume chapter
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
-    console.log("Current chapter index:", chapterIndex);
-    console.log("User progress:", userProgress);
+    // console.log("Current chapter index:", chapterIndex);
+    // console.log("User progress:", userProgress);
     if (userProgress) {
       if (
         chapterIndex === userProgress.currentChapter &&
@@ -165,6 +165,8 @@ function SlidesDisplay() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
+
+  console.log(draggedItem);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
   // Define Drag & Drop sensors
@@ -294,7 +296,7 @@ function SlidesDisplay() {
       setTimeout(() => {
         setProgressLoading(true);
       }, 3000);
-      console.log("CurrentUser Token:", token);
+      // console.log("CurrentUser Token:", token);
       axios
         .put(
           "/users/profile/" + userId,
@@ -384,7 +386,7 @@ function SlidesDisplay() {
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id as string);
-    console.log(draggedItem);
+    // console.log(draggedItem);
     // Reset showResult when dragging starts
     setShowQuizResult(false);
   };
@@ -489,7 +491,7 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex   md:flex-row  justify-center items-center w-full   absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
+      <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
         {/* Back button */}
         {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
           <button
@@ -516,7 +518,7 @@ function SlidesDisplay() {
           {open ? (
             <X
               onClick={handleArrowClick}
-              className="text-primary-3 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
+              className="text-primary-5 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
             />
           ) : null}
 
@@ -562,7 +564,7 @@ function SlidesDisplay() {
                     className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
                       unlocked
                         ? "text-secondary-6"
-                        : "text-secondary-3 hover:cursor-not-allowed"
+                        : "text-primary-5 hover:cursor-not-allowed"
                     }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
 
                     `}
@@ -681,15 +683,6 @@ function SlidesDisplay() {
               })}
             </div>
 
-            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-4">
-              <button
-                className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-2 px-6 transition-all text-sm w-auto"
-                onClick={submitProgress}
-              >
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-3xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div> */}
           </div>
         </div>
         {/* slides display window*/}
@@ -715,7 +708,7 @@ function SlidesDisplay() {
                   />
                   <X
                     onClick={submitProgress}
-                    className="  text-primary-3  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
+                    className="  text-primary-5  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
                   />
                 </div>
               </div>
@@ -756,7 +749,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
+                              className="text-primary-5 font-nokia-bold  self-center tracking-wide text-center text-xl w-[90%] mx-auto xl:text-xl"
                             >
                               {element.value}
                             </p>
@@ -765,7 +758,7 @@ function SlidesDisplay() {
                           return (
                             <p
                               key={element._id}
-                              className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
+                              className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
                             >
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
                             </p>
@@ -814,7 +807,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <li
                                 key={index}
-                                className=" text-secondary-3 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
+                                className=" text-primary-5 pt-2 font-nokia-bold w-[100%] tracking-wide text-lg xl:text-xl"
                               >
                                 {listItem}
                               </li>
@@ -833,7 +826,7 @@ function SlidesDisplay() {
                             (listItem: string, index: number) => (
                               <SplideSlide
                                 key={index}
-                                className="flex justify-center items-center mx-auto text-secondary-3 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
+                                className="flex justify-center items-center mx-auto text-primary-5 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
                               >
                                 {listItem}
                               </SplideSlide>
@@ -886,38 +879,28 @@ function SlidesDisplay() {
                               {/* Choices */}
                               {element.value.choices && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                  {element.value.choices.map(
-                                    (
-                                      choice: { text: string },
-                                      choiceIndex: number
-                                    ) => {
-                                      return (
-                                        <label
-                                          key={`${element._id}-choice-${choiceIndex}`}
-                                          className="inline-flex items-center"
-                                        >
-                                          <input
-                                            type="radio"
-                                            className="w-5 h-5 appearance-none bg-secondary-2 focus:bg-orange-400 focus-within:animate-pulse rounded-full transition-all pt-2 cursor-pointer"
-                                            checked={
-                                              selectedChoice === choiceIndex
-                                            }
-                                            onChange={() =>
-                                              handleRadioChange(
-                                                choiceIndex,
-                                                choice.text,
-                                                element.value.correctAnswer
-                                              )
-                                            }
-                                          />
-                                          <span className="text-accent-6 font-nokia-bold text-xs  lg:text-lg xl:text-xl ml-2 ">
-                                            {choice.text}
-                                          </span>
-                                        </label>
-                                      );
-                                    }
-                                  )}
-                                </div>
+                                {element.value.choices.map((choice, choiceIndex) => (
+                                  <label
+                                    key={`${element._id}-choice-${choiceIndex}`}
+                                    className="inline-flex items-center"
+                                  >
+                                    <input
+                                      type="radio"
+                                      className={`w-5 h-5 rounded-full transition-all pt-2 cursor-pointer border-2 ${
+                                        selectedChoice === choiceIndex ? 'bg-orange-400 border-orange-400' : 'bg-secondary-2 border-secondary-2'
+                                      }`}
+                                      checked={selectedChoice === choiceIndex}
+                                      onChange={() =>
+                                        handleRadioChange(choiceIndex, choice.text, element.value.correctAnswer)
+                                      }
+                                      disabled={isQuizAnswered}
+                                    />
+                                    <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
+                                      {choice.text}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
                               )}
                               {/* Correct Answer */}
                               <div className="flex mt-4">
@@ -994,7 +977,7 @@ function SlidesDisplay() {
                                 >
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-sm hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-lg hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
                                   >
                                     {revealItem.title}
                                   </div>
@@ -1043,12 +1026,12 @@ function SlidesDisplay() {
                                   }}
                                 />
                               </div>
-                              <div className="flex justify-between w-full">
-                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
-                                  ምንም አልተማርኩም
+                              <div className="flex justify-between w-full md:px-14">
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                  ዝቅተኛ
                                 </button>
-                                <button className="text-primary-6 text-sm lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
-                                  በጣም ተምሬያለሁ
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                  ከፍተኛ
                                 </button>
                               </div>
                             </>
@@ -1060,7 +1043,7 @@ function SlidesDisplay() {
                               className="flex flex-col justify-center items-center w-[90%] mx-auto h-full"
                             >
                               {/* Questions */}
-                              <p className="text-secondary-3 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
+                              <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
                                 {element.value.question}
                               </p>
                               {/* Choices */}
@@ -1115,7 +1098,7 @@ function SlidesDisplay() {
                         } else if (element.type === "mix") {
                           return (
                             <div key={element._id}>
-                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text1}
                               </p>
@@ -1154,7 +1137,7 @@ function SlidesDisplay() {
                                   </div>
                                 )}
                               </div>
-                              <p className="text-secondary-3 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
+                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {element.value.text2}
                               </p>
@@ -1196,18 +1179,18 @@ function SlidesDisplay() {
                               </div>
                             ) : (
                               <div
-                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all"
+                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all border border-accent-6 border-opacity-50 p-2 rounded-lg"
                                 onClick={handleImageClick}
                               >
                                 <img
                                   src={thumbnailUrl}
                                   alt="YouTube Thumbnail"
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover shadow-lg"
                                 />
                                 <YoutubeLogo
                                   size={48}
                                   weight="fill"
-                                  className="absolute inset-0 m-auto text-[#FF0000]"
+                                  className="absolute inset-0 m-auto text-[#FF0000] drop-shadow-lg"
                                 />
                               </div>
                             )

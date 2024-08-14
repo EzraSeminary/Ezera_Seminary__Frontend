@@ -133,11 +133,11 @@ function AdminChapter() {
               </p>
             </Link>
             {course.published ? (
-              <p className="text-green-700 font-nokia-bold text-sm pl-4">
-                Published
-              </p>
+              <p className="text-green-700 bg-gray-200 font-nokia-bold text-sm py-1 px-2 rounded-full ml-2">
+              Published
+            </p>
             ) : (
-              <p className="text-accent-6 bg-gray-200 font-nokia-bold text-sm ml-2 py-1 px-2 rounded-full">
+              <p className="text-primary-5 font-nokia-bold text-sm ml-4 py-1 px-4 border border-primary-5 rounded-full">
                 Draft
               </p>
             )}
