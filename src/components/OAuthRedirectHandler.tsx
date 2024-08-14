@@ -18,13 +18,16 @@ const OAuthRedirectHandler = () => {
     if (token) {
       const fetchUser = async () => {
         try {
-          const response = await fetch(`http://localhost:5100/users/current`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Ensure this token is valid
-            },
-          });
+          const response = await fetch(
+            `https://ezrabackend.online/users/current`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Ensure this token is valid
+              },
+            }
+          );
 
           const result = await response.json();
 

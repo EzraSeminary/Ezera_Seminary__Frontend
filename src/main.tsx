@@ -18,11 +18,11 @@ axios.defaults.headers.common["Content-Type"] = "application/json";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     {/* <GoogleOAuthProvider clientId={ClientID}> */}
-      <ErrorBoundary FallbackComponent={ErrorPage}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ErrorBoundary>
+    <ErrorBoundary FallbackComponent={ErrorPage}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ErrorBoundary>
     {/* </GoogleOAuthProvider> */}
   </React.StrictMode>
 );
