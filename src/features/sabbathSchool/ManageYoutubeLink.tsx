@@ -7,6 +7,7 @@ import {
 } from "../../services/videoLinksApi";
 import Modal from "react-modal";
 import { YoutubeLogo } from "@phosphor-icons/react";
+import { useSelector } from "react-redux"; // Import useSelector to access user state
 
 type ManageYouTubeLinkProps = {
   year: number;
@@ -38,6 +39,10 @@ const ManageYouTubeLink = ({
   const [addVideoLink] = useAddVideoLinkMutation();
   const [updateVideoLink] = useUpdateVideoLinkMutation();
   const [deleteVideoLink] = useDeleteVideoLinkMutation();
+
+  // Access user role from Redux store
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAdmin = user && user.role === "Admin";
 
   useEffect(() => {
     setLocalVideoLink(videoLink);
@@ -109,26 +114,32 @@ const ManageYouTubeLink = ({
             >
               Watch on YouTube <YoutubeLogo size={24} weight="fill" />
             </a>
+            {isAdmin && (
+              <>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+                >
+                  Edit Link
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
+                >
+                  Delete Link
+                </button>
+              </>
+            )}
+          </>
+        ) : (
+          isAdmin && (
             <button
               onClick={() => setIsModalOpen(true)}
               className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
             >
-              Edit Link
+              Add YouTube Link
             </button>
-            <button
-              onClick={handleDelete}
-              className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
-            >
-              Delete Link
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-2 border border-primary-1 text-primary-1 text-xs flex rounded-full items-center gap-2 hover:border-accent-6 hover:text-accent-6 transition-all"
-          >
-            Add YouTube Link
-          </button>
+          )
         )}
       </div>
       <Modal
