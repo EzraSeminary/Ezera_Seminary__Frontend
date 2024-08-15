@@ -103,7 +103,6 @@ const ManageYouTubeLink = ({
 
   return (
     <div className="p-4">
-      <h3 className="text-2xl font-semibold mb-4">YouTube Link</h3>
       <div className="flex justify-end mt-2 md:mt-4 space-x-2">
         {localVideoLink ? (
           <>
