@@ -50,7 +50,7 @@ const Hero = () => {
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 1, ease:"easeOut", delay: 0.8}}
              className="flex justify-center sm:justify-end items-center pt-2 gap-2 md:gap-3 animate-pulse">
-              <a href="#">
+              <a href="https://play.google.com/store/apps/details?id=com.ezraapp">
                 <img
                   className="h-6 md:h-8 xl:h-12"
                   src={googlePlay}
