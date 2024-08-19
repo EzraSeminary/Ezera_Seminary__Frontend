@@ -93,10 +93,10 @@ function CurrentSSL() {
               >
                 ትምህርቱን ክፈት
               </Link>
-              <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
+{/*               <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
                 Watch on YouTube{" "}
                 <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
-              </button>
+              </button> */}
             </div>
           </div>
           <p className="text-xs xl:text-sm">
