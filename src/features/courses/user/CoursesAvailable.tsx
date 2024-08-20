@@ -58,26 +58,24 @@ function CoursesAvailable() {
   // Reverse the courses to display from the latest
   const reversedCourses = [...(courses ?? [])].reverse();
 
-  {
-    /* Filter the data based on the search term */
-  }
+
+    //progress
+  // Retrieves the current user from Redux state
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  
   const filteredData = reversedCourses.filter((course) => {
+    const isAdmin = currentUser && currentUser.role === "Admin";
     return (
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      course.published // Only include courses where published is true
+      (isAdmin || course.published) // Include course.published check only if the user is not an Admin
     );
   });
 
-  {
-    /* Show all courses when the button is clicked */
-  }
+
   const handleViewAllCoursesClick = () => {
     setShowAllCourses(!showAllCourses);
   };
 
-  //progress
-  // Retrieves the current user from Redux state
-  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   // Function to calculate the progress value for a given course ID
   const getProgressValue = (courseId: string): number | undefined => {

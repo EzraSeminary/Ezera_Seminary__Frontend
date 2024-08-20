@@ -6,7 +6,7 @@ import {
   useGetSSLOfQuarterQuery,
 } from "@/services/SabbathSchoolApi";
 import DateConverter from "./DateConverter";
-import { YoutubeLogo } from "@phosphor-icons/react";
+// import { YoutubeLogo } from "@phosphor-icons/react";
 import LoadingPage from "@/pages/user/LoadingPage";
 
 function CurrentSSL() {
@@ -77,7 +77,7 @@ function CurrentSSL() {
             </div>
             <div className="flex flex-col gap-2 items-end w-[45%] space-y-1">
               <Link
-                className="px-4 py-1 bg-accent-6 text-primary-1 rounded-full text-xs xl:text-lg hover:bg-accent-7 transition-all"
+                className="px-4 py-1 mt-2 mr-2 bg-accent-6 text-primary-1 rounded-full text-xs xl:text-lg hover:bg-accent-7 transition-all"
                 to={
                   {
                     pathname: `/sabbathSchool/${quarter}/lessons/${week}`,
