@@ -682,7 +682,6 @@ function SlidesDisplay() {
                 );
               })}
             </div>
-
           </div>
         </div>
         {/* slides display window*/}
