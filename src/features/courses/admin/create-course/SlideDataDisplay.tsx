@@ -71,6 +71,12 @@ function SlideDataDisplay({
   const [sliderValue, setSliderValue] = useState(2.5);
 
   const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
+
+  const handleToggle = (value: string) => {
+    setActiveAccordion(value === activeAccordion ? null : value);
+    console.log("Toggled accordion:", value);
+  };
 
   //Quiz Related functions
   //radio input switch
@@ -425,9 +431,7 @@ function SlideDataDisplay({
                         key={`${uniqueKey}-accordion-${index}`}
                         title={accordionItem.title}
                         content={accordionItem.content}
-                        onToggle={function (_value: string): void {
-                          throw new Error("Function not implemented.");
-                        }}
+                        onToggle={handleToggle}
                       />
                     )
                   );
