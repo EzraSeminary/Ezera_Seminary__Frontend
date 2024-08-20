@@ -217,6 +217,13 @@ function AdminCourseDisplay({
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
+  const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
+
+  const handleToggle = (value: string) => {
+    setActiveAccordion(value === activeAccordion ? null : value);
+    console.log("Toggled accordion:", value);
+  };
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDraggedItem(active.id as string);
@@ -440,13 +447,11 @@ function AdminCourseDisplay({
                   const accordionItemsComponent = element.value.map(
                     (accordionItem, index) => (
                       <AccordionItemDisplay
-                        key={`${uniqueKey}-accordion-${index}`}
-                        title={accordionItem.title}
-                        content={accordionItem.content}
-                        onToggle={(): void => {
-                          throw new Error("Function not implemented.");
-                        }}
-                      />
+                      key={`${uniqueKey}-accordion-${index}`}
+                      title={accordionItem.title}
+                      content={accordionItem.content}
+                      onToggle={handleToggle}
+                    />
                     )
                   );
 
