@@ -1146,7 +1146,7 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element.id}
-                              className="flex flex-col items-center justify-center w-[80%] bg-gray-100 rounded-3xl shadow-md"
+                              className="flex flex-col items-center justify-center w-[80%] rounded-3xl shadow-md"
                             >
                               <audio
                                 controls
