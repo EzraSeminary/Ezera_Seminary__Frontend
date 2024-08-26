@@ -47,10 +47,33 @@ function EditChapters() {
 
   const deleteChapterHandler = (chapterIndex: number) => {
     dispatch(deleteChapter({ chapterIndex }));
+    // Check if the current editingSlideIndex is within the chapter being deleted
+    if (editingSlideIndex && editingSlideIndex.chapter === chapterIndex) {
+      // Reset the editingSlideIndex since the current chapter is being deleted
+      setEditingSlideIndex(null);
+    } else if (editingSlideIndex && editingSlideIndex.chapter > chapterIndex) {
+      // Adjust the chapterIndex for the slide currently being edited.
+      setEditingSlideIndex((prevIndex) => {
+        // Ensure prevIndex is not null before trying to access its properties.
+        if (prevIndex) {
+          return { chapter: prevIndex.chapter - 1, slide: prevIndex.slide };
+        }
+        return null;
+      });
+    }
   };
 
   const deleteSlideHandler = (chapterIndex: number, slideIndex: number) => {
     dispatch(deleteSlide({ chapterIndex, slideIndex }));
+    // Check if the slide being edited is the one being deleted
+    if (
+      editingSlideIndex &&
+      editingSlideIndex.chapter === chapterIndex &&
+      editingSlideIndex.slide === slideIndex
+    ) {
+      // Reset the editingSlideIndex since the current slide is being deleted
+      setEditingSlideIndex(null);
+    }
   };
 
   const addSlideHandler = (chapterIndex: number) => {
@@ -75,6 +98,14 @@ function EditChapters() {
     } else {
       setSelectedChapterIndex(chapterIndex); // Show slides for the selected chapter
     }
+  };
+
+  // when click on slide title CustomInput
+  const handleSlideClick = (chapterIndex: number, slideIndex: number) => {
+    setEditingSlideIndex({
+      chapter: chapterIndex,
+      slide: slideIndex,
+    });
   };
 
   //Next button
@@ -257,10 +288,7 @@ function EditChapters() {
                             )
                           }
                           onClick={() =>
-                            setEditingSlideIndex({
-                              chapter: chapterIndex,
-                              slide: slideIndex,
-                            })
+                            handleSlideClick(chapterIndex, slideIndex)
                           }
                           maxLength={75}
                         />
