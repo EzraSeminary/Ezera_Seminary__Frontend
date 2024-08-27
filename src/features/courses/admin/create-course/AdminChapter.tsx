@@ -11,6 +11,7 @@ import { ArrowCircleLeft, ArrowSquareOut } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import { RootState } from "@/redux/store";
 
 function AdminChapter() {
   // New state to track when the publish button has been clicked
@@ -18,6 +19,8 @@ function AdminChapter() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const basePath = role;
   const course = useSelector(selectCourse);
 
   useEffect(() => {
@@ -92,7 +95,7 @@ function AdminChapter() {
         console.log(res);
         toast.success(`Creating "${course.title}"!`, {
           onClose: () => {
-            navigate("/admin/course/edit");
+            navigate(`/${basePath}/course/edit`);
             // Delay the reload to allow user to see the message
             setTimeout(() => {
               window.location.reload();
@@ -120,7 +123,7 @@ function AdminChapter() {
         <div className="flex justify-between bg-secondary-6 rounded-t-lg px-6 py-3">
           <div className="flex items-center">
             <Link
-              to="/admin/courses/create"
+              to={`/${basePath}/courses/create`}
               className="ml-3 flex items-center bg-gray-200 rounded-3xl px-4 py-1 border hover:border-gray-400 transition-all"
             >
               <ArrowCircleLeft
@@ -134,8 +137,8 @@ function AdminChapter() {
             </Link>
             {course.published ? (
               <p className="text-green-700 bg-gray-200 font-nokia-bold text-sm py-1 px-2 rounded-full ml-2">
-              Published
-            </p>
+                Published
+              </p>
             ) : (
               <p className="text-primary-5 font-nokia-bold text-sm ml-4 py-1 px-4 border border-primary-5 rounded-full">
                 Draft

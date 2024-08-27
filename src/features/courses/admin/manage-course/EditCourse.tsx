@@ -9,6 +9,7 @@ import EditCourseFirst from "./EditCourseFirst";
 import BeatLoader from "react-spinners/BeatLoader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { RootState } from "@/redux/store";
 
 function EditCourse() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ function EditCourse() {
   const instance = useAxiosInstance();
   const dispatch = useDispatch();
   const course = useSelector(selectCourse);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const basePath = role;
 
   const [loading, setLoading] = useState(true);
   // New state to track when the publish button has been clicked
@@ -115,7 +118,7 @@ function EditCourse() {
         console.log(res);
         toast.success(`Updating "${course.title}"!`, {
           onClose: () => {
-            navigate("/admin/course/edit");
+            navigate(`/${basePath}/course/edit`);
             // Delay the reload to allow user to see the message
             setTimeout(() => {
               window.location.reload();
@@ -162,7 +165,7 @@ function EditCourse() {
       <div className="w-full">
         <div className="flex justify-between bg-secondary-6 rounded-t-lg px-6 py-3">
           <div className="flex items-center ">
-            <Link to="/admin/course/edit" className="flex items-center">
+            <Link to={`/${basePath}/course/edit`} className="flex items-center">
               <ArrowCircleLeft
                 weight="fill"
                 size={32}

@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MagnifyingGlass } from "@phosphor-icons/react";
@@ -6,6 +7,7 @@ import { useGetCoursesQuery } from "../../services/api";
 import Modal from "react-modal"; // Import Modal from react-modal
 import useAxiosInstance from "../../api/axiosInstance";
 import LoadingPage from "../user/LoadingPage";
+import { RootState } from "@/redux/store";
 Modal.setAppElement("#root"); // Assuming the root element of your app is `#root`
 
 const gridSquareVariants = {
@@ -18,7 +20,8 @@ function ManageCourse() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal visibility
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null); // State for storing course ID to delete
-
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const basePath = role;
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -166,7 +169,9 @@ function ManageCourse() {
                     <hr className="border-accent-5 border-1 w-[100%] " />
                     <div className="flex justify-between ">
                       <Link
-                        to={`/admin/edit/course/` + course._id + `/chapters`}
+                        to={
+                          `/${basePath}/edit/course/` + course._id + `/chapters`
+                        }
                         className="inline-block bg-accent-6 text-primary-6 px-3 py-1 rounded transition duration-300 focus:outline-none font-nokia-bold text-xs hover:bg-accent-7"
                       >
                         edit

@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import {
   setTitle,
   setDescription,
@@ -16,6 +17,8 @@ import CustomTextarea from "@/components/CustomTextarea";
 function CreateCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const basePath = role;
   const { title, description } = useSelector(
     (state: { course: CourseState }) => state.course
   );
@@ -72,7 +75,7 @@ function CreateCourse() {
     // If there are no validationErrors, then proceed with the navigate logic.
     if (!hasErrors) {
       //navigate to create chapters
-      navigate("/admin/courses/create/chapters");
+      navigate(`/${basePath}/courses/create/chapters`);
     }
   };
 
@@ -93,13 +96,13 @@ function CreateCourse() {
         >
           {imagePreviewUrl && (
             <>
-            <img
-              src={imagePreviewUrl}
-              alt="Preview"
-              className="absolute inset-0 w-full h-full object-cover rounded-md bg-red bg-opacity-30"
+              <img
+                src={imagePreviewUrl}
+                alt="Preview"
+                className="absolute inset-0 w-full h-full object-cover rounded-md bg-red bg-opacity-30"
               />
               <div className="absolute inset-0 bg-accent-8 bg-opacity-70 rounded-md"></div>
-              </>
+            </>
           )}
 
           <input
