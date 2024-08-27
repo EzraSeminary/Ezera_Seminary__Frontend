@@ -11,6 +11,7 @@ import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
 import LoadingPage from "./pages/user/LoadingPage";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
+import ProtectedInstructorRoute from "@/components/ProtectedInstructorRoute";
 import LoggedInHome from "./features/home/LoggedInHome";
 import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
 // import OAuthRedirectHandler from "@/components/OAuthRedirectHandler";
@@ -27,6 +28,10 @@ const ResetPassword = lazy(() => import("@/pages/user/ResetPassword"));
 const ForgotPassword = lazy(() => import("@/pages/user/ForgotPassword"));
 const Signup = lazy(() => import("@/pages/user/Signup"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+// Add this import
+const InstructorDashboard = lazy(
+  () => import("@/pages/admin/InstructorDashboard")
+);
 const ChaptersDisplay = lazy(
   () => import("@/features/courses/user/ChaptersDisplay")
 );
@@ -87,6 +92,8 @@ function App() {
 
     if (user && user.role === "Admin") {
       return <Navigate to="/admin" replace={true} />;
+    } else if (user && user.role === "Instructor") {
+      return <Navigate to="/instructor" replace={true} />;
     }
     return !user ? children : <Navigate to="/" replace={false} />;
   };
@@ -96,12 +103,13 @@ function App() {
   };
 
   const isAdmin = user && user.role === "Admin";
+  const isInstructor = user && user.role === "Instructor";
 
   console.log(user);
 
   return (
     <BrowserRouter>
-      {!isAdmin && <Header />}
+      {!isAdmin && !isInstructor && <Header />}
       {/* Wrap Routes in Suspense for React lazy loading */}
       <Suspense fallback={<LoadingPage />}>
         <Routes>
@@ -112,6 +120,8 @@ function App() {
             element={
               isAdmin ? (
                 <Navigate to="/admin" replace={true} />
+              ) : isInstructor ? (
+                <Navigate to="/instructor" replace={true} />
               ) : user ? (
                 <LoggedInHome /> // Render LoggedInHome if user is logged in
               ) : (
@@ -119,6 +129,7 @@ function App() {
               )
             }
           />
+
           <Route path="/courses/get/:courseId" element={<ChaptersDisplay />} />
           <Route
             path="/courses/get/:courseId/chapter/:chapterId"
@@ -160,6 +171,15 @@ function App() {
               <ProtectedAdminRoute>
                 <AdminDashboard />
               </ProtectedAdminRoute>
+            }
+          />
+
+          <Route
+            path="/instructor/*"
+            element={
+              <ProtectedInstructorRoute>
+                <InstructorDashboard />
+              </ProtectedInstructorRoute>
             }
           />
 

@@ -17,7 +17,6 @@ import {
 import LogoutButton from "./LogoutButton";
 import { resetCourse } from "@/redux/courseSlice";
 
-// Define a type for your menu items
 interface MenuItemType {
   label: string;
   icon: React.ElementType<IconProps>;
@@ -27,8 +26,12 @@ interface MenuItemType {
   }[];
 }
 
-const Sidebar: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user); // Use the actual path of user in your root state
+interface SidebarProps {
+  isInstructor: boolean;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,52 +45,73 @@ const Sidebar: React.FC = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  //Ref to listen the curser and close the account modal
+  //Ref to listen the cursor and close the account modal
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, isModalOpen, () => setIsModalOpen(false));
 
   const isActive = (path: string): boolean => {
     return location.pathname.includes(path);
   };
-  const menuItems: MenuItemType[] = [
+
+  // Define base path based on the role
+  const basePath = isInstructor ? "/instructor" : "/admin";
+
+  const baseMenuItems: MenuItemType[] = [
     {
       label: "Analytics",
       icon: Graph,
       subItems: [
-        { label: "App Usage", path: "/admin/analytics/usage" },
-        { label: "Performance Dashboard", path: "/admin/analytics/dashboard" },
+        { label: "App Usage", path: `${basePath}/analytics/usage` },
+        {
+          label: "Performance Dashboard",
+          path: `${basePath}/analytics/dashboard`,
+        },
       ],
     },
     {
       label: "Courses",
       icon: BookOpen,
       subItems: [
-        { label: "Create Course", path: "/admin/courses/create" },
-        { label: "Manage Courses", path: "/admin/course/edit" },
+        { label: "Create Course", path: `${basePath}/courses/create` },
+        { label: "Manage Courses", path: `${basePath}/course/edit` },
       ],
     },
     {
       label: "Devotion",
       icon: CalendarCheck,
       subItems: [
-        { label: "Create Devotion", path: "/admin/devotion/create" },
-        { label: "Manage Devotion", path: "/admin/devotion/manage" },
-      ],
-    },
-    {
-      label: "Users",
-      icon: UserCircle,
-      subItems: [
-        { label: "Create User", path: "/admin/users/create" },
-        { label: "Manage Users", path: "/admin/users/manage" },
+        { label: "Create Devotion", path: `${basePath}/devotion/create` },
+        { label: "Manage Devotion", path: `${basePath}/devotion/manage` },
       ],
     },
     {
       label: "Feedback Center",
       icon: ChatCircle,
-      subItems: [{ label: "Feedback", path: "/admin/feedback" }],
+      subItems: [{ label: "Feedback", path: `${basePath}/feedback` }],
     },
   ];
+
+  const adminMenuItem: MenuItemType = {
+    label: "Users",
+    icon: UserCircle,
+    subItems: [
+      { label: "Create User", path: `${basePath}/users/create` },
+      { label: "Manage Users", path: `${basePath}/users/manage` },
+    ],
+  };
+
+  const menuItems = isInstructor
+    ? [...baseMenuItems]
+    : [...baseMenuItems, adminMenuItem];
+
+  type SidebarItemProps = {
+    icon: React.ElementType<IconProps>;
+    label: string;
+    active: boolean;
+    children?: React.ReactNode;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  };
+
   const SidebarItem: React.FC<SidebarItemProps> = ({
     icon: Icon,
     label,
@@ -97,7 +121,7 @@ const Sidebar: React.FC = () => {
   }) => {
     return (
       <div
-        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5  ${
+        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5 ${
           active ? "bg-accent-6" : ""
         }`}
         onClick={onClick}
@@ -109,14 +133,6 @@ const Sidebar: React.FC = () => {
         {children}
       </div>
     );
-  };
-
-  type SidebarItemProps = {
-    icon: React.ElementType<IconProps>;
-    label: string;
-    active: boolean;
-    children?: React.ReactNode;
-    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   };
 
   const ProfileModal = () => {
@@ -143,11 +159,11 @@ const Sidebar: React.FC = () => {
     item: MenuItemType,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void => {
-    if (item.subItems.length === 1) {
+    if (isCollapsed || item.subItems.length === 1) {
       navigate(item.subItems[0].path);
     } else {
       setActiveMenu(activeMenu !== item.label ? item.label : "");
-      event.stopPropagation(); // Stop click from propagating to other elements
+      event.stopPropagation();
     }
   };
 
@@ -155,14 +171,14 @@ const Sidebar: React.FC = () => {
     path: string,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void => {
-    event.stopPropagation(); // Stop click from propagating to other elements
+    event.stopPropagation();
     navigate(path);
-    dispatch(resetCourse()); //reset the state to the initial values
+    dispatch(resetCourse());
   };
 
   return (
     <div
-      className={`flex flex-col text-white bg-accent-8 h-full pt-12 font-Lato-Bold  ${
+      className={`flex flex-col text-white bg-accent-8 h-full pt-12 font-Lato-Bold ${
         isCollapsed ? "w-16" : "w-64"
       }`}
       style={{
@@ -199,15 +215,7 @@ const Sidebar: React.FC = () => {
             icon={item.icon}
             label={item.label}
             active={isActive(item.label.toLowerCase())}
-            onClick={(event) => {
-              if (isCollapsed) {
-                // When collapsed, navigate to the path of the first subitem
-                navigate(item.subItems[0].path);
-              } else {
-                // When not collapsed, handle the item click normally
-                handleItemClick(item, event);
-              }
-            }}
+            onClick={(event) => handleItemClick(item, event)}
           >
             <div className="mt-2">
               {!isCollapsed &&
@@ -229,15 +237,15 @@ const Sidebar: React.FC = () => {
       <div
         ref={ref}
         onClick={toggleModal}
-        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1  cursor-pointer hover:shadow-lg"
+        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1 cursor-pointer hover:shadow-lg"
       >
         {isCollapsed ? (
           <div className="flex items-center gap-1">
-            <UserCircle size={26} className="text-primary-1 cursor-pointer  " />
+            <UserCircle size={26} className="text-primary-1 cursor-pointer" />
           </div>
         ) : (
           <div className="flex items-center gap-1">
-            <UserCircle size={22} className="text-primary-1 cursor-pointer  " />
+            <UserCircle size={22} className="text-primary-1 cursor-pointer" />
             {user && user.firstName}
           </div>
         )}

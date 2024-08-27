@@ -363,6 +363,7 @@ const ManageUsers: React.FC = () => {
                   required
                 >
                   <option value="Admin">Admin</option>
+                  <option value="Instructor">Instructor</option>
                   <option value="Learner">Learner</option>
                 </select>
               </div>
