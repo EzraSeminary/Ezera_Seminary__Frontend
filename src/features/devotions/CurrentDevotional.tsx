@@ -209,11 +209,11 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion contents */}
           <div className="font-nokia-bold flex flex-col  lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
             {/* devotion titles */}
-            <div className="flex w-[100%]">
+            <div className="flex w-[100%] gap-x-[1vw]">
               <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-justify text-secondary-6">
                 {devotionToDisplay && devotionToDisplay.title}
               </h1>
-              {role === "Admin" && showControls && (
+              {(role === "Admin" || "Instructor") && showControls && (
                 <>
                   <Trash
                     size={28}
@@ -288,7 +288,11 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
             <img
-              src={devotionToDisplay && devotionToDisplay.image}
+              src={
+                typeof devotionToDisplay?.image === "string"
+                  ? devotionToDisplay.image
+                  : undefined
+              }
               alt="Devotion Image"
               className="h-full rounded-xl p-1 object-cover"
               style={{
