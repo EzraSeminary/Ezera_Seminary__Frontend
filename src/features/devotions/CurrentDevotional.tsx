@@ -288,9 +288,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           {/* devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
             <img
-              src={`https://ezrabackend.online/images/${
-                devotionToDisplay && devotionToDisplay.image
-              }`}
+              src={devotionToDisplay && devotionToDisplay.image}
               alt="Devotion Image"
               className="h-full rounded-xl p-1 object-cover"
               style={{

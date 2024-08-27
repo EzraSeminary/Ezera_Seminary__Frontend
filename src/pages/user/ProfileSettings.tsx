@@ -36,9 +36,7 @@ const ProfileSettings = () => {
       setEmail(currentUser.email || "");
       setPassword(currentUser.password || "");
       setAvatarPreview(
-        currentUser.avatar
-          ? `https://ezrabackend.online/images/${currentUser.avatar}`
-          : defaultAvatar
+        currentUser.avatar ? `${currentUser.avatar}` : defaultAvatar
       );
     }
   }, [currentUser]);
@@ -91,11 +89,7 @@ const ProfileSettings = () => {
           setLastName(updatedUser.lastName);
           setEmail(updatedUser.email);
           setPassword(updatedUser.password);
-          setAvatarPreview(
-            updatedUser.avatar
-              ? `https://ezrabackend.online/images/${updatedUser.avatar}`
-              : null
-          );
+          setAvatarPreview(updatedUser.avatar ? `${updatedUser.avatar}` : null);
           setSelectedFile(null);
 
           // Save the updated user information to local storage
@@ -154,7 +148,7 @@ const ProfileSettings = () => {
                 avatarPreview
                   ? avatarPreview
                   : currentUser?.avatar
-                  ? `https://ezrabackend.online/images/${currentUser.avatar}`
+                  ? `${currentUser.avatar}`
                   : defaultAvatar
               }
               alt="User Avatar"

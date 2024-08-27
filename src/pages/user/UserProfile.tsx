@@ -23,9 +23,7 @@ const UserProfile = () => {
   // Use the user information from the Redux store or local storage
   const currentUser = user || initialUser;
 
-  const avatarPreview = currentUser?.avatar
-    ? `https://ezrabackend.online/images/${currentUser.avatar}`
-    : mehari;
+  const avatarPreview = currentUser?.avatar ? `${currentUser.avatar}` : mehari;
 
   const goBack = () => {
     navigate(-1);
