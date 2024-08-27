@@ -5,6 +5,7 @@ import {
   useGetSSLOfDayQuery,
   useGetSSLOfQuarterQuery,
 } from "@/services/SabbathSchoolApi";
+import { useGetVideoLinkQuery } from "@/services/videoLinksApi";
 import DateConverter from "./DateConverter";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import LoadingPage from "@/pages/user/LoadingPage";
@@ -25,17 +26,31 @@ function CurrentSSL() {
     isLoading: quarterIsLoading,
   } = useGetSSLOfQuarterQuery(quarter);
 
+  // Fetch video link
+  const {
+    data: videoLink,
+    error: videoLinkError,
+    isLoading: videoLinkIsLoading,
+  } = useGetVideoLinkQuery({
+    year: new Date().getFullYear(),
+    quarter: parseInt(quarter.split("-")[1]),
+    lesson: week,
+  });
+
   useEffect(() => {
     if (lessonDetails) {
       setBackgroundImage(lessonDetails.lesson.cover);
     }
   }, [lessonDetails]);
 
-  if (lessonIsLoading || quarterIsLoading) return <LoadingPage />;
+  if (lessonIsLoading || quarterIsLoading || videoLinkIsLoading)
+    return <LoadingPage />;
   if (lessonError && "message" in lessonError)
     return <div>Error: {lessonError.message}</div>;
   if (quarterError && "message" in quarterError)
     return <div>Error: {quarterError.message}</div>;
+  if (videoLinkError && "message" in videoLinkError)
+    return <div>Error: {videoLinkError.message}</div>;
   if (!quarterDetails || !lessonDetails) return <div>Missing data...</div>;
 
   return (
@@ -93,10 +108,21 @@ function CurrentSSL() {
               >
                 ትምህርቱን ክፈት
               </Link>
-              <button className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7">
-                Watch on YouTube{" "}
-                <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
-              </button>
+              {videoLink ? (
+                <a
+                  href={videoLink.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-max leading-snug md:leading-none md:w-auto px-2 xl:text-lg border border-accent-6 text-accent-6 text-xs flex rounded-full items-center gap-2 hover:border-accent-7 hover:text-accent-7"
+                >
+                  Watch on YouTube{" "}
+                  <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
+                </a>
+              ) : (
+                <span className="text-red-500 text-xs">
+                  No YouTube video available.
+                </span>
+              )}
             </div>
           </div>
           <p className="text-xs xl:text-sm">
