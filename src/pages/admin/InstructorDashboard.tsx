@@ -1,8 +1,10 @@
+// src/pages/instructor/InstructorDashboard.tsx
+
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
-import ManageCourse from "./ManageCourse";
-import CreateCourse from "./CreateCourse";
+import ManageCourse from "../admin/ManageCourse";
+import CreateCourse from "../admin/CreateCourse";
 import AdminChapter from "../../features/courses/admin/create-course/AdminChapter";
 import EditCourse from "@/features/courses/admin/manage-course/EditCourse";
 import EditCourseFirst from "@/features/courses/admin/manage-course/EditCourseFirst";
@@ -10,12 +12,10 @@ import CreateDevotion from "@/pages/admin/CreateDevotion";
 import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
 import Analytics from "@/features/courses/admin/analytics/Analytics";
-import AdminHeader from "./AdminHeader";
-import CreateUser from "./CreateUser";
-import ManageUser from "./ManageUsers";
-import PerformanceDashboard from "./PerformanceDashboard";
+import AdminHeader from "../admin/AdminHeader";
+import PerformanceDashboard from "../admin/PerformanceDashboard";
 
-const AdminDashboard = () => {
+const InstructorDashboard = () => {
   // eslint-disable-next-line
   // @ts-expect-error
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,11 +23,8 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex bg-gray-100">
-      <div
-        // Make the sidebar fixed to be visible on vertical scroll...!!
-        className={`sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white`}
-      >
-        <Sidebar isInstructor={false} />
+      <div className="sticky top-0 left-0 bottom-0 z-10 h-screen transition-all duration-500 ease-in-out text-white">
+        <Sidebar isInstructor={true} />
       </div>
       <div
         className={`flex-grow  transition-all duration-500 ease-in-out pl-4 mx-8`}
@@ -52,12 +49,10 @@ const AdminDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
-          <Route path="users/create" element={<CreateUser />} />
-          <Route path="users/manage" element={<ManageUser />} />
         </Routes>
       </div>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default InstructorDashboard;

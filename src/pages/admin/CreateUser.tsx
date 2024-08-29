@@ -158,6 +158,7 @@ const CreateUser: React.FC = () => {
                 required
               >
                 <option value="Learner">Learner</option>
+                <option value="Instructor">Instructor</option>
                 <option value="Admin">Admin</option>
               </select>
             </div>

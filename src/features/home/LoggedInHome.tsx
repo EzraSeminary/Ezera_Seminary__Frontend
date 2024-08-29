@@ -113,10 +113,7 @@ const LoggedInHome = () => {
             >
               <div className="h-48  lg:h-52  xl:h-64">
                 <img
-                  src={
-                    `https://ezrabackend.online/images/${latestDevotion.image}` ||
-                    `${bible}`
-                  }
+                  src={`${latestDevotion.image}` || `${bible}`}
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>
@@ -289,10 +286,7 @@ const LoggedInHome = () => {
                   onClick={() => handleViewDevotion(devotion)}
                 >
                   <img
-                    src={
-                      `https://ezrabackend.online/images/${devotion.image}` ||
-                      `${bible}`
-                    }
+                    src={`${devotion.image}` || `${bible}`}
                     alt={devotion.title}
                     className="w-full h-auto object-contain rounded-lg"
                   />
