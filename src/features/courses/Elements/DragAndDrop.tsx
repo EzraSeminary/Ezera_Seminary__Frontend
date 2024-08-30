@@ -1,4 +1,4 @@
-import { updateElement } from "@/redux/courseSlice";
+import { DndElementValue, updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
@@ -14,10 +14,18 @@ function DragAndDrop({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  // DND-related state and functions
-  const [dndQuestion, setDndQuestion] = useState("");
-  const [dndChoices, setDndChoices] = useState<string[]>([]);
-  const [correctDndAnswer, setCorrectDndAnswer] = useState("");
+  const dndElement = element.value as DndElementValue;
+
+  // Check if the local state is empty, if so, use the values from the Redux state.
+  const [dndQuestion, setDndQuestion] = useState<string>(
+    dndElement?.question || ""
+  );
+  const [dndChoices, setDndChoices] = useState<string[]>(
+    dndElement?.choices?.map((choice) => choice.text) || []
+  );
+  const [correctDndAnswer, setCorrectDndAnswer] = useState<string>(
+    dndElement?.correctDndAnswer || ""
+  );
 
   const handleDndQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDndQuestion(event.target.value);
@@ -49,10 +57,6 @@ function DragAndDrop({
           },
         })
       );
-      // Reset quiz state
-      // setDndQuestion("");
-      // setDndChoices([]);
-      // setCorrectDndAnswer("");
     }
     setCurrentElement("");
   };
@@ -97,9 +101,9 @@ function DragAndDrop({
       <ul className="space-y-2 py-4">
         {/* // Map over dndChoices to render choices */}
         {dndChoices.map((choice, index) => (
-          <label>
+          <label key={index}>
             <h2 className="text-secondary-6 pt-4">Choice {index + 1}:</h2>
-            <li key={index} className="flex justify-between">
+            <li className="flex justify-between">
               <CustomTextarea
                 value={choice}
                 onChange={(e) => handleDndChoiceChange(index, e.target.value)}
