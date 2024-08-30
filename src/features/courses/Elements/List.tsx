@@ -1,5 +1,5 @@
 import { CustomElement, updateElement } from "@/redux/courseSlice";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import CustomInput from "@/components/CustomInput";
@@ -22,10 +22,20 @@ function List({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  const [listItems, setListItems] = useState<string[]>([]);
+  // Initialize listItems with element.value or an empty array
+  const [listItems, setListItems] = useState<string[]>(() => {
+    return (element.value as string[]) || [];
+  });
+
   const [currentListItem, setCurrentListItem] = useState<string>("");
 
-  // List related functions
+  // populate listItems with element.value, if element.value exists and if listItems is empty.
+  useEffect(() => {
+    if (element.value && listItems.length === 0) {
+      setListItems(element.value as string[]);
+    }
+  }, [element.value, listItems.length]);
+
   const handleListInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentListItem(event.target.value);
   };
@@ -50,7 +60,6 @@ function List({
         value: listItems,
       })
     );
-    // setListItems([]); // reset the data in the CustomInput
     setCurrentElement(""); // reset the current element to avoid form re-rendering
   };
 
@@ -58,6 +67,7 @@ function List({
     const updatedList = listItems.filter((_, index) => index !== indexToDelete);
     setListItems(updatedList);
   };
+
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-3">
@@ -97,9 +107,9 @@ function List({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {listItems.map((item, index) => (
-          <label>
+          <label key={index}>
             <h2 className="text-secondary-6 py-3">List {index + 1}:</h2>
-            <div key={index} className="flex justify-between">
+            <div className="flex justify-between">
               <CustomTextarea
                 value={item}
                 onChange={(e) => handleListItemChange(index, e.target.value)}

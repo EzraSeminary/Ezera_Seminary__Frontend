@@ -1,4 +1,4 @@
-import { updateElement } from "@/redux/courseSlice";
+import { QuizElementValue, updateElement } from "@/redux/courseSlice";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
@@ -14,10 +14,18 @@ function Quiz({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  // Quiz-related state and functions
-  const [quizQuestion, setQuizQuestion] = useState<string>("");
-  const [quizChoices, setQuizChoices] = useState<string[]>([]);
-  const [correctAnswer, setCorrectAnswer] = useState<string>("");
+  const quizElement = element.value as QuizElementValue;
+
+  // Check if the local state is empty, if so, use the values from the Redux state.
+  const [quizQuestion, setQuizQuestion] = useState<string>(
+    quizElement?.question || ""
+  );
+  const [quizChoices, setQuizChoices] = useState<string[]>(
+    quizElement?.choices?.map((choice) => choice.text) || []
+  );
+  const [correctAnswer, setCorrectAnswer] = useState<string>(
+    quizElement?.correctAnswer || ""
+  );
 
   const handleQuizQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuizQuestion(event.target.value);
@@ -51,13 +59,10 @@ function Quiz({
           },
         })
       );
-      // Reset quiz state
-      // setQuizQuestion("");
-      // setQuizChoices([]);
-      // setCorrectAnswer("");
     }
     setCurrentElement("");
   };
+
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-4">
@@ -97,9 +102,9 @@ function Quiz({
       <ul className="space-y-2 py-4">
         {/* // Map over quizChoices to render choices */}
         {quizChoices.map((choice, index) => (
-          <label>
+          <label key={index}>
             <h2 className="text-secondary-6 pt-4">Choice {index + 1}:</h2>
-            <li key={index} className="flex justify-between">
+            <li className="flex justify-between">
               <CustomTextarea
                 value={choice}
                 onChange={(e) => handleQuizChoiceChange(index, e.target.value)}
@@ -109,7 +114,6 @@ function Quiz({
               />
               <Trash
                 onClick={() => {
-                  // Add a function to handle removing choices
                   setQuizChoices(quizChoices.filter((_, i) => i !== index));
                 }}
                 className="text-secondary-6 hover:text-secondary-7 hover:cursor-pointer transition-all mt-1"

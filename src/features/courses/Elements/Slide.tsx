@@ -1,5 +1,5 @@
 import { updateElement } from "@/redux/courseSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
@@ -13,8 +13,19 @@ function Slide({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  const [slidesDetails, setSlidesDetails] = useState<string[]>([]);
+  // Initialize slideItems with element.value or an empty array
+  const [slidesDetails, setSlidesDetails] = useState<string[]>(() => {
+    return (element.value as string[]) || [];
+  });
+
   const [currentSlideDetails, setCurrentSlideDetails] = useState<string>("");
+
+  // populate slidesDetails with element.value, if element.value exists and if slidesDetails is empty.
+  useEffect(() => {
+    if (element.value && slidesDetails.length === 0) {
+      setSlidesDetails(element.value as string[]);
+    }
+  }, [element.value, slidesDetails.length]);
 
   // Slide related functions
   const handleAddSlide = () => {
@@ -39,7 +50,6 @@ function Slide({
         value: slidesDetails,
       })
     );
-    // setSlidesDetails([]); // Clear slides details after adding
     setCurrentElement("");
   };
 
@@ -87,9 +97,9 @@ function Slide({
       </div>
       <ul className="w-[100%] pb-4 cursor-pointer overflow-y-auto">
         {slidesDetails.map((details, index) => (
-          <label>
+          <label key={index}>
             <h2 className="text-secondary-6 py-3">Slide {index + 1}:</h2>
-            <div key={index} className="flex justify-between">
+            <div className="flex justify-between">
               <CustomTextarea
                 value={details}
                 onChange={(e) => handleSlideDetailChange(index, e.target.value)}

@@ -1,4 +1,4 @@
-import { updateElement } from "@/redux/courseSlice";
+import { AccordionElementValue, updateElement } from "@/redux/courseSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
@@ -14,10 +14,17 @@ function Accordion({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  const [accordionTitles, setAccordionTitles] = useState<string[]>([]);
-  const [accordionContents, setAccordionContents] = useState<string[]>([]);
+  // Use element.value to initialize the state, or fall back to empty arrays
+  const accordionItems = element.value as AccordionElementValue[];
 
-  // Accordion related functions
+  const [accordionTitles, setAccordionTitles] = useState<string[]>(
+    accordionItems?.map((item) => item.title) || []
+  );
+  const [accordionContents, setAccordionContents] = useState<string[]>(
+    accordionItems?.map((item) => item.content) || []
+  );
+
+  // Accordion-related functions
   const handleAccordionTitleChange = (index: number, text: string) => {
     setAccordionTitles(
       accordionTitles.map((title, i) => (i === index ? text : title))
@@ -50,22 +57,19 @@ function Accordion({
           value: accordionItems,
         })
       );
-
-      // Reset accordion state
-      // setAccordionTitles([]);
-      // setAccordionContents([]);
     }
     setCurrentElement("");
   };
+
   return (
     <div id={element.id}>
       <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddAccordionItem}
-          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          className="flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
         >
           <PlusCircle
-            className="text-primary-6  transition-all"
+            className="text-primary-6 transition-all"
             size={16}
             weight="fill"
           />
@@ -73,10 +77,10 @@ function Accordion({
         </button>
         <button
           onClick={saveAccordionToRedux}
-          className=" flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          className="flex gap-1 items-center text-sm text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
         >
           <File
-            className="text-primary-6  transition-all"
+            className="text-primary-6 transition-all"
             size={16}
             weight="fill"
           />
@@ -85,7 +89,7 @@ function Accordion({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {accordionTitles.map((title, index) => (
-          <div>
+          <div key={index}>
             <div className="flex justify-between items-center">
               <h2 className="text-secondary-6 text-xl">
                 Accordion {index + 1}:
@@ -104,10 +108,7 @@ function Accordion({
                 size={18}
               />
             </div>
-            <li
-              key={index}
-              className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4"
-            >
+            <li className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4">
               <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 rounded-t-md">
                 TITLE
               </label>
