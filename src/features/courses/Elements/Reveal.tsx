@@ -1,4 +1,4 @@
-import { updateElement } from "@/redux/courseSlice";
+import { AccordionElementValue, updateElement } from "@/redux/courseSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
@@ -14,8 +14,15 @@ function Reveal({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  const [revealTitles, setRevealTitles] = useState<string[]>([]);
-  const [revealContents, setRevealContents] = useState<string[]>([]);
+  // Use element.value to initialize the state, or fall back to empty arrays
+  const accordionItems = element.value as AccordionElementValue[];
+
+  const [revealTitles, setRevealTitles] = useState<string[]>(
+    accordionItems?.map((item) => item.title) || []
+  );
+  const [revealContents, setRevealContents] = useState<string[]>(
+    accordionItems?.map((item) => item.content) || []
+  );
 
   // Reveal Related Functions
   const handleRevealTitleChange = (index: number, text: string) => {
@@ -50,10 +57,6 @@ function Reveal({
           value: revealItems,
         })
       );
-
-      // Reset state
-      // setRevealTitles([]);
-      // setRevealContents([]);
     }
     setCurrentElement("");
   };
@@ -63,10 +66,10 @@ function Reveal({
       <div className="flex justify-between items-center gap-2 w-full py-4">
         <button
           onClick={handleAddRevealItem}
-          className=" flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
+          className="flex gap-1 text-sm items-center text-primary-6 bg-accent-6 rounded-3xl px-2 py-1 border hover:bg-accent-7 transition-all"
         >
           <PlusCircle
-            className="text-primary-6  transition-all"
+            className="text-primary-6 transition-all"
             size={16}
             weight="fill"
           />
@@ -86,7 +89,7 @@ function Reveal({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {revealTitles.map((title, index) => (
-          <div>
+          <div key={index}>
             <div className="flex justify-between items-center">
               <h2 className="text-secondary-6 text-xl">
                 Reveal Item {index + 1}:
@@ -103,10 +106,7 @@ function Reveal({
                 size={22}
               />
             </div>
-            <li
-              key={index}
-              className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4"
-            >
+            <li className="flex flex-col mb-4 p-2 bg-secondary-2 w-full rounded-md border-secondary-4">
               <label className="text-xs text-secondary-10 border border-secondary-3 w-fit px-1 rounded-t-md">
                 TITLE
               </label>
