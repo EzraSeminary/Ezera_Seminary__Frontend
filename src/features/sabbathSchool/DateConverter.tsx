@@ -8,7 +8,7 @@ const DateConverter = ({ gregorianDate }: { gregorianDate: string }) => {
     return <div>Invalid date format: {gregorianDate}</div>;
   }
   const ethDateTime = EthDateTime.fromEuropeanDate(
-    new Date(year, month - 1, day)
+    new Date(year, month - 1, day + 1)
   );
   const ethiopianMonthNames = [
     "መስከረም",

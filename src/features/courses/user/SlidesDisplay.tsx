@@ -682,7 +682,6 @@ function SlidesDisplay() {
                 );
               })}
             </div>
-
           </div>
         </div>
         {/* slides display window*/}
@@ -983,7 +982,7 @@ function SlidesDisplay() {
                                   </div>
                                   <div
                                     onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-start justify-center text-center bg-secondary-2 border-2 border-secondary-2 shadow-2xl  px-2 text-accent-8 text-lg hover:bg-secondary-3  cursor-pointer transition-all rounded-lg my-1"
+                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-center justify-center text-center bg-accent-9 border-2 border-accent-6 shadow-2xl  px-2 text-primary-2 text-lg hover:bg-accent-10  cursor-pointer transition-all rounded-lg my-1"
                                   >
                                     {revealItem.content}
                                   </div>
@@ -1027,10 +1026,10 @@ function SlidesDisplay() {
                                 />
                               </div>
                               <div className="flex justify-between w-full md:px-14">
-                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-4 rounded-full">
                                   ዝቅተኛ
                                 </button>
-                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-2 rounded-full">
+                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-4 rounded-full">
                                   ከፍተኛ
                                 </button>
                               </div>
@@ -1147,7 +1146,7 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element.id}
-                              className="flex flex-col items-center justify-center w-[80%] bg-gray-100 rounded-3xl shadow-md"
+                              className="flex flex-col items-center justify-center w-[80%] rounded-3xl shadow-md"
                             >
                               <audio
                                 controls
@@ -1229,7 +1228,7 @@ function SlidesDisplay() {
                 </p>
 
                 <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
+                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-4  ${
                     shouldShowNextButton ? "block" : "hidden"
                   }`}
                   onClick={moveToNextSlide}
@@ -1238,7 +1237,7 @@ function SlidesDisplay() {
                 </button>
 
                 <button
-                  className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-2  ${
+                  className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-4  ${
                     isLastSlide ? "block" : "hidden"
                   }`}
                   onClick={submitProgress}
