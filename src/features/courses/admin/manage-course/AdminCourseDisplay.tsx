@@ -338,7 +338,11 @@ function AdminCourseDisplay({
                       : "no image";
 
                   // display new image from redux or previous image from server
-                  const srcValue = imagePreviewUrl || element.value;
+                  const srcValue =
+                    imagePreviewUrl ||
+                    (element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : element.value);
 
                   elementComponent = (
                     <img
@@ -624,7 +628,11 @@ function AdminCourseDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  const audioSrcValue = audioPlayUrl || element.value;
+                  const audioSrcValue =
+                    audioPlayUrl ||
+                    (element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : element.value);
 
                   elementComponent = (
                     <div
