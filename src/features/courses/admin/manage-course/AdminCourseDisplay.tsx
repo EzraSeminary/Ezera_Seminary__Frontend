@@ -39,6 +39,7 @@ import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
 import YouTube from "react-youtube";
+import path from "path";
 
 interface FlipState {
   [index: number]: boolean;
@@ -332,15 +333,18 @@ function AdminCourseDisplay({
                     </p>
                   );
                 } else if (element.type === "img") {
-                  const altText =
-                    element.value instanceof File
-                      ? element.value.name
-                      : "no image";
+                  let altText = "no image";
+                  let srcValue = "";
 
-                  // display new image from redux or previous image from server
-                  const srcValue =
-                    imagePreviewUrl ||
-                    `https://ezrabackend.online/images/` + element.value;
+                  if (typeof element.value === "string") {
+                    // Element.value is a Cloudinary URL
+                    altText = path.basename(element.value);
+                    srcValue = element.value;
+                  } else if (element.value instanceof File) {
+                    // Element.value is a local File object
+                    altText = element.value.name;
+                    srcValue = imagePreviewUrl;
+                  }
 
                   elementComponent = (
                     <img
@@ -447,11 +451,11 @@ function AdminCourseDisplay({
                   const accordionItemsComponent = element.value.map(
                     (accordionItem, index) => (
                       <AccordionItemDisplay
-                      key={`${uniqueKey}-accordion-${index}`}
-                      title={accordionItem.title}
-                      content={accordionItem.content}
-                      onToggle={handleToggle}
-                    />
+                        key={`${uniqueKey}-accordion-${index}`}
+                        title={accordionItem.title}
+                        content={accordionItem.content}
+                        onToggle={handleToggle}
+                      />
                     )
                   );
 
@@ -626,9 +630,7 @@ function AdminCourseDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  const audioSrcValue =
-                    audioPlayUrl ||
-                    `https://ezrabackend.online/images/` + element.value;
+                  const audioSrcValue = audioPlayUrl || element.value;
 
                   elementComponent = (
                     <div
