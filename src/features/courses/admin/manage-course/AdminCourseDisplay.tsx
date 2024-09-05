@@ -39,7 +39,6 @@ import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
 import YouTube from "react-youtube";
-import path from "path";
 
 interface FlipState {
   [index: number]: boolean;
@@ -333,18 +332,18 @@ function AdminCourseDisplay({
                     </p>
                   );
                 } else if (element.type === "img") {
-                  let altText = "no image";
-                  let srcValue = "";
+                  const altText =
+                    element.value instanceof File
+                      ? element.value.name
+                      : "no image";
 
-                  if (typeof element.value === "string") {
-                    // Element.value is a Cloudinary URL
-                    altText = path.basename(element.value);
-                    srcValue = element.value;
-                  } else if (element.value instanceof File) {
-                    // Element.value is a local File object
-                    altText = element.value.name;
-                    srcValue = imagePreviewUrl;
-                  }
+                  // display new image from redux or previous image from server
+                  const srcValue =
+                    typeof imagePreviewUrl === "string"
+                      ? imagePreviewUrl
+                      : element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : (element.value as string);
 
                   elementComponent = (
                     <img
@@ -630,7 +629,12 @@ function AdminCourseDisplay({
                     </div>
                   );
                 } else if (element.type === "audio") {
-                  const audioSrcValue = audioPlayUrl || element.value;
+                  const audioSrcValue =
+                    typeof audioPlayUrl === "string"
+                      ? audioPlayUrl
+                      : element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : (element.value as string);
 
                   elementComponent = (
                     <div

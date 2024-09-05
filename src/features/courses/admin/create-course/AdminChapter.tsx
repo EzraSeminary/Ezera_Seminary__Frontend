@@ -49,7 +49,7 @@ function AdminChapter() {
           // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
             formData.append(
-              `chapter_${chapterIndex}_slide_${slideIndex}_image`,
+              `chapter_${chapterIndex}_slide_${slideIndex}_img`,
               element.value,
               `${chapterIndex}_${slideIndex}_${element.value.name}`
             );

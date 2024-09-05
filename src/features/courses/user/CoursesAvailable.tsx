@@ -123,6 +123,13 @@ function CoursesAvailable() {
     );
   }
 
+  const getImageSrc = (image: string | File | undefined) => {
+    if (image instanceof File) {
+      return URL.createObjectURL(image);
+    }
+    return image || "";
+  };
+
   //Skeletons loading
 
   return (
@@ -194,6 +201,7 @@ function CoursesAvailable() {
             .map((course, index: number) => {
               // Get the progress value for this course, if it exists
               const progressValue = getProgressValue(course._id);
+              const imageSrc = getImageSrc(course.image);
 
               return (
                 <motion.div
@@ -204,7 +212,7 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={course.image}
+                      src={imageSrc}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
@@ -252,6 +260,7 @@ function CoursesAvailable() {
             .map((course, index: number) => {
               // Get the progress value for this course, if it exists
               const progressValue = getProgressValue(course._id);
+              const imageSrc = getImageSrc(course.image);
 
               return (
                 <motion.div
@@ -262,7 +271,7 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={course.image}
+                      src={imageSrc}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
@@ -310,6 +319,7 @@ function CoursesAvailable() {
             .map((course, index: number) => {
               // Get the progress value for this course, if it exists
               const progressValue = getProgressValue(course._id);
+              const imageSrc = getImageSrc(course.image);
 
               return (
                 <motion.div
@@ -332,7 +342,7 @@ function CoursesAvailable() {
                     className="w-full p-2 h-full"
                   >
                     <img
-                      src={course.image}
+                      src={imageSrc}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
