@@ -124,11 +124,6 @@ function ManageCourse() {
 
           <div className="flex flex-col md:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
             {filteredData?.map((course, index: number) => {
-              const imageUrl =
-                typeof course.image === "string"
-                  ? course.image
-                  : URL.createObjectURL(course.image);
-
               return (
                 <motion.div
                   variants={gridSquareVariants}
@@ -144,7 +139,7 @@ function ManageCourse() {
                 >
                   <div className="w-full p-2 ">
                     <img
-                      src={imageUrl}
+                      src={course.image}
                       // src={`https://ezrabackend.online/images/` + course.image}
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-lg  bg-secondary-1"
                       alt=""

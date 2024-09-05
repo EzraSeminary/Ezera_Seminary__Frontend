@@ -45,12 +45,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
   };
 
   // display new image from redux or previous image from server
- const srcValue =
-   typeof imagePreviewUrl === "string"
-     ? imagePreviewUrl
-     : image instanceof File
-     ? URL.createObjectURL(image)
-     : (image as string);
+  const srcValue = imagePreviewUrl || image;
 
   return (
     <div className="w-[80%] mx-auto pt-9 font-nokia-bold">
