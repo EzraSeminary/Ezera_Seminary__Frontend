@@ -298,7 +298,7 @@ const PreviousDevotionals = ({
       {/* Pagination controls */}
       <div className="flex justify-center items-center gap-4 my-4">
         <button
-          className={`px-4 py-2 rounded-md ${
+          className={`px-4 py-2 rounded-md text-white ${
             currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-accent-6"
           }`}
           onClick={() => handlePageChange(currentPage - 1)}
@@ -322,7 +322,7 @@ const PreviousDevotionals = ({
           )
         )}
         <button
-          className={`px-4 py-2 rounded-md ${
+          className={`px-4 py-2 rounded-md text-white ${
             currentPage === totalPages
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-accent-6"
