@@ -296,7 +296,7 @@ const PreviousDevotionals = ({
       )}
 
       {/* Pagination controls */}
-      <div className="flex justify-center items-center gap-4 my-4">
+      <div className="flex  justify-center items-center gap-1 md:gap-4 my-4">
         <button
           className={`px-4 py-2 rounded-md text-white ${
             currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-accent-6"
