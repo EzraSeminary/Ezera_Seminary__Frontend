@@ -310,7 +310,7 @@ const PreviousDevotionals = ({
           (pageNumber) => (
             <button
               key={pageNumber}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-4 py-2 rounded-md hidden sm:flex ${
                 currentPage === pageNumber
                   ? "bg-accent-6 text-white"
                   : "bg-gray-300"
