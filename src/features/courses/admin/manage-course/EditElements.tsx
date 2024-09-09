@@ -379,7 +379,7 @@ function EditElements({
         <select
           name="elements"
           id="elements"
-          value={newElementType}
+          value={newElementType as string}
           onChange={handleDropdownChange}
           className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
         >
