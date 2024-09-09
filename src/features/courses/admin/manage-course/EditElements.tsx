@@ -5,6 +5,7 @@ import {
   deleteElement,
   selectChapters,
   Chapter,
+  addElementToSlide,
 } from "@/redux/courseSlice";
 import { Trash } from "@phosphor-icons/react";
 import CustomTextarea from "@/components/CustomTextarea";
@@ -32,6 +33,11 @@ function EditElements({
   setCurrentElement,
 }: EditElementsProps) {
   const dispatch = useDispatch();
+
+  // new state for the dropdown
+  const [newElementType, setNewElementType] = useState<
+    string | null | string[] | boolean
+  >("");
 
   const chapters = useSelector(selectChapters) as Chapter[];
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
@@ -80,6 +86,71 @@ function EditElements({
         elementId,
       })
     );
+  };
+
+  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNewElementType(e.target.value);
+  };
+
+  const handleAddButtonClick = (chapterIndex: number, slideIndex: number) => {
+    if (
+      (newElementType && newElementType === "title") ||
+      newElementType === "sub" ||
+      newElementType === "text" ||
+      newElementType === "video"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: "",
+        })
+      );
+      setNewElementType("");
+    } else if (
+      (newElementType && newElementType === "img") ||
+      newElementType === "audio"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: null,
+        })
+      );
+      setNewElementType(null);
+    } else if (
+      (newElementType && newElementType === "list") ||
+      newElementType === "slide" ||
+      newElementType === "quiz" ||
+      newElementType === "accordion" ||
+      newElementType === "sequence" ||
+      newElementType === "reveal" ||
+      newElementType === "dnd" ||
+      newElementType === "mix"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: [],
+        })
+      );
+      setNewElementType([]);
+    } else if (newElementType && newElementType === "range") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: false,
+        })
+      );
+      setNewElementType(false);
+    }
   };
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
@@ -302,6 +373,41 @@ function EditElements({
           </div>
         );
       })}
+
+      {/* add a new element with dropdown */}
+      <div className="flex justify-between pb-4">
+        <select
+          name="elements"
+          id="elements"
+          value={newElementType}
+          onChange={handleDropdownChange}
+          className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
+        >
+          <option value="" disabled>
+            Choose Type
+          </option>
+          <option value="title">Title</option>
+          <option value="sub">Sub-title</option>
+          <option value="text">Paragraph</option>
+          <option value="slide">Slide</option>
+          <option value="img">Image</option>
+          <option value="quiz">Quiz</option>
+          <option value="list">List</option>
+          <option value="accordion">Accordion</option>
+          <option value="sequence">Sequence</option>
+          <option value="reveal">Reveal</option>
+          <option value="range">Range</option>
+          <option value="dnd">Missing Words</option>
+          <option value="audio">Audio</option>
+          <option value="video">Video</option>
+        </select>
+        <button
+          onClick={() => handleAddButtonClick(chapterIndex, slideIndex)}
+          className="px-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7"
+        >
+          Add
+        </button>
+      </div>
     </div>
   );
 }
