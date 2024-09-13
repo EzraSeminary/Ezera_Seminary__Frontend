@@ -202,7 +202,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.verse}
               onChange={handleChange}
               required
-              maxLength={200}
+              maxLength={300}
             />
           </div>
           <AddParagraph
@@ -219,7 +219,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               value={form.prayer}
               onChange={handleChange}
               required
-              maxLength={280}
+              maxLength={480}
             />
           </div>
           <div className="flex justify-between items-center">
