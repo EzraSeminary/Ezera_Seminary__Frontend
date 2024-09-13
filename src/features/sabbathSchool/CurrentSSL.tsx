@@ -7,7 +7,7 @@ import {
 } from "@/services/SabbathSchoolApi";
 import { useGetVideoLinkQuery } from "@/services/videoLinksApi";
 import DateConverter from "./DateConverter";
-// import { YoutubeLogo } from "@phosphor-icons/react";
+import { YoutubeLogo } from "@phosphor-icons/react";
 import LoadingPage from "@/pages/user/LoadingPage";
 
 function CurrentSSL() {
@@ -119,9 +119,7 @@ function CurrentSSL() {
                   <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
                 </a>
               ) : (
-                <span className="text-red-500 text-xs">
-                  No YouTube video available.
-                </span>
+                <div className="text-accent-6">YouTube link unavailable.</div>
               )}
             </div>
           </div>

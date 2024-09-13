@@ -2,7 +2,12 @@ import useAxiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { selectCourse, setCourse, togglePublished } from "@/redux/courseSlice";
+import {
+  MixElement,
+  selectCourse,
+  setCourse,
+  togglePublished,
+} from "@/redux/courseSlice";
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
@@ -79,12 +84,12 @@ function EditCourse() {
     // Loop through the chapters and slides to append any image files
     course.chapters.forEach((chapter, chapterIndex) => {
       chapter.slides.forEach((slide, slideIndex) => {
-        slide.elements.forEach((element) => {
+        slide.elements.forEach((element, elementIndex) => {
           // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
             // Append the file using chapter and slide indices to help reference the file on the server-side
             formData.append(
-              `chapter_${chapterIndex}_slide_${slideIndex}_image`,
+              `chapter_${chapterIndex}_slide_${slideIndex}_img`,
               element.value,
               `${chapterIndex}_${slideIndex}_${element.value.name}`
             );
@@ -97,6 +102,24 @@ function EditCourse() {
               element.value,
               `${chapterIndex}_${slideIndex}_${element.value.name}`
             );
+          }
+
+          // If it's a mix type element
+          if (element.type === "mix") {
+            const mixElement = element as MixElement;
+            if (mixElement.value.file instanceof File) {
+              formData.append(
+                `chapter_${chapterIndex}_slide_${slideIndex}_mix_file`,
+                mixElement.value.file,
+                `${chapterIndex}_${slideIndex}_${mixElement.value.file.name}`
+              );
+            } else {
+              console.error(
+                "File missing in Mix Element:",
+                elementIndex,
+                mixElement.value.file
+              );
+            }
           }
         });
       });

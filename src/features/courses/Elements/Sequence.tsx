@@ -1,5 +1,5 @@
 import { updateElement } from "@/redux/courseSlice";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
@@ -14,8 +14,19 @@ function Sequence({
 }: ElementTypeProps) {
   const dispatch = useDispatch();
 
-  const [sequenceItems, setSequenceItems] = useState<string[]>([]);
+  // Initialize sequenceItems with element.value or an empty array
+  const [sequenceItems, setSequenceItems] = useState<string[]>(() => {
+    return (element.value as string[]) || [];
+  });
+
   const [currentSequenceItem, setCurrentSequenceItem] = useState<string>("");
+
+  // populate sequenceItems with element.value, if element.value exists and if sequenceItems is empty.
+  useEffect(() => {
+    if (element.value && sequenceItems.length === 0) {
+      setSequenceItems(element.value as string[]);
+    }
+  }, [element.value, sequenceItems.length]);
 
   // Sequence Related Functions.
   const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +56,6 @@ function Sequence({
           value: sequenceItems,
         })
       );
-      // setSequenceItems([]); // remove the lists
     }
     setCurrentElement("");
   };
@@ -56,6 +66,7 @@ function Sequence({
     );
     setSequenceItems(updatedSequence);
   };
+
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-3">
@@ -95,9 +106,9 @@ function Sequence({
       </div>
       <ul className="pt-4 w-[100%] cursor-pointer overflow-y-auto">
         {sequenceItems.map((item, index) => (
-          <label>
+          <label key={index}>
             <h2 className="text-secondary-6 py-3">Sequence {index + 1}:</h2>
-            <div key={index} className="flex justify-between">
+            <div className="flex justify-between">
               <CustomTextarea
                 value={item}
                 onChange={(e) =>

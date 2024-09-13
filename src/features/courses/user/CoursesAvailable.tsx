@@ -58,11 +58,10 @@ function CoursesAvailable() {
   // Reverse the courses to display from the latest
   const reversedCourses = [...(courses ?? [])].reverse();
 
-
-    //progress
+  //progress
   // Retrieves the current user from Redux state
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  
+
   const filteredData = reversedCourses.filter((course) => {
     const isAdmin = currentUser && currentUser.role === "Admin";
     return (
@@ -71,11 +70,9 @@ function CoursesAvailable() {
     );
   });
 
-
   const handleViewAllCoursesClick = () => {
     setShowAllCourses(!showAllCourses);
   };
-
 
   // Function to calculate the progress value for a given course ID
   const getProgressValue = (courseId: string): number | undefined => {
@@ -207,7 +204,11 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={`https://ezrabackend.online/images/` + course.image}
+                      src={
+                        typeof course.image === "string"
+                          ? course.image
+                          : URL.createObjectURL(course.image)
+                      }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
@@ -265,7 +266,11 @@ function CoursesAvailable() {
                   {/* Image of the course */}
                   <div className="w-full p-2 h-full">
                     <img
-                      src={`https://ezrabackend.online/images/` + course.image}
+                      src={
+                        typeof course.image === "string"
+                          ? course.image
+                          : URL.createObjectURL(course.image)
+                      }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />
@@ -335,7 +340,11 @@ function CoursesAvailable() {
                     className="w-full p-2 h-full"
                   >
                     <img
-                      src={`https://ezrabackend.online/images/` + course.image}
+                      src={
+                        typeof course.image === "string"
+                          ? course.image
+                          : URL.createObjectURL(course.image)
+                      }
                       className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
                       alt=""
                     />

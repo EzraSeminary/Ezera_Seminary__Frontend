@@ -45,8 +45,7 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
   };
 
   // display new image from redux or previous image from server
-  const srcValue =
-    imagePreviewUrl || `https://ezrabackend.online/images/` + image;
+  const srcValue = imagePreviewUrl || image;
 
   return (
     <div className="w-[80%] mx-auto pt-9 font-nokia-bold">
@@ -57,7 +56,11 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
         <div className="relative flex flex-col col-span-12 mx-auto h-72 w-[100%] border border-orange-300">
           {/* display new image from redux or previous image from server */}
           <img
-            src={srcValue}
+            src={
+              typeof srcValue === "string"
+                ? srcValue
+                : URL.createObjectURL(srcValue)
+            }
             alt=""
             className="absolute inset-0 w-full h-full object-cover rounded-md"
           />

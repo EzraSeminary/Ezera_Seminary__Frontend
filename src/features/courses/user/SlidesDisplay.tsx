@@ -775,7 +775,7 @@ function SlidesDisplay() {
                                       onClick={handleCloseFullScreen}
                                     />
                                     <img
-                                      src={`https://ezrabackend.online/images/${element.value}`}
+                                      src={`${element.value}`}
                                       alt="fullscreen content"
                                       className="w-full h-full object-contain rounded-3xl"
                                     />
@@ -788,7 +788,7 @@ function SlidesDisplay() {
                                 >
                                   <img
                                     key={element._id}
-                                    src={`https://ezrabackend.online/images/${element.value}`}
+                                    src={`${element.value}`}
                                     alt="no image"
                                     className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                   />
@@ -878,28 +878,38 @@ function SlidesDisplay() {
                               {/* Choices */}
                               {element.value.choices && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                {element.value.choices.map((choice, choiceIndex) => (
-                                  <label
-                                    key={`${element._id}-choice-${choiceIndex}`}
-                                    className="inline-flex items-center"
-                                  >
-                                    <input
-                                      type="radio"
-                                      className={`w-5 h-5 rounded-full transition-all pt-2 cursor-pointer border-2 ${
-                                        selectedChoice === choiceIndex ? 'bg-orange-400 border-orange-400' : 'bg-secondary-2 border-secondary-2'
-                                      }`}
-                                      checked={selectedChoice === choiceIndex}
-                                      onChange={() =>
-                                        handleRadioChange(choiceIndex, choice.text, element.value.correctAnswer)
-                                      }
-                                      disabled={isQuizAnswered}
-                                    />
-                                    <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
-                                      {choice.text}
-                                    </span>
-                                  </label>
-                                ))}
-                              </div>
+                                  {element.value.choices.map(
+                                    (choice, choiceIndex) => (
+                                      <label
+                                        key={`${element._id}-choice-${choiceIndex}`}
+                                        className="inline-flex items-center"
+                                      >
+                                        <input
+                                          type="radio"
+                                          className={`w-5 h-5 rounded-full transition-all pt-2 cursor-pointer border-2 ${
+                                            selectedChoice === choiceIndex
+                                              ? "bg-orange-400 border-orange-400"
+                                              : "bg-secondary-2 border-secondary-2"
+                                          }`}
+                                          checked={
+                                            selectedChoice === choiceIndex
+                                          }
+                                          onChange={() =>
+                                            handleRadioChange(
+                                              choiceIndex,
+                                              choice.text,
+                                              element.value.correctAnswer
+                                            )
+                                          }
+                                          disabled={isQuizAnswered}
+                                        />
+                                        <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
+                                          {choice.text}
+                                        </span>
+                                      </label>
+                                    )
+                                  )}
+                                </div>
                               )}
                               {/* Correct Answer */}
                               <div className="flex mt-4">
@@ -1112,7 +1122,7 @@ function SlidesDisplay() {
                                         onClick={handleCloseFullScreen}
                                       />
                                       <img
-                                        src={`https://ezrabackend.online/images/${element.value.file}`}
+                                        src={`${element.value.file}`}
                                         alt="fullscreen content"
                                         className="w-full h-full object-contain rounded-3xl"
                                       />
@@ -1124,7 +1134,7 @@ function SlidesDisplay() {
                                     onClick={handleOpenFullScreen}
                                   >
                                     <img
-                                      src={`https://ezrabackend.online/images/${element.value.file}`}
+                                      src={`${element.value.file}`}
                                       alt="no image"
                                       className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
                                     />
@@ -1154,7 +1164,7 @@ function SlidesDisplay() {
                                 onPlay={() => setIsAudioPlayed(true)} // Next button available when played
                               >
                                 <source
-                                  src={`https://ezrabackend.online/images/${element.value}`}
+                                  src={`${element.value}`}
                                   type="audio/mpeg"
                                 />
                                 Your browser does not support the audio element.

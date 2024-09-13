@@ -175,6 +175,11 @@ function ChaptersDisplay() {
 
   if (error) return <div>Something went wrong.</div>;
 
+  const imageSrc =
+    courseData?.image instanceof File
+      ? URL.createObjectURL(courseData.image)
+      : courseData?.image;
+
   return (
     // Chapters Section
     <>
@@ -215,7 +220,7 @@ function ChaptersDisplay() {
           {/* Bible image container*/}
           <div className="w-[100%]">
             <img
-              src={`https://ezrabackend.online/images/` + courseData?.image}
+              src={imageSrc}
               alt=""
               className="w-full rounded-t-lg object-cover h-[35vh] bg-secondary-3"
             />
@@ -319,11 +324,7 @@ function ChaptersDisplay() {
 
           {/* Bible image container*/}
 
-          <img
-            src={`https://ezrabackend.online/images/` + courseData?.image}
-            alt=""
-            className="w-full h-[30vh] object-cover"
-          />
+          <img src={imageSrc} alt="" className="w-full h-[30vh] object-cover" />
 
           {/* Short information*/}
           <div className="pl-2 py-1 bg-primary-7  gap-2 flex justify-between items-center  w-full text-xs1  lg:text-xs">

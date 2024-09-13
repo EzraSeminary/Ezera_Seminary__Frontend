@@ -340,7 +340,9 @@ function AdminCourseDisplay({
                   // display new image from redux or previous image from server
                   const srcValue =
                     imagePreviewUrl ||
-                    `https://ezrabackend.online/images/` + element.value;
+                    (element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : element.value);
 
                   elementComponent = (
                     <img
@@ -447,11 +449,11 @@ function AdminCourseDisplay({
                   const accordionItemsComponent = element.value.map(
                     (accordionItem, index) => (
                       <AccordionItemDisplay
-                      key={`${uniqueKey}-accordion-${index}`}
-                      title={accordionItem.title}
-                      content={accordionItem.content}
-                      onToggle={handleToggle}
-                    />
+                        key={`${uniqueKey}-accordion-${index}`}
+                        title={accordionItem.title}
+                        content={accordionItem.content}
+                        onToggle={handleToggle}
+                      />
                     )
                   );
 
@@ -628,7 +630,9 @@ function AdminCourseDisplay({
                 } else if (element.type === "audio") {
                   const audioSrcValue =
                     audioPlayUrl ||
-                    `https://ezrabackend.online/images/` + element.value;
+                    (element.value instanceof File
+                      ? URL.createObjectURL(element.value)
+                      : element.value);
 
                   elementComponent = (
                     <div
