@@ -8,7 +8,7 @@ import {
   addElementToSlide,
 } from "@/redux/courseSlice";
 import { Trash } from "@phosphor-icons/react";
-import CustomTextarea from "@/components/CustomTextarea";
+// import CustomTextarea from "@/components/CustomTextarea";
 import CustomInput from "@/components/CustomInput";
 import List from "../../Elements/List";
 import Slide from "../../Elements/Slide";
@@ -18,6 +18,7 @@ import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
 import ScrollMix from "../../Elements/ScrollMix";
+import RichTextEditor from "../../Elements/RichTextEditor";
 
 interface EditElementsProps {
   chapterIndex: number;
@@ -212,14 +213,19 @@ function EditElements({
           );
         } else if (element.type === "text") {
           elementComponent = (
-            <CustomTextarea
-              id={element.id}
-              placeholder={`Enter ${element.type}`}
-              value={element.value?.toString()}
-              onChange={(e) => handleInputChange(element.id, e.target.value)}
-              className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
-              maxLength={700}
-            />
+            // <CustomTextarea
+            //   id={element.id}
+            //   placeholder={`Enter ${element.type}`}
+            //   value={element.value?.toString()}
+            //   onChange={(e) => handleInputChange(element.id, e.target.value)}
+            //   className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+            //   maxLength={700}
+            // />
+            <RichTextEditor 
+            key={index} 
+            setRichTextData={(content) => handleInputChange(element.id, content)} 
+            initialValue={element.value as string} 
+          />
           );
         } else if (element.type === "img") {
           elementComponent = (

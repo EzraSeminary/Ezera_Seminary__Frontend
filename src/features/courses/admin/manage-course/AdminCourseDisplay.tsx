@@ -26,6 +26,8 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
   DndContext,
   PointerSensor,
@@ -324,12 +326,14 @@ function AdminCourseDisplay({
                   );
                 } else if (element.type === "text") {
                   elementComponent = (
-                    <p
+                    <div className="my-3 rich-text-container">
+                    <ReactQuill
                       key={element.type}
-                      className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs"
-                    >
-                      {element.value}
-                    </p>
+                      value={element.value || ''}
+                      readOnly={true}
+                      theme="snow"
+                    />
+                  </div>
                   );
                 } else if (element.type === "img") {
                   const altText =

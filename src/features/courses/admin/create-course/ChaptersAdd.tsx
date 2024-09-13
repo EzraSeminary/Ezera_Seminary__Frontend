@@ -192,6 +192,7 @@ function ChaptersAdd() {
       currentElement === "sequence" ||
       currentElement === "reveal" ||
       currentElement === "dnd" ||
+      currentElement === "richtext" ||
       currentElement === "mix"
     ) {
       dispatch(
