@@ -12,8 +12,10 @@ import {
   deleteChapter,
   deleteSlide,
   addElementToSlide,
+  moveSlideUp,
+  moveSlideDown,
 } from "../../../../redux/courseSlice";
-import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
+import { BookOpenText, PlusCircle, Trash, ArrowCircleUp, ArrowCircleDown } from "@phosphor-icons/react";
 import SlideDataDisplay from "./SlideDataDisplay";
 import ElementPopup from "../../Elements/ElementPopup";
 import CustomInput from "@/components/CustomInput";
@@ -41,6 +43,19 @@ function ChaptersAdd() {
   const [currentElement, setCurrentElement] = useState<
     string | null | string[] | boolean
   >("");
+
+
+  const moveSlideUpHandler = (chapterIndex: number, slideIndex: number) => {
+    if (slideIndex > 0) {
+      dispatch(moveSlideUp({ chapterIndex, slideIndex }));
+    }
+  };
+
+  const moveSlideDownHandler = (chapterIndex: number, slideIndex: number) => {
+    if (slideIndex < chapters[chapterIndex].slides.length - 1) {
+      dispatch(moveSlideDown({ chapterIndex, slideIndex }));
+    }
+  };
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -300,6 +315,18 @@ function ChaptersAdd() {
                           onClick={() =>
                             deleteSlideHandler(chapterIndex, slideIndex)
                           }
+                          weight="fill"
+                          className="text-accent-6 cursor-pointer"
+                          size={24}
+                        />
+                        <ArrowCircleUp
+                          onClick={() => moveSlideUpHandler(chapterIndex, slideIndex)}
+                          weight="fill"
+                          className="text-accent-6 cursor-pointer"
+                          size={24}
+                        />
+                        <ArrowCircleDown
+                          onClick={() => moveSlideDownHandler(chapterIndex, slideIndex)}
                           weight="fill"
                           className="text-accent-6 cursor-pointer"
                           size={24}
