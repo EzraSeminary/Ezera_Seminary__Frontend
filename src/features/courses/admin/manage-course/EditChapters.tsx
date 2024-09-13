@@ -11,7 +11,6 @@ import {
   deleteSlide,
   Chapter,
   addElementToSlide,
-  selectCourse,
   moveSlideUp,
   moveSlideDown,
 } from "@/redux/courseSlice";
@@ -24,7 +23,6 @@ import ElementPopup from "../../Elements/ElementPopup";
 
 function EditChapters() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) as Chapter[];
   const allSlides = useSelector(selectAllSlides);
 
@@ -221,7 +219,7 @@ function EditChapters() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  console.log("course", course);
+  // console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
