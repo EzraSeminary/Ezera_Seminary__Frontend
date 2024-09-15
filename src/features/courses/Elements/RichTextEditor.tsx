@@ -38,7 +38,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ setRichTextData, initia
       <ReactQuill 
         value={value} 
         onChange={handleEditorChange} 
-        placeholder="Write your content here..." 
+        placeholder="እዚህ ጋር ይጻፉ ..." 
         modules={modules}
         formats={formats}
       />

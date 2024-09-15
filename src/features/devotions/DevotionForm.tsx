@@ -1,101 +1,81 @@
-// import Devotion from "@/pages/user/Devotion"; // Assuming correct path
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import {
   updateForm,
   updateParagraph,
   selectForm,
-  selectParagraphs,
   createDevotion,
   updateDevotion,
   resetForm,
   setIsEditing,
   fetchDevotions,
 } from "../../redux/devotionsSlice";
-import AddParagraph from "./AddParagraph";
 import PhotoUploader from "./PhotoUploader";
+import RichTextEditor from "./../courses/Elements/RichTextEditor"; // Import your RichTextEditor component
 import { CircleNotch } from "@phosphor-icons/react";
 import { AppDispatch } from "@/redux/store";
 import { RootState, Devotion } from "@/redux/types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface DevotionFormProps {
-  // Add any custom props if needed
-}
-
-const DevotionForm: React.FC<DevotionFormProps> = () => {
+const DevotionForm: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.user?.token);
   const dispatch = useDispatch<AppDispatch>();
 
-  // Use destructuring and type annotations for clarity
   const form = useSelector(selectForm);
-  const paragraphs = useSelector(selectParagraphs);
   const [file, setFile] = useState<File | null>(null);
-  const [localParagraphs, setLocalParagraphs] = useState<string[]>([]);
-  const isEditing = useSelector(
-    (state: RootState) => state.devotions.isEditing
-  );
-  const selectedDevotion = useSelector(
-    (state: RootState) => state.devotions.selectedDevotion
-  );
+  const [bodyContent, setBodyContent] = useState<string>(""); // Handle the rich text body content
+  const isEditing = useSelector((state: RootState) => state.devotions.isEditing);
+  const selectedDevotion = useSelector((state: RootState) => state.devotions.selectedDevotion);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
       dispatch(updateForm(selectedDevotion));
-      if (selectedDevotion.paragraphs) {
-        selectedDevotion.paragraphs.forEach(
-          (paragraph: string, index: number) => {
-            dispatch(updateParagraph({ index, text: paragraph }));
-          }
-        );
+      if (selectedDevotion.body) {
+        setBodyContent(selectedDevotion.body[0]);
       }
       setFile(selectedDevotion.photo ? (selectedDevotion.photo as File) : null);
     }
   }, [dispatch, isEditing, selectedDevotion]);
 
-  const handleChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (event.target.name === "image") {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      setFile(event.target.files);
+      const inputElement = event.target as HTMLInputElement;
+      setFile(inputElement.files ? inputElement.files[0] : null);
     } else {
       dispatch(updateForm({ [event.target.name]: event.target.value }));
     }
   };
 
+  const handleBodyContentChange = (content: string) => {
+    setBodyContent(content);
+    dispatch(updateParagraph({
+      text: content,
+      index: 0
+    }));
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setIsSubmitting(true);
 
     const devotion: Devotion = {
       ...form,
-      paragraphs,
+      body: [bodyContent], // Use the rich text content for body as an array
       photo: file,
-      image: form.image,
-      body: form.body || [],
     };
-    const validToken = token || ""; // Ensure token is not undefined
+    const validToken = token || "";
 
     try {
       let response;
       if (form._id) {
-        response = await dispatch(
-          updateDevotion({ token: validToken, devotion })
-        );
+        response = await dispatch(updateDevotion({ token: validToken, devotion }));
         if (response.payload) {
           toast.success("Devotion updated successfully!");
         }
       } else {
-        response = await dispatch(
-          createDevotion({ token: validToken, devotion })
-        );
+        response = await dispatch(createDevotion({ token: validToken, devotion }));
         if (response.payload) {
           toast.success("Devotion created successfully!");
         }
@@ -106,15 +86,13 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
       }
 
       await dispatch(fetchDevotions());
-
       dispatch(resetForm());
-      setLocalParagraphs([]);
+      setBodyContent(""); // Reset the rich text content
       dispatch(setIsEditing(false));
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsSubmitting(false); // Set back to false after submission is complete
-      // Reload the page
+      setIsSubmitting(false);
       window.location.reload();
     }
   };
@@ -122,19 +100,14 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex border-2 shadow-lg rounded-l-2xl h-[100%] font-nokia-bold ">
-        <form
-          onSubmit={handleSubmit}
-          className="w-[90%] mx-auto py-6 space-y-3 "
-        >
+      <div className="flex border-2 shadow-lg rounded-l-2xl h-[100%] font-nokia-bold w-[30%]">
+        <form onSubmit={handleSubmit} className="w-[90%] mx-auto py-6 space-y-3">
           <div>
             <select
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7  rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs  mr-6"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs mr-6"
               name="month"
               value={form.month}
-              onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                handleChange(event)
-              }
+              onChange={handleChange}
               required
             >
               <option value="" disabled>
@@ -160,7 +133,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               min="1"
               max="30"
               placeholder="Day"
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7  rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs font-nokia-bold w-[27%] placeholder-secondary-6 focus:placeholder-secondary-4"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs font-nokia-bold w-[27%]"
               value={form.day}
               onChange={handleChange}
               required
@@ -172,7 +145,7 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
               type="text"
               name="title"
               placeholder="Title"
-              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg text-accent-6 px-2 py-1 placeholder-accent-4"
+              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg text-accent-6 px-2 py-1"
               value={form.title}
               onChange={handleChange}
               required
@@ -181,11 +154,12 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
           </div>
           <div className="space-y-1 text-sm text-accent-6">
             <label>Chapter to be read</label>
+            <p> </p>
             <input
               type="text"
               name="chapter"
-              placeholder="chapter"
-              className="w-full border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-2 py-1 placeholder-accent-4"
+              placeholder="Chapter"
+              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
               value={form.chapter}
               onChange={handleChange}
               required
@@ -197,25 +171,27 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
             <input
               type="text"
               name="verse"
-              placeholder="verse"
-              className="w-full border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-2 py-1 placeholder-accent-4"
+              placeholder="Verse"
+              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
               value={form.verse}
               onChange={handleChange}
               required
               maxLength={300}
             />
           </div>
-          <AddParagraph
-            paragraphs={form.body}
-            localParagraphs={localParagraphs}
-            setLocalParagraphs={setLocalParagraphs}
-          />
+          <div className="space-y-1 text-sm text-accent-6">
+            <label>Body</label>
+            <RichTextEditor
+              initialValue={bodyContent}
+              setRichTextData={handleBodyContentChange}
+            />
+          </div>
           <div className="space-y-1 text-sm text-accent-6">
             <label>Prayer</label>
             <textarea
               name="prayer"
-              placeholder="prayer"
-              className="w-full border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-2 py-1 placeholder-accent-4 "
+              placeholder="Prayer"
+              className="w-full border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
               value={form.prayer}
               onChange={handleChange}
               required
@@ -226,11 +202,11 @@ const DevotionForm: React.FC<DevotionFormProps> = () => {
             <PhotoUploader handleChange={handleChange} />
             <div className="space-y-1 text-sm text-accent-6">
               {isSubmitting ? (
-                <CircleNotch size={32} /> // Display the spinner while the form is being submitted
+                <CircleNotch size={32} />
               ) : (
                 <button
                   type="submit"
-                  className=" bg-accent-6 hover:bg-accent-7 text-[#fff] px-6 py-1 rounded-full cursor-pointer "
+                  className="bg-accent-6 hover:bg-accent-7 text-[#fff] px-6 py-1 rounded-full cursor-pointer"
                 >
                   Submit
                 </button>

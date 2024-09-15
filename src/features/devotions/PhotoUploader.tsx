@@ -40,7 +40,7 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleChange }) => {
   return (
     <div>
       {previewUrl && typeof previewUrl === "string" && (
-        <img src={previewUrl} alt="Preview" className="w-32 h-auto" />
+        <img src={previewUrl} alt="Preview" className="w-32 h-auto p-2 border border-accent-6 mb-2 rounded-lg" />
       )}
       <label className="bg-accent-6 text-[#fff] hover:bg-accent-7 rounded-full px-4 py-1 cursor-pointer text-sm font-nokia-bold w-[27%]">
         <span className="placeholder-secondary-6">Upload Image</span>
