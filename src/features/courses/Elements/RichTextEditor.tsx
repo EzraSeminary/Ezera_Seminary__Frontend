@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -11,22 +11,22 @@ const modules = {
   toolbar: [
     [{ 'size': [] }],
     ['bold', 'italic', 'underline'],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     ['link'],
     ['clean']  // Remove formatting button
   ],
 };
 
-const formats = [ 'size',
-  'bold', 'italic', 'underline',
-  'list', 'bullet',
-  'align',
-  'link'
-];
+const formats = ['size', 'bold', 'italic', 'underline', 'list', 'bullet', 'align', 'link'];
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ setRichTextData, initialValue = '' }) => {
   const [value, setValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    // Whenever the initialValue changes, update the editor's value
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleEditorChange = (content: string) => {
     setValue(content); // Set the value in the editor

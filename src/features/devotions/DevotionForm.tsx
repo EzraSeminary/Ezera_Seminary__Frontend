@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import {
   updateForm,
   updateParagraph,
@@ -32,20 +32,24 @@ const DevotionForm: React.FC = () => {
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
       dispatch(updateForm(selectedDevotion));
-      if (selectedDevotion.body) {
+  
+      // Set bodyContent if body exists and has at least one entry
+      if (Array.isArray(selectedDevotion.body) && selectedDevotion.body.length > 0) {
         setBodyContent(selectedDevotion.body[0]);
       }
+  
+      // Set file if photo exists
       setFile(selectedDevotion.photo ? (selectedDevotion.photo as File) : null);
     }
   }, [dispatch, isEditing, selectedDevotion]);
 
+  // This function will now handle file uploads directly
+  const handleFileUpload = (uploadedFile: File) => {
+    setFile(uploadedFile);
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    if (event.target.name === "image") {
-      const inputElement = event.target as HTMLInputElement;
-      setFile(inputElement.files ? inputElement.files[0] : null);
-    } else {
-      dispatch(updateForm({ [event.target.name]: event.target.value }));
-    }
+    dispatch(updateForm({ [event.target.name]: event.target.value }));
   };
 
   const handleBodyContentChange = (content: string) => {
@@ -63,10 +67,9 @@ const DevotionForm: React.FC = () => {
     const devotion: Devotion = {
       ...form,
       body: [bodyContent], // Use the rich text content for body as an array
-      photo: file,
+      photo: file, // Attach the photo file
     };
     const validToken = token || "";
-
     try {
       let response;
       if (form._id) {
@@ -199,7 +202,7 @@ const DevotionForm: React.FC = () => {
             />
           </div>
           <div className="flex justify-between items-center">
-            <PhotoUploader handleChange={handleChange} />
+            <PhotoUploader handleFileUpload={handleFileUpload} />
             <div className="space-y-1 text-sm text-accent-6">
               {isSubmitting ? (
                 <CircleNotch size={32} />
