@@ -33,7 +33,7 @@ const Intro = () => {
   // const src = "YaAligpJSJw?si=O_kbJG-JEIxwZk82";
   // const videoId = "YaAligpJSJw?si=O_kbJG-JEIxwZk82";
   return (
-    <div className="pt-[7rem] mt-[80vh] md:mt-[96vh] md:pt-[3rem]  lg:mt-[96vh] lg:pt-[3rem] xl:mt-[96vh] xl:pt-[5.2rem]  md:flex md:flex-col md:items-center md:justify-center">
+    <div className="pt-[7rem] mt-[85vh] md:mt-[96vh] md:pt-[3rem]  lg:mt-[96vh] lg:pt-[3rem] xl:mt-[96vh] xl:pt-[5.2rem]  md:flex md:flex-col md:items-center md:justify-center">
       <div className="w-4/5 mx-auto flex flex-col-reverse md:flex-row md:flex-wrap ">
         <div className="mt-12 w-full  md:mt-0 md:w-1/2 rounded-3xl relative ">
           {!playing ? (
