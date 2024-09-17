@@ -5,8 +5,6 @@ import {
   selectParagraphs,
   selectPreviewUrl,
 } from "../../redux/devotionsSlice";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 
 const DevotionPreview = () => {
   // add as a prop if it's passed from a parent component
