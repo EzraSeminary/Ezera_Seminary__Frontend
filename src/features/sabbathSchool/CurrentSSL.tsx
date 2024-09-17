@@ -119,9 +119,7 @@ function CurrentSSL() {
                   <YoutubeLogo weight="fill" className="text-lg md:text-xl" />
                 </a>
               ) : (
-                <span className="text-red-500 text-xs">
-                  No YouTube video available.
-                </span>
+                <div className="text-accent-6">YouTube link unavailable.</div>
               )}
             </div>
           </div>

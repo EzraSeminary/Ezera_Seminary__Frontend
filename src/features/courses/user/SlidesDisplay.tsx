@@ -25,6 +25,8 @@ import axios from "axios";
 import { PuffLoader } from "react-spinners";
 import LoadingPage from "@/pages/user/LoadingPage";
 import { toast, ToastContainer } from "react-toastify";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
   Carousel,
   CarouselContent,
@@ -755,12 +757,14 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "text") {
                           return (
-                            <p
-                              key={element._id}
-                              className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg lg:pt-2 xl:text-xl"
-                            >
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{element.value}
-                            </p>
+                            <div className="my-3 rich-text-container">
+                            <ReactQuill
+                              key={element.type}
+                              value={element.value || ''}
+                              readOnly={true}
+                              theme="snow"
+                            />
+                          </div>
                           );
                         } else if (element.type === "img") {
                           return (

@@ -13,9 +13,10 @@ import Accordion from "../../Elements/Accordion";
 import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
+import RichTextEditor from "../../Elements/RichTextEditor";
 import ScrollMix from "../../Elements/ScrollMix";
 import CustomInput from "@/components/CustomInput";
-import CustomTextarea from "@/components/CustomTextarea";
+// import CustomTextarea from "@/components/CustomTextarea";
 
 export interface ElementsAddProps {
   chapterIndex: number;
@@ -142,13 +143,18 @@ function ElementsAdd({
           );
         } else if (element.type === "text") {
           elementComponent = (
-            <CustomTextarea
-              id={element.id}
-              placeholder={`Enter ${element.type}`}
-              value={element.value?.toString()}
-              onChange={(e) => handleInputChange(element.id, e.target.value)}
-              className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
-              maxLength={700}
+            // <CustomTextarea
+            //   id={element.id}
+            //   placeholder={`Enter ${element.type}`}
+            //   value={element.value?.toString()}
+            //   onChange={(e) => handleInputChange(element.id, e.target.value)}
+            //   className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+            //   maxLength={700}
+            // />
+            <RichTextEditor 
+              key={index} 
+              setRichTextData={(content) => handleInputChange(element.id, content)} 
+              initialValue={element.value as string} 
             />
           );
         } else if (element.type === "img") {

@@ -425,6 +425,41 @@ export const courseSlice = createSlice({
       state.chapters[chapterIndex].slides.splice(slideIndex, 1);
     },
 
+    moveSlideUp: (
+      state,
+      action: PayloadAction<{ chapterIndex: number; slideIndex: number }>
+    ) => {
+      const { chapterIndex, slideIndex } = action.payload;
+      const chapter = state.chapters[chapterIndex];
+
+      if (chapter && slideIndex > 0) {
+        const slides = chapter.slides;
+        // Swap the current slide with the one above it
+        [slides[slideIndex - 1], slides[slideIndex]] = [
+          slides[slideIndex],
+          slides[slideIndex - 1],
+        ];
+      }
+    },
+
+    // Move slide down
+    moveSlideDown: (
+      state,
+      action: PayloadAction<{ chapterIndex: number; slideIndex: number }>
+    ) => {
+      const { chapterIndex, slideIndex } = action.payload;
+      const chapter = state.chapters[chapterIndex];
+
+      if (chapter && slideIndex < chapter.slides.length - 1) {
+        const slides = chapter.slides;
+        // Swap the current slide with the one below it
+        [slides[slideIndex], slides[slideIndex + 1]] = [
+          slides[slideIndex + 1],
+          slides[slideIndex],
+        ];
+      }
+    },
+
     resetCourse: () => {
       return {
         title: "",
@@ -453,6 +488,8 @@ export const {
   deleteElement,
   deleteChapter,
   deleteSlide,
+  moveSlideUp,
+  moveSlideDown,
 
   resetCourse,
 } = courseSlice.actions;

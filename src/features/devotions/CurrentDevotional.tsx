@@ -259,12 +259,11 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             {/* devotion paragraphs */}
             {devotionToDisplay &&
               devotionToDisplay.body.map((paragraph, paragraphIndex) => (
-                <p
-                  className=" font-nokia-bold text-sm lg:text-lg xl:text-xl text-justify text-secondary-6 space-y-3"
-                  key={paragraphIndex}
-                >
-                  {paragraph}
-                </p>
+                <div
+              key={paragraphIndex}
+              className="font-nokia-bold text-sm text-justify text-secondary-6 space-y-3"
+              dangerouslySetInnerHTML={{ __html: paragraph }} // Render the rich text safely
+            />
               ))}
 
             {devotionToDisplay && devotionToDisplay.prayer !== "" ? (
