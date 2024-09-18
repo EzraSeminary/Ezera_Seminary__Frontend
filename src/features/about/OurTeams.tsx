@@ -46,11 +46,10 @@ const OurTeam = () => {
             </div>
             <div className="text-center py-4 font-nokia-bold">
               <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">
-                ሳምንታዊ የመጽሐፍ ቅዱስ ጥናቶች
+                 ኮርሶች
               </h2>
               <p className="text-secondary-6 font-nokia-Regular text-sm xl:text-lg mb-4 w-[90%] mx-auto">
-                በአንድ መሪ ርእስ ላይ ለሦስት ወራት ጥናት ለማድረግ የሚያስችል፣ እለታዊ ንባብና ሳምንታዊ
-                ትምህርትንም አጣምሮ የያዘ ነው።
+                በተለያዩ መጽሐፍ ቅዱሳዊ ርእሶች ጠለቅ ያለ ጥናት ለማድረግ የሚያስችል ነው።
               </p>
             </div>
           </div>
@@ -66,10 +65,11 @@ const OurTeam = () => {
             </div>
             <div className="text-center py-4 font-nokia-bold">
               <h2 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl">
-                ኮርሶች
+                ሳምንታዊ የመጽሐፍ ቅዱስ ጥናቶች
               </h2>
               <p className="text-secondary-6 font-nokia-Regular text-sm xl:text-lg mb-4 w-[90%] mx-auto">
-                በተለአዩ መጽሐፍ ቅዱሳዊ ርእሶች ጠለቅ ያለ ጥናት ለማድረግ የሚያስችል ነው።
+                በአንድ መሪ ርእስ ላይ ለሦስት ወራት ጥናት ለማድረግ የሚያስችል፣ እለታዊ ንባብና ሳምንታዊ
+                ትምህርትንም አጣምሮ የያዘ ነው።
               </p>
             </div>
           </div>
