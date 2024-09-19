@@ -251,7 +251,7 @@ footer {
 }
 
 .rich-text-container {
-  color: white;
+  /* color: white; */
   font-family: "Nokia Pure Headline Bold";
   border: none !important;
   padding: 0;
@@ -259,6 +259,7 @@ footer {
 
 .rich-text-container p {
   text-align: justify;
+  font-size: 1.1em !important;
 }
 
 .rich-text-container .ql-toolbar {
