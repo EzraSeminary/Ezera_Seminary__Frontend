@@ -44,8 +44,9 @@ const DevotionForm: React.FC = () => {
   }, [dispatch, isEditing, selectedDevotion]);
 
   // This function will now handle file uploads directly
-  const handleFileUpload = (uploadedFile: File) => {
-    setFile(uploadedFile);
+ const handleFileUpload = (uploadedFile: File) => {
+    const renamedFile = new File([uploadedFile], `${uploadedFile.name}`, { type: uploadedFile.type });
+    setFile(renamedFile);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
