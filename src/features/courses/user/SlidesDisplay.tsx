@@ -757,7 +757,7 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "text") {
                           return (
-                            <div className="my-3 rich-text-container">
+                            <div className="my-3 rich-text-container rich-course">
                             <ReactQuill
                               key={element.type}
                               value={element.value || ''}

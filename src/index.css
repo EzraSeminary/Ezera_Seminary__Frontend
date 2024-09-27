@@ -251,7 +251,7 @@ footer {
 }
 
 .rich-text-container {
-  color: white;
+  /* color: white; */
   font-family: "Nokia Pure Headline Bold";
   border: none !important;
   padding: 0;
@@ -259,7 +259,10 @@ footer {
 
 .rich-text-container p {
   text-align: justify;
+  font-size: 1.1em !important;
 }
+
+
 
 .rich-text-container .ql-toolbar {
   display: none; /* Hide the toolbar */
@@ -270,6 +273,14 @@ footer {
   border: none !important;
   box-shadow: none !important;
   font-family: "Nokia Pure Headline Bold" !important;
+}
+
+ .rich-course *:not(a) {
+  color: white;
+}
+
+.rich-text-container a {
+  color: #EA9215;
 }
 
 /* .rich-text-container .ql-editor strong, .rich-text-container .ql-editor b {

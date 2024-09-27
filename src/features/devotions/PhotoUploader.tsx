@@ -29,16 +29,9 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleFileUpload }) => {
           fileType: "image/webp", // Convert the image to WebP format
         };
 
-        // Compress and convert the image
         const compressedFile = await imageCompression(file, options);
-
-        // Convert the compressed file to a data URL for preview and dispatch
         const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
-
-        // Dispatch the compressed image for preview (as a data URL)
         dispatch(updateFile(compressedFileDataUrl));
-
-        // Pass the compressed file to the parent component
         handleFileUpload(compressedFile); // Directly pass the File object
       } catch (error) {
         console.error("Image compression error:", error);
