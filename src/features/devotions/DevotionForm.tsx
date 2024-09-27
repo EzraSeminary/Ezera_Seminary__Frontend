@@ -49,6 +49,7 @@ const DevotionForm: React.FC = () => {
     setFile(renamedFile);
   };
 
+
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     dispatch(updateForm({ [event.target.name]: event.target.value }));
   };
@@ -88,7 +89,7 @@ const DevotionForm: React.FC = () => {
       if (!response.payload) {
         throw new Error();
       }
-
+      setFile(null);
       await dispatch(fetchDevotions());
       dispatch(resetForm());
       setBodyContent(""); // Reset the rich text content

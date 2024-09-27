@@ -326,7 +326,7 @@ function AdminCourseDisplay({
                   );
                 } else if (element.type === "text") {
                   elementComponent = (
-                    <div className="my-3 rich-text-container">
+                    <div className="my-3 rich-text-container rich-course">
                     <ReactQuill
                       key={element.type}
                       value={element.value || ''}
