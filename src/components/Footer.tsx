@@ -27,7 +27,7 @@ const Footer = () => {
                 <img src="../assets/message-icon.svg" alt="" />
               </div>
               <p className="font-nokia-light text-sm xl:text-xl">
-                ezraseminary@gmail.com
+                seminaryezra@gmail.com
               </p>
             </div>
             <div className="flex flex-row space-x-2 justify-center items-center">
@@ -35,7 +35,7 @@ const Footer = () => {
                 <img src="../assets/phone-icon.svg" alt="" />
               </div>
               <p className="font-nokia-light text-sm xl:text-xl ">
-                +251 911 12 13 14
+                +251 985 68 87 79
               </p>
             </div>
           </div>

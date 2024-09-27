@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import melak from "../../assets/melak.svg";
+import eden from "../../assets/eden.jpeg";
 import janet from "../../assets/janet.svg";
 import dawit from "../../assets/dawit.webp";
 
@@ -21,8 +21,8 @@ const Testimonials = () => {
             <div className="mx-auto  w-[40%] ">
               <img
                 className="rounded-full border p-1 border-accent-6"
-                src={melak}
-                alt="melak"
+                src={eden}
+                alt="Eden Teshome"
               />
             </div>
             <div className="text-center py-4 font-nokia-bold">
@@ -32,7 +32,7 @@ const Testimonials = () => {
                 transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
                 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl"
               >
-                ፓ/ር መልዓክ አለማየሁ (ዶ/ር)
+                ኤደን ተሾመ
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 100 }}
@@ -40,8 +40,9 @@ const Testimonials = () => {
                 transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                 className="text-secondary-4 font-nokia-Regular text-sm xl:text-lg mb-4 px-8"
               >
-                “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
-                ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
+                “የዕዝራ ሴሚናሪ ኮርስ ብቻ አልነበረም፣ ጉዞም ነበር። የእዝራ ሴሚናሪ ለእኔ ለውጥ የሚያመጣ ልምድ ሆኖልኛል።
+                ትምህርቶቹ መጽሐፍ ቅዱስን በጥልቀት እንድመረምር ረድቶኛል። እምነቴ በከፍተኛ ደረጃ አድጓል፣
+                እናም ከእግዚአብሔር ጋር እንዴት እንደምገናኝ እና በህይወቴ ውስጥ ትርጉም እንዳገኝ አስተምሮኛል።”
               </motion.p>
             </div>
           </div>

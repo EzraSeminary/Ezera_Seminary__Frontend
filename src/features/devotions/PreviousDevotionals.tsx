@@ -225,7 +225,7 @@ const PreviousDevotionals = ({
           variants={gridContainerVariants}
           initial="hidden"
           animate="show"
-          className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6 lg:gap-5 w-[90%]  mx-auto pb-4"
+          className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6 lg:gap-5 w-[90%]  mx-auto pb-4"
         >
           {currentDevotions.map((devotion, index: number) => (
             <motion.div
@@ -296,9 +296,9 @@ const PreviousDevotionals = ({
       )}
 
       {/* Pagination controls */}
-      <div className="flex justify-center items-center gap-4 my-4">
+      <div className="flex  justify-center items-center gap-1 md:gap-4 my-4">
         <button
-          className={`px-4 py-2 rounded-md ${
+          className={`px-4 py-2 rounded-md text-white ${
             currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-accent-6"
           }`}
           onClick={() => handlePageChange(currentPage - 1)}
@@ -310,7 +310,7 @@ const PreviousDevotionals = ({
           (pageNumber) => (
             <button
               key={pageNumber}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-4 py-2 rounded-md hidden sm:flex ${
                 currentPage === pageNumber
                   ? "bg-accent-6 text-white"
                   : "bg-gray-300"
@@ -322,7 +322,7 @@ const PreviousDevotionals = ({
           )
         )}
         <button
-          className={`px-4 py-2 rounded-md ${
+          className={`px-4 py-2 rounded-md text-white ${
             currentPage === totalPages
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-accent-6"
