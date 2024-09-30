@@ -51,7 +51,7 @@ function CurrentSSL() {
     return <div>Error: {quarterError.message}</div>;
   if (videoLinkError && "message" in videoLinkError)
     return <div>Error: {videoLinkError.message}</div>;
-  if (!quarterDetails || !lessonDetails) return <div>Missing data...</div>;
+  if (!quarterDetails || !lessonDetails) return <div>የቀጣዩ ሩብ አመት ትምህርት እስኪለጠፍ ይጠብቁ! </div>;
 
   return (
     <div className="shadow-lg">
