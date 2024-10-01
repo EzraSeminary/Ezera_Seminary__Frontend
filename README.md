@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="murple_logo.png" alt="logo" width="140" height="auto" />
+  <img src="/src/assets/MainLogo.png.png" alt="logo" width="140" height="auto" />
   <br/>
   <h3><b>Your Project Name</b></h3>
 </div>
@@ -120,6 +120,7 @@ Copy
 npm run build
 
 ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 👥 Authors <a name="authors"></a>
@@ -133,12 +134,14 @@ LinkedIn: LinkedIn
 GitHub: @githubhandle
 Twitter: @twitterhandle
 LinkedIn: LinkedIn
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 🔭 Future Features <a name="future-features"></a>
- New Feature 1
- New Feature 2
- New Feature 3
+New Feature 1
+New Feature 2
+New Feature 3
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 🤝 Contributing <a name="contributing"></a>
@@ -163,11 +166,14 @@ How can I install the project?
 Follow the setup and install instructions above.
 Can I contribute to the project?
 Yes! Contributions are welcome.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 📝 License <a name="license"></a>
 This project is MIT licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+```
 
 ```
