@@ -5,9 +5,10 @@ import {
   deleteElement,
   selectChapters,
   Chapter,
+  addElementToSlide,
 } from "@/redux/courseSlice";
 import { Trash } from "@phosphor-icons/react";
-import CustomTextarea from "@/components/CustomTextarea";
+// import CustomTextarea from "@/components/CustomTextarea";
 import CustomInput from "@/components/CustomInput";
 import List from "../../Elements/List";
 import Slide from "../../Elements/Slide";
@@ -17,6 +18,7 @@ import Sequence from "../../Elements/Sequence";
 import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
 import ScrollMix from "../../Elements/ScrollMix";
+import RichTextEditor from "../../Elements/RichTextEditor";
 
 interface EditElementsProps {
   chapterIndex: number;
@@ -32,6 +34,11 @@ function EditElements({
   setCurrentElement,
 }: EditElementsProps) {
   const dispatch = useDispatch();
+
+  // new state for the dropdown
+  const [newElementType, setNewElementType] = useState<
+    string | null | string[] | boolean
+  >("");
 
   const chapters = useSelector(selectChapters) as Chapter[];
   const elements = chapters[chapterIndex]?.slides[slideIndex]?.elements || [];
@@ -80,6 +87,71 @@ function EditElements({
         elementId,
       })
     );
+  };
+
+  const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNewElementType(e.target.value);
+  };
+
+  const handleAddButtonClick = (chapterIndex: number, slideIndex: number) => {
+    if (
+      (newElementType && newElementType === "title") ||
+      newElementType === "sub" ||
+      newElementType === "text" ||
+      newElementType === "video"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: "",
+        })
+      );
+      setNewElementType("");
+    } else if (
+      (newElementType && newElementType === "img") ||
+      newElementType === "audio"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: null,
+        })
+      );
+      setNewElementType(null);
+    } else if (
+      (newElementType && newElementType === "list") ||
+      newElementType === "slide" ||
+      newElementType === "quiz" ||
+      newElementType === "accordion" ||
+      newElementType === "sequence" ||
+      newElementType === "reveal" ||
+      newElementType === "dnd" ||
+      newElementType === "mix"
+    ) {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: [],
+        })
+      );
+      setNewElementType([]);
+    } else if (newElementType && newElementType === "range") {
+      dispatch(
+        addElementToSlide({
+          chapterIndex,
+          slideIndex,
+          elementType: newElementType,
+          value: false,
+        })
+      );
+      setNewElementType(false);
+    }
   };
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
@@ -141,14 +213,19 @@ function EditElements({
           );
         } else if (element.type === "text") {
           elementComponent = (
-            <CustomTextarea
-              id={element.id}
-              placeholder={`Enter ${element.type}`}
-              value={element.value?.toString()}
-              onChange={(e) => handleInputChange(element.id, e.target.value)}
-              className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
-              maxLength={700}
-            />
+            // <CustomTextarea
+            //   id={element.id}
+            //   placeholder={`Enter ${element.type}`}
+            //   value={element.value?.toString()}
+            //   onChange={(e) => handleInputChange(element.id, e.target.value)}
+            //   className="w-[100%] h-[30vh] font-Lato-Regular text-sm border border-secondary-3 rounded-md outline-accent-6 bg-primary-4 p-2 my-3 placeholder:text-xl"
+            //   maxLength={700}
+            // />
+            <RichTextEditor 
+            key={index} 
+            setRichTextData={(content) => handleInputChange(element.id, content)} 
+            initialValue={element.value as string} 
+          />
           );
         } else if (element.type === "img") {
           elementComponent = (
@@ -302,6 +379,41 @@ function EditElements({
           </div>
         );
       })}
+
+      {/* add a new element with dropdown */}
+      <div className="flex justify-between pb-4">
+        <select
+          name="elements"
+          id="elements"
+          value={newElementType as string}
+          onChange={handleDropdownChange}
+          className="w-[90%] mx-auto border-2 border-accent-6 bg-primary-6 rounded-md mr-2 py-1 px-2 cursor-pointer"
+        >
+          <option value="" disabled>
+            Choose Type
+          </option>
+          <option value="title">Title</option>
+          <option value="sub">Sub-title</option>
+          <option value="text">Paragraph</option>
+          <option value="slide">Slide</option>
+          <option value="img">Image</option>
+          <option value="quiz">Quiz</option>
+          <option value="list">List</option>
+          <option value="accordion">Accordion</option>
+          <option value="sequence">Sequence</option>
+          <option value="reveal">Reveal</option>
+          <option value="range">Range</option>
+          <option value="dnd">Missing Words</option>
+          <option value="audio">Audio</option>
+          <option value="video">Video</option>
+        </select>
+        <button
+          onClick={() => handleAddButtonClick(chapterIndex, slideIndex)}
+          className="px-2 font-semibold text-white bg-accent-6 rounded-md hover:bg-accent-7"
+        >
+          Add
+        </button>
+      </div>
     </div>
   );
 }

@@ -11,9 +11,10 @@ import {
   deleteSlide,
   Chapter,
   addElementToSlide,
-  selectCourse,
+  moveSlideUp,
+  moveSlideDown,
 } from "@/redux/courseSlice";
-import { BookOpenText, PlusCircle, Trash } from "@phosphor-icons/react";
+import { BookOpenText, PlusCircle, Trash, ArrowCircleUp, ArrowCircleDown } from "@phosphor-icons/react";
 import EditElements from "./EditElements";
 import AdminCourseDisplay from "./AdminCourseDisplay";
 import { EditingSlideIndex } from "../create-course/ChaptersAdd";
@@ -22,9 +23,9 @@ import ElementPopup from "../../Elements/ElementPopup";
 
 function EditChapters() {
   const dispatch = useDispatch();
-  const course = useSelector(selectCourse);
   const chapters = useSelector(selectChapters) as Chapter[];
   const allSlides = useSelector(selectAllSlides);
+
 
   const [editingSlideIndex, setEditingSlideIndex] =
     useState<EditingSlideIndex | null>(null);
@@ -36,6 +37,18 @@ function EditChapters() {
   >("");
   // show element popup
   const [showElementPopup, setShowElementPopup] = useState(false);
+
+  const moveSlideUpHandler = (chapterIndex: number, slideIndex: number) => {
+    if (slideIndex > 0) {
+      dispatch(moveSlideUp({ chapterIndex, slideIndex }));
+    }
+  };
+
+  const moveSlideDownHandler = (chapterIndex: number, slideIndex: number) => {
+    if (slideIndex < chapters[chapterIndex].slides.length - 1) {
+      dispatch(moveSlideDown({ chapterIndex, slideIndex }));
+    }
+  };
 
   const addChapterHandler = () => {
     dispatch(addChapter());
@@ -206,7 +219,7 @@ function EditChapters() {
     // This effect should only run when `currentElement` or `editingSlideIndex` changes
   }, [currentElement, editingSlideIndex]);
 
-  console.log("course", course);
+  // console.log("course", course);
 
   return (
     <div className="flex justify-around h-screen w-full relative bg-[#F1F1F1] text-secondary-6 font-nokia-bold">
@@ -267,41 +280,43 @@ function EditChapters() {
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
                   {slides.map((slide, slideIndex) => (
                     <div key={slideIndex} className="flex flex-col">
-                      <div className="flex px-2 items-center gap-2">
-                        <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
-                          {slideIndex + 1}
-                        </p>
-                        <CustomInput
-                          type="text"
-                          name={`slide-${chapterIndex}-${slideIndex}`}
-                          placeholder="Slide Title"
-                          autoComplete="off"
-                          className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
-                            isSelected ? "text-accent-6" : "text-primary-2"
-                          }`}
-                          value={slide.slide}
-                          onChange={(e) =>
-                            updateSlideHandler(
-                              chapterIndex,
-                              slideIndex,
-                              e.target.value
-                            )
-                          }
-                          onClick={() =>
-                            handleSlideClick(chapterIndex, slideIndex)
-                          }
-                          maxLength={75}
-                        />
-                        <Trash
-                          onClick={() =>
-                            deleteSlideHandler(chapterIndex, slideIndex)
-                          }
+                    <div className="flex px-2 items-center gap-2 relative"> {/* Add "relative" class */}
+                      <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
+                        {slideIndex + 1}
+                      </p>
+                      <CustomInput
+                        type="text"
+                        name={`slide-${chapterIndex}-${slideIndex}`}
+                        placeholder="Slide Title"
+                        autoComplete="off"
+                        className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
+                          isSelected ? "text-accent-6" : "text-primary-2"
+                        }`}
+                        value={slide.slide}
+                        onChange={(e) => updateSlideHandler(chapterIndex, slideIndex, e.target.value)}
+                        onClick={() => handleSlideClick(chapterIndex, slideIndex)}
+                        maxLength={75}
+                      />
+                      <Trash
+                        onClick={() => deleteSlideHandler(chapterIndex, slideIndex)}
+                        weight="fill"
+                        className="text-accent-6 cursor-pointer"
+                        size={24}
+                      />
+                      <ArrowCircleUp
+                          onClick={() => moveSlideUpHandler(chapterIndex, slideIndex)}
                           weight="fill"
                           className="text-accent-6 cursor-pointer"
                           size={24}
                         />
-                      </div>
+                        <ArrowCircleDown
+                          onClick={() => moveSlideDownHandler(chapterIndex, slideIndex)}
+                          weight="fill"
+                          className="text-accent-6 cursor-pointer"
+                          size={24}
+                        />
                     </div>
+                  </div>
                   ))}
                   <button
                     onClick={() => {

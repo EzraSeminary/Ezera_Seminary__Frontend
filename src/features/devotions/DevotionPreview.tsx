@@ -50,7 +50,7 @@ const DevotionPreview = () => {
               {form && form.title}
             </h1>
           </div>
-          <h2 className=" text-lg text-accent-5">{form && form.chapter}</h2>
+          <h2 className=" text-lg text-accent-5">የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል - {form && form.chapter}</h2>
 
           {form && form.chapter !== "" ? (
             <hr className="border-accent-5" />
@@ -61,12 +61,11 @@ const DevotionPreview = () => {
           <p className=" text-1xl text-secondary-6">{form && form.verse}</p>
 
           {paragraphs.map((paragraph, paragraphIndex) => (
-            <p
-              className=" font-nokia-bold text-sm text-justify text-secondary-6 space-y-3"
+            <div
               key={paragraphIndex}
-            >
-              {paragraph}
-            </p>
+              className="font-nokia-bold text-justify text-secondary-6 space-y-3 rich-text-container"
+              dangerouslySetInnerHTML={{ __html: paragraph }} // Render the rich text safely
+            />
           ))}
 
           {form && form.prayer !== "" ? (

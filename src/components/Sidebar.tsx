@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [activeMenu, setActiveMenu] = useState("");
-  //State to control account modal
+  // State to control account modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Close the account modal when clicked outside
@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
     setIsModalOpen((prev) => !prev);
   };
 
-  //Ref to listen the cursor and close the account modal
+  // Ref to listen the cursor and close the account modal
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, isModalOpen, () => setIsModalOpen(false));
 
@@ -56,18 +56,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
   // Define base path based on the role
   const basePath = isInstructor ? "/instructor" : "/admin";
 
+  // Define menu items
   const baseMenuItems: MenuItemType[] = [
-    {
-      label: "Analytics",
-      icon: Graph,
-      subItems: [
-        { label: "App Usage", path: `${basePath}/analytics/usage` },
-        {
-          label: "Performance Dashboard",
-          path: `${basePath}/analytics/dashboard`,
-        },
-      ],
-    },
     {
       label: "Courses",
       icon: BookOpen,
@@ -84,25 +74,38 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
         { label: "Manage Devotion", path: `${basePath}/devotion/manage` },
       ],
     },
+  ];
+
+  const fullMenuItems: MenuItemType[] = [
+    ...baseMenuItems,
+    {
+      label: "Analytics",
+      icon: Graph,
+      subItems: [
+        { label: "App Usage", path: `${basePath}/analytics/usage` },
+        {
+          label: "Performance Dashboard",
+          path: `${basePath}/analytics/dashboard`,
+        },
+      ],
+    },
     {
       label: "Feedback Center",
       icon: ChatCircle,
       subItems: [{ label: "Feedback", path: `${basePath}/feedback` }],
     },
+    {
+      label: "Users",
+      icon: UserCircle,
+      subItems: [
+        { label: "Create User", path: `${basePath}/users/create` },
+        { label: "Manage Users", path: `${basePath}/users/manage` },
+      ],
+    },
   ];
 
-  const adminMenuItem: MenuItemType = {
-    label: "Users",
-    icon: UserCircle,
-    subItems: [
-      { label: "Create User", path: `${basePath}/users/create` },
-      { label: "Manage Users", path: `${basePath}/users/manage` },
-    ],
-  };
-
-  const menuItems = isInstructor
-    ? [...baseMenuItems]
-    : [...baseMenuItems, adminMenuItem];
+  // Determine the menu items based on the user role
+  const menuItems = isInstructor ? baseMenuItems : fullMenuItems;
 
   type SidebarItemProps = {
     icon: React.ElementType<IconProps>;
@@ -233,7 +236,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
           </SidebarItem>
         ))}
       </div>
-      {/* {isModalOpen && <ProfileModal />} */}
       <div
         ref={ref}
         onClick={toggleModal}

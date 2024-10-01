@@ -141,7 +141,7 @@ const ManageYouTubeLink = ({
                 Add YouTube Link
               </button>
             ) : (
-              <div className="text-red-500">No YouTube video available.</div>
+              <div className="text-accent-6">YouTube link unavailable.</div>
             )}
           </>
         )}

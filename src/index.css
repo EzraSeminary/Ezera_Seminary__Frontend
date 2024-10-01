@@ -249,3 +249,40 @@ footer {
 .custom-list-color li::marker {
  color: #EA9215; /* Apply Tailwind text color class */
 }
+
+.rich-text-container {
+  /* color: white; */
+  font-family: "Nokia Pure Headline Bold";
+  border: none !important;
+  padding: 0;
+}
+
+.rich-text-container p {
+  text-align: justify;
+  font-size: 1.1em !important;
+}
+
+
+
+.rich-text-container .ql-toolbar {
+  display: none; /* Hide the toolbar */
+  font-family: "Nokia Pure Headline Bold" !important;
+}
+
+.rich-text-container * {
+  border: none !important;
+  box-shadow: none !important;
+  font-family: "Nokia Pure Headline Bold" !important;
+}
+
+ .rich-course *:not(a) {
+  color: white;
+}
+
+.rich-text-container a {
+  color: #EA9215;
+}
+
+/* .rich-text-container .ql-editor strong, .rich-text-container .ql-editor b {
+  font-family: "Nokia Pure Headline Bold" !important;
+} */
