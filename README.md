@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="/src/assets/MainLogo.png.png" alt="Ezra Seminary Logo" width="140" height="auto" />
+  <img src="src/assets/MainLogo.png" alt="Ezra Seminary Logo" width="140" height="auto" />
   <br/>
   <h3><b>Your Project Name</b></h3>
 </div>
