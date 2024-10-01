@@ -67,7 +67,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link](https://example.com)
+- [Live Website Link](https://ezraseminary.org/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -79,61 +79,72 @@ To get a local copy up and running, follow these steps.
 
 In order to run this project you need:
 
-```sh
+````sh
 node --version
 npm --version
 Setup
 Clone this repository to your desired folder:
 
-sh
-
-Copy
+```sh
 git clone git@github.com:yourusername/your-project.git
 cd your-project
+````
+
 Install
 Install this project with:
 
-sh
-
-Copy
+```sh
 npm install
+```
+
 Usage
 To run the project, execute the following command:
 
-sh
+```sh
+npm run dev
+```
 
-Copy
-npm start
 Run tests
 To run tests, run the following command:
 
-sh
-
-Copy
+```sh
 npm test
+```
+
 Deployment
 You can deploy this project using:
 
-sh
-
-Copy
+```sh
 npm run build
-
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 👥 Authors <a name="authors"></a>
-👤 Author1
 
-GitHub: @githubhandle
-Twitter: @twitterhandle
-LinkedIn: LinkedIn
-👤 Author2
+👤 **Amanuel Worku**
 
-GitHub: @githubhandle
-Twitter: @twitterhandle
-LinkedIn: LinkedIn
+- GitHub: [@AmanWorku](https://github.com/AmanWorku)
+- Twitter: [@Amexworku](https://twitter.com/Amexworku)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/amanuel-worku-844903213/)
+
+👤 **Besufekad Alemu**
+
+- GitHub: [@Besu](https://github.com/Besufekad-HAZ)
+- Twitter: [@Besu](https://x.com/BesufekadAlemu7)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/besufekadalemu)
+
+👤 **Yeabtsega Yeshidnber**
+
+- GitHub: [@Yaba](https://github.com/yeabtsega45)
+- Twitter: [@Yabe](https://twitter.com)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/yabtsega-yeshidnber-7a9618257)
+
+👤 **Yidnekachew Kassahun**
+
+- GitHub: [@Yidne](https://github.com/Yidnekachew-cmd)
+- Twitter: [@Yidne](https://twitter.com)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/yidnekachew-kassahun/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
