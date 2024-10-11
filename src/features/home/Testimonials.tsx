@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import eden from "../../assets/eden.jpeg";
-import mule from "../../assets/mule.jpeg";
+import mule from "../../assets/mule.png";
 import yabi from "../../assets/yabi.jpeg";
 
 const Testimonials = () => {
