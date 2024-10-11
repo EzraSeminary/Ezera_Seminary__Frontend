@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import eden from "../../assets/eden.jpeg";
-import janet from "../../assets/janet.svg";
+import mule from "../../assets/mule.jpeg";
 import yabi from "../../assets/yabi.jpeg";
 
 const Testimonials = () => {
@@ -52,8 +52,8 @@ const Testimonials = () => {
             <div className="mx-auto w-[40%]">
               <img
                 className="rounded-full border p-1 border-accent-6"
-                src={janet}
-                alt="janet"
+                src={mule}
+                alt="Mulat Woret"
               />
             </div>
             <div className="text-center py-4 font-nokia-bold">
@@ -63,7 +63,7 @@ const Testimonials = () => {
                 transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
                 className="text-accent-5 pb-2 text-lg lg:text-xl xl:text-2xl"
               >
-                ውብገነት ቦጋለ (ጃኔት)
+                ሙላት ወረት
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 100 }}
@@ -71,8 +71,8 @@ const Testimonials = () => {
                 transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                 className="text-secondary-4 font-nokia-Regular text-sm xl:text-lg mb-4 px-8"
               >
-                “መጽሃፍ ቅዱስን ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።መጽሃፍ ቅዱስን
-                ማንበብ ከምንም በላይ ለህይወታችን አስፈላጊው እና ዋነኛው ነገር ነው።”
+                "ዕዝራ ሴሚናሪ በመንፈስ ቅዱስ ምሪት እንዴት የእግዚአብሔር ቅዱስ ቃል መጽሐፍ ቅዱስን ማጥናትና የመለኮትን ፍጹም ፈቃድ ይበልጥ በቃሉ 
+                ውስጥ በቀላሉ መረዳት እንደሚቻል መንገድን አሳይቶኛል። ስለዚህ ሴሚናሪ የእግዚአብሔርን ስም እባርካለሁ!!!"
               </motion.p>
             </div>
           </div>
