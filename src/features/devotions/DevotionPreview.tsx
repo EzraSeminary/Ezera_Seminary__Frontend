@@ -46,7 +46,7 @@ const DevotionPreview = () => {
 
         <div className="font-nokia-bold flex flex-col w-[50%] space-y-2 mt-8">
           <div className="flex width: 100% space-x-12">
-            <h1 className="text-4xl text-justify text-secondary-6">
+            <h1 className="text-4xl text-secondary-6">
               {form && form.title}
             </h1>
           </div>

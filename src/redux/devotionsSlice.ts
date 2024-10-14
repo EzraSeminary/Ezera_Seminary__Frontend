@@ -6,7 +6,7 @@ import { FormState } from "./types";
 // Define a type for the slice state
 interface Devotion {
   month: string;
-  day: string;
+  day: number;
   title: string;
   chapter: string;
   verse: string;
@@ -60,7 +60,7 @@ export const createDevotion = createAsyncThunk(
   async function ({ token, devotion }: { token: string; devotion: Devotion }) {
     const axiosInstance = createAxiosInstance(token);
     const transformedDevotion: {
-      [key: string]: string | File | null | string[];
+      [key: string]: string | File | null | number | string[];
     } = { ...devotion };
     devotion.paragraphs.forEach((paragraph, index) => {
       transformedDevotion[`paragraph${index + 1}`] = paragraph;
@@ -75,7 +75,7 @@ export const createDevotion = createAsyncThunk(
           formData.append(key, item);
         });
       } else {
-        formData.append(key, value || "");
+        formData.append(key, value !== null && value !== undefined ? value.toString() : "");
       }
     });
     const response = await axiosInstance.post("/devotion/create", formData);
@@ -89,7 +89,7 @@ export const updateDevotion = createAsyncThunk(
   async ({ token, devotion }: { token: string; devotion: Devotion }) => {
     const axiosInstance = createAxiosInstance(token);
     const transformedDevotion: {
-      [key: string]: string | File | null | string[];
+      [key: string]: string | File | null | number | string[];
     } = { ...devotion };
     devotion.paragraphs.forEach((paragraph, index) => {
       transformedDevotion[
@@ -106,7 +106,7 @@ export const updateDevotion = createAsyncThunk(
           formData.append(key, item);
         });
       } else if (value !== null) {
-        formData.append(key, value);
+        formData.append(key, typeof value === 'number' ? value.toString() : value);
       }
     });
     const response = await axiosInstance.put(

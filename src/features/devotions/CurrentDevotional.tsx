@@ -159,7 +159,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             <div className="w-[35%] md:w-[25%] lg:w-full">
               {devotionToDisplay &&
               (devotionToDisplay.month !== "" ||
-                devotionToDisplay.day !== "") ? (
+                devotionToDisplay?.day !== null ? (
                 <motion.div
                   animate={{
                     scale: [1, 1.1, 1.1, 1],
@@ -179,7 +179,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                       {devotionToDisplay.month}
                     </p>
                     <p className="md:text-5xl font-nokia-bold text-[#fff] md:-mt-3">
-                      {devotionToDisplay.day}
+                      {devotionToDisplay?.day}
                     </p>
                   </div>
                 </motion.div>
@@ -190,20 +190,20 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                       {devotionToDisplay && devotionToDisplay.month}
                     </p>
                     <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">
-                      {devotionToDisplay && devotionToDisplay.day}
+                      {devotionToDisplay && devotionToDisplay?.day}
                     </p>
                   </div>
                 </div>
-              )}
+              ))}
             </div>
             <div className="w-[60%] self-end flex-grow lg:hidden">
-              <h1 className="text-2xl md:text-4xl text-justify text-secondary-6">
+              <h1 className="text-2xl md:text-4xl text-secondary-6">
                 {devotionToDisplay && devotionToDisplay.title}
               </h1>
               <h4 className="flex gap-2 text-sm md:text-xl  text-secondary-6 w-full">
                 የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               </h4>
-              <h2 className="text-sm md:text-xl text-accent-6">
+              <h2 className="text-sm md:text-xl text-accent-6 ">
                 {devotionToDisplay && devotionToDisplay.chapter}
               </h2>
             </div>
@@ -212,7 +212,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           <div className="font-nokia-bold flex flex-col  lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
             {/* devotion titles */}
             <div className="flex w-[100%] gap-x-[1vw]">
-              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-justify text-secondary-6">
+              <h1 className="hidden lg:block lg:text-4xl xl:text-4xl text-secondary-6">
                 {devotionToDisplay && devotionToDisplay.title}
               </h1>
               {(role === "Admin" || "Instructor") && showControls && (
@@ -236,17 +236,17 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
             {/* devotion chapter */}
 
-            <h4 className="hidden lg:flex gap-2 text-xl xl:text-3xl text-secondary-6 w-full ">
+            <h4 className="hidden lg:flex gap-2 text-xl xl:text-2xl text-secondary-6 w-full ">
               የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               <span>
-                <h2 className="text-lg xl:text-2xl text-accent-6">
+                <h2 className="lg:flex gap-2 text-xl xl:text-2xl text-accent-6">
                   {devotionToDisplay && devotionToDisplay.chapter}
                 </h2>
               </span>
             </h4>
 
             {/* devotion verse */}
-            <p className=" text-sm md:text-lg xl:text-2xl text-accent-6">
+            <p className=" text-sm md:text-lg xl:text-xl text-accent-6">
               {devotionToDisplay && devotionToDisplay.verse}
             </p>
 

@@ -29,6 +29,7 @@ const DevotionForm: React.FC = () => {
   const selectedDevotion = useSelector((state: RootState) => state.devotions.selectedDevotion);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  console.log(selectedDevotion);
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
       dispatch(updateForm(selectedDevotion));
@@ -39,7 +40,7 @@ const DevotionForm: React.FC = () => {
       }
   
       // Set file if photo exists
-      setFile(selectedDevotion.photo ? (selectedDevotion.photo as File) : null);
+      setFile(selectedDevotion.image ? (selectedDevotion.image as File) : null);
     }
   }, [dispatch, isEditing, selectedDevotion]);
 
@@ -67,40 +68,45 @@ const DevotionForm: React.FC = () => {
     setIsSubmitting(true);
 
     const devotion: Devotion = {
-      ...form,
-      body: [bodyContent], // Use the rich text content for body as an array
-      photo: file, // Attach the photo file
+        ...form,
+        body: [bodyContent], // Use the rich text content for body as an array
+        photo: file ?? (selectedDevotion ? selectedDevotion.image : null),
+ // Use existing photo if no new file is uploaded
     };
+
     const validToken = token || "";
     try {
-      let response;
-      if (form._id) {
-        response = await dispatch(updateDevotion({ token: validToken, devotion }));
-        if (response.payload) {
-          toast.success("Devotion updated successfully!");
+        let response;
+        if (form._id) {
+            response = await dispatch(updateDevotion({ token: validToken, devotion }));
+            if (response.payload) {
+                toast.success("Devotion updated successfully!");
+            }
+        } else {
+            response = await dispatch(createDevotion({ token: validToken, devotion }));
+            if (response.payload) {
+                toast.success("Devotion created successfully!");
+            }
         }
-      } else {
-        response = await dispatch(createDevotion({ token: validToken, devotion }));
-        if (response.payload) {
-          toast.success("Devotion created successfully!");
-        }
-      }
 
-      if (!response.payload) {
-        throw new Error();
-      }
-      setFile(null);
-      await dispatch(fetchDevotions());
-      dispatch(resetForm());
-      setBodyContent(""); // Reset the rich text content
-      dispatch(setIsEditing(false));
+        if (!response.payload) {
+            throw new Error();
+        }
+
+        setFile(null);
+        await dispatch(fetchDevotions());
+        dispatch(resetForm());
+        setBodyContent(""); // Reset the rich text content
+        dispatch(setIsEditing(false));
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsSubmitting(false);
-      window.location.reload();
+        setIsSubmitting(false);
+        window.location.reload();
     }
-  };
+};
+
+
 
   return (
     <>

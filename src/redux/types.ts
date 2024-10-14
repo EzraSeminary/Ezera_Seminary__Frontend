@@ -33,7 +33,7 @@ export interface Devotion {
   previewUrl: Devotion;
   body: string[];
   month: string;
-  day: string;
+  day: number;
   title: string;
   chapter: string;
   verse: string;

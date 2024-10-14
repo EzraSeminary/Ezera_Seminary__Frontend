@@ -19,6 +19,24 @@ const gridSquareVariants = {
   show: { opacity: 1 },
 };
 
+// Mapping Amharic months to their order in the year
+const monthOrder: { [key in Devotion['month']]: number } = {
+  "መስከረም": 1,
+  "ጥቅምት": 2,
+  "ህዳር": 3,
+  "ታህሳስ": 4,
+  "ጥር": 5,
+  "የካቲት": 6,
+  "መጋቢት": 7,
+  "ሚያዝያ": 8,
+  "ግንቦት": 9,
+  "ሰኔ": 10,
+  "ሐምሌ": 11,
+  "ነሐሴ": 12,
+  "ጳጉሜ": 13,
+};
+
+
 const PreviousDevotionals = ({
   previousDevotions,
   setSelectedDevotion,
@@ -40,9 +58,21 @@ const PreviousDevotionals = ({
     setShowInput(!showInput);
   };
 
-  const filteredData = (previousDevotions ?? []).filter((devotion) => {
-    return devotion.month.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  // Sort devotions based on month and day
+  const filteredData = (previousDevotions ?? [])
+    .filter((devotion) => {
+      return devotion.month.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    .sort((a, b) => {
+      const monthA = monthOrder[a.month] || 0;
+      const monthB = monthOrder[b.month] || 0;
+
+      if (monthA !== monthB) {
+        return monthA - monthB;
+      } else {
+        return a.day - b.day; // Sort by day if the month is the same
+      }
+    }).reverse();
 
   const indexOfLastDevotion = currentPage * devotionsPerPage;
   const indexOfFirstDevotion = indexOfLastDevotion - devotionsPerPage;
