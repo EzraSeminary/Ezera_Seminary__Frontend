@@ -120,7 +120,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     const adjustedIndexA = (monthIndexA - currentMonth + 13) % 13;
     const adjustedIndexB = (monthIndexB - currentMonth + 13) % 13;
     if (yearA !== yearB) {
-      return yearB - yearA; // Sort by year first
+      return Number(yearB) - Number(yearA); // Sort by year first
     }
     return adjustedIndexB - adjustedIndexA; // Then sort by month
   });
@@ -157,7 +157,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
                 devotions={devotionsByMonthYear[monthYear]}
                 setSelectedDevotion={setSelectedDevotion}
                 isSelected={selectedMonth === monthYear}
-                onSelect={() => setSelectedMonth(selectedMonth === monthYear ? null : monthYear)}
+                onSelect={() =>
+                  setSelectedMonth(
+                    selectedMonth === monthYear ? null : monthYear
+                  )
+                }
               />
             );
           })}
