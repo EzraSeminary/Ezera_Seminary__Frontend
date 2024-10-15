@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
@@ -6,7 +7,7 @@ import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import { toEthiopian } from "ethiopian-date";
 import LoadingPage from "@/pages/user/LoadingPage";
-import MonthFolder from "./MonthFolder"; // Import the new component
+import MonthFolder from "./MonthFolder";
 
 export interface DevotionDisplayProps {
   showControls: boolean;
@@ -21,13 +22,13 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
   );
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null); // State to track selected month
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
   const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery();
   const ethiopianMonths = useMemo(
     () => [
-      "", // There is no month 0
+      "",
       "መስከረም",
       "ጥቅምት",
       "ህዳር",
@@ -40,7 +41,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       "ሰኔ",
       "ሐምሌ",
       "ነሐሴ",
-      "ጳጉሜ", // 13th month
+      "ጳጉሜ",
     ],
     []
   );
@@ -57,43 +58,33 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
         today.getMonth() + 1,
         today.getDate()
       );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [year, month, day] = ethiopianDate;
       const ethiopianMonth = ethiopianMonths[month];
 
-      const findDevotion = (date: Date) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [year, month, day] = toEthiopian(
+      console.log("Ethiopian Date:", ethiopianDate);
+      console.log("Ethiopian Month:", ethiopianMonth);
+
+      const findDevotion = (offset: number) => {
+        const date = new Date(today);
+        date.setDate(today.getDate() - offset);
+        const [y, m, d] = toEthiopian(
           date.getFullYear(),
           date.getMonth() + 1,
           date.getDate()
         );
-        const ethiopianMonth = ethiopianMonths[month];
+        const monthName = ethiopianMonths[m];
+        console.log(`Checking for devotion on: ${monthName} ${d}`);
         return devotions.find(
           (devotion) =>
-            devotion.month === ethiopianMonth && Number(devotion.day) === day
+            devotion.month === monthName && Number(devotion.day) === d
         );
       };
 
-      let todaysDevotion = findDevotion(today);
-
-      if (!todaysDevotion) {
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        todaysDevotion = findDevotion(yesterday);
-      }
-
-      if (!todaysDevotion) {
-        const dayBeforeYesterday = new Date(today);
-        dayBeforeYesterday.setDate(today.getDate() - 2);
-        todaysDevotion = findDevotion(dayBeforeYesterday);
-      }
-
-      if (!todaysDevotion) {
-        todaysDevotion = devotions.find(
-          (devotion) => devotion.month === ethiopianMonth
-        );
-      }
+      const todaysDevotion =
+        findDevotion(0) ||
+        findDevotion(1) ||
+        findDevotion(2) ||
+        devotions.find((devotion) => devotion.month === ethiopianMonth);
 
       setSelectedDevotion(todaysDevotion || devotions[0]);
     }
@@ -118,12 +109,10 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   const devotionToDisplay = selectedDevotion || devotions[0];
 
-  // Filter out the current devotion from the list of previous devotions
   const previousDevotions = devotions.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
-  // Group previous devotions by month and year
   const devotionsByMonthYear = previousDevotions.reduce((acc, devotion) => {
     const key = `${devotion.month}-${devotion.year}`;
     if (!acc[key]) {
@@ -133,7 +122,6 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  // Sort months based on their order from today's current devotion date in descending Ethiopian month order
   const sortedMonthYears = Object.keys(devotionsByMonthYear).sort((a, b) => {
     const today = new Date();
     const ethiopianDate = toEthiopian(
@@ -141,7 +129,6 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       today.getMonth() + 1,
       today.getDate()
     );
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [, currentMonth, currentYear] = ethiopianDate;
     const [monthA, yearA] = a.split("-");
     const [monthB, yearB] = b.split("-");
@@ -150,12 +137,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     const adjustedIndexA = (monthIndexA - currentMonth + 13) % 13;
     const adjustedIndexB = (monthIndexB - currentMonth + 13) % 13;
     if (yearA !== yearB) {
-      return Number(yearB) - Number(yearA); // Sort by year first
+      return Number(yearB) - Number(yearA);
     }
-    return adjustedIndexB - adjustedIndexA; // Then sort by month
+    return adjustedIndexB - adjustedIndexA;
   });
 
-  // Ensure the current month is at the top
   const today = new Date();
   const ethiopianDate = toEthiopian(
     today.getFullYear(),
@@ -171,7 +157,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
-      <div className="w-[100%] h-full font-nokia-bold  flex flex-col mx-auto container space-y-6 mb-12 flex-1">
+      <div className="w-[100%] h-full font-nokia-bold flex flex-col mx-auto container space-y-6 mb-12 flex-1">
         <CurrentDevotional
           devotionToDisplay={devotionToDisplay}
           showControls={showControls}
