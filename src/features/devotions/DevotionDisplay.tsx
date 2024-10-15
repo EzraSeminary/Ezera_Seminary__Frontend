@@ -57,13 +57,43 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
         today.getMonth() + 1,
         today.getDate()
       );
-      const [, month, day] = ethiopianDate;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [year, month, day] = ethiopianDate;
       const ethiopianMonth = ethiopianMonths[month];
 
-      const todaysDevotion = devotions.find(
-        (devotion) =>
-          devotion.month === ethiopianMonth && Number(devotion.day) === day
-      );
+      const findDevotion = (date: Date) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [year, month, day] = toEthiopian(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          date.getDate()
+        );
+        const ethiopianMonth = ethiopianMonths[month];
+        return devotions.find(
+          (devotion) =>
+            devotion.month === ethiopianMonth && Number(devotion.day) === day
+        );
+      };
+
+      let todaysDevotion = findDevotion(today);
+
+      if (!todaysDevotion) {
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        todaysDevotion = findDevotion(yesterday);
+      }
+
+      if (!todaysDevotion) {
+        const dayBeforeYesterday = new Date(today);
+        dayBeforeYesterday.setDate(today.getDate() - 2);
+        todaysDevotion = findDevotion(dayBeforeYesterday);
+      }
+
+      if (!todaysDevotion) {
+        todaysDevotion = devotions.find(
+          (devotion) => devotion.month === ethiopianMonth
+        );
+      }
 
       setSelectedDevotion(todaysDevotion || devotions[0]);
     }
