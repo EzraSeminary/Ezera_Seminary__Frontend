@@ -93,30 +93,50 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
-  // Group previous devotions by month
-  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
-    if (!acc[devotion.month]) {
-      acc[devotion.month] = [];
+  // Group previous devotions by month and year
+  const devotionsByMonthYear = previousDevotions.reduce((acc, devotion) => {
+    const key = `${devotion.month}-${devotion.year}`;
+    if (!acc[key]) {
+      acc[key] = [];
     }
-    acc[devotion.month].push(devotion);
+    acc[key].push(devotion);
     return acc;
   }, {} as Record<string, Devotion[]>);
 
   // Sort months based on their order from today's current devotion date in descending Ethiopian month order
-  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
+  const sortedMonthYears = Object.keys(devotionsByMonthYear).sort((a, b) => {
     const today = new Date();
     const ethiopianDate = toEthiopian(
       today.getFullYear(),
       today.getMonth() + 1,
       today.getDate()
     );
-    const [, currentMonth] = ethiopianDate;
-    const monthIndexA = ethiopianMonths.indexOf(a);
-    const monthIndexB = ethiopianMonths.indexOf(b);
+    const [, currentMonth, currentYear] = ethiopianDate;
+    const [monthA, yearA] = a.split("-");
+    const [monthB, yearB] = b.split("-");
+    const monthIndexA = ethiopianMonths.indexOf(monthA);
+    const monthIndexB = ethiopianMonths.indexOf(monthB);
     const adjustedIndexA = (monthIndexA - currentMonth + 13) % 13;
     const adjustedIndexB = (monthIndexB - currentMonth + 13) % 13;
-    return adjustedIndexA - adjustedIndexB;
+    if (yearA !== yearB) {
+      return Number(yearB) - Number(yearA); // Sort by year first
+    }
+    return adjustedIndexB - adjustedIndexA; // Then sort by month
   });
+
+  // Ensure the current month is at the top
+  const today = new Date();
+  const ethiopianDate = toEthiopian(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    today.getDate()
+  );
+  const [, currentMonth, currentYear] = ethiopianDate;
+  const currentMonthYear = `${ethiopianMonths[currentMonth]}-${currentYear}`;
+  const sortedMonthsWithCurrentFirst = [
+    currentMonthYear,
+    ...sortedMonthYears.filter((key) => key !== currentMonthYear),
+  ];
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
@@ -127,16 +147,19 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           toogleForm={toggleForm}
         />
         <div className="flex flex-col space-y-4">
-          {sortedMonths.map((month) => (
-            <MonthFolder
-              key={month}
-              month={month}
-              devotions={devotionsByMonth[month]}
-              setSelectedDevotion={setSelectedDevotion}
-              isSelected={selectedMonth === month}
-              onSelect={() => setSelectedMonth(month)}
-            />
-          ))}
+          {sortedMonthsWithCurrentFirst.map((monthYear) => {
+            const [month] = monthYear.split("-");
+            return (
+              <MonthFolder
+                key={monthYear}
+                month={month}
+                devotions={devotionsByMonthYear[monthYear]}
+                setSelectedDevotion={setSelectedDevotion}
+                isSelected={selectedMonth === monthYear}
+                onSelect={() => setSelectedMonth(monthYear)}
+              />
+            );
+          })}
         </div>
         <Categories title="Lessons Available" />
       </div>

@@ -27,7 +27,7 @@ const gridSquareVariants = {
 
 const MonthFolder: React.FC<MonthFolderProps> = ({
   month,
-  devotions,
+  devotions = [], // Provide a default value for devotions
   setSelectedDevotion,
   isSelected,
   onSelect,
