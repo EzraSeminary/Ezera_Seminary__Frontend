@@ -1,6 +1,7 @@
 import React from "react";
 import { Devotion } from "@/redux/types";
 import { motion } from "framer-motion";
+import { Folder, FolderOpen } from "@phosphor-icons/react";
 
 interface MonthFolderProps {
   month: string;
@@ -34,7 +35,15 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
 }) => {
   return (
     <div className="border rounded-lg p-4">
-      <div className="cursor-pointer text-lg font-bold" onClick={onSelect}>
+      <div
+        className="cursor-pointer text-lg font-bold flex items-center"
+        onClick={onSelect}
+      >
+        {isSelected ? (
+          <FolderOpen className="mr-2 text-yellow-500" size={24} />
+        ) : (
+          <Folder className="mr-2 text-yellow-500" size={24} />
+        )}
         {month}
       </div>
       {isSelected && (

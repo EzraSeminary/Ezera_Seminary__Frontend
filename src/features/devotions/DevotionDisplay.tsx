@@ -111,6 +111,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       today.getMonth() + 1,
       today.getDate()
     );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [, currentMonth, currentYear] = ethiopianDate;
     const [monthA, yearA] = a.split("-");
     const [monthB, yearB] = b.split("-");
@@ -119,7 +120,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     const adjustedIndexA = (monthIndexA - currentMonth + 13) % 13;
     const adjustedIndexB = (monthIndexB - currentMonth + 13) % 13;
     if (yearA !== yearB) {
-      return Number(yearB) - Number(yearA); // Sort by year first
+      return yearB - yearA; // Sort by year first
     }
     return adjustedIndexB - adjustedIndexA; // Then sort by month
   });
@@ -156,7 +157,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
                 devotions={devotionsByMonthYear[monthYear]}
                 setSelectedDevotion={setSelectedDevotion}
                 isSelected={selectedMonth === monthYear}
-                onSelect={() => setSelectedMonth(monthYear)}
+                onSelect={() => setSelectedMonth(selectedMonth === monthYear ? null : monthYear)}
               />
             );
           })}
