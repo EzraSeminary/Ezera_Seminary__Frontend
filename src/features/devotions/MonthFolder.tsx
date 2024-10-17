@@ -9,6 +9,7 @@ interface MonthFolderProps {
   setSelectedDevotion: (devotion: Devotion) => void;
   isSelected: boolean;
   onSelect: () => void;
+  isExpanded: boolean;
 }
 
 const gridContainerVariants = {
@@ -32,17 +33,22 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
   setSelectedDevotion,
   isSelected,
   onSelect,
+  isExpanded,
 }) => {
   return (
-    <div className="border rounded-lg p-4">
+    <div
+      className={`border rounded-lg p-4 ${
+        isExpanded ? "col-span-full" : "col-span-1"
+      }`}
+    >
       <div
         className="cursor-pointer text-lg font-bold flex items-center"
         onClick={onSelect}
       >
         {isSelected ? (
-          <FolderOpen className="mr-2 text-yellow-500" size={24} />
+          <FolderOpen className="mr-2 text-yellow-500" size={40} />
         ) : (
-          <Folder className="mr-2 text-yellow-500" size={24} />
+          <Folder className="mr-2 text-yellow-500" size={40} />
         )}
         {month}
       </div>
@@ -51,7 +57,9 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
           variants={gridContainerVariants}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 w-[90%] mx-auto pb-4 mt-2"
+          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 ${
+            isExpanded ? "w-full" : "w-[90%]"
+          } mx-auto pb-4 mt-2`}
         >
           {devotions.map((devotion, index: number) => (
             <motion.div
