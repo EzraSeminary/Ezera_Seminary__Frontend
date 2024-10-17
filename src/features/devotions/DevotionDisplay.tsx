@@ -130,20 +130,15 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     const monthIndexA = getMonthIndex(a);
     const monthIndexB = getMonthIndex(b);
 
-    return monthIndexA - monthIndexB;
+    return monthIndexA - monthIndexB; // Sort in reverse order
   });
 
-  console.log("After sorting:", sortedMonths);
-
-  const today = new Date();
-  const [, currentMonth] = convertToEthiopianDate(today);
+  const currentMonth = convertToEthiopianDate(new Date())[1];
   const currentMonthName = ethiopianMonths[currentMonth];
-
-  console.log("Current month:", currentMonthName);
-
+  const currentMonthIndex = sortedMonths.indexOf(currentMonthName);
   const sortedMonthsWithCurrentFirst = [
-    currentMonthName,
-    ...sortedMonths.filter((month) => month !== currentMonthName),
+    ...sortedMonths.slice(currentMonthIndex),
+    ...sortedMonths.slice(0, currentMonthIndex),
   ];
 
   console.log("Final sorted months:", sortedMonthsWithCurrentFirst);
