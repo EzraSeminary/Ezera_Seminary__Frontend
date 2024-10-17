@@ -5,7 +5,7 @@ import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
-import { toEthiopian } from "ethiopian-date";
+import { EthDateTime } from "ethiopian-calendar-date-converter";
 import LoadingPage from "@/pages/user/LoadingPage";
 import MonthFolder from "./MonthFolder";
 
@@ -48,30 +48,26 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   const topRef = useRef<HTMLDivElement>(null);
 
+  const convertToEthiopianDate = (date: Date) => {
+    const ethDateTime = EthDateTime.fromEuropeanDate(date);
+    return [ethDateTime.year, ethDateTime.month, ethDateTime.date];
+  };
+
   useEffect(() => {
     if (selectedDevotionFromHome) {
       setSelectedDevotion(selectedDevotionFromHome);
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
-      const ethiopianDate = toEthiopian(
-        today.getFullYear(),
-        today.getMonth() + 1,
-        today.getDate()
-      );
-      const [year, month, day] = ethiopianDate;
+      const [year, month, day] = convertToEthiopianDate(today);
       const ethiopianMonth = ethiopianMonths[month];
 
-      console.log("Ethiopian Date:", ethiopianDate);
+      console.log("Ethiopian Date:", [year, month, day]);
       console.log("Ethiopian Month:", ethiopianMonth);
 
       const findDevotion = (offset: number) => {
         const date = new Date(today);
         date.setDate(today.getDate() - offset);
-        const [y, m, d] = toEthiopian(
-          date.getFullYear(),
-          date.getMonth() + 1,
-          date.getDate()
-        );
+        const [y, m, d] = convertToEthiopianDate(date);
         const monthName = ethiopianMonths[m];
         console.log(`Checking for devotion on: ${monthName} ${d}`);
         return devotions.find(
@@ -124,12 +120,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   const sortedMonthYears = Object.keys(devotionsByMonthYear).sort((a, b) => {
     const today = new Date();
-    const ethiopianDate = toEthiopian(
-      today.getFullYear(),
-      today.getMonth() + 1,
-      today.getDate()
-    );
-    const [, currentMonth, currentYear] = ethiopianDate;
+    const [currentYear, currentMonth] = convertToEthiopianDate(today);
     const [monthA, yearA] = a.split("-");
     const [monthB, yearB] = b.split("-");
     const monthIndexA = ethiopianMonths.indexOf(monthA);
@@ -143,12 +134,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   });
 
   const today = new Date();
-  const ethiopianDate = toEthiopian(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    today.getDate()
-  );
-  const [, currentMonth, currentYear] = ethiopianDate;
+  const [currentYear, currentMonth] = convertToEthiopianDate(today);
   const currentMonthYear = `${ethiopianMonths[currentMonth]}-${currentYear}`;
   const sortedMonthsWithCurrentFirst = [
     currentMonthYear,
