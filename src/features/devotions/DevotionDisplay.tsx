@@ -36,7 +36,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       "ጥር",
       "የካቲት",
       "መጋቢት",
-      "ሚያዝያ",
+      "ሚያዚያ",
       "ግንቦት",
       "ሰኔ",
       "ሐምሌ",
@@ -45,6 +45,12 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     ],
     []
   );
+
+  // Updated getMonthIndex function
+  const getMonthIndex = (monthName: string): number => {
+    const reversedMonths = [...ethiopianMonths].reverse();
+    return reversedMonths.indexOf(monthName);
+  };
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -109,8 +115,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
-  const devotionsByMonthYear = previousDevotions.reduce((acc, devotion) => {
-    const key = `${devotion.month}-${devotion.year}`;
+  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
+    const key = devotion.month;
     if (!acc[key]) {
       acc[key] = [];
     }
@@ -118,28 +124,29 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  const sortedMonthYears = Object.keys(devotionsByMonthYear).sort((a, b) => {
-    const today = new Date();
-    const [currentYear, currentMonth] = convertToEthiopianDate(today);
-    const [monthA, yearA] = a.split("-");
-    const [monthB, yearB] = b.split("-");
-    const monthIndexA = ethiopianMonths.indexOf(monthA);
-    const monthIndexB = ethiopianMonths.indexOf(monthB);
-    const adjustedIndexA = (monthIndexA - currentMonth + 13) % 13;
-    const adjustedIndexB = (monthIndexB - currentMonth + 13) % 13;
-    if (yearA !== yearB) {
-      return Number(yearB) - Number(yearA);
-    }
-    return adjustedIndexB - adjustedIndexA;
+  console.log("Before sorting:", Object.keys(devotionsByMonth));
+
+  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
+    const monthIndexA = getMonthIndex(a);
+    const monthIndexB = getMonthIndex(b);
+
+    return monthIndexA - monthIndexB;
   });
 
+  console.log("After sorting:", sortedMonths);
+
   const today = new Date();
-  const [currentYear, currentMonth] = convertToEthiopianDate(today);
-  const currentMonthYear = `${ethiopianMonths[currentMonth]}-${currentYear}`;
+  const [, currentMonth] = convertToEthiopianDate(today);
+  const currentMonthName = ethiopianMonths[currentMonth];
+
+  console.log("Current month:", currentMonthName);
+
   const sortedMonthsWithCurrentFirst = [
-    currentMonthYear,
-    ...sortedMonthYears.filter((key) => key !== currentMonthYear),
+    currentMonthName,
+    ...sortedMonths.filter((month) => month !== currentMonthName),
   ];
+
+  console.log("Final sorted months:", sortedMonthsWithCurrentFirst);
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
@@ -150,23 +157,18 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           toogleForm={toggleForm}
         />
         <div className="flex flex-col space-y-4">
-          {sortedMonthsWithCurrentFirst.map((monthYear) => {
-            const [month] = monthYear.split("-");
-            return (
-              <MonthFolder
-                key={monthYear}
-                month={month}
-                devotions={devotionsByMonthYear[monthYear]}
-                setSelectedDevotion={setSelectedDevotion}
-                isSelected={selectedMonth === monthYear}
-                onSelect={() =>
-                  setSelectedMonth(
-                    selectedMonth === monthYear ? null : monthYear
-                  )
-                }
-              />
-            );
-          })}
+          {sortedMonthsWithCurrentFirst.map((month) => (
+            <MonthFolder
+              key={month}
+              month={month}
+              devotions={devotionsByMonth[month]}
+              setSelectedDevotion={setSelectedDevotion}
+              isSelected={selectedMonth === month}
+              onSelect={() =>
+                setSelectedMonth(selectedMonth === month ? null : month)
+              }
+            />
+          ))}
         </div>
         <Categories title="Lessons Available" />
       </div>
