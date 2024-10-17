@@ -5,9 +5,14 @@ import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
-import { EthDateTime } from "ethiopian-calendar-date-converter";
 import LoadingPage from "@/pages/user/LoadingPage";
 import MonthFolder from "./MonthFolder";
+import {
+  convertToEthiopianDate,
+  findDevotion,
+  sortMonths,
+  ethiopianMonths,
+} from "./devotionUtils";
 
 export interface DevotionDisplayProps {
   showControls: boolean;
@@ -26,38 +31,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
   const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery();
-  const ethiopianMonths = useMemo(
-    () => [
-      "",
-      "መስከረም",
-      "ጥቅምት",
-      "ህዳር",
-      "ታህሳስ",
-      "ጥር",
-      "የካቲት",
-      "መጋቢት",
-      "ሚያዚያ",
-      "ግንቦት",
-      "ሰኔ",
-      "ሐምሌ",
-      "ነሐሴ",
-      "ጳጉሜ",
-    ],
-    []
-  );
-
-  // Updated getMonthIndex function
-  const getMonthIndex = (monthName: string): number => {
-    const reversedMonths = [...ethiopianMonths].reverse();
-    return reversedMonths.indexOf(monthName);
-  };
 
   const topRef = useRef<HTMLDivElement>(null);
-
-  const convertToEthiopianDate = (date: Date) => {
-    const ethDateTime = EthDateTime.fromEuropeanDate(date);
-    return [ethDateTime.year, ethDateTime.month, ethDateTime.date];
-  };
 
   useEffect(() => {
     if (selectedDevotionFromHome) {
@@ -70,27 +45,15 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       console.log("Ethiopian Date:", [year, month, day]);
       console.log("Ethiopian Month:", ethiopianMonth);
 
-      const findDevotion = (offset: number) => {
-        const date = new Date(today);
-        date.setDate(today.getDate() - offset);
-        const [y, m, d] = convertToEthiopianDate(date);
-        const monthName = ethiopianMonths[m];
-        console.log(`Checking for devotion on: ${monthName} ${d}`);
-        return devotions.find(
-          (devotion) =>
-            devotion.month === monthName && Number(devotion.day) === d
-        );
-      };
-
       const todaysDevotion =
-        findDevotion(0) ||
-        findDevotion(1) ||
-        findDevotion(2) ||
+        findDevotion(devotions, 0, today) ||
+        findDevotion(devotions, 1, today) ||
+        findDevotion(devotions, 2, today) ||
         devotions.find((devotion) => devotion.month === ethiopianMonth);
 
       setSelectedDevotion(todaysDevotion || devotions[0]);
     }
-  }, [devotions, selectedDevotionFromHome, ethiopianMonths]);
+  }, [devotions, selectedDevotionFromHome]);
 
   useEffect(() => {
     refetch();
@@ -126,20 +89,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   console.log("Before sorting:", Object.keys(devotionsByMonth));
 
-  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
-    const monthIndexA = getMonthIndex(a);
-    const monthIndexB = getMonthIndex(b);
-
-    return monthIndexA - monthIndexB; // Sort in reverse order
-  });
-
-  const currentMonth = convertToEthiopianDate(new Date())[1];
-  const currentMonthName = ethiopianMonths[currentMonth];
-  const currentMonthIndex = sortedMonths.indexOf(currentMonthName);
-  const sortedMonthsWithCurrentFirst = [
-    ...sortedMonths.slice(currentMonthIndex),
-    ...sortedMonths.slice(0, currentMonthIndex),
-  ];
+  const sortedMonthsWithCurrentFirst = sortMonths(devotionsByMonth);
 
   console.log("Final sorted months:", sortedMonthsWithCurrentFirst);
 
