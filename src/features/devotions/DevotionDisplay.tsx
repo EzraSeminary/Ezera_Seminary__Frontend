@@ -42,7 +42,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [year, month, day] = convertToEthiopianDate(today);
+      // const [year, month, day] = convertToEthiopianDate(today);
+      const [, month] = convertToEthiopianDate(today);
       const ethiopianMonth = ethiopianMonths[month];
 
       // console.log("Ethiopian Date:", [year, month, day]);
