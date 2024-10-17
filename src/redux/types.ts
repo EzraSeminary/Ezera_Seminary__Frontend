@@ -29,7 +29,6 @@ export interface AuthState {
 }
 
 export interface Devotion {
-  year: string;
   image: Devotion;
   previewUrl: Devotion;
   body: string[];

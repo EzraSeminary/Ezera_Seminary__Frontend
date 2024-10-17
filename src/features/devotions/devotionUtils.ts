@@ -35,8 +35,7 @@ export const findDevotion = (
 ): Devotion | undefined => {
   const date = new Date(today);
   date.setDate(today.getDate() - offset);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [y, m, d] = convertToEthiopianDate(date);
+  const [, m, d] = convertToEthiopianDate(date);
   const monthName = ethiopianMonths[m];
   console.log(`Checking for devotion on: ${monthName} ${d}`);
   return devotions.find(
