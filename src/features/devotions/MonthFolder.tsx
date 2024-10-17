@@ -46,9 +46,9 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
         onClick={onSelect}
       >
         {isSelected ? (
-          <FolderOpen className="mr-2 text-yellow-500" size={40} />
+          <FolderOpen className="mr-2 text-accent-5" size={40} />
         ) : (
-          <Folder className="mr-2 text-yellow-500" size={40} />
+          <Folder className="mr-2 text-accent-5" size={40} />
         )}
         {month}
       </div>

@@ -3,20 +3,24 @@ import PropTypes from "prop-types";
 import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, setAuthReady } from "./redux/authSlice";
-import Header from "./components/Header";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "@/pages/user/Home";
-// import Footer from "./components/Footer";
-import NotMatch from "@/pages/user/NotMatch";
 import { RootState } from "@/redux/store";
-import LoadingPage from "./pages/user/LoadingPage";
-import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
-import ProtectedInstructorRoute from "@/components/ProtectedInstructorRoute";
-import LoggedInHome from "./features/home/LoggedInHome";
 import { useGetCurrentUserQuery } from "@/redux/api-slices/apiSlice";
+import Header from "./components/Header";
+import LoadingPage from "./pages/user/LoadingPage";
+// import Footer from "./components/Footer";
 // import OAuthRedirectHandler from "@/components/OAuthRedirectHandler";
 
 // using React.lazy for dynamic imports
+const Home = lazy(() => import("@/pages/user/Home"));
+const NotMatch = lazy(() => import("@/pages/user/NotMatch"));
+const ProtectedAdminRoute = lazy(
+  () => import("@/components/ProtectedAdminRoute")
+);
+const ProtectedInstructorRoute = lazy(
+  () => import("@/components/ProtectedInstructorRoute")
+);
+const LoggedInHome = lazy(() => import("./features/home/LoggedInHome"));
 const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
 const UserProfile = lazy(() => import("@/pages/user/UserProfile"));
 const ProfileSettings = lazy(() => import("@/pages/user/ProfileSettings"));
@@ -105,7 +109,7 @@ function App() {
   const isAdmin = user && user.role === "Admin";
   const isInstructor = user && user.role === "Instructor";
 
-  console.log(user);
+  // console.log(user); remove unnecessary console logs as we can use it later
 
   return (
     <BrowserRouter>

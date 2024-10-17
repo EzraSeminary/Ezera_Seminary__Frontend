@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import CurrentDevotional from "./CurrentDevotional";
@@ -39,11 +38,12 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       setSelectedDevotion(selectedDevotionFromHome);
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [year, month, day] = convertToEthiopianDate(today);
       const ethiopianMonth = ethiopianMonths[month];
 
-      console.log("Ethiopian Date:", [year, month, day]);
-      console.log("Ethiopian Month:", ethiopianMonth);
+      // console.log("Ethiopian Date:", [year, month, day]);
+      // console.log("Ethiopian Month:", ethiopianMonth);
 
       const todaysDevotion =
         findDevotion(devotions, 0, today) ||
@@ -87,11 +87,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  console.log("Before sorting:", Object.keys(devotionsByMonth));
+  // console.log("Before sorting:", Object.keys(devotionsByMonth));
 
   const sortedMonthsWithCurrentFirst = sortMonths(devotionsByMonth);
 
-  console.log("Final sorted months:", sortedMonthsWithCurrentFirst);
+  // console.log("Final sorted months:", sortedMonthsWithCurrentFirst);
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
