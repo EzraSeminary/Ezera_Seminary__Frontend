@@ -31,6 +31,9 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleFileUpload }) => {
 
         const compressedFile = await imageCompression(file, options);
         const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        // console.log(compressedFile); // Check that this is a valid File object
+        // console.log(compressedFileDataUrl);
+        // console.log(file);
         dispatch(updateFile(compressedFileDataUrl));
         handleFileUpload(compressedFile); // Directly pass the File object
       } catch (error) {

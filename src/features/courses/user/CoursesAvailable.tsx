@@ -320,6 +320,7 @@ function CoursesAvailable() {
               const progressValue = getProgressValue(course._id);
 
               return (
+                <Link to={`/courses/get/` + course._id} className="">
                 <motion.div
                   variants={gridSquareVariants}
                   whileHover={{
@@ -330,7 +331,7 @@ function CoursesAvailable() {
                     bounceStiffness: 600,
                   }}
                   key={index}
-                  className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+                  className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border pb-4 font-nokia-bold"
                 >
                   {/* Image of the course */}
                   <motion.div
@@ -365,14 +366,14 @@ function CoursesAvailable() {
                     transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                     className=" w-[95%] md:w-[90%] mx-auto h-full"
                   >
-                    <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
+                    <h2 className="text-secondary-6 font-nokia-bold text-xl mt-1 mx-auto mb-2 truncate leading-tight">
                       {course.title}
                     </h2>
                     <hr className="border-accent-5 border w-[100%] " />
-                    <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
+                    <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 w-[95%] leading-tight">
                       {course.description}
                     </p>
-                    <Link to={`/courses/get/` + course._id} className="">
+                    
                       <motion.button
                         whileHover={{
                           scale: 1.1,
@@ -383,14 +384,14 @@ function CoursesAvailable() {
                           bounceDamping: 10,
                           bounceStiffness: 600,
                         }}
-                        className="bg-accent-6 mt-2 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs1 "
+                        className="bg-accent-6 mt-2 text-primary-2 px-6 py-1 rounded-full font-nokia-bold text-xs1"
                         type="button"
                       >
                         ኮርሱን ክፈት
                       </motion.button>
-                    </Link>
                   </motion.div>
                 </motion.div>
+                </Link>
               );
             })}
         </motion.div>

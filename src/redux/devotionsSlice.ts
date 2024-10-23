@@ -29,7 +29,7 @@ const initialState: DevotionsState = {
   // @ts-expect-error
   form: {
     month: "",
-    day: "",
+    day: 0,
     title: "",
     chapter: "",
     verse: "",

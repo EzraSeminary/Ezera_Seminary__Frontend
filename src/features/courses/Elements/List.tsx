@@ -77,7 +77,7 @@ function List({
           onChange={handleListInputChange}
           placeholder="Enter list item"
           className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
-          maxLength={100}
+          maxLength={200}
         />
 
         <div className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto">

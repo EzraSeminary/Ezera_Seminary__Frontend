@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import Footer from "@/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BibleVerseDisplay from "./BibleVerseDisplay";
 // import { useGoogleLogin } from "@react-oauth/google";
 
 interface APIError extends Error {
@@ -113,7 +114,9 @@ const Login: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <ToastContainer />
+      
       <div className="flex h-[80%] py-16 xl:pt-20 items-center justify-center flex-1">
+      <BibleVerseDisplay />
         <div className="flex w-[90%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-[80%]  rounded-xl md:border-2 md:border-accent-6 mx-auto   md:shadow-xl ">
           <div
             className="md:flex flex-col coming-soon bg-cover hidden lg:w-[58%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
@@ -235,6 +238,7 @@ const Login: React.FC = () => {
           </form>
         </div>
       </div>
+      
       <Footer />
     </div>
   );

@@ -50,7 +50,7 @@ export interface FormState {
   _id: string;
   body: string[] | undefined;
   month: string;
-  day: string;
+  day: number;
   title: string;
   chapter: string;
   verse: string;

@@ -40,16 +40,21 @@ const DevotionForm: React.FC = () => {
       }
   
       // Set file if photo exists
-      setFile(selectedDevotion.image ? (selectedDevotion.image as File) : null);
+      if (selectedDevotion && selectedDevotion.image && typeof selectedDevotion.image !== 'string') {
+        setFile(selectedDevotion.photo as File);
+      } else {
+        setFile(null);
+      }
     }
   }, [dispatch, isEditing, selectedDevotion]);
 
   // This function will now handle file uploads directly
- const handleFileUpload = (uploadedFile: File) => {
+  const handleFileUpload = (uploadedFile: File) => {
+    console.log("Original file:", uploadedFile);
     const renamedFile = new File([uploadedFile], `${uploadedFile.name}`, { type: uploadedFile.type });
-    setFile(renamedFile);
+    console.log("Compressed file (renamed):", renamedFile);
+    setFile(renamedFile); // Ensure you are setting the right file here
   };
-
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     dispatch(updateForm({ [event.target.name]: event.target.value }));
@@ -66,45 +71,51 @@ const DevotionForm: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-
+  
+    let photo: File | string | null = null;
+    if (file) {
+      photo = file;
+    } else if (selectedDevotion?.photo && typeof selectedDevotion.photo === 'string') {
+      photo = selectedDevotion.photo;
+    }
+  
     const devotion: Devotion = {
-        ...form,
-        body: [bodyContent], // Use the rich text content for body as an array
-        photo: file ?? (selectedDevotion ? selectedDevotion.image : null),
- // Use existing photo if no new file is uploaded
+      ...form,
+      body: [bodyContent], // Use the rich text content for body as an array
+      photo: photo,
     };
-
+  
     const validToken = token || "";
     try {
-        let response;
-        if (form._id) {
-            response = await dispatch(updateDevotion({ token: validToken, devotion }));
-            if (response.payload) {
-                toast.success("Devotion updated successfully!");
-            }
-        } else {
-            response = await dispatch(createDevotion({ token: validToken, devotion }));
-            if (response.payload) {
-                toast.success("Devotion created successfully!");
-            }
+      let response;
+      if (form._id) {
+        response = await dispatch(updateDevotion({ token: validToken, devotion }));
+        if (response.payload) {
+          toast.success("Devotion updated successfully!");
         }
-
-        if (!response.payload) {
-            throw new Error();
+      } else {
+        response = await dispatch(createDevotion({ token: validToken, devotion }));
+        if (response.payload) {
+          toast.success("Devotion created successfully!");
         }
-
-        setFile(null);
-        await dispatch(fetchDevotions());
-        dispatch(resetForm());
-        setBodyContent(""); // Reset the rich text content
-        dispatch(setIsEditing(false));
+      }
+  
+      if (!response.payload) {
+        throw new Error();
+      }
+  
+      setFile(null);
+      await dispatch(fetchDevotions());
+      dispatch(resetForm());
+      setBodyContent(""); // Reset the rich text content
+      dispatch(setIsEditing(false));
     } catch (error) {
-        toast.error("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
-        setIsSubmitting(false);
-        window.location.reload();
+      setIsSubmitting(false);
+      // window.location.reload();
     }
-};
+  };
 
 
 
