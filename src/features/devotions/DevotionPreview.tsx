@@ -22,7 +22,7 @@ const DevotionPreview = () => {
       </div>
       <div className="flex space-x-12">
         {/* Replace latestDevotion with devotionToDisplay */}
-        {form && (form.month !== "" || form.day !== "") ? (
+        {form && (form.month !== "" || form.day !== null) ? (
           <div className="rounded-xl w-[20%] h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
             <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 leading-none  py-6">
               <p className=" font-nokia-bold text-3xl text-[#fff]">
@@ -46,7 +46,7 @@ const DevotionPreview = () => {
 
         <div className="font-nokia-bold flex flex-col w-[50%] space-y-2 mt-8">
           <div className="flex width: 100% space-x-12">
-            <h1 className="text-4xl text-justify text-secondary-6">
+            <h1 className="text-4xl text-secondary-6">
               {form && form.title}
             </h1>
           </div>
