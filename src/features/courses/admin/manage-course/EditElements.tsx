@@ -48,24 +48,41 @@ function EditElements({
   // Image preview state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
-  const handleFileInputChange = (
+  const handleFileInputChange = async (
     e: ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]; // Get the first file from the input
       if (file) {
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId: id,
-            value: file,
-          })
-        );
-        // Create a URL for the file
-        const fileUrl = URL.createObjectURL(file);
-        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+        try {
+          // Compression options
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+            fileType: "image/webp",
+          };
+
+          const compressedFile = await imageCompression(file, options);
+          const compressedFileUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+          
+          setImagePreviewUrl(compressedFileUrl); // Set imagePreviewUrl state
+
+          // console.log(compressedFileUrl);
+          // Dispatch the Data URL instead of the Blob
+          dispatch(
+            updateElement({
+              chapterIndex,
+              slideIndex,
+              elementId: id,
+              value: compressedFileUrl, // Use Data URL here
+            })
+          );
+
+        } catch (error) {
+          console.error("Image compression error:", error);
+        }
       }
     }
   };
@@ -153,43 +170,6 @@ function EditElements({
         })
       );
       setNewElementType(false);
-    }
-  };
-
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const handleCompressedFileChange = async (e: ChangeEvent<HTMLInputElement>, elementId: string) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setIsProcessing(true);
-
-      try {
-        // Compression options
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 800,
-          useWebWorker: true,
-          fileType: "image/webp",
-        };
-
-        const compressedFile = await imageCompression(file, options);
-        const compressedFileUrl = await imageCompression.getDataUrlFromFile(compressedFile);
-        
-        setImagePreviewUrl(compressedFileUrl);
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId,
-            value: compressedFile,
-          })
-        );
-
-      } catch (error) {
-        console.error("Image compression error:", error);
-      } finally {
-        setIsProcessing(false);
-      }
     }
   };
 
