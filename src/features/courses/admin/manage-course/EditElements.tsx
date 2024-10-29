@@ -19,6 +19,8 @@ import Reveal from "../../Elements/Reveal";
 import DragAndDrop from "../../Elements/DragAndDrop";
 import ScrollMix from "../../Elements/ScrollMix";
 import RichTextEditor from "../../Elements/RichTextEditor";
+import imageCompression from 'browser-image-compression';
+
 
 interface EditElementsProps {
   chapterIndex: number;
@@ -153,6 +155,44 @@ function EditElements({
       setNewElementType(false);
     }
   };
+
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleCompressedFileChange = async (e: ChangeEvent<HTMLInputElement>, elementId: string) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsProcessing(true);
+
+      try {
+        // Compression options
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+          fileType: "image/webp",
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        const compressedFileUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        
+        setImagePreviewUrl(compressedFileUrl);
+        dispatch(
+          updateElement({
+            chapterIndex,
+            slideIndex,
+            elementId,
+            value: compressedFile,
+          })
+        );
+
+      } catch (error) {
+        console.error("Image compression error:", error);
+      } finally {
+        setIsProcessing(false);
+      }
+    }
+  };
+
 
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
