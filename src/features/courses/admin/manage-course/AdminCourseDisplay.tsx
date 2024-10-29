@@ -13,8 +13,7 @@ import {
 } from "@/redux/courseSlice";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import "@splidejs/react-splide/css/sea-green";
-import "@splidejs/react-splide/css/core";
+import "@/index.css";
 import { XCircle, CheckFat, YoutubeLogo } from "@phosphor-icons/react";
 import {
   Carousel,
@@ -300,7 +299,7 @@ function AdminCourseDisplay({
         {selectedSlide && selectedSlide.elements && (
           <div className="flex flex-col justify-center items-center flex-grow p-5 w-full h-full overflow-y-hidden">
             <ul className="flex flex-col justify-center items-center w-full h-full overflow-y-auto scrollbar-thin relative">
-              <h1 className="text-2xl text-primary-6 text-center font-nokia-bold">
+              <h1 className="text-2xl text-primary-6 text-center font-nokia-bold my-4">
                 {selectedSlide.slide}
               </h1>
               {selectedSlide.elements.map((element: CustomElement, index) => {
@@ -424,29 +423,39 @@ function AdminCourseDisplay({
                   const listItemsComponent = element.value.map(
                     (listItem, index) => (
                       <SplideSlide
-                        key={index}
-                        className="text-primary-6 font-nokia-bold text-xs"
-                      >
+                                key={index}
+                                className="flex justify-center items-center mx-auto text-primary-5 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
+                              >
                         {listItem}
                       </SplideSlide>
                     )
                   );
 
                   return (
-                    <div key={element._id} className="">
-                      <Splide
-                        className=""
-                        // options={{
-                        //   width: "100%",
-                        //   autoWidth: false,
-                        //   arrows: false,
-                        //   pagination: true,
-                        //   trimSpace: true,
-                        //   isNavigation: true,
-                        // }}
+                    <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin ">
+                      <div
+                        key={element._id}
+                        className="w-full  mx-auto h-auto px-2"
+                        >
+                                <Splide
+                                  options={{
+                                    perPage: 1,
+                                    type: "fade",
+                                    height: "auto",
+                                    width: "100%",
+                                    cursor: "pointer",
+                                    autoWidth: false,
+                                    arrows: true, // Enable arrow navigation
+                                    pagination: true,
+                                    focus: "center",
+                                    trimSpace: true,
+                                    isNavigation: false,
+                                    gap: "1rem",
+                                  }}
                       >
-                        {listItemsComponent}
-                      </Splide>
+                          {listItemsComponent}
+                        </Splide>
+                      </div>
                     </div>
                   );
                 } else if (element.type === "accordion") {
@@ -468,25 +477,23 @@ function AdminCourseDisplay({
                   );
                 } else if (element.type === "sequence") {
                   elementComponent = (
+                    <div className="h-[65%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
                     <Carousel
                       orientation="vertical"
                       opts={{
-                        align: "start",
+                        align: "center",
                       }}
-                      className="w-full"
+                      className="w-full flex justify-center items-center h-auto"
                     >
-                      <CarouselContent className="-mt-1 h-[200px]">
+                      <CarouselContent className=" h-[200px] md:h-[150px] ">
                         {element.value.map((sequenceItem, index) => (
                           <CarouselItem
                             key={`${uniqueKey}-list-${index}`}
-                            className="pt-1 md:basis-1/2"
                           >
-                            <div className="p-1">
-                              <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
-                                <span className="text-secondary-9 text-xl font-nokia-bold">
-                                  {sequenceItem}
-                                </span>
-                              </div>
+                            <div className="flex items-center justify-center p-6 bg-secondary-4 bg-opacity-25 w-full rounded-xl shadow-2xl  h-full">
+                              <span className="text-accent-5 text-lg lg:text-xl text-justify font-nokia-bold ">
+                                {sequenceItem}
+                              </span>
                             </div>
                           </CarouselItem>
                         ))}
@@ -494,6 +501,7 @@ function AdminCourseDisplay({
                       <CarouselPrevious />
                       <CarouselNext />
                     </Carousel>
+                    </div>
                   );
                 } else if (element.type === "reveal") {
                   elementComponent = (
@@ -503,16 +511,17 @@ function AdminCourseDisplay({
                           isFlipped={flip[index] || false}
                           flipDirection="vertical"
                           key={`${uniqueKey}-reveal-${index}`}
+                          containerClassName="w-full h-auto flex flex-col justify-center items-center font-nokia-bold "
                         >
                           <div
                             onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
+                            className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-lg hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
                           >
                             {revealItem.title}
                           </div>
                           <div
                             onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
+                            className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-center justify-center text-center bg-accent-9 border-2 border-accent-6 shadow-2xl  px-2 text-primary-2 text-lg hover:bg-accent-10  cursor-pointer transition-all rounded-lg my-1"
                           >
                             {revealItem.content}
                           </div>
@@ -563,57 +572,61 @@ function AdminCourseDisplay({
                 } else if (element.type === "dnd") {
                   elementComponent = (
                     <div
-                      key={uniqueKey}
-                      className="flex flex-col justify-center items-center mb-4"
-                    >
-                      {/* Questions */}
-                      <p className="text-primary-6 font-nokia-bold text-lg">
-                        {element.value.question}
-                      </p>
-                      {/* Choices */}
-                      {element.value.choices && (
-                        <DndContext
-                          onDragStart={handleDragStart}
-                          onDragEnd={handleDragEnd}
-                          sensors={sensors}
-                          collisionDetection={closestCenter}
-                        >
-                          <div className="flex my-2">
-                            {element.value.choices.map(
-                              (choice, choiceIndex) => {
-                                if (droppedChoice !== choice.text) {
-                                  return (
-                                    // dragable item
-                                    <DraggableItem
-                                      key={choiceIndex}
-                                      choice={choice}
-                                      choiceIndex={choiceIndex}
-                                      id="draggable"
+                              key={uniqueKey}
+                              className="flex flex-col justify-center items-center w-[90%] mx-auto"
+                            >
+                              {/* Questions */}
+                              <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
+                                {element.value.question}
+                              </p>
+                              {/* Choices */}
+                              {element.value.choices && (
+                                <DndContext
+                                  onDragStart={handleDragStart}
+                                  onDragEnd={handleDragEnd}
+                                  sensors={sensors}
+                                  collisionDetection={closestCenter}
+                                >
+                                  <div className="flex w-[80%] flex-wrap justify-center items-center gap-3 mx-auto pt-4">
+                                    {element.value.choices.map(
+                                      (choice, choiceIndex) => {
+                                        if (droppedChoice !== choice.text) {
+                                          return (
+                                            // dragable item
+                                            <div className="text-sm bg-secondary-6 bg-opacity-20">
+                                              <DraggableItem
+                                                key={choiceIndex}
+                                                choice={choice}
+                                                choiceIndex={choiceIndex}
+                                                id="draggable"
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                      }
+                                    )}
+                                  </div>
+                                  {/* dropable area */}
+                                  <div className="flex justify-center items-center w-[80%] h-[100px] mx-auto">
+                                    <DroppableArea
+                                      key={`droppable_${uniqueKey}`}
+                                      droppedChoice={droppedChoice}
+                                      id="droppable"
                                     />
-                                  );
-                                }
-                              }
-                            )}
-                          </div>
-                          {/* dropable area */}
-                          <DroppableArea
-                            key={uniqueKey}
-                            droppedChoice={droppedChoice}
-                            id="droppable"
-                          />
-                        </DndContext>
-                      )}
-                      {/* Correct Answer */}
-                      <div className="flex mt-2">
-                        <button
-                          className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                          onClick={handleCheckAnswer}
-                        >
-                          Check Answer
-                        </button>
-                        {renderDndResult()}
-                      </div>
-                    </div>
+                                  </div>
+                                </DndContext>
+                              )}
+                              {/* Correct Answer */}
+                              <div className="flex mt-2">
+                                <button
+                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-lg xl:text-xl lg:py-1 px-2"
+                                  onClick={handleCheckAnswer}
+                                >
+                                  Check Answer
+                                </button>
+                                {renderDndResult()}
+                              </div>
+                            </div>
                   );
                 } else if (element.type === "mix") {
                   const imageSrc =
