@@ -50,7 +50,7 @@ function ElementsAdd({
     );
   };
 
-  // Image preview state
+  // Now, the imagePreviewUrl is stored in the component's local state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const handleFileInputChange = async (
@@ -58,10 +58,9 @@ function ElementsAdd({
     id: string
   ) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
+      const file = e.target.files[0];
       if (file) {
         try {
-          // Compression options
           const options = {
             maxSizeMB: 1,
             maxWidthOrHeight: 800,
@@ -70,28 +69,27 @@ function ElementsAdd({
           };
 
           const compressedFile = await imageCompression(file, options);
-          const compressedFileUrl = await imageCompression.getDataUrlFromFile(compressedFile);
-          
-          setImagePreviewUrl(compressedFileUrl); // Set imagePreviewUrl state
+          const compressedFileUrl = await imageCompression.getDataUrlFromFile(
+            compressedFile
+          );
 
-          console.log("data", compressedFileUrl);
-          // Dispatch the Data URL instead of the Blob
+          setImagePreviewUrl(compressedFileUrl);
+
           dispatch(
             updateElement({
               chapterIndex,
               slideIndex,
               elementId: id,
-              value: compressedFileUrl, // Use Data URL here
+              value: compressedFileUrl,
             })
           );
-
         } catch (error) {
           console.error("Image compression error:", error);
         }
       }
     }
   };
-  
+
   const uniqueKey = `${chapterIndex}-${slideIndex}`;
 
   const handleDeleteButtonClick = (id: string) => {
@@ -103,6 +101,9 @@ function ElementsAdd({
       })
     );
   };
+
+  // ... rest of the component remains the same
+
 
   const elementName = (elementType: string) => {
     switch (elementType) {

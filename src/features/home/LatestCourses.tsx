@@ -27,6 +27,8 @@ const LatestCourses = () => {
     /* Fetch the latest courses */
   }
   const { data: courses, isLoading } = useGetCoursesQuery();
+  const publishedCourses = courses?.filter(course => course.published) || [];
+
 
   {
     /* Loading state */
@@ -64,7 +66,7 @@ const LatestCourses = () => {
         animate="show"
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-[90%] lg:w-[70%]"
       >
-        {courses?.slice(0, 4).map((course, index: number) => {
+        {publishedCourses?.slice(0, 4).map((course, index: number) => {
           return (
             <motion.div
               variants={gridSquareVariants}
