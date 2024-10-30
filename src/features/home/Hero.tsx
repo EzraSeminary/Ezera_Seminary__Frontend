@@ -14,7 +14,6 @@ const Hero = () => {
             transition={{ duration: 1, ease:"easeOut", delay: 0.3}}
             className="text-white pb-6 text-xs sm:text-sm lg:text-lg xl:text-2xl" 
             >
-            
               <span className="font-nokia-bold text-lg sm:text-xl">“</span>
               <span className="font-nokia-light">
                 ዕዝራም የእግዚአብሔርን ሕግ{" "}
