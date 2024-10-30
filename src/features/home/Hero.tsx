@@ -15,7 +15,7 @@ const Hero = () => {
             className="text-white pb-6 text-xs sm:text-sm lg:text-lg xl:text-2xl" 
             >
             
-              <span className="font-nokia-bold text-lg sm:text-xl">“</span>{" "}
+              <span className="font-nokia-bold text-lg sm:text-xl">“</span>
               <span className="font-nokia-light">
                 ዕዝራም የእግዚአብሔርን ሕግ{" "}
                 <span className="text-accent-5 font-nokia-bold">
@@ -25,7 +25,7 @@ const Hero = () => {
                 <span className="text-accent-5 text-highlight font-nokia-bold">ያስተምር ዘንድ</span>{" "}
                 ልቡን አዘጋጅቶ ነበር።
               </span>
-              <span className="font-nokia-bold text-lg sm:text-xl"> ”</span>{" "}
+              <span className="font-nokia-bold text-lg sm:text-xl">”</span>{" "}
               <span className="text-accent-5 font-nokia-bold">ዕዝራ 7:10</span>
             </motion.p>
           </div>
