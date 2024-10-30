@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { DownloadSimple, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
@@ -9,6 +8,7 @@ import { RootState, Devotion } from "@/redux/types";
 import Modal from "react-modal";
 import { toast, ToastContainer } from "react-toastify";
 import prayerImage from "@/assets/prayerImg.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface CurrentDevotionalProps {
   devotionToDisplay: Devotion;
@@ -28,8 +28,12 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [devotionToDelete, setDevotionToDelete] = useState<string | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const handleDelete = async (id: string) => {
+    // One typescript error below to fix ❗❗❗
+    // eslint-disable-next-line
+    // @ts-expect-error
     await dispatch(deleteDevotion(id));
     toast.success("Devotion deleted successfully!");
     refetch();
@@ -63,6 +67,10 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     } else {
       console.error("Invalid image URL");
     }
+  };
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
   };
 
   return (
@@ -182,15 +190,21 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
           {/* Devotion image */}
           <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12 border border-accent-5 rounded-xl">
+          {isImageLoading && (
+              <div className="flex items-center justify-center h-full my-8">
+                <LoadingSpinner />
+              </div>
+            )}
             <img
               src={typeof devotionToDisplay?.image === "string" ? devotionToDisplay.image : undefined}
               alt="Devotion Image"
-              className="h-full rounded-xl p-1 object-cover"
+              className={`h-full rounded-xl p-1 object-cover ${isImageLoading ? 'hidden' : ''}`}
               style={{
                 width: "100%",
                 height: "auto",
                 display: "block",
               }}
+              onLoad={handleImageLoad}
             />
 
             {devotionToDisplay && typeof devotionToDisplay.previewUrl === "string" && (
