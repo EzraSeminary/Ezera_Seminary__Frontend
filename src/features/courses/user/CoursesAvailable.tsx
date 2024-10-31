@@ -140,7 +140,7 @@ function CoursesAvailable() {
       </div>
       <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       {filteredData.length > 0 &&
           filteredData.slice(0, isSmallScreen ? 4 : isMediumScreen ? 6 : 8).map((course, index) => (
             <CourseCard
@@ -202,7 +202,7 @@ const CourseCard: React.FC<{
   return (
     <motion.div
       variants={gridSquareVariants}
-      className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+      className="flex flex-col  items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border pb-4 font-nokia-bold"
     >
       <div className="w-full p-2 h-full">
         <img
@@ -216,26 +216,26 @@ const CourseCard: React.FC<{
         />
       </div>
 
-      {progressValue !== undefined && (
-        <Progress value={progressValue} className="w-[90%] mx-auto" />
-      )}
+      <Progress value={progressValue || 0} className="w-[90%] mx-auto" />
 
-      <div className=" w-[95%] md:w-[90%] mx-auto h-full">
-        <h2 className="text-secondary-6 font-nokia-bold text-sm xl:text-lg mt-1 mx-auto  mb-2 truncate">
+      <div className=" w-[95%] md:w-[90%] mx-auto h-[100%] flex-col justify-between">
+        <h2 className="text-secondary-6 font-nokia-bold text-lg xl:text-2xl mt-1 mx-auto  mb-2 line-clamp-2">
           {course.title}
         </h2>
+        <div>
         <hr className="border-accent-5 border w-[100%] " />
-        <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2 line-clamp-3 text-justify  w-[95%] mx-auto leading-tight">
+        <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-sm mt-2 mb-2 line-clamp-3  w-[95%] mx-auto leading-tight">
           {course.description}
         </p>
         <Link
           to={`/courses/get/` + course._id}
-          className="bg-accent-6 text-primary-6 px-3 py-1 rounded-full font-nokia-bold text-xs hover:bg-accent-7 transition-all"
+          className="bg-accent-6 text-primary-1 px-6 py-1.5 rounded-full font-nokia-bold text-xs hover:bg-accent-7 transition-all"
         >
           <button className="mt-2" type="button">
             ኮርሱን ክፈት
           </button>
         </Link>
+        </div>
       </div>
     </motion.div>
   );
