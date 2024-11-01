@@ -27,7 +27,7 @@ const InstructorDashboard = () => {
         <Sidebar isInstructor={true} />
       </div>
       <div
-        className={`flex-grow  transition-all duration-500 ease-in-out pl-4 mx-8`}
+        className={`flex-grow transition-all duration-500 ease-in-out pl-4 mx-8`}
       >
         <AdminHeader />
         <Routes>
