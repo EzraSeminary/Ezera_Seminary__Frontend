@@ -112,8 +112,9 @@ function DisplaySSLLesson() {
   if (dayError && "message" in dayError)
     return <div>Error: {dayError.message}</div>;
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = parseInt(quarter?.substring(0, 4) ?? "", 10);
   const quarterNumber = quarter?.split("-")[1] ?? ""; // Extract the quarter number
+
 
   return (
     <div>

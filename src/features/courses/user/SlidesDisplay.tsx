@@ -1053,7 +1053,7 @@ function SlidesDisplay() {
                           return (
                             <div
                               key={element._id}
-                              className="flex flex-col justify-center items-center w-[90%] mx-auto h-full"
+                              className="flex flex-col justify-center items-center w-[90%] mx-auto"
                             >
                               {/* Questions */}
                               <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">

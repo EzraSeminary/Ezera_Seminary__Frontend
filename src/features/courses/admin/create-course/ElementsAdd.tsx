@@ -16,6 +16,7 @@ import DragAndDrop from "../../Elements/DragAndDrop";
 import RichTextEditor from "../../Elements/RichTextEditor";
 import ScrollMix from "../../Elements/ScrollMix";
 import CustomInput from "@/components/CustomInput";
+import imageCompression from 'browser-image-compression';
 // import CustomTextarea from "@/components/CustomTextarea";
 
 export interface ElementsAddProps {
@@ -49,42 +50,60 @@ function ElementsAdd({
     );
   };
 
-  // Image preview state
+  // Now, the imagePreviewUrl is stored in the component's local state
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
-  const handleFileInputChange = (
+  const handleFileInputChange = async (
     e: ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]; // Get the first file from the input
+      const file = e.target.files[0];
       if (file) {
-        dispatch(
-          updateElement({
-            chapterIndex,
-            slideIndex,
-            elementId: id,
-            value: file,
-          })
-        );
-        // Create a URL for the file
-        const fileUrl = URL.createObjectURL(file);
-        setImagePreviewUrl(fileUrl); // Set imagePreviewUrl state
+        try {
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+            fileType: "image/webp",
+          };
+
+          const compressedFile = await imageCompression(file, options);
+          const compressedFileUrl = await imageCompression.getDataUrlFromFile(
+            compressedFile
+          );
+
+          setImagePreviewUrl(compressedFileUrl);
+
+          dispatch(
+            updateElement({
+              chapterIndex,
+              slideIndex,
+              elementId: id,
+              value: compressedFileUrl,
+            })
+          );
+        } catch (error) {
+          console.error("Image compression error:", error);
+        }
       }
     }
   };
 
-  const handleDeleteButtonClick = (elementId: string) => {
+  const uniqueKey = `${chapterIndex}-${slideIndex}`;
+
+  const handleDeleteButtonClick = (id: string) => {
     dispatch(
       deleteElement({
         chapterIndex,
         slideIndex,
-        elementId,
+        elementId: id,
       })
     );
   };
 
-  const uniqueKey = `${chapterIndex}-${slideIndex}`;
+  // ... rest of the component remains the same
+
 
   const elementName = (elementType: string) => {
     switch (elementType) {

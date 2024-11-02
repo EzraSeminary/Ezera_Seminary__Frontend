@@ -1,61 +1,48 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
 import PropTypes from "prop-types";
-import { DownloadSimple } from "@phosphor-icons/react";
-import type { AppDispatch } from "@/redux/store"; // Import the AppDispatch type
-import { PencilSimpleLine, Trash } from "@phosphor-icons/react";
-import prayerImage from "@/assets/prayerImg.png";
-
-import {
-  selectDevotion,
-  deleteDevotion,
-  setIsEditing,
-} from "../../redux/devotionsSlice";
+import { DownloadSimple, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { selectDevotion, deleteDevotion, setIsEditing } from "../../redux/devotionsSlice";
 import { RootState, Devotion } from "@/redux/types";
 import Modal from "react-modal";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import prayerImage from "@/assets/prayerImg.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface CurrentDevotionalProps {
   devotionToDisplay: Devotion;
   showControls: boolean;
+  toogleForm: () => void;
 }
 
-// This line should be placed outside your component
 Modal.setAppElement("#root");
-
-interface CurrentDevotionalProps {
-  devotionToDisplay: Devotion;
-  showControls: boolean;
-  toogleForm: () => void; // Add the toogleForm property
-}
 
 const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,
   toogleForm,
 }) => {
-  const { refetch } = useGetDevotionsQuery(); // get the authentication token
-  const role = useSelector((state: RootState) => state.auth.user?.role); // get the authentication token
-  const dispatch = useDispatch<AppDispatch>();
+  const { refetch } = useGetDevotionsQuery();
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [devotionToDelete, setDevotionToDelete] = useState<string | null>(null); // new state variable
+  const [devotionToDelete, setDevotionToDelete] = useState<string | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const handleDelete = async (id: string) => {
     // One typescript error below to fix ❗❗❗
     // eslint-disable-next-line
     // @ts-expect-error
-    await dispatch(deleteDevotion(id)); // dispatch delete action
+    await dispatch(deleteDevotion(id));
     toast.success("Devotion deleted successfully!");
-    refetch(); // refetch the devotions data
-    setModalIsOpen(false); // close the modal
+    refetch();
+    setModalIsOpen(false);
   };
 
   const startEditing = (devotion: Devotion) => {
-    dispatch(selectDevotion(devotion)); // dispatch select action
-    dispatch(setIsEditing(true)); // dispatch startEditing action
+    dispatch(selectDevotion(devotion));
+    dispatch(setIsEditing(true));
     toogleForm();
   };
 
@@ -82,39 +69,20 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
     }
   };
 
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
+
   return (
     <>
       <ToastContainer />
       <div className="h-auto border shadow-2xl rounded-2xl px-6 pb-6  lg:p-6 md:w-[90%] mx-auto border-accent-6">
         <div className="flex flex-col justify-center lg:flex-row  lg:space-x-8">
-          {/* Replace latestDevotion with devotionToDisplay */}
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             contentLabel="Delete Confirmation"
-            style={{
-              overlay: {
-                backgroundColor: "rgba(0, 0, 0, 0.75)", // This will give the overlay a black color with 75% opacity
-              },
-              content: {
-                top: "50%",
-                left: "55%",
-                right: "auto",
-                bottom: "auto",
-                marginRight: "-50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "#fff", // This will give the modal a white background
-                border: "1px solid #ccc", // This will give the modal a border
-                borderRadius: "10px", // This will round the corners of the modal
-                padding: "20px", // This will add some padding inside the modal
-                width: "30%", // This will set the width of the modal to 30% of the viewport width
-                height: "30%", // This will set the height of the modal to 30% of the viewport height
-                display: "flex", // This will make the content a flex container
-                flexDirection: "column", // This will make the flex items stack vertically
-                justifyContent: "center", // This will center the flex items vertically
-                alignItems: "center", // This will center the flex items horizontally
-              },
-            }}
+            style={{ /* Modal styles */ }}
           >
             <h2 className="text-2xl font-Lato-black text-secondary-6 mb-2">
               Are you sure you want to delete this devotion?
@@ -123,106 +91,64 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               <button
                 onClick={() => {
                   if (devotionToDelete) {
-                    handleDelete(devotionToDelete); // delete the devotion when "Yes" is clicked
+                    handleDelete(devotionToDelete);
                   }
                 }}
-                style={{
-                  backgroundColor: "#ff0000", // red background
-                  color: "#ffffff", // white text
-                  border: "none", // remove border
-                  borderRadius: "5px", // rounded corners
-                  padding: "10px 20px", // vertical and horizontal padding
-                  marginRight: "10px", // space between the buttons
-                  cursor: "pointer", // change cursor on hover
-                }}
+                style={{ /* Button styles */ }}
               >
                 Yes
               </button>
               <button
                 onClick={() => setModalIsOpen(false)}
-                style={{
-                  backgroundColor: "#1A2024", // green background
-                  color: "#ffffff", // white text
-                  border: "none", // remove border
-                  borderRadius: "5px", // rounded corners
-                  padding: "10px 20px", // vertical and horizontal padding
-                  cursor: "pointer", // change cursor on hover
-                }}
+                style={{ /* Button styles */ }}
               >
                 No
               </button>
             </div>
           </Modal>
 
-          {/*moths and days */}
-          <div className="flex items-center justify-between w-full gap-5 md:gap-8 lg:gap-0 lg:block lg:w-[15%] ">
+          {/* Months and days */}
+          <div className="flex items-center justify-between w-full gap-5 md:gap-8 lg:gap-0 lg:block lg:w-[15%]">
             <div className="w-[35%] md:w-[25%] lg:w-full">
               {devotionToDisplay &&
-              (devotionToDisplay.month !== "" ||
-                devotionToDisplay.day !== "") ? (
-                <motion.div
-                  animate={{
-                    scale: [1, 1.1, 1.1, 1],
-                    rotate: [0, 0, 0, 0],
-                    borderRadius: ["10%", "10%", "50%", "10%"],
-                  }}
-                  transition={{
-                    duration: 5,
-                    ease: "easeInOut",
-                    repeatDelay: 1,
-                    repeat: Infinity,
-                  }}
-                  className="rounded-xl   lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6"
-                >
-                  <div className="w-[95%] h-[95%] mx-auto  flex flex-col justify-center items-center border-2 bg-secondary-6  rounded-xl my-1 lg:leading-none py-4 ">
-                    <p className=" font-nokia-bold md:text-2xl text-[#fff]">
-                      {devotionToDisplay.month}
-                    </p>
-                    <p className="md:text-5xl font-nokia-bold text-[#fff] md:-mt-3">
-                      {devotionToDisplay.day}
-                    </p>
+              (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
+                <div className="rounded-xl lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
+                  <div className="w-[95%] h-[95%] mx-auto flex flex-col justify-center items-center border-2 bg-secondary-6 rounded-xl my-1 lg:leading-none py-4">
+                    <p className="font-nokia-bold md:text-2xl text-[#fff]">{devotionToDisplay.month}</p>
+                    <p className="font-nokia-bold md:text-5xl text-[#fff] md:-mt-3">{devotionToDisplay.day}</p>
                   </div>
-                </motion.div>
+                </div>
               ) : (
                 <div className="hidden rounded-xl lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
-                  <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6   rounded-xl my-1 leading-none py-6">
-                    <p className="font-nokia-bold md:text-2xl text-[#fff]">
-                      {devotionToDisplay && devotionToDisplay.month}
-                    </p>
-                    <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">
-                      {devotionToDisplay && devotionToDisplay.day}
-                    </p>
+                  <div className="w-[90%] mx-auto h-[95%] flex flex-col justify-center items-center border-2 bg-secondary-6 rounded-xl my-1 leading-none py-6">
+                    <p className="font-nokia-bold md:text-2xl text-[#fff]">{devotionToDisplay?.month}</p>
+                    <p className="font-nokia-bold md:text-5xl text-[#fff] -mt-3">{devotionToDisplay?.day}</p>
                   </div>
                 </div>
               )}
             </div>
             <div className="w-[60%] self-end flex-grow lg:hidden">
-              <h1 className="text-2xl md:text-4xl text-justify text-secondary-6">
-                {devotionToDisplay && devotionToDisplay.title}
-              </h1>
-              <h4 className="flex gap-2 text-sm md:text-xl  text-secondary-6 w-full">
+              <h1 className="text-2xl md:text-4xl text-secondary-6">{devotionToDisplay?.title}</h1>
+              <h4 className="flex gap-2 text-sm md:text-xl text-secondary-6 w-full">
                 የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               </h4>
-              <h2 className="text-sm md:text-xl text-accent-6">
-                {devotionToDisplay && devotionToDisplay.chapter}
-              </h2>
+              <h2 className="text-sm md:text-xl text-accent-6">{devotionToDisplay?.chapter}</h2>
             </div>
           </div>
-          {/* devotion contents */}
-          <div className="font-nokia-bold flex flex-col  lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
-            {/* devotion titles */}
+
+          {/* Devotion contents */}
+          <div className="font-nokia-bold flex flex-col lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
+            {/* Devotion title and controls */}
             <div className="flex w-[100%] gap-x-[1vw]">
-              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-justify text-secondary-6">
-                {devotionToDisplay && devotionToDisplay.title}
-              </h1>
+              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-secondary-6">{devotionToDisplay.title}</h1>
               {(role === "Admin" || "Instructor") && showControls && (
                 <>
                   <Trash
                     size={28}
                     className="text-red-700 text-xl cursor-pointer self-center"
                     onClick={() => {
-                      setDevotionToDelete(devotionToDisplay?._id || ""); // set the id to delete
-                      setModalIsOpen(true); // open the modal
+                      setDevotionToDelete(devotionToDisplay?._id || "");
+                      setModalIsOpen(true);
                     }}
                   />
                   <PencilSimpleLine
@@ -234,91 +160,60 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               )}
             </div>
 
-            {/* devotion chapter */}
-
-            <h4 className="hidden lg:flex gap-2 text-xl xl:text-3xl text-secondary-6 w-full ">
-              የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
-              <span>
-                <h2 className="text-lg xl:text-2xl text-accent-6">
-                  {devotionToDisplay && devotionToDisplay.chapter}
-                </h2>
-              </span>
+            {/* Devotion chapter */}
+            <h4 className="hidden lg:flex gap-2 text-2xl xl:text-3x items-center text-secondary-6 w-full">
+              የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል - <span className="text-lg xl:text-2xl text-accent-6">{devotionToDisplay.chapter}</span>
             </h4>
 
-            {/* devotion verse */}
-            <p className=" text-sm md:text-lg xl:text-2xl text-accent-6">
-              {devotionToDisplay && devotionToDisplay.verse}
-            </p>
+            {/* Devotion verse */}
+            <p className=" text-sm md:text-lg xl:text-2xl text-accent-6">{devotionToDisplay.verse}</p>
 
-            {devotionToDisplay && devotionToDisplay.chapter !== "" ? (
-              <hr className="border-accent-6" />
-            ) : (
-              <hr className="hidden border-secondary-6" />
-            )}
+            {devotionToDisplay.chapter !== "" && <hr className="border-accent-6" />}
 
-            {/* devotion paragraphs */}
-            {devotionToDisplay &&
-              devotionToDisplay.body.map((paragraph, paragraphIndex) => (
-                <div
-              key={paragraphIndex}
-              className="font-nokia-bold text-justify text-secondary-6 space-y-3 rich-text-container"
-              dangerouslySetInnerHTML={{ __html: paragraph }} // Render the rich text safely
-            />
-              ))}
+            {/* Devotion paragraphs */}
+            {devotionToDisplay.body.map((paragraph, paragraphIndex) => (
+              <div
+                key={paragraphIndex}
+                className="font-nokia-bold text-justify text-secondary-6 space-y-3 rich-text-container"
+                dangerouslySetInnerHTML={{ __html: paragraph }}
+              />
+            ))}
 
-            {devotionToDisplay && devotionToDisplay.prayer !== "" ? (
-              <div className="relative border-2 border-accent-5  rounded text-accent-5 ">
-                <p className=" font-nokia-bold text-1xl text-center px-8  py-2">
-                  {devotionToDisplay.prayer}
-                </p>
-                <div className="absolute top-[30%] md:top-[25%] lg:top-[30%] xl:top-[20%] -left-5 bg-accent-6 rounded-full w-max  p-2">
-                  <img src={prayerImage} alt="" className="w-6" />
-                </div>
+            {/* Devotion prayer */}
+            <div className="relative border-2 border-accent-5 rounded text-accent-5">
+              <p className="font-nokia-bold text-1xl text-center px-8 py-2">{devotionToDisplay.prayer}</p>
+              <div className="absolute top-[30%] md:top-[25%] lg:top-[30%] xl:top-[20%] -left-5 bg-accent-6 rounded-full w-max p-2">
+                <img src={prayerImage} alt="" className="w-6" />
               </div>
-            ) : (
-              <div className="relative border-2 border-accent-5  rounded text-accent-5 ">
-                <p className="hidden font-nokia-bold text-1xl text-center border-2 border-accent-5 p-2 rounded text-accent-5">
-                  {devotionToDisplay && devotionToDisplay.prayer}
-                </p>
-                <div className="absolute top-4 -left-8 bg-accent-6 rounded-full w-max  p-2">
-                  <img src={prayerImage} alt="" className="" />
-                </div>
-              </div>
-            )}
+            </div>
           </div>
-          {/* devotion image */}
-          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12  border border-accent-5 rounded-xl">
+
+          {/* Devotion image */}
+          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12 border border-accent-5 rounded-xl">
+          {isImageLoading && (
+              <div className="flex items-center justify-center h-full my-8">
+                <LoadingSpinner />
+              </div>
+            )}
             <img
-              src={
-                typeof devotionToDisplay?.image === "string"
-                  ? devotionToDisplay.image
-                  : undefined
-              }
+              src={typeof devotionToDisplay?.image === "string" ? devotionToDisplay.image : undefined}
               alt="Devotion Image"
-              className="h-full rounded-xl p-1 object-cover"
+              className={`h-full rounded-xl p-1 object-cover ${isImageLoading ? 'hidden' : ''}`}
               style={{
                 width: "100%",
                 height: "auto",
                 display: "block",
               }}
+              onLoad={handleImageLoad}
             />
-            {devotionToDisplay &&
-              typeof devotionToDisplay.previewUrl === "string" && (
-                <img src={devotionToDisplay.previewUrl} alt="Preview" />
-              )}
 
-            {devotionToDisplay && devotionToDisplay.previewUrl ? (
-              <img src="../../assets/Advert-Image.svg" alt="" />
-            ) : (
-              <img
-                src="../../assets/Advert-Image.svg"
-                alt=""
-                className="hidden"
-              />
+            {devotionToDisplay && typeof devotionToDisplay.previewUrl === "string" && (
+              <img src={devotionToDisplay.previewUrl} alt="Preview" />
             )}
-            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto ">
+
+            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto">
               <button
-                className="flex  text-xs xl:text-lg  w-max  items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
+                className="flex text-xs xl:text-lg w-max items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
                 onClick={handleDownload}
               >
                 ምስሉን አውርድ

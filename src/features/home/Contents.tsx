@@ -86,7 +86,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4"
             >
-              Course Study
+              የኮርስ ጥናት
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 100 }}
@@ -94,7 +94,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
               className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4"
             >
-              Study on specific bible topics.
+              በተለያዩ የመጽሃፍ ቅዱስ ርዕሶች ላይ ያተኮረ ጥናት
             </motion.p>
             <motion.button
               initial={{ opacity: 0, y: 100 }}
@@ -104,7 +104,7 @@ const Contents = () => {
               className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleCourseClick}
             >
-              See More
+              ተጨማሪ አሳይ
             </motion.button>
           </motion.div>
 
@@ -138,7 +138,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4"
             >
-              Sabbath School Study
+              የሰንበት ትምህርት ጥናት
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 100 }}
@@ -146,7 +146,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
               className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4"
             >
-              Quarterly bible study on a topic.
+              በየሩብ አመቱ በተወሰነ ርዕስ ላይ የሚደረግ ጥናት
             </motion.p>
             <motion.button
               initial={{ opacity: 0, y: 100 }}
@@ -156,7 +156,7 @@ const Contents = () => {
               className="bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleSabathSchoolClick}
             >
-              See More
+              ተጨማሪ አሳይ
             </motion.button>
           </motion.div>
 
@@ -189,7 +189,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               className="text-accent-5 text-lg lg:text-xl xl:text-2xl mt-4"
             >
-              Devotional Study
+              የዕለት ጥናት
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 100 }}
@@ -197,7 +197,7 @@ const Contents = () => {
               transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
               className="text-[#fff] font-nokia-bold text-sm xl:text-lg mb-4"
             >
-              Daily devotional text study.
+              በየቀኑ የሚጠና አጭር ትምህርት
             </motion.p>
             <motion.button
               initial={{ opacity: 0, y: 100 }}
@@ -207,7 +207,7 @@ const Contents = () => {
               className=" bg-white text-secondary-6 font-nokia-bold border-2 border-white border-opacity-80 rounded-full px-7 py-1 text-xs hover:bg-secondary-6 hover:text-white transition-all w-max mx-auto block"
               onClick={handleDevotionClick}
             >
-              See More
+              ተጨማሪ አሳይ
             </motion.button>
           </motion.div>
         </motion.div>
