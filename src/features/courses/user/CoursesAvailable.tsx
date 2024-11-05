@@ -149,6 +149,7 @@ function CoursesAvailable() {
                 _id: course._id,
                 title: course.title,
                 description: course.description,
+                category: course.category,
                 image: course.image,
                 published: course.published,
                 chapters: course.chapters,
@@ -195,6 +196,7 @@ const CourseCard: React.FC<{
     description: string;
     image: string | File;
     published: boolean;
+    category: string;
     chapters: { _id: string }[];
   };
   progressValue: number | undefined;
@@ -218,8 +220,9 @@ const CourseCard: React.FC<{
 
       <Progress value={progressValue || 0} className="w-[90%] mx-auto" />
 
-      <div className=" w-[95%] md:w-[90%] mx-auto h-[100%] flex-col justify-between">
-        <h2 className="text-secondary-6 font-nokia-bold text-lg xl:text-2xl mt-1 mx-auto  mb-2 line-clamp-2">
+      <div className=" w-[95%] md:w-[90%] mx-auto h-[100%] flex-col justify-between mt-1">
+        <p className="text-accent-6 text-sm">{course.category}</p>
+        <h2 className="text-secondary-6 font-nokia-bold text-lg xl:text-2xl mx-auto  mb-2 line-clamp-2">
           {course.title}
         </h2>
         <div>
