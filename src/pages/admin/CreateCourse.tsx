@@ -6,6 +6,7 @@ import {
   setTitle,
   setDescription,
   setImage,
+  setCategory,
   selectCourse,
 } from "../../redux/courseSlice";
 import { Button } from "../../components/ui/button";
@@ -13,13 +14,14 @@ import { CourseState } from "../../redux/courseSlice";
 import "../../index.css";
 import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
+import CustomDropdown from "../../components/CustomDropdown";
 
 function CreateCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const role = useSelector((state: RootState) => state.auth.user?.role);
   const basePath = role;
-  const { title, description } = useSelector(
+  const { title, description, category } = useSelector(
     (state: { course: CourseState }) => state.course
   );
   const course = useSelector(selectCourse);
@@ -30,7 +32,18 @@ function CreateCourse() {
     title: false,
     description: false,
     image: false,
+    category: false,
   });
+
+  const categoryOptions = [
+    "መሰረታዊ የመጽሐፍ ቅዱስ እውነቶች",
+    "ስነ-ትዳር",
+    "ወጣቶች",
+    "መጽሐፍ ቅዱስ አጠናን",
+    "የመጽሃፍ ቅዱስ ገጸ ባህርያት",
+    "የአኗኗር ዘይቤ",
+    "የተለያዩ...",
+  ];
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -62,6 +75,15 @@ function CreateCourse() {
       setValidationErrors((prevErrors) => ({
         ...prevErrors,
         description: true,
+      }));
+      hasErrors = true;
+    }
+
+    if (!category) {
+      // Set category error
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        category: true,
       }));
       hasErrors = true;
     }
@@ -183,6 +205,28 @@ function CreateCourse() {
             {validationErrors.description && (
               <p className="text-red-500 text-xs italic">
                 Please enter a description.
+              </p>
+            )}
+          </div>
+          <div className="col-span-12">
+            <label className="block text-accent-6 mb-1">Category:</label>
+            <CustomDropdown
+              options={categoryOptions}
+              selectedValue={category}
+              onSelect={(value) => {
+                dispatch(setCategory(value));
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  category: false,
+                }));
+              }}
+              className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 font-nokia-bold ${
+                validationErrors.category ? "border-red-500" : "border-accent-6"
+              } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-4 placeholder:text-sm`}
+            />
+            {validationErrors.category && (
+              <p className="text-red-500 text-xs italic">
+                Please select a category.
               </p>
             )}
           </div>

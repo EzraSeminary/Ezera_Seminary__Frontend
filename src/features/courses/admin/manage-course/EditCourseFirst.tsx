@@ -4,11 +4,13 @@ import {
   setTitle,
   setDescription,
   setImage,
+  setCategory,
   selectCourse,
 } from "@/redux/courseSlice";
 import { Button } from "@/components/ui/button";
 import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
+import CustomDropdown from "@/components/CustomDropdown";
 
 type EditCourseFirstProps = {
   setShowComponent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,10 +20,24 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
   setShowComponent,
 }) => {
   const dispatch = useDispatch();
-  const { title, description, image } = useSelector(selectCourse);
+  const { title, description, category, image } = useSelector(selectCourse);
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  const handleCategoryChange = (value: string) => {
+    dispatch(setCategory(value));
+  };
+
+  const categoryOptions = [
+    "መሰረታዊ የመጽሐፍ ቅዱስ እውነቶች",
+    "ስነ-ትዳር",
+    "ወጣቶች",
+    "መጽሐፍ ቅዱስ አጠናን",
+    "የመጽሃፍ ቅዱስ ገጸ ባህርያት",
+    "የአኗኗር ዘይቤ",
+    "የተለያዩ...",
+  ];
+
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -104,6 +120,15 @@ const EditCourseFirst: React.FC<EditCourseFirstProps> = ({
               value={description}
               onChange={(e) => dispatch(setDescription(e.target.value))}
               maxLength={150}
+            />
+          </div>
+          <div className="col-span-12">
+            <label className="block text-accent-6">Category</label>
+            <CustomDropdown
+              options={categoryOptions}
+              selectedValue={category}
+              onSelect={handleCategoryChange}
+              className="w-full px-3 py-2 text-accent-6 leading-tight border border-orange-300 rounded-md focus:outline-none focus:shadow-lg transition-all"
             />
           </div>
           <div className="col-span-12">
