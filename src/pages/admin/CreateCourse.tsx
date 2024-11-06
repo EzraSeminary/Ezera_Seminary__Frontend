@@ -15,6 +15,7 @@ import "../../index.css";
 import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
 import CustomDropdown from "../../components/CustomDropdown";
+import imageCompression from "browser-image-compression";
 
 function CreateCourse() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function CreateCourse() {
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [ , setIsProcessing] = useState(false); // State for loading spinner
   // form validation error
   const [validationErrors, setValidationErrors] = useState({
     title: false,
@@ -45,16 +47,31 @@ function CreateCourse() {
     "የተለያዩ...",
   ];
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
     if (file) {
-      dispatch(setImage(file)); // Dispatch the File object to the store
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        setImagePreviewUrl(fileReader.result as string);
+      setIsProcessing(true); // Show loading spinner
+
+      try {
+        // Compression options
+        const options = {
+          maxSizeMB: 1, // Max size in MB
+          maxWidthOrHeight: 800, // Resize to max width or height of 800px
+          useWebWorker: true, // Use web workers for better performance
+          fileType: "image/webp", // Convert the image to WebP format
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        setImagePreviewUrl(compressedFileDataUrl);
+        dispatch(setImage(compressedFile)); // Dispatch the compressed File object to the store
         setValidationErrors((prevErrors) => ({ ...prevErrors, image: false }));
-      };
-      fileReader.readAsDataURL(file); // Generate a URL for preview
+      } catch (error) {
+        console.error("Image compression error:", error);
+      } finally {
+        setIsProcessing(false); // Hide the spinner
+      }
     } else {
       // Set the image error if no file is selected
       setValidationErrors((prevErrors) => ({ ...prevErrors, image: true }));
@@ -140,7 +157,7 @@ function CreateCourse() {
             hover:file:bg-secondary-2 rounded-xs bg-transparent
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
-            onChange={handleImageChange}
+            onChange={handleFileChange}
             required
           />
 
