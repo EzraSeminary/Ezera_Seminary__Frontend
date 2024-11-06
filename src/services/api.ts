@@ -6,6 +6,7 @@ export interface ApiState {
   title: string;
   description: string;
   category: string;
+  updatedAt: string;
   image: string | File;
   chapters: Chapter[];
   published: boolean;

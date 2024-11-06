@@ -26,9 +26,11 @@ function ManageCourse() {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = courses?.filter((course) => {
-    return course.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  const filteredData = courses
+    ?.filter((course) => {
+      return course.title.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 
   const instance = useAxiosInstance();
 
