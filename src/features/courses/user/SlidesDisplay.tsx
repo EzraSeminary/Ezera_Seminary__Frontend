@@ -18,8 +18,7 @@ import {
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
-import { useDispatch, useSelector } from "react-redux";
-import { setProgress } from "@/redux/authSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
@@ -28,6 +27,7 @@ import { toast, ToastContainer } from "react-toastify";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useProgress } from "./utils/progressUtils";
+import { getYoutubeVideoId, getYoutubeThumbnailUrl } from './utils/youtubeUtils';
 import {
   Carousel,
   CarouselContent,
@@ -57,7 +57,6 @@ interface FlipState {
 }
 
 function SlidesDisplay() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -82,20 +81,28 @@ function SlidesDisplay() {
   const [flip, setFlip] = useState<FlipState>({});
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
-
-  // Define State for Each Condition of Next button
-  const [isSlideComplete, setIsSlideComplete] = useState<boolean>(false);
-  const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
-  const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
-  const [isRevealFlipped, setIsRevealFlipped] = useState<boolean>(false);
-  const [isSequenceCompleted, setIsSequenceCompleted] =
-    useState<boolean>(false);
-  const [isRangeChanged, setIsRangeChanged] = useState<boolean>(false);
-  const [isDndCompleted, setIsDndCompleted] = useState<boolean>(false);
-  const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
 
-
+  const {
+    updateProgress,
+    findUserProgress,
+    isSlideComplete,
+    setIsSlideComplete,
+    isQuizAnswered,
+    setIsQuizAnswered,
+    isAccordionExpanded,
+    setIsAccordionExpanded,
+    isRevealFlipped,
+    setIsRevealFlipped,
+    isSequenceCompleted,
+    setIsSequenceCompleted,
+    isRangeChanged,
+    setIsRangeChanged,
+    isDndCompleted,
+    setIsDndCompleted,
+    isAudioPlayed,
+    setIsAudioPlayed,
+  } = useProgress();
   
   const { courseId, chapterId } = useParams<{
     courseId: string;
@@ -121,7 +128,6 @@ function SlidesDisplay() {
   const courseID = courseData && courseData._id ? courseData._id : "";
 
   //find matching courseId from the user progress array
-  const { updateProgress, findUserProgress } = useProgress();
   const userProgress = findUserProgress(courseID);
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -403,19 +409,6 @@ function SlidesDisplay() {
     }
 
     setDraggedItem(null);
-  };
-
-  // Get video id from youtube link
-  const getYoutubeVideoId = (url: string) => {
-    const regExp =
-      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
-  };
-
-  // Get the youtube image
-  const getYoutubeThumbnailUrl = (videoId: string) => {
-    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   };
 
   // Youtube component options
