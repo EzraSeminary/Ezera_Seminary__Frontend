@@ -14,7 +14,6 @@ import {
   CheckFat,
   Lock,
   CornersOut,
-  YoutubeLogo,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
@@ -27,8 +26,8 @@ import { toast, ToastContainer } from "react-toastify";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useProgress } from "./utils/progressUtils";
-import { getYoutubeVideoId, getYoutubeThumbnailUrl } from './utils/youtubeUtils';
 import DndComponent from "./elements/DndComponent";
+import VideoSection from "./elements/VideoSection";
 import {
   Carousel,
   CarouselContent,
@@ -37,10 +36,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactCardFlip from "react-card-flip";
-import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
+import SliderSection from "./elements/SliderSection";
 // import ChapterNotFound from "@/components/ChapterNotFound";
-import YouTube from "react-youtube";
 
 interface FlipState {
   [index: number]: boolean;
@@ -306,21 +304,6 @@ function SlidesDisplay() {
     });
   };
 
-  // Save the state of the slider
-  const handleSliderChange = (_: Event, newValue: number | number[]) => {
-    if (typeof newValue === "number") {
-      setSliderValue(newValue);
-      setIsRangeChanged(true); // Next button available when slider value is changed
-    }
-  };
-  // Youtube component options
-  const opts = {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
 
   // Switch from the image to the video
   const handleImageClick = () => {
@@ -875,48 +858,12 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "range") {
                           return (
-                            <>
-                              <div className="w-[80%] pt-8 mx-auto">
-                                <Slider
-                                  min={0}
-                                  max={5}
-                                  step={1}
-                                  marks={sliderMarks}
-                                  valueLabelDisplay="on"
-                                  valueLabelFormat={(value) =>
-                                    value === 2.5 ? "Touch to slide" : value
-                                  }
-                                  value={sliderValue}
-                                  onChange={handleSliderChange}
-                                  sx={{
-                                    color: "#EA9215",
-                                    "& .MuiSlider-track": {
-                                      backgroundColor: "",
-                                    },
-                                    "& .MuiSlider-thumb": {
-                                      backgroundColor: "#AAB0B4",
-                                    },
-                                    "& .MuiSlider-mark": {
-                                      backgroundColor: "#EEEEEE",
-                                    },
-                                    "& .MuiSlider-markLabel": {
-                                      color: "#EEEEEE",
-                                    },
-                                    "& .MuiSlider-valueLabel": {
-                                      color: "#EEEEEE",
-                                    },
-                                  }}
-                                />
-                              </div>
-                              <div className="flex justify-between w-full md:px-14">
-                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-4 rounded-full">
-                                  ዝቅተኛ
-                                </button>
-                                <button className="text-primary-6 text-sm font-nokia-bold lg:text-lg xl:text-xl bg-accent-6 hover:bg-accent-7 transition-all w-max py-1 px-4 rounded-full">
-                                  ከፍተኛ
-                                </button>
-                              </div>
-                            </>
+                            <SliderSection
+                              sliderMarks={sliderMarks}
+                              sliderValue={sliderValue}
+                              setSliderValue={setSliderValue}
+                              setIsRangeChanged={setIsRangeChanged}
+                          />
                           );
                         } else if (element.type === "dnd") {
                           return(
@@ -997,40 +944,12 @@ function SlidesDisplay() {
                             </div>
                           );
                         } else if (element.type === "video") {
-                          const videoId = getYoutubeVideoId(element.value);
-                          const thumbnailUrl = videoId
-                            ? getYoutubeThumbnailUrl(videoId)
-                            : undefined;
-
-                          return videoId ? (
-                            isVideoVisible ? (
-                              <div className="w-full md:w-3/4 lg:w-1/2 aspect-video">
-                                <YouTube
-                                  videoId={videoId}
-                                  opts={opts}
-                                  className="w-full h-full"
-                                />
-                              </div>
-                            ) : (
-                              <div
-                                className="relative w-full md:w-3/4 lg:w-1/2 aspect-video mx-auto hover:opacity-80 hover:cursor-pointer transition-all border border-accent-6 border-opacity-50 p-2 rounded-lg"
-                                onClick={handleImageClick}
-                              >
-                                <img
-                                  src={thumbnailUrl}
-                                  alt="YouTube Thumbnail"
-                                  className="w-full h-full object-cover shadow-lg"
-                                />
-                                <YoutubeLogo
-                                  size={48}
-                                  weight="fill"
-                                  className="absolute inset-0 m-auto text-[#FF0000] drop-shadow-lg"
-                                />
-                              </div>
-                            )
-                          ) : (
-                            <p className="text-white">Invalid YouTube URL</p>
-                          );
+                          return (<
+                            VideoSection
+                            videoUrl={element.value}
+                            isVideoVisible={isVideoVisible}
+                            handleImageClick={handleImageClick}
+                        />)
                         }
                       })}
                     </div>
