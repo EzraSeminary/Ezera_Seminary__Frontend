@@ -27,6 +27,7 @@ import LoadingPage from "@/pages/user/LoadingPage";
 import { toast, ToastContainer } from "react-toastify";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useProgress } from "./utils/progressUtils";
 import {
   Carousel,
   CarouselContent,
@@ -94,6 +95,8 @@ function SlidesDisplay() {
   const [isAudioPlayed, setIsAudioPlayed] = useState<boolean>(false);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
 
+
+  
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
@@ -115,11 +118,11 @@ function SlidesDisplay() {
 
   //get the current user from the Root State
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  const courseID = courseData && courseData._id ? courseData._id : "";
 
   //find matching courseId from the user progress array
-  const userProgress = currentUser?.progress?.find(
-    (p) => p.courseId === courseId
-  );
+  const { updateProgress, findUserProgress } = useProgress();
+  const userProgress = findUserProgress(courseID);
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
@@ -207,7 +210,9 @@ function SlidesDisplay() {
     });
     setActiveIndex(adjustedIndex);
     setShowQuizResult(false); // Reset the showQuizResult state
-    updateProgress();
+    if (chapterIndex !== undefined) {
+      updateProgress(courseID, chapterIndex, adjustedIndex);
+    }
   };
 
   // slide number
@@ -278,19 +283,7 @@ function SlidesDisplay() {
   };
 
   // Check if courseData and courseData._id are not undefined
-  const courseID = courseData && courseData._id ? courseData._id : "";
 
-  const updateProgress = () => {
-    if (chapterIndex !== undefined && chapterIndex !== -1) {
-      dispatch(
-        setProgress({
-          courseId: courseID,
-          currentChapter: chapterIndex,
-          currentSlide: activeIndex,
-        })
-      );
-    }
-  };
 
   const token = localStorage.getItem("token");
   const userId = currentUser?._id;
@@ -300,7 +293,6 @@ function SlidesDisplay() {
       setTimeout(() => {
         setProgressLoading(true);
       }, 3000);
-      // console.log("CurrentUser Token:", token);
       axios
         .put(
           "/users/profile/" + userId,
@@ -317,6 +309,9 @@ function SlidesDisplay() {
         .then((res) => {
           console.log("Progress updated successfully:", res.data);
           setProgressLoading(false);
+          if (chapterIndex !== undefined) {
+            updateProgress(courseID, chapterIndex, activeIndex);
+          } // Use the updateProgress function from useProgress hook
           navigate(`/courses/get/${courseId}`);
         })
         .catch((err) => {
