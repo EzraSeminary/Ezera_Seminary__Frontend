@@ -9,8 +9,6 @@ import {
   CheckCircle,
   DotsThreeVertical,
   X,
-  XCircle,
-  CheckFat,
   Lock,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
@@ -33,6 +31,7 @@ import RevealSection from "./elements/RevealSection";
 import SlideSection from "./elements/SlideSection";
 import MixSection from "./elements/MixSection";
 import SequenceSection from "./elements/SequenceSection";
+import QuizSection from "./elements/QuizSection";
 function SlidesDisplay() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
@@ -45,8 +44,6 @@ function SlidesDisplay() {
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
 
-  //show quiz result
-  const [showQuizResult, setShowQuizResult] = useState(false);
 
   const [progressLoading, setProgressLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -130,8 +127,6 @@ function SlidesDisplay() {
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, open, () => setOpen(false));
 
-  //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
     null
   );
@@ -161,7 +156,6 @@ function SlidesDisplay() {
       }
     });
     setActiveIndex(adjustedIndex);
-    setShowQuizResult(false); // Reset the showQuizResult state
     if (chapterIndex !== undefined) {
       updateProgress(courseID, chapterIndex, adjustedIndex);
     }
@@ -173,31 +167,6 @@ function SlidesDisplay() {
 
   const isSlideUnlocked = (index: number) => {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
-  };
-
-  //Quiz Related functions
-  const handleRadioChange = (
-    choiceIndex: number,
-    choiceValue: string,
-    elementCorrectAnswer: string
-  ) => {
-    setSelectedChoice(choiceIndex);
-    //logic to determine whether the selected answer is correct.
-    setIsAnswerCorrect(choiceValue === elementCorrectAnswer);
-    setShowQuizResult(false); // Reset showResult when a new answer is selected
-  };
-
-  //isCorrect switch
-  const renderQuizResult = () => {
-    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
-
-    if (isAnswerCorrect) {
-      return (
-        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
-      );
-    } else {
-      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
-    }
   };
 
   const token = localStorage.getItem("token");
@@ -610,66 +579,14 @@ function SlidesDisplay() {
                             />
                           )
                         } else if (element.type === "quiz") {
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center mb-4"
-                            >
-                              {/* Questions */}
-                              <p className="text-secondary-2 text-justify w-[90%] mx-auto font-nokia-bold text-sm lg:text-lg xl:text-xl">
-                                {element.value.question}
-                              </p>
-                              {/* Choices */}
-                              {element.value.choices && (
-                                <div className="flex flex-col mt-2 space-y-2">
-                                  {element.value.choices.map(
-                                    (choice, choiceIndex) => (
-                                      <label
-                                        key={`${element._id}-choice-${choiceIndex}`}
-                                        className="inline-flex items-center"
-                                      >
-                                        <input
-                                          type="radio"
-                                          className={`w-5 h-5 rounded-full transition-all pt-2 cursor-pointer border-2 ${
-                                            selectedChoice === choiceIndex
-                                              ? "bg-orange-400 border-orange-400"
-                                              : "bg-secondary-2 border-secondary-2"
-                                          }`}
-                                          checked={
-                                            selectedChoice === choiceIndex
-                                          }
-                                          onChange={() =>
-                                            handleRadioChange(
-                                              choiceIndex,
-                                              choice.text,
-                                              element.value.correctAnswer
-                                            )
-                                          }
-                                          disabled={isQuizAnswered}
-                                        />
-                                        <span className="text-accent-6 font-nokia-bold text-xs lg:text-lg xl:text-xl ml-2">
-                                          {choice.text}
-                                        </span>
-                                      </label>
-                                    )
-                                  )}
-                                </div>
-                              )}
-                              {/* Correct Answer */}
-                              <div className="flex mt-4">
-                                <button
-                                  className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2"
-                                  onClick={() => {
-                                    setShowQuizResult(true);
-                                    setIsQuizAnswered(true); //Next button available when the check answer button is clicked
-                                  }}
-                                >
-                                  Check Answer
-                                </button>
-                                {renderQuizResult()}
-                              </div>
-                            </div>
-                          );
+                          return(
+                            <QuizSection
+                            question={element.value.question}
+                            choices={element.value.choices}
+                            correctAnswer={element.value.correctAnswer}
+                            selectedChoice={selectedChoice}
+                            setSelectedChoice={setSelectedChoice}
+                          />)
                         } else if (element.type === "accordion") {
                           const accordionItemsComponent = element.value.map(
                             (accordionItem, index: number) => (

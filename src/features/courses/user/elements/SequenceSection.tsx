@@ -6,7 +6,6 @@ import {
     CarouselNext,
     CarouselPrevious,
   } from "@/components/ui/carousel";
-  import 'react-carousel-component/dist/style.css';
 
 interface SequenceSectionProps {
   sequenceItems: string[];
