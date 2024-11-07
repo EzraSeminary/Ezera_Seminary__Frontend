@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { ArrowLeft, CornersOut } from '@phosphor-icons/react';
 
 interface ImageSectionProps {
   imageUrl: string;
-  isFullScreen: boolean;
-  handleOpenFullScreen: () => void;
-  handleCloseFullScreen: () => void;
 }
 
 const ImageSection: React.FC<ImageSectionProps> = ({
   imageUrl,
-  isFullScreen,
-  handleOpenFullScreen,
-  handleCloseFullScreen,
 }) => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const handleOpenFullScreen = () => {
+    setIsFullScreen(true);
+  };
+
+  const handleCloseFullScreen = () => {
+    setIsFullScreen(false);
+  };
   return (
     <div className="w-full h-auto">
       {isFullScreen ? (

@@ -286,10 +286,6 @@ function SlidesDisplay() {
     setIsFullScreen(false);
   };
 
-  // Flip divs on Reveal Element
-  
-
-
   // Switch from the image to the video
   const handleImageClick = () => {
     setIsVideoVisible(true);
@@ -607,9 +603,6 @@ function SlidesDisplay() {
                           return (
                             <ImageSection
                               imageUrl={typeof element.value === 'string' ? element.value : URL.createObjectURL(element.value)}
-                              isFullScreen={isFullScreen}
-                              handleOpenFullScreen={handleOpenFullScreen}
-                              handleCloseFullScreen={handleCloseFullScreen}
                           />
                           )
                         } else if (element.type === "list") {

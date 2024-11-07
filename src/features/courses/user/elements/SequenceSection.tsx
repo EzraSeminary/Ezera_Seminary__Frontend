@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Carousel,
     CarouselContent,
@@ -16,7 +16,6 @@ interface SequenceSectionProps {
 
 const SequenceSection: React.FC<SequenceSectionProps> = ({
   sequenceItems,
-  isSequenceCompleted,
   setIsSequenceCompleted,
 }) => {
   return (
