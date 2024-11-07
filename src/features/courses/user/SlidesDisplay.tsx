@@ -454,6 +454,7 @@ function SlidesDisplay() {
     setIsDndCompleted(false);
     setIsAudioPlayed(false);
     setIsVideoVisible(false);
+    setSelectedChoice(null);
   };
 
   // Next button onClick
