@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import "@/index.css";
@@ -13,7 +12,6 @@ import {
   XCircle,
   CheckFat,
   Lock,
-  CornersOut,
 } from "@phosphor-icons/react";
 import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
@@ -39,6 +37,8 @@ import { sliderMarks } from "@/utils/SliderMarks";
 import SliderSection from "./elements/SliderSection";
 import ImageSection from "./elements/ImageSection";
 import RevealSection from "./elements/RevealSection";
+import SlideSection from "./elements/SlideSection";
+import MixSection from "./elements/MixSection";
 // import ChapterNotFound from "@/components/ChapterNotFound";
 
 
@@ -59,9 +59,6 @@ function SlidesDisplay() {
   const [showQuizResult, setShowQuizResult] = useState(false);
 
   const [progressLoading, setProgressLoading] = useState(false);
-
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
   const [showTooltip, setShowTooltip] = useState(false);
   
   // Slider state
@@ -276,15 +273,6 @@ function SlidesDisplay() {
         </h1>
       </div>
     );
-
-  //display a full screen functionality when clicking on the image
-  const handleOpenFullScreen = () => {
-    setIsFullScreen(true);
-  };
-
-  const handleCloseFullScreen = () => {
-    setIsFullScreen(false);
-  };
 
   // Switch from the image to the video
   const handleImageClick = () => {
@@ -625,50 +613,12 @@ function SlidesDisplay() {
                             </div>
                           );
                         } else if (element.type === "slide") {
-                          const listItemsComponent = element.value.map(
-                            (listItem: string, index: number) => (
-                              <SplideSlide
-                                key={index}
-                                className="flex justify-center items-center mx-auto text-primary-5 font-nokia-bold w-[100%] h-auto text-justify px-14 md:px-16 py-6 tracking-wide text-xs lg:text-lg xl:text-xl "
-                              >
-                                {listItem}
-                              </SplideSlide>
-                            )
-                          );
-
-                          return (
-                            <div className="rounded-lg shadow-2xl my-2 bg-secondary-6 bg-opacity-20 w-full lg:py-6 overflow-y-auto scrollbar-thin ">
-                              <div
-                                key={element._id}
-                                className="w-full  mx-auto h-auto px-2"
-                              >
-                                <Splide
-                                  options={{
-                                    perPage: 1,
-                                    type: "fade",
-                                    height: "auto",
-                                    width: "100%",
-                                    cursor: "pointer",
-                                    autoWidth: false,
-                                    arrows: true, // Enable arrow navigation
-                                    pagination: true,
-                                    focus: "center",
-                                    trimSpace: true,
-                                    isNavigation: false,
-                                    gap: "1rem",
-                                  }}
-                                  // Add an event listener to Splide to track when you are on the last slide
-                                  onMoved={(_, newIndex) => {
-                                    if (newIndex === element.value.length - 1) {
-                                      setIsSlideComplete(true);
-                                    }
-                                  }}
-                                >
-                                  {listItemsComponent}
-                                </Splide>
-                              </div>
-                            </div>
-                          );
+                          return(
+                            <SlideSection
+                              slideItems={element.value}
+                              setIsSlideComplete={setIsSlideComplete}
+                            />
+                          )
                         } else if (element.type === "quiz") {
                           return (
                             <div
@@ -807,51 +757,11 @@ function SlidesDisplay() {
                           )
                         } else if (element.type === "mix") {
                           return (
-                            <div key={element._id}>
-                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {element.value.text1}
-                              </p>
-                              <div className="w-full h-auto">
-                                {isFullScreen ? (
-                                  <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
-                                    <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
-                                      <ArrowLeft
-                                        size={40}
-                                        className="absolute top-4 left-4 text-primary-5 bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                                        weight="bold"
-                                        onClick={handleCloseFullScreen}
-                                      />
-                                      <img
-                                        src={`${element.value.file}`}
-                                        alt="fullscreen content"
-                                        className="w-full h-full object-contain rounded-3xl"
-                                      />
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div
-                                    className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
-                                    onClick={handleOpenFullScreen}
-                                  >
-                                    <img
-                                      src={`${element.value.file}`}
-                                      alt="no image"
-                                      className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
-                                    />
-                                    <CornersOut
-                                      size={28}
-                                      className="absolute bottom-1 right-1 text-primary-5 bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                                      weight="bold"
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                              <p className="text-primary-5 font-nokia-bold  w-[80%] mx-auto  self-center md:tracking-wide text-justify text-xs lg:text-lg xl:text-xl lg:pt-2 ">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {element.value.text2}
-                              </p>
-                            </div>
+                            <MixSection
+                              text1={element.value.text1}
+                              text2={element.value.text2}
+                              file={element.value.file}
+                          />
                           );
                         } else if (element.type === "audio") {
                           return (
