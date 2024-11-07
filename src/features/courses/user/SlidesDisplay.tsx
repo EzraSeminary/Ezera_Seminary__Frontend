@@ -35,14 +35,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import ReactCardFlip from "react-card-flip";
 import { sliderMarks } from "@/utils/SliderMarks";
 import SliderSection from "./elements/SliderSection";
+import ImageSection from "./elements/ImageSection";
+import RevealSection from "./elements/RevealSection";
 // import ChapterNotFound from "@/components/ChapterNotFound";
 
-interface FlipState {
-  [index: number]: boolean;
-}
+
 
 function SlidesDisplay() {
   const navigate = useNavigate();
@@ -65,8 +64,6 @@ function SlidesDisplay() {
 
   const [showTooltip, setShowTooltip] = useState(false);
   
-  // Flip state
-  const [flip, setFlip] = useState<FlipState>({});
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
@@ -290,19 +287,7 @@ function SlidesDisplay() {
   };
 
   // Flip divs on Reveal Element
-  const handleFlip = (index: number) => {
-    setFlip((prevState) => {
-      const isFlipped = !prevState[index]; // Toggle the state
-      const newState = { ...prevState, [index]: isFlipped };
-
-      // If any item is flipped, update the 'IsRevealFlipped' state for Next button
-      if (isFlipped) {
-        setIsRevealFlipped(true);
-      }
-
-      return newState;
-    });
-  };
+  
 
 
   // Switch from the image to the video
@@ -620,43 +605,13 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "img") {
                           return (
-                            <div className="w-full h-auto">
-                              {isFullScreen ? (
-                                <div className="absolute top-0 right-0 w-full h-full z-50 p-4">
-                                  <div className="relative w-full h-full bg-secondary-7 bg-opacity-50 p-4 rounded-xl">
-                                    <ArrowLeft
-                                      size={40}
-                                      className="absolute top-4 left-4 text-primary-5 bg-secondary-7 border p-1 rounded-full z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                                      weight="bold"
-                                      onClick={handleCloseFullScreen}
-                                    />
-                                    <img
-                                      src={`${element.value}`}
-                                      alt="fullscreen content"
-                                      className="w-full h-full object-contain rounded-3xl"
-                                    />
-                                  </div>
-                                </div>
-                              ) : (
-                                <div
-                                  className="relative w-[30vh] h-[30vh] mx-auto my-2 shadow-xl bg-secondary-7 bg-opacity-50 rounded-xl"
-                                  onClick={handleOpenFullScreen}
-                                >
-                                  <img
-                                    key={element._id}
-                                    src={`${element.value}`}
-                                    alt="no image"
-                                    className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
-                                  />
-                                  <CornersOut
-                                    size={28}
-                                    className="absolute bottom-1 right-1 text-primary-5 bg-secondary-7 border p-1 rounded-lg z-50 cursor-pointer hover:bg-secondary-5 transition-all"
-                                    weight="bold"
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          );
+                            <ImageSection
+                              imageUrl={typeof element.value === 'string' ? element.value : URL.createObjectURL(element.value)}
+                              isFullScreen={isFullScreen}
+                              handleOpenFullScreen={handleOpenFullScreen}
+                              handleCloseFullScreen={handleCloseFullScreen}
+                          />
+                          )
                         } else if (element.type === "list") {
                           const listItemsComponent = element.value.map(
                             (listItem: string, index: number) => (
@@ -832,29 +787,10 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "reveal") {
                           return (
-                            <>
-                              {element.value.map((revealItem, index) => (
-                                <ReactCardFlip
-                                  isFlipped={flip[index] || false}
-                                  flipDirection="vertical"
-                                  key={index}
-                                  containerClassName="w-full h-auto flex flex-col justify-center items-center font-nokia-bold "
-                                >
-                                  <div
-                                    onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] flex items-center justify-center text-center bg-secondary-4 bg-opacity-20  shadow-2xl  px-2 text-accent-5 text-lg hover:bg-secondary-2 hover:bg-opacity-20 cursor-pointer transition-all rounded-lg my-1 border border-accent-6"
-                                  >
-                                    {revealItem.title}
-                                  </div>
-                                  <div
-                                    onClick={() => handleFlip(index)}
-                                    className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto h-[100px] py-4 overflow-y-auto scrollbar-thin flex items-center justify-center text-center bg-accent-9 border-2 border-accent-6 shadow-2xl  px-2 text-primary-2 text-lg hover:bg-accent-10  cursor-pointer transition-all rounded-lg my-1"
-                                  >
-                                    {revealItem.content}
-                                  </div>
-                                </ReactCardFlip>
-                              ))}
-                            </>
+                            <RevealSection
+                              revealItems={element.value}
+                              setIsRevealFlipped={setIsRevealFlipped}
+                            />
                           );
                         } else if (element.type === "range") {
                           return (
