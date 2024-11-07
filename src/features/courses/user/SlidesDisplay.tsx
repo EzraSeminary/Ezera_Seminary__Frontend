@@ -75,6 +75,8 @@ function SlidesDisplay() {
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   // Flip state
   const [flip, setFlip] = useState<FlipState>({});
   // Slider state
@@ -1222,45 +1224,62 @@ function SlidesDisplay() {
             })}
 
             <div className="mb-4">
-              <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
-              <div className="flex justify-between items-center w-full ">
-                <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2  ${
-                    activeIndex === 0 ? "hidden" : "block"
-                  }`} // hidding the previous button for the first slide
-                  onClick={() => {
-                    updateIndex(activeIndex - 1);
-                  }}
-                >
-                  ተመለስ
-                </button>
-                <p
-                  className={`block lg:hidden font-nokia-bold text-primary-5 text-xs lg:text-sm pt-2 ${
-                    activeIndex === 0 ? "hidden" : "block"
-                  } ${isLastSlide ? "hidden" : "block"}`}
-                >
-                  {currentSlideNumber} / {totalDataNumber}
-                </p>
+                  <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
+                  <div className="flex justify-between items-center w-full relative">
+                    {/* Back Button */}
+                    <button
+                      className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2 ${
+                        activeIndex === 0 ? "hidden" : "block"
+                      }`}
+                      onClick={() => {
+                        updateIndex(activeIndex - 1);
+                      }}
+                    >
+                      ተመለስ
+                    </button>
 
-                <button
-                  className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-4  ${
-                    shouldShowNextButton ? "block" : "hidden"
-                  }`}
-                  onClick={moveToNextSlide}
-                >
-                  ቀጥል
-                </button>
+                    {/* Slide Counter */}
+                    <p
+                      className={`block lg:hidden font-nokia-bold text-primary-5 text-xs lg:text-sm pt-2 ${
+                        activeIndex === 0 ? "hidden" : "block"
+                      } ${isLastSlide ? "hidden" : "block"}`}
+                    >
+                      {currentSlideNumber} / {totalDataNumber}
+                    </p>
 
-                <button
-                  className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm  lg:py-1 px-4  ${
-                    isLastSlide ? "block" : "hidden"
-                  }`}
-                  onClick={submitProgress}
-                >
-                  ዘግተህ ውጣ
-                </button>
-              </div>
-            </div>
+                    {/* Tooltip */}
+                    {!shouldShowNextButton && showTooltip && (
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-accent-9 text-primary-1 text-sm rounded-md px-3 py-1 shadow-lg">
+                        Complete all tasks on the slide to proceed
+                      </div>
+                    )}
+
+                    {/* Next Button */}
+                    <button
+                      className={`text-primary-1 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-4 ${
+                        shouldShowNextButton ? "block" : "text-primary-6 bg-accent-9 hover:bg-accent-9"
+                      }`}
+                      onClick={
+                        shouldShowNextButton
+                          ? moveToNextSlide
+                          : () => setShowTooltip(true) // Show tooltip on click when disabled
+                      }
+                      onMouseLeave={() => setShowTooltip(false)} // Hide tooltip on mouse leave
+                    >
+                      ቀጥል
+                    </button>
+
+                    {/* Submit Button */}
+                    <button
+                      className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-4 ${
+                        isLastSlide ? "block" : "hidden"
+                      }`}
+                      onClick={submitProgress}
+                    >
+                      ዘግተህ ውጣ
+                    </button>
+                  </div>
+                </div>
           </div>
         </div>
       </div>
