@@ -992,7 +992,7 @@ function SlidesDisplay() {
                     )}
 
                     {/* Next Button */}
-                    <button
+                    {!isLastSlide ? (<button
                       className={`text-primary-1 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-4 ${
                         shouldShowNextButton ? "block" : "text-primary-6 bg-accent-9 hover:bg-accent-9"
                       }`}
@@ -1004,7 +1004,7 @@ function SlidesDisplay() {
                       onMouseLeave={() => setShowTooltip(false)} // Hide tooltip on mouse leave
                     >
                       ቀጥል
-                    </button>
+                    </button>) : null}
 
                     {/* Submit Button */}
                     <button
