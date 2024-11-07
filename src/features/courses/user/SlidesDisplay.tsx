@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { useGetCourseByIdQuery, DndElement } from "../../../services/api";
+import { useGetCourseByIdQuery } from "../../../services/api";
 import "@/index.css";
 import {
   ArrowLeft,
@@ -28,6 +28,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useProgress } from "./utils/progressUtils";
 import { getYoutubeVideoId, getYoutubeThumbnailUrl } from './utils/youtubeUtils';
+import DndComponent from "./elements/DndComponent";
 import {
   Carousel,
   CarouselContent,
@@ -38,17 +39,6 @@ import {
 import ReactCardFlip from "react-card-flip";
 import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
-import {
-  DndContext,
-  PointerSensor,
-  useSensors,
-  useSensor,
-  closestCenter,
-  DragEndEvent,
-  DragStartEvent,
-} from "@dnd-kit/core";
-import DraggableItem from "../Elements/dragAndDrop/DraggableItem";
-import DroppableArea from "../Elements/dragAndDrop/DroppableArea";
 // import ChapterNotFound from "@/components/ChapterNotFound";
 import YouTube from "react-youtube";
 
@@ -103,7 +93,7 @@ function SlidesDisplay() {
     isAudioPlayed,
     setIsAudioPlayed,
   } = useProgress();
-  
+
   const { courseId, chapterId } = useParams<{
     courseId: string;
     chapterId: string;
@@ -115,7 +105,6 @@ function SlidesDisplay() {
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
-  // console.log(courseData);
 
   // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
@@ -129,15 +118,11 @@ function SlidesDisplay() {
 
   //find matching courseId from the user progress array
   const userProgress = findUserProgress(courseID);
-
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
 
-  //Resume chapter
   // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
-    // console.log("Current chapter index:", chapterIndex);
-    // console.log("User progress:", userProgress);
     if (userProgress) {
       if (
         chapterIndex === userProgress.currentChapter &&
@@ -156,40 +141,19 @@ function SlidesDisplay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapterIndex]);
 
-  {
-    /* Function to open the chapters sidebar modal */
-  }
   const handleArrowClick = () => {
     setOpen((prev) => !prev);
   };
 
-  {
-    /* Ref to listen the curser and close the chapters sidebar modal */
-  }
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, open, () => setOpen(false));
 
-  //Quiz Related functions
   //track whether the selected answer is correct or not.
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
     null
   );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [draggedItem, setDraggedItem] = useState<string | null>(null);
-
-  console.log(draggedItem);
-  // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
-  // Define Drag & Drop sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
 
   // If the chapter is not found, handle accordingly
   if (!chapter) {
@@ -220,11 +184,9 @@ function SlidesDisplay() {
       updateProgress(courseID, chapterIndex, adjustedIndex);
     }
   };
-
   // slide number
   const currentSlideNumber = activeIndex + 1;
   const totalDataNumber = data.length;
-
   const isLastSlide = activeIndex === totalDataNumber - 1;
 
   const isSlideUnlocked = (index: number) => {
@@ -243,25 +205,6 @@ function SlidesDisplay() {
     setShowQuizResult(false); // Reset showResult when a new answer is selected
   };
 
-  // For "dnd" type
-  const handleCheckAnswer = () => {
-    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
-      // Get the "dnd" element
-      const dndElement = selectedSlide.elements.find(
-        (element): element is DndElement => element.type === "dnd"
-      );
-      if (dndElement && droppedChoice) {
-        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
-        const isDndCorrect =
-          droppedChoice === dndElement.value.correctDndAnswer;
-        setIsDndAnswerCorrect(isDndCorrect);
-      }
-    }
-
-    setShowQuizResult(true);
-    setIsDndCompleted(true); // Next button available when the check answer is confirmed
-  };
-
   //isCorrect switch
   const renderQuizResult = () => {
     if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
@@ -274,22 +217,6 @@ function SlidesDisplay() {
       return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
     }
   };
-
-  // Render dnd result
-  const renderDndResult = () => {
-    if (isDndAnswerCorrect === true) {
-      return (
-        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
-      );
-    } else if (isDndAnswerCorrect === false) {
-      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
-    }
-
-    return null;
-  };
-
-  // Check if courseData and courseData._id are not undefined
-
 
   const token = localStorage.getItem("token");
   const userId = currentUser?._id;
@@ -386,31 +313,6 @@ function SlidesDisplay() {
       setIsRangeChanged(true); // Next button available when slider value is changed
     }
   };
-
-  // Drag and Drop Functions
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    setDraggedItem(active.id as string);
-    // console.log(draggedItem);
-    // Reset showResult when dragging starts
-    setShowQuizResult(false);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over?.id === "droppable" && active.data?.current?.choice) {
-      const choiceToAdd = active.data.current.choice.text;
-      if (typeof choiceToAdd === "string") {
-        setDroppedChoice(choiceToAdd);
-      }
-    } else {
-      setDroppedChoice(null); // Reset or handle this scenario if needed.
-    }
-
-    setDraggedItem(null);
-  };
-
   // Youtube component options
   const opts = {
     height: "100%",
@@ -485,20 +387,6 @@ function SlidesDisplay() {
     <>
       <ToastContainer />
       <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
-        {/* Back button */}
-        {/* <div className="absolute top-3 -left-28 pl-24 flex justify-start w-full mb-2">
-          <button
-            className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 hover:bg-[#FAE5C7]"
-            onClick={submitProgress}
-          >
-            <ArrowLeft
-              size={22}
-              className="text-white bg-accent-6 border p-1 rounded-lg"
-            />
-            <p className="text-accent-6 text-xs font-nokia-bold">ዘግተህ ውጣ</p>
-          </button>
-        </div> */}
-        {/* Slides side bar for mobile and tablet*/}
         <div
           ref={ref}
           className={`lg:hidden ${
@@ -584,16 +472,6 @@ function SlidesDisplay() {
                 );
               })}
             </div>
-
-            {/* <div className="flex justify-between items-center w-[90%] mx-auto mt-2">
-              <button
-                className="text-accent-6 font-nokia-bold bg-white hover:bg-primary-5 border border-accent-6 rounded-xl py-1 px-4 transition-all text-xs1 w-auto"
-                onClick={submitProgress}
-              >
-                ዘግተህ ውጣ
-              </button>
-              <CaretCircleLeft className="text-2xl bg-primary-1 rounded-full text-accent-6 mr-2 hover:bg-primary-5 transition-all" />
-            </div> */}
           </div>
         </div>
         {/* Slides side bar for desktop*/}
@@ -1041,64 +919,16 @@ function SlidesDisplay() {
                             </>
                           );
                         } else if (element.type === "dnd") {
-                          return (
-                            <div
-                              key={element._id}
-                              className="flex flex-col justify-center items-center w-[90%] mx-auto"
-                            >
-                              {/* Questions */}
-                              <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
-                                {element.value.question}
-                              </p>
-                              {/* Choices */}
-                              {element.value.choices && (
-                                <DndContext
-                                  onDragStart={handleDragStart}
-                                  onDragEnd={handleDragEnd}
-                                  sensors={sensors}
-                                  collisionDetection={closestCenter}
-                                >
-                                  <div className="flex w-[80%] flex-wrap justify-center items-center gap-3 mx-auto pt-4">
-                                    {element.value.choices.map(
-                                      (choice, choiceIndex) => {
-                                        if (droppedChoice !== choice.text) {
-                                          return (
-                                            // dragable item
-                                            <div className="text-sm bg-secondary-6 bg-opacity-20">
-                                              <DraggableItem
-                                                key={choiceIndex}
-                                                choice={choice}
-                                                choiceIndex={choiceIndex}
-                                                id="draggable"
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      }
-                                    )}
-                                  </div>
-                                  {/* dropable area */}
-                                  <div className="flex justify-center items-center w-[80%] h-[100px] mx-auto">
-                                    <DroppableArea
-                                      key={`droppable_${element._id}`}
-                                      droppedChoice={droppedChoice}
-                                      id="droppable"
-                                    />
-                                  </div>
-                                </DndContext>
-                              )}
-                              {/* Correct Answer */}
-                              <div className="flex mt-2">
-                                <button
-                                  className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-lg xl:text-xl lg:py-1 px-2"
-                                  onClick={handleCheckAnswer}
-                                >
-                                  Check Answer
-                                </button>
-                                {renderDndResult()}
-                              </div>
-                            </div>
-                          );
+                          return(
+                            <DndComponent
+                              element={element}
+                              droppedChoice={droppedChoice}
+                              setDroppedChoice={setDroppedChoice}
+                              isDndAnswerCorrect={isDndAnswerCorrect}
+                              setIsDndAnswerCorrect={setIsDndAnswerCorrect}
+                              setIsDndCompleted={setIsDndCompleted}
+                            />
+                          )
                         } else if (element.type === "mix") {
                           return (
                             <div key={element._id}>
