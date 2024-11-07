@@ -26,23 +26,13 @@ import 'react-quill/dist/quill.snow.css';
 import { useProgress } from "./utils/progressUtils";
 import DndComponent from "./elements/DndComponent";
 import VideoSection from "./elements/VideoSection";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { sliderMarks } from "@/utils/SliderMarks";
 import SliderSection from "./elements/SliderSection";
 import ImageSection from "./elements/ImageSection";
 import RevealSection from "./elements/RevealSection";
 import SlideSection from "./elements/SlideSection";
 import MixSection from "./elements/MixSection";
-// import ChapterNotFound from "@/components/ChapterNotFound";
-
-
-
+import SequenceSection from "./elements/SequenceSection";
 function SlidesDisplay() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
@@ -698,35 +688,11 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "sequence") {
                           return (
-                            <div className="h-[65%] md:h-[30%] lg:h-[50%] w-full flex justify-center items-center">
-                              <Carousel
-                                orientation="vertical"
-                                opts={{
-                                  align: "center",
-                                }}
-                                onLastItemVisible={(visible) =>
-                                  setIsSequenceCompleted(visible)
-                                } // Next button available when the carouselItem is on the last sequenceItem.
-                                key={element._id}
-                                className="w-full flex justify-center items-center h-auto"
-                              >
-                                <CarouselContent className=" h-[200px] md:h-[150px] ">
-                                  {element.value.map(
-                                    (sequenceItem: string, index: number) => (
-                                      <CarouselItem key={index}>
-                                        <div className="flex items-center justify-center p-6 bg-secondary-4 bg-opacity-25 w-full rounded-xl shadow-2xl  h-full">
-                                          <span className="text-accent-5 text-lg lg:text-xl text-justify font-nokia-bold ">
-                                            {sequenceItem}
-                                          </span>
-                                        </div>
-                                      </CarouselItem>
-                                    )
-                                  )}
-                                </CarouselContent>
-                                <CarouselPrevious />
-                                <CarouselNext />
-                              </Carousel>
-                            </div>
+                            <SequenceSection
+                              sequenceItems={element.value}
+                              setIsSequenceCompleted={setIsSequenceCompleted}
+                              isSequenceCompleted={isSequenceCompleted}
+                              />
                           );
                         } else if (element.type === "reveal") {
                           return (
@@ -798,7 +764,6 @@ function SlidesDisplay() {
                 return null; // Hide the slide if it doesn't match the activeIndex
               }
             })}
-
             <div className="mb-4">
                   <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
                   <div className="flex justify-between items-center w-full relative">
