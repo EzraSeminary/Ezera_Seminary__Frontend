@@ -1,24 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery } from "../../../services/api";
 import "@/index.css";
-import {
-  ArrowLeft,
-  CheckCircle,
-  DotsThreeVertical,
-  X,
-  Lock,
-} from "@phosphor-icons/react";
-import logo from "../../../assets/ezra-logo.svg";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import axios from "axios";
-import { PuffLoader } from "react-spinners";
 import LoadingPage from "@/pages/user/LoadingPage";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useProgress } from "./utils/progressUtils";
@@ -32,23 +20,15 @@ import SlideSection from "./elements/SlideSection";
 import MixSection from "./elements/MixSection";
 import SequenceSection from "./elements/SequenceSection";
 import QuizSection from "./elements/QuizSection";
+import HeaderSection from "./Header";
+import FooterNavigation from "./FooterNavigation";
+import CourseDetails from "./CourseDetails";
+import AudioSection from "./elements/AudioSection";
 function SlidesDisplay() {
-  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-
-
-  const [progressLoading, setProgressLoading] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   
-  // Slider state
+  // Slider stat
   const [sliderValue, setSliderValue] = useState(2.5);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
 
@@ -78,42 +58,32 @@ function SlidesDisplay() {
     chapterId: string;
   }>();
 
-  //get single course
   const {
     data: courseData,
     error,
     isLoading,
   } = useGetCourseByIdQuery(courseId as string);
 
-  // Extracting chapter data from the fetched course data
   const chapter = courseData?.chapters.find((chap) => chap._id === chapterId);
   const chapterIndex = courseData?.chapters.findIndex(
     (chap) => chap._id === chapterId
   );
-
-  //get the current user from the Root State
-  const currentUser = useSelector((state: RootState) => state.auth.user);
   const courseID = courseData && courseData._id ? courseData._id : "";
-
-  //find matching courseId from the user progress array
   const userProgress = findUserProgress(courseID);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
 
-  // When component did mount or userProgress has changed, update the activeIndex
   useEffect(() => {
     if (userProgress) {
       if (
         chapterIndex === userProgress.currentChapter &&
         userProgress.currentSlide !== undefined
       ) {
-        // The current selected chapter is the same as the chapterIndex from progress
         setActiveIndex(userProgress.currentSlide);
         if (userProgress.currentSlide > unlockedIndex) {
           setUnlockedIndex(userProgress.currentSlide);
         }
       } else {
-        //set the activeIndex to the beginning of the current chapter
         setActiveIndex(0);
       }
     }
@@ -126,20 +96,15 @@ function SlidesDisplay() {
 
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, open, () => setOpen(false));
-
   const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
     null
   );
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
-  // If the chapter is not found, handle accordingly
   if (!chapter) {
-    // return <ChapterNotFound />;
     return <LoadingPage />;
   }
-  // Setting the data to slides if the chapter is found
   const data = chapter.slides;
-  // Selected Slide
   const selectedSlide = data[activeIndex];
 
   //function to select chapter buttons
@@ -169,70 +134,6 @@ function SlidesDisplay() {
     return index <= unlockedIndex; // Check if the slide is unlocked based on the unlocked index
   };
 
-  const token = localStorage.getItem("token");
-  const userId = currentUser?._id;
-
-  const submitProgress = () => {
-    if (currentUser && currentUser.progress) {
-      setTimeout(() => {
-        setProgressLoading(true);
-      }, 3000);
-      axios
-        .put(
-          "/users/profile/" + userId,
-          {
-            userId: currentUser._id,
-            progress: currentUser.progress,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((res) => {
-          console.log("Progress updated successfully:", res.data);
-          setProgressLoading(false);
-          if (chapterIndex !== undefined) {
-            updateProgress(courseID, chapterIndex, activeIndex);
-          } // Use the updateProgress function from useProgress hook
-          navigate(`/courses/get/${courseId}`);
-        })
-        .catch((err) => {
-          console.error(
-            "Error updating progress:",
-            err.response ? err.response.data : err.message
-          );
-          toast.error(
-            "Could not update progress: " +
-              (err.response ? err.response.data : err.message)
-          );
-          setTimeout(() => {
-            setProgressLoading(false);
-            navigate(`/courses/get/${courseId}`);
-          }, 3000);
-        });
-    } else {
-      navigate(`/courses/get/${courseId}`);
-    }
-  };
-
-  if (progressLoading)
-    return (
-      <div className="h-screen flex justify-center items-center bg-secondary-6">
-        <PuffLoader
-          color={"#EA9215"}
-          loading
-          size={56}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-        <h1 className="text-accent-6 font-nokia-bold text-2xl">
-          Saving your progress
-        </h1>
-      </div>
-    );
-
   // Switch from the image to the video
   const handleImageClick = () => {
     setIsVideoVisible(true);
@@ -240,13 +141,11 @@ function SlidesDisplay() {
 
   // Update the state indicating whether the accordion is expanded for Next button.
   const handleAccordionToggle = (values: string) => {
-    // Set `isAccordionExpanded` to true if the accordion has ever been expanded
     if (values.includes("item-1")) {
       setIsAccordionExpanded(true);
     }
   };
 
-  // Reset Next button conditional states
   const resetInteractions = () => {
     setIsSlideComplete(false);
     setIsQuizAnswered(false);
@@ -298,204 +197,35 @@ function SlidesDisplay() {
     <>
       <ToastContainer />
       <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
-        <div
-          ref={ref}
-          className={`lg:hidden ${
-            open
-              ? "absolute left-0 top-0 flex flex-col justify-start items-center w-full  z-50 h-full"
-              : "w-0 h-0"
-          }`}
-          style={{ transition: "width 0.3s" }}
-        >
-          {open ? (
-            <X
-              onClick={handleArrowClick}
-              className="text-primary-5 z-50 text-2xl  bg-accent-6 border p-1 rounded-full absolute right-3  top-3 cursor-pointer"
-            />
-          ) : null}
-
-          {/* Course title and description*/}
-          <div className="w-[100%] h-full bg-secondary-6 opacity-95 pb-3 rounded-b-lg pt-3 ">
-            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-sm xl:text-lg  text-center mt-2 mb-1 xl:mt-3 xl:mb-2 ">
-              {courseData?.title}
-            </h1>
-            <hr className="border-accent-5 border w-[90%] mx-auto" />
-
-            <div className="w-[90%] mx-auto mt-2  flex flex-col">
-              <p
-                className={`text-accent-5 text-xs font-nokia-Regular xl:text-lg mt-2 mb-2  text-justify  w-[90%] mx-auto leading-tight lg:text-xs  ${
-                  isExpanded ? "line-clamp-none" : "line-clamp-3"
-                } text-justify leading-tight lg:text-xs`}
-              >
-                {courseData?.description}
-              </p>
-              <button
-                onClick={toggleExpand}
-                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
-              >
-                {isExpanded ? "Less" : "More"}
-              </button>
-            </div>
-
-            {/* Header */}
-            <div className="flex flex-col mt-2 border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-primary-6 pb-1 text-xs lg:text-sm">
-                ትምህርት {currentSlideNumber}/{totalDataNumber}
-              </h1>
-              <hr className="border-accent-5 border-b-2 w-[30%] " />
-            </div>
-            {/* slide list */}
-            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto">
-              {data.map((slides, index) => {
-                const unlocked = isSlideUnlocked(index - 1);
-                const isActive = index === activeIndex;
-
-                return (
-                  <button
-                    key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked
-                        ? "text-secondary-6"
-                        : "text-primary-5 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
-
-                    `}
-                    onClick={() => {
-                      updateIndex(index);
-                      handleArrowClick();
-                    }}
-                    disabled={!unlocked} // Disable the button if the slide is locked
-                  >
-                    <div className="flex flex-col items-start justify-start w-[90%] ">
-                      <h2 className="font-nokia-bold text-secondary-6 text-left text-xs lg:text-sm">
-                        {slides.slide}
-                      </h2>
-                      <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-xs">
-                        {index + 1}/{totalDataNumber} Slides
-                      </p>
-                    </div>
-                    {unlocked ? (
-                      <CheckCircle size={16} weight="fill" color={"#EA9215"} />
-                    ) : (
-                      <Lock size={16} color={"#EC4000"} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        {/* Slides side bar for desktop*/}
-        <div className="hidden  h-full lg:flex flex-col justify-start items-center bg-primary-7  z-40 lg:w-[27%] ">
-          {/* Short information*/}
-
-          <div className="flex   py-2 bg-secondary-5  pl-12 w-full text-xs1  lg:text-xs z-50">
-            <ArrowLeft
-              onClick={submitProgress}
-              className="text-white text-2xl  bg-accent-6 border p-1 rounded-lg absolute left-3  top-2.5 cursor-pointer "
-            />
-
-            <h1 className="text-primary-6 font-nokia-bold text-xs lg:text-lg flex-grow   items-center ">
-              {courseData?.title}
-            </h1>
-          </div>
-
-          {/* Course title and description*/}
-          <div className="flex flex-col w-full h-full bg-primary-3 opacity-90 pb-3 rounded-b-lg">
-            <div className="w-[90%] mx-auto mt-2  flex flex-col">
-              <p
-                className={`text-secondary-5 text-xs1 font-nokia-bold xl:text-lg ${
-                  isExpanded ? "line-clamp-none" : "line-clamp-3"
-                } text-justify leading-tight lg:text-xs`}
-              >
-                {courseData?.description}
-              </p>
-              <button
-                onClick={toggleExpand}
-                className="bg-accent-6 rounded-full px-2 text-xs text-primary-2 mt-2 hover:bg-accent-7 transition-all self-end"
-              >
-                {isExpanded ? "Less" : "More"}
-              </button>
-            </div>
-
-            {/* Header */}
-            <div className="flex flex-col  border-accent-5 border-b  w-[95%] mx-auto">
-              <h1 className="font-nokia-bold text-secondary-6 pb-1 text-xs lg:text-sm">
-                ትምህርቶች {currentSlideNumber}/{totalDataNumber}
-              </h1>
-              <hr className="border-accent-5 border-b-2 w-[30%] " />
-            </div>
-            {/* slide list */}
-            <div className="flex flex-col h-[73%] px-2 pt-2 gap-2 md:px-3 overflow-y-auto ">
-              {data.map((slides, index) => {
-                const unlocked = isSlideUnlocked(index - 1);
-                const isActive = index === activeIndex;
-
-                return (
-                  <button
-                    key={index}
-                    className={`flex justify-between items-center font-nokia-bold border-b border-accent-5 px-2 cursor-pointer py-2 rounded-lg hover:bg-[#FAE5C7] hover:opacity-80  ${
-                      unlocked
-                        ? "text-secondary-6"
-                        : "text-secondary-3 hover:cursor-not-allowed"
-                    }  ${isActive ? "bg-[#FAE5C7]" : "bg-secondary-2"}
-
-                    `}
-                    onClick={() => {
-                      updateIndex(index);
-                      handleArrowClick();
-                    }}
-                    disabled={!unlocked} // Disable the button if the slide is locked
-                  >
-                    <div className="flex flex-col items-start justify-start w-[90%] text-left">
-                      <h2 className="font-nokia-bold text-secondary-6 text-xs lg:text-sm xl:text-lg">
-                        {slides.slide}
-                      </h2>
-                      <p className="font-lato-Bold text-accent-6 text-xs1 lg:text-sm xl:text-lg">
-                        {index + 1}/{totalDataNumber} Slides
-                      </p>
-                    </div>
-                    {unlocked ? (
-                      <CheckCircle size={16} weight="fill" color={"#EA9215"} />
-                    ) : (
-                      <Lock size={16} color={"#EC4000"} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+      <CourseDetails
+      open={open}
+      handleArrowClick={handleArrowClick}
+      courseData={courseData}
+      data={data}
+      activeIndex={activeIndex}
+      totalDataNumber={totalDataNumber}
+      currentSlideNumber={currentSlideNumber}
+      isSlideUnlocked={isSlideUnlocked}
+      updateIndex={updateIndex}
+      courseId={courseId as string}
+      chapterIndex={chapterIndex}
+      updateProgress={updateProgress}
+    />
         {/* slides display window*/}
         <div className="lg:w-[73%]  w-full h-full chapter-img-1 bg-no-repeat bg-cover bg-center  relative">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
-            <div>
-              <div className="w-[90%] pt-4 pb-2 flex justify-between mx-auto items-center">
-                <div className="  h-full flex justify-center items-center  md:space-x-0   xl:space-x-1 cursor-pointer ">
-                  <img src={logo} className="w-8 h-5 md:w-10 md:h-6 " alt="" />
-                  <h3 className="text-white font-nokia-bold text-xs md:text-sm ">
-                    <strong>Ezra</strong> Seminary
-                  </h3>
-                </div>
-                <p className="hidden lg:block font-nokia-bold text-primary-6 text-xs lg:text-sm">
-                  {currentSlideNumber} / {totalDataNumber}
-                </p>
-                <div className="flex lg:hidden items-center">
-                  <DotsThreeVertical
-                    onClick={handleArrowClick}
-                    className="block lg:hidden font-bold text-xl cursor-pointer text-primary-6 transition-all "
-                  />
-                  <X
-                    onClick={submitProgress}
-                    className="  text-primary-5  text-xl  bg-accent-6 border p-1 rounded-full cursor-pointer"
-                  />
-                </div>
-              </div>
-              <hr className="border-accent-5 border-1 w-[90%] mx-auto" />
-            </div>
-
+            {
+               <HeaderSection
+                currentSlideNumber={currentSlideNumber}
+                totalDataNumber={totalDataNumber}
+                handleArrowClick={handleArrowClick}
+                courseId={courseId as string}
+                chapterIndex={chapterIndex}
+                updateProgress={updateProgress}
+             />
+            }
             {/* Slide content */}
             {data.map((slides, index) => {
               if (index === activeIndex) {
@@ -648,29 +378,18 @@ function SlidesDisplay() {
                           );
                         } else if (element.type === "audio") {
                           return (
-                            <div
+                            <AudioSection
                               key={element.id}
-                              className="flex flex-col items-center justify-center w-[80%] rounded-3xl shadow-md"
-                            >
-                              <audio
-                                controls
-                                className="w-full"
-                                onPlay={() => setIsAudioPlayed(true)} // Next button available when played
-                              >
-                                <source
-                                  src={`${element.value}`}
-                                  type="audio/mpeg"
-                                />
-                                Your browser does not support the audio element.
-                              </audio>
-                            </div>
+                              src={`${element.value}`}
+                              onPlay={() => setIsAudioPlayed(true)}
+                            />
                           );
                         } else if (element.type === "video") {
-                          return (<
-                            VideoSection
-                            videoUrl={element.value}
-                            isVideoVisible={isVideoVisible}
-                            handleImageClick={handleImageClick}
+                          return (
+                            <VideoSection
+                              videoUrl={element.value}
+                              isVideoVisible={isVideoVisible}
+                              handleImageClick={handleImageClick}
                         />)
                         }
                       })}
@@ -681,63 +400,18 @@ function SlidesDisplay() {
                 return null; // Hide the slide if it doesn't match the activeIndex
               }
             })}
-            <div className="mb-4">
-                  <hr className="border-accent-5 border-1 w-[90%] mx-auto z-50" />
-                  <div className="flex justify-between items-center w-full relative">
-                    {/* Back Button */}
-                    <button
-                      className={`text-white text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2 ${
-                        activeIndex === 0 ? "hidden" : "block"
-                      }`}
-                      onClick={() => {
-                        updateIndex(activeIndex - 1);
-                      }}
-                    >
-                      ተመለስ
-                    </button>
-
-                    {/* Slide Counter */}
-                    <p
-                      className={`block lg:hidden font-nokia-bold text-primary-5 text-xs lg:text-sm pt-2 ${
-                        activeIndex === 0 ? "hidden" : "block"
-                      } ${isLastSlide ? "hidden" : "block"}`}
-                    >
-                      {currentSlideNumber} / {totalDataNumber}
-                    </p>
-
-                    {/* Tooltip */}
-                    {!shouldShowNextButton && showTooltip && (
-                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-accent-9 text-primary-1 text-sm rounded-md px-3 py-1 shadow-lg">
-                        Complete all tasks on the slide to proceed
-                      </div>
-                    )}
-
-                    {/* Next Button */}
-                    {!isLastSlide ? (<button
-                      className={`text-primary-1 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-4 ${
-                        shouldShowNextButton ? "block" : "text-primary-6 bg-accent-9 hover:bg-accent-9"
-                      }`}
-                      onClick={
-                        shouldShowNextButton
-                          ? moveToNextSlide
-                          : () => setShowTooltip(true) // Show tooltip on click when disabled
-                      }
-                      onMouseLeave={() => setShowTooltip(false)} // Hide tooltip on mouse leave
-                    >
-                      ቀጥል
-                    </button>) : null}
-
-                    {/* Submit Button */}
-                    <button
-                      className={`text-primary-5 text-center font-nokia-bold mt-2 bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-4 ${
-                        isLastSlide ? "block" : "hidden"
-                      }`}
-                      onClick={submitProgress}
-                    >
-                      ዘግተህ ውጣ
-                    </button>
-                  </div>
-                </div>
+            <FooterNavigation
+              activeIndex={activeIndex}
+              totalDataNumber={totalDataNumber}
+              currentSlideNumber={currentSlideNumber}
+              isLastSlide={isLastSlide}
+              shouldShowNextButton={shouldShowNextButton}
+              updateIndex={updateIndex}
+              moveToNextSlide={moveToNextSlide}
+              courseId={courseId as string}
+              chapterIndex={chapterIndex}
+              updateProgress={updateProgress}
+            />
           </div>
         </div>
       </div>
