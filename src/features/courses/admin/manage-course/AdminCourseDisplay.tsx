@@ -24,7 +24,6 @@ import SequenceSection from "../../user/elements/SequenceSection";
 import SlideSection from "../../user/elements/SlideSection";
 import QuizSection from "../../user/elements/QuizSection";
 
-
 interface SelectedSlideIndex {
   chapter: number;
   slide: number;
