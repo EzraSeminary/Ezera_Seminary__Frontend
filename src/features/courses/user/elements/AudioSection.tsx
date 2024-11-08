@@ -7,6 +7,7 @@ interface AudioPlayerProps {
 }
 
 const AudioSection: React.FC<AudioPlayerProps> = ({ src, onPlay }) => {
+    console.log(src);
   return (
     <div className="flex flex-col items-center justify-center w-[80%] rounded-3xl shadow-md">
       <audio controls className="w-full" onPlay={onPlay}>

@@ -198,18 +198,18 @@ function SlidesDisplay() {
       <ToastContainer />
       <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
       <CourseDetails
-      open={open}
-      handleArrowClick={handleArrowClick}
-      courseData={courseData}
-      data={data}
-      activeIndex={activeIndex}
-      totalDataNumber={totalDataNumber}
-      currentSlideNumber={currentSlideNumber}
-      isSlideUnlocked={isSlideUnlocked}
-      updateIndex={updateIndex}
-      courseId={courseId as string}
-      chapterIndex={chapterIndex}
-      updateProgress={updateProgress}
+        open={open}
+        handleArrowClick={handleArrowClick}
+        courseData={courseData}
+        data={data}
+        activeIndex={activeIndex}
+        totalDataNumber={totalDataNumber}
+        currentSlideNumber={currentSlideNumber}
+        isSlideUnlocked={isSlideUnlocked}
+        updateIndex={updateIndex}
+        courseId={courseId as string}
+        chapterIndex={chapterIndex}
+        updateProgress={updateProgress}
     />
         {/* slides display window*/}
         <div className="lg:w-[73%]  w-full h-full chapter-img-1 bg-no-repeat bg-cover bg-center  relative">

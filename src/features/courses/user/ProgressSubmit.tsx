@@ -75,7 +75,7 @@ const ProgressSubmit = forwardRef<{ submitProgress: () => void }, ProgressSubmit
   return (
     <>
       {progressLoading ? (
-        <div className="h-screen flex justify-center items-center bg-secondary-6">
+        <div className="fixed inset-0 flex flex-col justify-center items-center bg-secondary-6 bg-opacity-85 z-50">
           <PuffLoader
             color={"#EA9215"}
             loading
@@ -83,7 +83,7 @@ const ProgressSubmit = forwardRef<{ submitProgress: () => void }, ProgressSubmit
             aria-label="Loading Spinner"
             data-testid="loader"
           />
-          <h1 className="text-accent-6 font-nokia-bold text-2xl">
+          <h1 className="text-accent-6 font-nokia-bold text-2xl mt-4">
             Saving your progress
           </h1>
         </div>
