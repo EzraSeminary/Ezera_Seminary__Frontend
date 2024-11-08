@@ -34,11 +34,12 @@ function AdminChapter() {
 
   const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
     event?.preventDefault();
-    const { title, description, image, chapters, published } = course;
+    const { title, description, category, image, chapters, published } = course;
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
+    formData.append("category", category);
     formData.append("image", image);
     formData.append("published", String(published));
     formData.append("chapters", JSON.stringify(chapters));

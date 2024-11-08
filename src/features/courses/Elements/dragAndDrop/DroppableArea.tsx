@@ -14,7 +14,7 @@ function DroppableArea({ droppedChoice, id }: DroppableAreaProps) {
   return (
     <div
       ref={setNodeRef}
-      className={`border-2 border-gray-300 bg-accent-9 bg-opacity-70 shadow-2xl min-w-[30%] min-h-[40%] flex justify-center items-center mb-2 mt-10 ${
+      className={`border-2 border-gray-300 bg-accent-9 bg-opacity-70 shadow-2xl min-w-[40%] min-h-[40%] flex justify-center items-center mb-2 mt-10 ${
         isOver ? "border-solid" : "border-dashed"
       }`}
       onMouseDown={(e) => e.preventDefault()} // Prevent text selection
@@ -26,7 +26,7 @@ function DroppableArea({ droppedChoice, id }: DroppableAreaProps) {
           </span>
         </div>
       ) : (
-        <span className="text-white font-nokia-bold text-lg">Drop Here</span>
+        <span className="text-white font-nokia-bold text-lg">Drop Choice Here</span>
       )}
     </div>
   );

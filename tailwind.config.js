@@ -73,9 +73,9 @@ export default {
       backgroundImage: {
         "header-img": "url('./assets/header-img.svg')",
         "hero-img": "url('./assets/home-page-img.webp')",
-        "coming-soon": "url('./assets/coming-soon.png')",
+        "coming-soon": "url('./assets/coming-soon.webp')",
         "chapter-img-1": "url('./assets/chapter-img-1.svg)",
-        "about-img": "url('./assets/bible-about.png')",
+        "about-img": "url('./assets/bible-about.webp')",
         // 'footer-texture': "url('/img/footer-texture.png')",
       },
       colors: {

@@ -41,6 +41,7 @@ function EditCourse() {
               ...course,
               title: res.data.title,
               description: res.data.description,
+              category: res.data.category,
               image: res.data.image,
               chapters: res.data.chapters,
               published: res.data.published,
@@ -73,6 +74,7 @@ function EditCourse() {
     const formData = new FormData();
     formData.append("title", course.title);
     formData.append("description", course.description);
+    formData.append("category", course.category);
     if (typeof course.image === "string") {
       formData.append("image", course.image);
     } else if (course.image instanceof File) {

@@ -143,7 +143,7 @@ footer {
 }
 
 .loggedIn-img {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("./assets/about-img.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("./assets/about-img.webp");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -152,7 +152,7 @@ footer {
 }
 
 .course-img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url("./assets/course-img-1.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url("./assets/course-img-1.webp");
   background-size: fill;
   background-color: rgba(0, 0, 0, 0.8);
   background-repeat: no-repeat;
@@ -160,7 +160,7 @@ footer {
   width: 100%;
 }
 .sabbath-img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url("./assets/sabbath-img.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),url("./assets/sabbath-img.webp");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: center ;
@@ -168,7 +168,7 @@ footer {
 }
 
 .devotion-img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/devotion-img.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/devotion-img.webp");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: center center;
@@ -176,7 +176,7 @@ footer {
 }
 
 .about-img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-2.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-2.webp");
   background-size: fill;
   background-repeat: no-repeat;
   background-position:  center;
@@ -184,7 +184,7 @@ footer {
 }
 
 .contact-img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-1.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url("./assets/About-img-1.webp");
   background-size: fill;
   background-repeat: no-repeat;
   background-position: bottom center;
