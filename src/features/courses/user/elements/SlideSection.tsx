@@ -4,7 +4,7 @@ import '@splidejs/react-splide/css';
 
 interface SlideSectionProps {
   slideItems: string[];
-  setIsSlideComplete: (isComplete: boolean) => void;
+  setIsSlideComplete?: (isComplete: boolean) => void;
 }
 
 const SlideSection: React.FC<SlideSectionProps> = ({ slideItems, setIsSlideComplete }) => {
@@ -37,7 +37,8 @@ const SlideSection: React.FC<SlideSectionProps> = ({ slideItems, setIsSlideCompl
           }}
           onMoved={(_, newIndex) => {
             if (newIndex === slideItems.length - 1) {
-              setIsSlideComplete(true);
+              if (setIsSlideComplete)
+                setIsSlideComplete(true);
             }
           }}
         >

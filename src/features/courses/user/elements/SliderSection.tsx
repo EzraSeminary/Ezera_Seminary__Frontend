@@ -5,7 +5,7 @@ interface SliderSectionProps {
   sliderMarks: { value: number; label: string }[];
   sliderValue: number;
   setSliderValue: (value: number) => void;
-  setIsRangeChanged: (isChanged: boolean) => void;
+  setIsRangeChanged?: (isChanged: boolean) => void;
 }
 
 const SliderSection: React.FC<SliderSectionProps> = ({
@@ -17,7 +17,9 @@ const SliderSection: React.FC<SliderSectionProps> = ({
     const handleSliderChange = (_: Event, newValue: number | number[]) => {
         if (typeof newValue === "number") {
         setSliderValue(newValue);
-        setIsRangeChanged(true); // Next button available when slider value is changed
+        if (setIsRangeChanged) {
+        setIsRangeChanged(true);
+    } 
         }
         };
 

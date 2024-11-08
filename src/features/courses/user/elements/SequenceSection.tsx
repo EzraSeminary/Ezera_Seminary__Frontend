@@ -9,8 +9,8 @@ import {
 
 interface SequenceSectionProps {
   sequenceItems: string[];
-  isSequenceCompleted: boolean;
-  setIsSequenceCompleted: (visible: boolean) => void;
+  isSequenceCompleted?: boolean;
+  setIsSequenceCompleted?: (visible: boolean) => void;
 }
 
 const SequenceSection: React.FC<SequenceSectionProps> = ({
@@ -24,7 +24,11 @@ const SequenceSection: React.FC<SequenceSectionProps> = ({
         opts={{
           align: "center",
         }}
-        onLastItemVisible={(visible) => setIsSequenceCompleted(visible)}
+        onLastItemVisible={(visible) => {
+          if (setIsSequenceCompleted)
+            setIsSequenceCompleted(visible);
+          }
+        }
         className="w-full flex justify-center items-center h-auto"
       >
         <CarouselContent className="h-[200px] md:h-[150px]">

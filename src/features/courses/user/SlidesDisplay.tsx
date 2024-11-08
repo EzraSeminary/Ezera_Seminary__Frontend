@@ -311,11 +311,11 @@ function SlidesDisplay() {
                         } else if (element.type === "quiz") {
                           return(
                             <QuizSection
-                            question={element.value.question}
-                            choices={element.value.choices}
-                            correctAnswer={element.value.correctAnswer}
-                            selectedChoice={selectedChoice}
-                            setSelectedChoice={setSelectedChoice}
+                              question={element.value.question}
+                              choices={element.value.choices}
+                              correctAnswer={element.value.correctAnswer}
+                              selectedChoice={selectedChoice}
+                              setSelectedChoice={setSelectedChoice}
                           />)
                         } else if (element.type === "accordion") {
                           const accordionItemsComponent = element.value.map(

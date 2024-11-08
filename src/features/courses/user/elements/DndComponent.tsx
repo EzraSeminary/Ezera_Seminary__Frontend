@@ -21,8 +21,8 @@ import {
     setDroppedChoice: (choice: string | null) => void;
     isDndAnswerCorrect: boolean | null;
     setIsDndAnswerCorrect: (correct: boolean | null) => void;
-    setIsDndCompleted: React.Dispatch<React.SetStateAction<boolean>>;
-  }
+    setIsDndCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
+  }  
 
 const DndComponent: React.FC<DndComponentProps> = ({
   element,
@@ -75,13 +75,13 @@ const DndComponent: React.FC<DndComponentProps> = ({
     if (droppedChoice) {
       const isDndCorrect = droppedChoice === element.value.correctDndAnswer;
       setIsDndAnswerCorrect(isDndCorrect);
-      setIsDndCompleted(true);
+      if (setIsDndCompleted)
+        setIsDndCompleted(true);
     }
   };
 
   return (
     <div
-      key={element._id}
       className="flex flex-col justify-center items-center w-[90%] mx-auto"
     >
       {/* Questions */}

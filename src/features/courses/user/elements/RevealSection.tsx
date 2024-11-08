@@ -8,7 +8,7 @@ interface RevealSectionItem {
 
 interface RevealSectionProps {
   revealItems: RevealSectionItem[];
-  setIsRevealFlipped: (isFlipped: boolean) => void;
+  setIsRevealFlipped?: (isFlipped: boolean) => void;
 }
 
 
@@ -23,7 +23,8 @@ const RevealSection: React.FC<RevealSectionProps> = ({ revealItems, setIsRevealF
         // Check if all items have been flipped at least once
         const isAllItemsFlipped = newState.every((isFlipped) => isFlipped);
         if (isAllItemsFlipped) {
-          setIsRevealFlipped(true);
+          if (setIsRevealFlipped)
+            setIsRevealFlipped(true);
         }
   
         return newState;

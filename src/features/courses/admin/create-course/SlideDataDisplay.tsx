@@ -5,46 +5,22 @@ import {
   selectSlides,
   Chapter,
   CustomElement,
-  QuizElement,
-  DndElement,
   Slide,
   MixElement,
 } from "../../../../redux/courseSlice";
 import AccordionItemDisplay from "../../Elements/AccordionItemDisplay";
 import { RootState } from "../../../../redux/store";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import "@splidejs/react-splide/css/sea-green";
-import "@splidejs/react-splide/css/core";
-import { XCircle, CheckFat, YoutubeLogo } from "@phosphor-icons/react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import ReactCardFlip from "react-card-flip";
-import Slider from "@mui/material/Slider";
 import { sliderMarks } from "@/utils/SliderMarks";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import {
-  DndContext,
-  PointerSensor,
-  useSensors,
-  useSensor,
-  closestCenter,
-  DragEndEvent,
-  DragStartEvent,
-} from "@dnd-kit/core";
-import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
-import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
-import YouTube from "react-youtube";
+import SliderSection from "../../user/elements/SliderSection";
+import RevealSection from "../../user/elements/RevealSection";
+import DndComponent from "../../user/elements/DndComponent";
+import SequenceSection from "../../user/elements/SequenceSection";
+import QuizSection from "../../user/elements/QuizSection";
+import VideoSection from "../../user/elements/VideoSection";
+import SlideSection from "../../user/elements/SlideSection";
 
-interface FlipState {
-  [index: number]: boolean;
-}
 
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
@@ -59,16 +35,9 @@ function SlideDataDisplay({
   onNextSlide,
 }: SlideDataDisplayProps) {
   //track whether the selected answer is correct or not.
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [isDndAnswerCorrect, setIsDndAnswerCorrect] = useState<boolean | null>(
     null
   );
-
-  //show quiz result
-  const [showQuizResult, setShowQuizResult] = useState(false);
-
-  // Flip state
-  const [flip, setFlip] = useState<FlipState>({});
   // Slider state
   const [sliderValue, setSliderValue] = useState(2.5);
 
@@ -83,65 +52,7 @@ function SlideDataDisplay({
   //Quiz Related functions
   //radio input switch
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const handleRadioChange = (choiceIndex: number, choiceValue: string) => {
-    setSelectedChoice(choiceIndex);
-    //logic to determine whether the selected answer is correct.
-    if (selectedSlide?.elements?.some((element) => element.type === "quiz")) {
-      const quizElement = selectedSlide.elements.find(
-        (element): element is QuizElement => element.type === "quiz"
-      );
-      if (quizElement) {
-        const isCorrect = choiceValue === quizElement.value.correctAnswer;
-        setIsAnswerCorrect(isCorrect);
-        setShowQuizResult(false); // Reset showResult when a new answer is selected
-      }
-    }
-  };
 
-  // For "dnd" type
-  const handleCheckAnswer = () => {
-    if (selectedSlide?.elements?.some((element) => element.type === "dnd")) {
-      // Get the "dnd" element
-      const dndElement = selectedSlide.elements.find(
-        (element): element is DndElement => element.type === "dnd"
-      );
-      if (dndElement && droppedChoice) {
-        // Assume that correctDndAnswer is the property that holds the correct answer for dndElement.
-        const isDndCorrect =
-          droppedChoice === dndElement.value.correctDndAnswer;
-        setIsDndAnswerCorrect(isDndCorrect);
-      }
-    }
-
-    setShowQuizResult(true);
-  };
-
-  //isCorrect switch
-  // Render quiz result
-  const renderQuizResult = () => {
-    if (!showQuizResult || isAnswerCorrect === null) return null; // Don't show feedback before a choice has been made
-
-    if (isAnswerCorrect) {
-      return (
-        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
-      );
-    } else {
-      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
-    }
-  };
-
-  // Render dnd result
-  const renderDndResult = () => {
-    if (isDndAnswerCorrect === true) {
-      return (
-        <CheckFat size={40} weight="fill" className="text-green-700 pl-1" />
-      );
-    } else if (isDndAnswerCorrect === false) {
-      return <XCircle size={40} weight="fill" className="text-red-700 pl-1" />;
-    }
-
-    return null;
-  };
 
   const chapters = useSelector(selectChapters) as Chapter[];
   const slides: Slide[] = useSelector((state: RootState) =>
@@ -200,81 +111,12 @@ function SlideDataDisplay({
         setAudioPlayUrl("");
       }
     }
-    setShowQuizResult(false); // Reset the showQuizResult state
   }, [selectedSlide]);
 
-  // Flip divs on Reveal Element
-  const handleFlip = (index: number) => {
-    setFlip((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index], // Toggle the state
-    }));
-  };
-
-  // Save the state of the slider
-  const handleSliderChange = (_: Event, newValue: number | number[]) => {
-    if (typeof newValue === "number") {
-      setSliderValue(newValue);
-    }
-  };
-
-  // Drag and Drop Functions
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [draggedItem, setDraggedItem] = useState<string | null>(null);
   // dropped choice
   const [droppedChoice, setDroppedChoice] = useState<string | null>(null);
 
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    setDraggedItem(active.id as string);
-    console.log(draggedItem);
-  };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over?.id === "droppable" && active.data?.current?.choice) {
-      const choiceToAdd = active.data.current.choice.text;
-      if (typeof choiceToAdd === "string") {
-        setDroppedChoice(choiceToAdd);
-      }
-    } else {
-      setDroppedChoice(null); // Reset or handle this scenario if needed.
-    }
-
-    setDraggedItem(null);
-  };
-
-  // Define sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
-
-  // Get video id from youtube link
-  const getYoutubeVideoId = (url: string) => {
-    const regExp =
-      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
-  };
-
-  // Get the youtube image
-  const getYoutubeThumbnailUrl = (videoId: string) => {
-    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
-  };
-
-  // Youtube component options
-  const opts = {
-    height: "260",
-    width: "427",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
 
   // Switch from the image to the video
   const handleImageClick = () => {
@@ -353,68 +195,20 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "quiz") {
                   elementComponent = (
-                    <div
-                      key={uniqueKey}
-                      className="flex flex-col justify-center items-center mb-4"
-                    >
-                      {/* Questions */}
-                      <p className="text-primary-6 font-nokia-bold text-lg">
-                        {element.value.question}
-                      </p>
-                      {/* Choices */}
-                      {element.value.choices && (
-                        <div className="flex flex-col mt-2">
-                          {element.value.choices.map((choice, choiceIndex) => {
-                            return (
-                              <label
-                                key={`${uniqueKey}-choice-${choiceIndex}`}
-                                className="inline-flex items-center"
-                              >
-                                <input
-                                  type="radio"
-                                  className="w-5 h-5 appearance-none bg-primary-6 focus:bg-orange-400 rounded-full transition-all"
-                                  checked={selectedChoice === choiceIndex}
-                                  onChange={() =>
-                                    handleRadioChange(choiceIndex, choice.text)
-                                  }
-                                />
-                                <span className="text-primary-6 font-nokia-bold text-sm ml-2">
-                                  {choice.text}
-                                </span>
-                              </label>
-                            );
-                          })}
-                        </div>
-                      )}
-                      {/* Correct Answer */}
-                      <div className="flex mt-2">
-                        <button
-                          className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                          onClick={() => setShowQuizResult(true)}
-                        >
-                          Check Answer
-                        </button>
-                        {renderQuizResult()}
-                      </div>
-                    </div>
+                    <QuizSection
+                      question={element.value.question}
+                      choices={element.value.choices}
+                      correctAnswer={element.value.correctAnswer}
+                      selectedChoice={selectedChoice}
+                      setSelectedChoice={setSelectedChoice}
+                    />
                   );
                 } else if (element.type === "slide") {
-                  const listItemsComponent = element.value.map(
-                    (listItem, index) => (
-                      <SplideSlide
-                        key={index}
-                        className="text-primary-6 font-nokia-bold text-xs"
-                      >
-                        {listItem}
-                      </SplideSlide>
-                    )
-                  );
-
-                  return (
-                    <div key={element._id}>
-                      <Splide>{listItemsComponent}</Splide>
-                    </div>
-                  );
+                 elementComponent = (
+                  <SlideSection
+                    slideItems={element.value}
+                 />
+                 )
                 } else if (element.type === "img") {
                   const altText =
                     element.value instanceof File
@@ -447,152 +241,33 @@ function SlideDataDisplay({
                   );
                 } else if (element.type === "sequence") {
                   elementComponent = (
-                    <Carousel
-                      orientation="vertical"
-                      opts={{
-                        align: "start",
-                      }}
-                      className="w-full"
-                    >
-                      <CarouselContent className="-mt-1 h-[200px]">
-                        {element.value.map((sequenceItem, index) => (
-                          <CarouselItem
-                            key={`${uniqueKey}-list-${index}`}
-                            className="pt-1 md:basis-1/2"
-                          >
-                            <div className="p-1">
-                              <div className="flex items-center justify-center p-6 bg-white border-2 border-secondary-3 rounded-xl shadow-2xl">
-                                <span className="text-secondary-9 text-xl font-nokia-bold">
-                                  {sequenceItem}
-                                </span>
-                              </div>
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      <CarouselPrevious />
-                      <CarouselNext />
-                    </Carousel>
+                    <SequenceSection
+                      sequenceItems={element.value}
+                    />
                   );
                 } else if (element.type === "reveal") {
                   elementComponent = (
-                    <>
-                      {element.value.map((revealItem, index) => (
-                        <ReactCardFlip
-                          isFlipped={flip[index] || false}
-                          flipDirection="vertical"
-                          key={`${uniqueKey}-reveal-${index}`}
-                        >
-                          <div
-                            onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-xl hover:bg-secondary-1"
-                          >
-                            {revealItem.title}
-                          </div>
-                          <div
-                            onClick={() => handleFlip(index)}
-                            className="w-[350px] h-[100px] flex items-center justify-center text-center bg-white border-2 border-secondary-3 shadow-2xl my-1 px-2 text-secondary-9 text-lg hover:bg-secondary-1"
-                          >
-                            {revealItem.content}
-                          </div>
-                        </ReactCardFlip>
-                      ))}
-                    </>
+                    <RevealSection
+                      revealItems={element.value}
+                    />
                   );
                 } else if (element.type === "range") {
                   elementComponent = (
-                    <div className="w-[80%] mt-10">
-                      <Slider
-                        min={0}
-                        max={5}
-                        step={1}
-                        marks={sliderMarks}
-                        valueLabelDisplay="on"
-                        valueLabelFormat={(value) =>
-                          value === 2.5 ? "Touch to slide" : value
-                        }
-                        value={sliderValue}
-                        onChange={handleSliderChange}
-                        sx={{
-                          color: "#424242",
-                          "& .MuiSlider-track": {
-                            backgroundColor: "#424242",
-                          },
-                          "& .MuiSlider-thumb": {
-                            backgroundColor: "white",
-                          },
-                          "& .MuiSlider-mark": {
-                            backgroundColor: "white",
-                          },
-                          "& .MuiSlider-markLabel": {
-                            color: "white",
-                          },
-                        }}
-                      />
-                      <div className="flex justify-between">
-                        <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
-                          ምንም አልተማርኩም
-                        </button>
-                        <button className="text-white text-sm bg-secondary-7 bg-opacity-40 p-1 rounded-lg">
-                          በጣም ተምሬያለሁ
-                        </button>
-                      </div>
-                    </div>
+                    <SliderSection
+                      sliderMarks={sliderMarks}
+                      sliderValue={sliderValue}
+                      setSliderValue={setSliderValue}
+                    />
                   );
                 } else if (element.type === "dnd") {
                   elementComponent = (
-                    <div
-                      key={uniqueKey}
-                      className="flex flex-col justify-center items-center mb-4"
-                    >
-                      {/* Questions */}
-                      <p className="text-primary-6 font-nokia-bold text-lg">
-                        {element.value.question}
-                      </p>
-                      {/* Choices */}
-                      {element.value.choices && (
-                        <DndContext
-                          onDragStart={handleDragStart}
-                          onDragEnd={handleDragEnd}
-                          sensors={sensors}
-                          collisionDetection={closestCenter}
-                        >
-                          <div className="flex my-2">
-                            {element.value.choices.map(
-                              (choice, choiceIndex) => {
-                                if (droppedChoice !== choice.text) {
-                                  return (
-                                    // dragable item
-                                    <DraggableItem
-                                      key={choiceIndex}
-                                      choice={choice}
-                                      choiceIndex={choiceIndex}
-                                      id="draggable"
-                                    />
-                                  );
-                                }
-                              }
-                            )}
-                          </div>
-                          {/* dropable area */}
-                          <DroppableArea
-                            key={uniqueKey}
-                            droppedChoice={droppedChoice}
-                            id="droppable"
-                          />
-                        </DndContext>
-                      )}
-                      {/* Correct Answer */}
-                      <div className="flex mt-2">
-                        <button
-                          className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-auto rounded-3xl mx-auto text-xs1 lg:text-sm lg:py-1 px-2"
-                          onClick={handleCheckAnswer}
-                        >
-                          Check Answer
-                        </button>
-                        {renderDndResult()}
-                      </div>
-                    </div>
+                    <DndComponent
+                      element={element}
+                      droppedChoice={droppedChoice}
+                      setDroppedChoice={setDroppedChoice}
+                      isDndAnswerCorrect={isDndAnswerCorrect}
+                      setIsDndAnswerCorrect={setIsDndAnswerCorrect}
+                  />
                   );
                 } else if (element.type === "mix") {
                   const imageSrc =
@@ -623,32 +298,14 @@ function SlideDataDisplay({
                     </div>
                   );
                 } else if (element.type === "video") {
-                  const videoId = getYoutubeVideoId(element.value);
-                  const thumbnailUrl = videoId
-                    ? getYoutubeThumbnailUrl(videoId)
-                    : undefined;
-
-                  elementComponent = videoId ? (
-                    isVideoVisible ? (
-                      <YouTube videoId={videoId} opts={opts} />
-                    ) : (
-                      <div
-                        className="relative w-[400px] mx-auto hover:opacity-80 transition-all"
-                        onClick={handleImageClick}
-                      >
-                        <img src={thumbnailUrl} alt="YouTube Thumbnail" />
-                        <YoutubeLogo
-                          size={48}
-                          weight="fill"
-                          className="absolute inset-0 m-auto text-[#FF0000]"
-                        />
-                      </div>
-                    )
-                  ) : (
-                    <p className="text-white">Invalid YouTube URL</p>
-                  );
+                  elementComponent = (
+                    <VideoSection
+                      videoUrl={element.value}
+                      isVideoVisible={isVideoVisible}
+                      handleImageClick={handleImageClick}
+                    />
+                  )
                 }
-
                 return elementComponent;
               })}
             </ul>
