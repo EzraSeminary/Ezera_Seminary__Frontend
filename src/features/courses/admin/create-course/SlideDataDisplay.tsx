@@ -20,8 +20,7 @@ import SequenceSection from "../../user/elements/SequenceSection";
 import QuizSection from "../../user/elements/QuizSection";
 import VideoSection from "../../user/elements/VideoSection";
 import SlideSection from "../../user/elements/SlideSection";
-
-
+import MixSection from "../../user/elements/MixSection";
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
     chapter: number;
@@ -67,7 +66,7 @@ function SlideDataDisplay({
   const isLastSlide = selectedSlideIndex.slide === totalSlides - 1;
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-  const [mixImagePreviewUrl, setMixImagePreviewUrl] = useState("");
+  const [ , setMixImagePreviewUrl] = useState("");
   const [audioPlayUrl, setAudioPlayUrl] = useState<string>("");
 
   useEffect(() => {
@@ -270,21 +269,13 @@ function SlideDataDisplay({
                   />
                   );
                 } else if (element.type === "mix") {
-                  const imageSrc =
-                    element.value.file instanceof File
-                      ? mixImagePreviewUrl
-                      : element.value.file;
                   elementComponent = (
-                    <div key={index}>
-                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
-                        {element.value.text1}
-                      </p>
-                      <img src={imageSrc} alt="" className="w-[40%] mx-auto" />
-                      <p className="text-primary-6 font-nokia-bold self-center tracking-wide text-justify text-xs mt-2">
-                        {element.value.text2}
-                      </p>
-                    </div>
-                  );
+                    <MixSection
+                      text1={element.value.text1}
+                      text2={element.value.text2}
+                      file={element.value.file}
+                    />
+                  )
                 } else if (element.type === "audio") {
                   elementComponent = audioPlayUrl && (
                     <div
