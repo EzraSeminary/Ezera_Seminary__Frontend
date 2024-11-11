@@ -6,6 +6,7 @@ import {
   setTitle,
   setDescription,
   setImage,
+  setCategory,
   selectCourse,
 } from "../../redux/courseSlice";
 import { Button } from "../../components/ui/button";
@@ -13,35 +14,64 @@ import { CourseState } from "../../redux/courseSlice";
 import "../../index.css";
 import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
+import CustomDropdown from "../../components/CustomDropdown";
+import imageCompression from "browser-image-compression";
 
 function CreateCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const role = useSelector((state: RootState) => state.auth.user?.role);
   const basePath = role;
-  const { title, description } = useSelector(
+  const { title, description, category } = useSelector(
     (state: { course: CourseState }) => state.course
   );
   const course = useSelector(selectCourse);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [ , setIsProcessing] = useState(false); // State for loading spinner
   // form validation error
   const [validationErrors, setValidationErrors] = useState({
     title: false,
     description: false,
     image: false,
+    category: false,
   });
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
+  const categoryOptions = [
+    "መሰረታዊ የመጽሐፍ ቅዱስ እውነቶች",
+    "ስነ-ትዳር",
+    "ወጣቶች",
+    "መጽሐፍ ቅዱስ አጠናን",
+    "የመጽሃፍ ቅዱስ ገጸ ባህርያት",
+    "የአኗኗር ዘይቤ",
+    "የተለያዩ...",
+  ];
+
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
     if (file) {
-      dispatch(setImage(file)); // Dispatch the File object to the store
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        setImagePreviewUrl(fileReader.result as string);
+      setIsProcessing(true); // Show loading spinner
+
+      try {
+        // Compression options
+        const options = {
+          maxSizeMB: 1, // Max size in MB
+          maxWidthOrHeight: 800, // Resize to max width or height of 800px
+          useWebWorker: true, // Use web workers for better performance
+          fileType: "image/webp", // Convert the image to WebP format
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        setImagePreviewUrl(compressedFileDataUrl);
+        dispatch(setImage(compressedFile)); // Dispatch the compressed File object to the store
         setValidationErrors((prevErrors) => ({ ...prevErrors, image: false }));
-      };
-      fileReader.readAsDataURL(file); // Generate a URL for preview
+      } catch (error) {
+        console.error("Image compression error:", error);
+      } finally {
+        setIsProcessing(false); // Hide the spinner
+      }
     } else {
       // Set the image error if no file is selected
       setValidationErrors((prevErrors) => ({ ...prevErrors, image: true }));
@@ -62,6 +92,15 @@ function CreateCourse() {
       setValidationErrors((prevErrors) => ({
         ...prevErrors,
         description: true,
+      }));
+      hasErrors = true;
+    }
+
+    if (!category) {
+      // Set category error
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        category: true,
       }));
       hasErrors = true;
     }
@@ -118,7 +157,7 @@ function CreateCourse() {
             hover:file:bg-secondary-2 rounded-xs bg-transparent
             focus:outline-none focus:border-accent-8 cursor-pointer"
             name="image"
-            onChange={handleImageChange}
+            onChange={handleFileChange}
             required
           />
 
@@ -183,6 +222,28 @@ function CreateCourse() {
             {validationErrors.description && (
               <p className="text-red-500 text-xs italic">
                 Please enter a description.
+              </p>
+            )}
+          </div>
+          <div className="col-span-12">
+            <label className="block text-accent-6 mb-1">Category:</label>
+            <CustomDropdown
+              options={categoryOptions}
+              selectedValue={category}
+              onSelect={(value) => {
+                dispatch(setCategory(value));
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  category: false,
+                }));
+              }}
+              className={`w-full px-3 py-2 text-accent-6 leading-tight border bg-primary-6 font-nokia-bold ${
+                validationErrors.category ? "border-red-500" : "border-accent-6"
+              } rounded-md focus:outline-none focus:shadow-lg transition-all placeholder:text-secondary-4 placeholder:text-sm`}
+            />
+            {validationErrors.category && (
+              <p className="text-red-500 text-xs italic">
+                Please select a category.
               </p>
             )}
           </div>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import IntroSkeleton from "../../skeletons/IntroSkeleton";
 import { motion } from "framer-motion";
 import introVideo from "../../videos/Tsegaw-Melak-1.mp4";
-import introVideoTumb from "../../assets/Tsegaw-Melak-2.png";
+import introVideoTumb from "../../assets/Tsegaw-Melak-2.webp";
 import { PlayCircle } from "@phosphor-icons/react";
 
 const Intro = () => {

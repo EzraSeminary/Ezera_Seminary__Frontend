@@ -1,5 +1,6 @@
-import aimImage from "@/assets/aim-img-1.jpg";
-import visionImage from "@/assets/vision-img-1.jpg";
+import aimImage from "@/assets/aim-img-1.webp";
+import visionImage from "@/assets/vision-img-1.webp";
+
 
 const Purpose = () => {
   return (

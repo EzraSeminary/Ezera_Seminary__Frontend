@@ -5,6 +5,8 @@ export interface ApiState {
   _id: string;
   title: string;
   description: string;
+  category: string;
+  updatedAt: string;
   image: string | File;
   chapters: Chapter[];
   published: boolean;
@@ -127,14 +129,14 @@ export interface RangeElement extends Omit<Element, "value"> {
 export interface DndElement extends Omit<Element, "value"> {
   type: "dnd";
   value: DndElementValue;
-  _id: string;
+  _id?: string;
 }
 
 export type DndElementValue = {
   question: string;
   choices: { text: string }[];
   correctDndAnswer: string;
-  _id: string;
+  _id?: string;
 };
 
 export interface MixElement extends Omit<Element, "value"> {

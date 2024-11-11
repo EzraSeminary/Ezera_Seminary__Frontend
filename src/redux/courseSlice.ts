@@ -4,6 +4,7 @@ import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 export interface CourseState {
   title: string;
   description: string;
+  category: string;
   image: string | File;
   chapters: Chapter[];
   published: boolean;
@@ -145,6 +146,7 @@ export interface VideoElement extends Omit<Element, "value"> {
 const initialState: CourseState = {
   title: "",
   description: "",
+  category: "",
   image: "",
   chapters: [],
   published: false,
@@ -155,17 +157,21 @@ export const courseSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setCourse: (state, action: PayloadAction<CourseState>) => {
+    setCourse: (state, action: PayloadAction<Partial<CourseState>>) => {
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       };
     },
+    
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
+    },
+    setCategory: (state, action: PayloadAction<string>) => {
+      state.category = action.payload;
     },
     setImage: (state, action: PayloadAction<string | File>) => {
       state.image = action.payload;
@@ -464,6 +470,7 @@ export const courseSlice = createSlice({
       return {
         title: "",
         description: "",
+        category: "",
         image: "",
         chapters: [],
         published: false,
@@ -476,6 +483,7 @@ export const {
   setCourse,
   setTitle,
   setDescription,
+  setCategory,
   setImage,
   togglePublished,
   addChapter,
@@ -497,6 +505,7 @@ export const {
 export default courseSlice.reducer;
 
 export const selectCourse = (state: { course: CourseState }) => state.course;
+
 export const selectChapters = (state: { course: CourseState }) =>
   state.course.chapters;
 export const selectSlides = (

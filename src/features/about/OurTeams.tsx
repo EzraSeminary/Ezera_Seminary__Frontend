@@ -1,6 +1,6 @@
-import melak from "../../assets/img 4.png";
-import janet from "../../assets/img 2.png";
-import dawit from "../../assets/img 3.png";
+import melak from "../../assets/img 4.webp";
+import janet from "../../assets/img 2.webp";
+import dawit from "../../assets/img 3.webp";
 
 const OurTeam = () => {
   return (
