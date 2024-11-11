@@ -10,7 +10,7 @@ import MonthFolder from "./MonthFolder";
 import {
   convertToEthiopianDate,
   findDevotion,
-  sortMonths,
+  sortMonthsChronologically, // Updated import
   ethiopianMonths,
   sortDevotionsByDayDescending,
 } from "./devotionUtils";
@@ -42,13 +42,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       setSelectedDevotion(selectedDevotionFromHome);
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // const [year, month, day] = convertToEthiopianDate(today);
       const [, month] = convertToEthiopianDate(today);
       const ethiopianMonth = ethiopianMonths[month];
-
-      // console.log("Ethiopian Date:", [year, month, day]);
-      // console.log("Ethiopian Month:", ethiopianMonth);
 
       const todaysDevotion =
         findDevotion(devotions, 0, today) ||
@@ -92,27 +87,28 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  // **Add this code to sort devotions within each month by day descending**
+  // Sort devotions within each month by day descending
   for (const month in devotionsByMonth) {
     devotionsByMonth[month] = sortDevotionsByDayDescending(
       devotionsByMonth[month]
     );
   }
 
-  // console.log("Before sorting:", Object.keys(devotionsByMonth));
+  // Get months sorted chronologically
+  const sortedMonths = sortMonthsChronologically(devotionsByMonth);
 
-  const sortedMonthsWithCurrentFirst = sortMonths(devotionsByMonth);
-
-  // Filter devotions to only include the current month if the user is not an admin or instructor
+  // Get current Ethiopian month index
   const today = new Date();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, currentMonth] = convertToEthiopianDate(today);
-  const currentMonthName = ethiopianMonths[currentMonth];
+  const [, currentMonthIndex] = convertToEthiopianDate(today);
 
+  // Determine which months to display based on user role
   const filteredMonths =
     user && (user.role === "Admin" || user.role === "Instructor")
-      ? sortedMonthsWithCurrentFirst
-      : [currentMonthName];
+      ? sortedMonths
+      : sortedMonths.filter((month) => {
+          const monthIndex = ethiopianMonths.indexOf(month);
+          return monthIndex > 0 && monthIndex <= currentMonthIndex;
+        });
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
