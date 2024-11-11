@@ -58,3 +58,22 @@ export const sortMonths = (devotionsByMonth: Record<string, Devotion[]>) => {
     ...sortedMonths.slice(0, currentMonthIndex),
   ];
 };
+
+export const sortDevotionsByDayDescending = (devotions: Devotion[]) => {
+  return devotions.sort((a, b) => {
+    const dayA = Number(a.day);
+    const dayB = Number(b.day);
+    return dayB - dayA; // Descending order
+  });
+};
+
+export const sortMonthsChronologically = (
+  devotionsByMonth: Record<string, Devotion[]>
+) => {
+  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
+    const monthIndexA = ethiopianMonths.indexOf(a);
+    const monthIndexB = ethiopianMonths.indexOf(b);
+    return monthIndexA - monthIndexB;
+  });
+  return sortedMonths;
+};
