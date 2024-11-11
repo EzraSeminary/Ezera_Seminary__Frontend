@@ -24,42 +24,53 @@ const DevotionForm: React.FC = () => {
 
   const form = useSelector(selectForm);
   const [file, setFile] = useState<File | null>(null);
-  const [bodyContent, setBodyContent] = useState<string>(""); // Handle the rich text body content
-  const isEditing = useSelector((state: RootState) => state.devotions.isEditing);
-  const selectedDevotion = useSelector((state: RootState) => state.devotions.selectedDevotion);
+  const [bodyContent, setBodyContent] = useState<string>("");
+  const isEditing = useSelector(
+    (state: RootState) => state.devotions.isEditing
+  );
+  const selectedDevotion = useSelector(
+    (state: RootState) => state.devotions.selectedDevotion
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
       dispatch(updateForm(selectedDevotion));
-  
-      // Set bodyContent if body exists and has at least one entry
-      if (Array.isArray(selectedDevotion.body) && selectedDevotion.body.length > 0) {
+
+      if (
+        Array.isArray(selectedDevotion.body) &&
+        selectedDevotion.body.length > 0
+      ) {
         setBodyContent(selectedDevotion.body[0]);
       }
-  
-      // Set file if photo exists
-      setFile(selectedDevotion.photo ? (selectedDevotion.photo as File) : null);
+
+      setFile(null); // No new file uploaded yet
     }
   }, [dispatch, isEditing, selectedDevotion]);
 
-  // This function will now handle file uploads directly
- const handleFileUpload = (uploadedFile: File) => {
-    const renamedFile = new File([uploadedFile], `${uploadedFile.name}`, { type: uploadedFile.type });
+  const handleFileUpload = (uploadedFile: File) => {
+    const renamedFile = new File([uploadedFile], `${uploadedFile.name}`, {
+      type: uploadedFile.type,
+    });
     setFile(renamedFile);
   };
 
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     dispatch(updateForm({ [event.target.name]: event.target.value }));
   };
 
   const handleBodyContentChange = (content: string) => {
     setBodyContent(content);
-    dispatch(updateParagraph({
-      text: content,
-      index: 0
-    }));
+    dispatch(
+      updateParagraph({
+        text: content,
+        index: 0,
+      })
+    );
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -68,19 +79,29 @@ const DevotionForm: React.FC = () => {
 
     const devotion: Devotion = {
       ...form,
-      body: [bodyContent], // Use the rich text content for body as an array
-      photo: file, // Attach the photo file
+      body: [bodyContent],
     };
+
+    if (file) {
+      devotion.photo = file;
+    } else if (isEditing && selectedDevotion?.photo) {
+      devotion.photo = selectedDevotion.photo;
+    }
+
     const validToken = token || "";
     try {
       let response;
       if (form._id) {
-        response = await dispatch(updateDevotion({ token: validToken, devotion }));
+        response = await dispatch(
+          updateDevotion({ token: validToken, devotion })
+        );
         if (response.payload) {
           toast.success("Devotion updated successfully!");
         }
       } else {
-        response = await dispatch(createDevotion({ token: validToken, devotion }));
+        response = await dispatch(
+          createDevotion({ token: validToken, devotion })
+        );
         if (response.payload) {
           toast.success("Devotion created successfully!");
         }
@@ -106,7 +127,10 @@ const DevotionForm: React.FC = () => {
     <>
       <ToastContainer />
       <div className="flex border-2 shadow-lg rounded-l-2xl h-[100%] font-nokia-bold w-[30%]">
-        <form onSubmit={handleSubmit} className="w-[90%] mx-auto py-6 space-y-3">
+        <form
+          onSubmit={handleSubmit}
+          className="w-[90%] mx-auto py-6 space-y-3"
+        >
           <div>
             <select
               className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs mr-6"
@@ -204,7 +228,14 @@ const DevotionForm: React.FC = () => {
             />
           </div>
           <div className="flex justify-between items-center">
-            <PhotoUploader handleFileUpload={handleFileUpload} />
+            <PhotoUploader
+              handleFileUpload={handleFileUpload}
+              existingImageUrl={
+                isEditing && selectedDevotion?.photo
+                  ? (selectedDevotion.photo as string)
+                  : undefined
+              }
+            />
             <div className="space-y-1 text-sm text-accent-6">
               {isSubmitting ? (
                 <CircleNotch size={32} />
