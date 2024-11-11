@@ -12,6 +12,7 @@ import {
   findDevotion,
   sortMonths,
   ethiopianMonths,
+  sortDevotionsByDayDescending,
 } from "./devotionUtils";
 import { RootState } from "@/redux/store";
 
@@ -90,6 +91,13 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     acc[key].push(devotion);
     return acc;
   }, {} as Record<string, Devotion[]>);
+
+  // **Add this code to sort devotions within each month by day descending**
+  for (const month in devotionsByMonth) {
+    devotionsByMonth[month] = sortDevotionsByDayDescending(
+      devotionsByMonth[month]
+    );
+  }
 
   // console.log("Before sorting:", Object.keys(devotionsByMonth));
 
