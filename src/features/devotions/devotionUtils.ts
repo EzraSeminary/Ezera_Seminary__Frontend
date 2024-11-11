@@ -58,3 +58,12 @@ export const sortMonths = (devotionsByMonth: Record<string, Devotion[]>) => {
     ...sortedMonths.slice(0, currentMonthIndex),
   ];
 };
+
+
+export const sortDevotionsByDayDescending = (devotions: Devotion[]) => {
+  return devotions.sort((a, b) => {
+    const dayA = Number(a.day);
+    const dayB = Number(b.day);
+    return dayB - dayA; // Descending order
+  });
+};
