@@ -11,6 +11,7 @@ interface Devotion {
   chapter: string;
   verse: string;
   paragraphs: string[];
+  body: string[];
   prayer: string;
   subTitles: string[];
   photo: File | string | null; // Assuming 'photo' can be a File object or a string URL to the photo
@@ -90,25 +91,39 @@ export const updateDevotion = createAsyncThunk(
     const axiosInstance = createAxiosInstance(token);
     const transformedDevotion: {
       [key: string]: string | File | null | string[];
-    } = { ...devotion };
-    devotion.paragraphs.forEach((paragraph, index) => {
-      transformedDevotion[
-        `paragraph${index + 1}` as keyof typeof transformedDevotion
-      ] = paragraph;
-    });
-    delete transformedDevotion.paragraphs;
-    transformedDevotion.image = transformedDevotion.photo;
-    delete transformedDevotion.photo;
+    } = {};
+
+    // Add fields to transformedDevotion
+    transformedDevotion.month = devotion.month;
+    transformedDevotion.day = devotion.day;
+    transformedDevotion.title = devotion.title;
+    transformedDevotion.chapter = devotion.chapter;
+    transformedDevotion.verse = devotion.verse;
+    transformedDevotion.prayer = devotion.prayer;
+
+    // Handle paragraphs/body
+    if (Array.isArray(devotion.body)) {
+      devotion.body.forEach((paragraph, index) => {
+        transformedDevotion[`paragraph${index + 1}`] = paragraph;
+      });
+    }
+
+    // Handle image
+    if (devotion.photo instanceof File) {
+      transformedDevotion.image = devotion.photo;
+    }
+
     const formData = new FormData();
     Object.entries(transformedDevotion).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((item) => {
           formData.append(key, item);
         });
-      } else if (value !== null) {
+      } else if (value !== null && value !== undefined) {
         formData.append(key, value);
       }
     });
+
     const response = await axiosInstance.put(
       `/devotion/${devotion._id}`,
       formData
