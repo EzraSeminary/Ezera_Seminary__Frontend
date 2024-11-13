@@ -1,42 +1,56 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { updateFile, selectPreviewUrl } from "@/redux/devotionsSlice";
+import { useDispatch } from "react-redux";
+import { updateFile } from "@/redux/devotionsSlice";
 import imageCompression from "browser-image-compression";
-// import { CircleNotch } from "@phosphor-icons/react";
 
 interface PhotoUploaderProps {
-  handleFileUpload: (file: File) => void; // Change to handleFileUpload to make it clear it's for files
+  handleFileUpload: (file: File) => void;
+  existingImageUrl?: string;
 }
 
-const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleFileUpload }) => {
+const PhotoUploader: React.FC<PhotoUploaderProps> = ({
+  handleFileUpload,
+  existingImageUrl,
+}) => {
   const dispatch = useDispatch();
-  const previewUrl = useSelector(selectPreviewUrl);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [localPreviewUrl, setLocalPreviewUrl] = useState<string | null>(
+    existingImageUrl || null
+  );
+
+  useEffect(() => {
+    if (existingImageUrl) {
+      setLocalPreviewUrl(existingImageUrl);
+    }
+  }, [existingImageUrl]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      setIsProcessing(true); // Show loading spinner
+      setIsProcessing(true);
 
       try {
-        // Compression options
         const options = {
-          maxSizeMB: 1, // Max size in MB
-          maxWidthOrHeight: 800, // Resize to max width or height of 800px
-          useWebWorker: true, // Use web workers for better performance
-          fileType: "image/webp", // Convert the image to WebP format
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+          fileType: "image/webp",
         };
 
         const compressedFile = await imageCompression(file, options);
-        const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        const compressedFileDataUrl = await imageCompression.getDataUrlFromFile(
+          compressedFile
+        );
+
         dispatch(updateFile(compressedFileDataUrl));
-        handleFileUpload(compressedFile); // Directly pass the File object
+        setLocalPreviewUrl(compressedFileDataUrl);
+        handleFileUpload(compressedFile);
       } catch (error) {
         console.error("Image compression error:", error);
       } finally {
-        setIsProcessing(false); // Hide the spinner
+        setIsProcessing(false);
       }
     }
   };
@@ -45,9 +59,9 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleFileUpload }) => {
     <div>
       {/* {isProcessing && <CircleNotch size={32} className="animate-spin" />} */}
 
-      {previewUrl && typeof previewUrl === "string" && !isProcessing && (
+      {localPreviewUrl && !isProcessing && (
         <img
-          src={previewUrl}
+          src={localPreviewUrl}
           alt="Preview"
           className="w-32 h-auto p-2 border border-accent-6 mb-2 rounded-lg"
         />
@@ -67,7 +81,8 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ handleFileUpload }) => {
 };
 
 PhotoUploader.propTypes = {
-  handleFileUpload: PropTypes.func.isRequired, // Update the prop name
+  handleFileUpload: PropTypes.func.isRequired,
+  existingImageUrl: PropTypes.string,
 };
 
 export default PhotoUploader;
