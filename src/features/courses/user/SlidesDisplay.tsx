@@ -280,6 +280,7 @@ function SlidesDisplay() {
                           return (
                             <ImageSection
                               imageUrl={typeof element.value === 'string' ? element.value : URL.createObjectURL(element.value)}
+                              placeholder="Loading image..."
                           />
                           )
                         } else if (element.type === "list") {
