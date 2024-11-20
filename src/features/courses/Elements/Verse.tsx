@@ -49,14 +49,14 @@ function Verse({
           value={verseReference}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setVerseReference(e.target.value)}
           placeholder="Enter verse reference"
-          className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
+          className="font-nokia-bold border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
           maxLength={100}
         />
         <CustomTextarea
           value={verseText}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setVerseText(e.target.value)}
           placeholder="Enter verse text"
-          className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
+          className="border outline-accent-6 border-secondary-3 min-h-28 bg-primary-1 text-secondary-6 rounded-md font-nokia-bold px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
           maxLength={500}
         />
         <button
