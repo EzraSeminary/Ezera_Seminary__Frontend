@@ -9,6 +9,7 @@ export interface ElementData {
     { title: "Sub Title", description: 'Show a sub-title' ,value:"sub"},
     { title: "Paragraph", description: 'Show long-form text' ,value:"text"},
     { title: "Bulleted list", description: 'Show a list of bullet points',value:"list" },
+    { title: "Add Verse", description: 'Show a bible verse',value:"verse" },
     { title: "Horizontal series", description: 'Show text blocks in order', value:"slide" },
     { title: "Image", description: 'Show a single image',value:"img" },
     { title: "Multiple choice", description: 'Show answers in a list',value:"quiz" },

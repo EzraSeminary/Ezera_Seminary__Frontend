@@ -11,6 +11,7 @@ import { Trash } from "@phosphor-icons/react";
 // import CustomTextarea from "@/components/CustomTextarea";
 import CustomInput from "@/components/CustomInput";
 import List from "../../Elements/List";
+import Verse from "../../Elements/Verse";
 import Slide from "../../Elements/Slide";
 import Quiz from "../../Elements/Quiz";
 import Accordion from "../../Elements/Accordion";
@@ -144,6 +145,7 @@ function EditElements({
     } else if (
       (newElementType && newElementType === "list") ||
       newElementType === "slide" ||
+      newElementType === "verse" ||
       newElementType === "quiz" ||
       newElementType === "accordion" ||
       newElementType === "sequence" ||
@@ -188,6 +190,8 @@ function EditElements({
         return "Image";
       case "list":
         return "Bulleted list";
+      case "verse":
+        return "Add Verse";
       case "slide":
         return "Horizontal series";
       case "quiz":
@@ -266,6 +270,16 @@ function EditElements({
         } else if (element.type === "list") {
           elementComponent = (
             <List
+              key={index}
+              chapterIndex={chapterIndex}
+              slideIndex={slideIndex}
+              setCurrentElement={setCurrentElement}
+              element={element}
+            />
+          );
+        } else if (element.type === "verse") {
+          elementComponent = (
+            <Verse
               key={index}
               chapterIndex={chapterIndex}
               slideIndex={slideIndex}
@@ -411,6 +425,7 @@ function EditElements({
           <option value="img">Image</option>
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
+          <option value="verse">Verse</option>
           <option value="accordion">Accordion</option>
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>

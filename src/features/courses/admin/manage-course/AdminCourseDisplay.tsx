@@ -23,6 +23,7 @@ import RevealSection from "../../user/elements/RevealSection";
 import SequenceSection from "../../user/elements/SequenceSection";
 import SlideSection from "../../user/elements/SlideSection";
 import QuizSection from "../../user/elements/QuizSection";
+import VerseSection from "../../user/elements/VerseSection";
 
 interface SelectedSlideIndex {
   chapter: number;
@@ -215,6 +216,17 @@ function AdminCourseDisplay({
                       <ul className="list-disc mt-2">{listItemsComponent}</ul>
                     </div>
                   );
+                } else if (element.type === "verse") {
+                  const verses: [string, string][] = [];
+                  for (let i = 0; i < element.value.length; i += 2) {
+                    if (element.value[i + 1]) {
+                      verses.push([element.value[i], element.value[i + 1]]);
+                    } else {
+                      throw new Error("Invalid data structure: Missing text for reference.");
+                    }
+                  }
+
+                  elementComponent = <VerseSection verses={verses} />;
                 } else if (element.type === "quiz") {
                   elementComponent = (
                     <QuizSection
