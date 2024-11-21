@@ -21,6 +21,7 @@ import QuizSection from "../../user/elements/QuizSection";
 import VideoSection from "../../user/elements/VideoSection";
 import SlideSection from "../../user/elements/SlideSection";
 import MixSection from "../../user/elements/MixSection";
+import VerseSection from "../../user/elements/VerseSection";
 interface SlideDataDisplayProps {
   selectedSlideIndex: {
     chapter: number;
@@ -202,6 +203,17 @@ function SlideDataDisplay({
                       setSelectedChoice={setSelectedChoice}
                     />
                   );
+                } else if (element.type === "verse") {
+                  const verses: [string, string][] = [];
+                  for (let i = 0; i < element.value.length; i += 2) {
+                    if (element.value[i + 1]) {
+                      verses.push([element.value[i], element.value[i + 1]]);
+                    } else {
+                      throw new Error("Invalid data structure: Missing text for reference.");
+                    }
+                  }
+
+                  elementComponent = <VerseSection verses={verses} />;
                 } else if (element.type === "slide") {
                  elementComponent = (
                   <SlideSection

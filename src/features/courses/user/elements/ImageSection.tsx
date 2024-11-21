@@ -1,14 +1,19 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, CornersOut } from '@phosphor-icons/react';
 
 interface ImageSectionProps {
   imageUrl: string;
+  placeholder: string;
 }
 
 const ImageSection: React.FC<ImageSectionProps> = ({
   imageUrl,
+  placeholder,
 }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+
   const handleOpenFullScreen = () => {
     setIsFullScreen(true);
   };
@@ -16,6 +21,33 @@ const ImageSection: React.FC<ImageSectionProps> = ({
   const handleCloseFullScreen = () => {
     setIsFullScreen(false);
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && imageRef.current) {
+            const img = new Image();
+            img.src = imageUrl;
+            img.onload = () => {
+              setIsLoaded(true);
+            };
+            observer.unobserve(imageRef.current);
+          }
+        });
+      },
+      { rootMargin: '100px' }
+    );
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [imageUrl]);
+
   return (
     <div className="w-full h-auto">
       {isFullScreen ? (
@@ -40,7 +72,8 @@ const ImageSection: React.FC<ImageSectionProps> = ({
           onClick={handleOpenFullScreen}
         >
           <img
-            src={imageUrl}
+            ref={imageRef}
+            src={isLoaded ? imageUrl : placeholder}
             alt="no image"
             className="w-full h-full object-contain shadow-xl rounded-xl text-primary-5 text-center"
           />
