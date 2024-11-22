@@ -120,6 +120,8 @@ function ElementsAdd({
         return "Bulleted list";
       case "verse":
         return "Add Verse";
+      case "main-verse":
+        return "Add Main Verse";
       case "slide":
         return "Horizontal series";
       case "quiz":
@@ -213,7 +215,7 @@ function ElementsAdd({
               element={element}
             />
           );
-        } else if (element.type === "verse") {
+        } else if (element.type === "verse" || element.type === "main-verse") {
           elementComponent = (
             <Verse
               key={index}
