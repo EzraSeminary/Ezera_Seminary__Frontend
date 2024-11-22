@@ -10,6 +10,7 @@ export interface ElementData {
     { title: "Paragraph", description: 'Show long-form text' ,value:"text"},
     { title: "Bulleted list", description: 'Show a list of bullet points',value:"list" },
     { title: "Add Verse", description: 'Show a bible verse',value:"verse" },
+    { title: "Add Main Verse", description: 'Show a bible verse solely',value:"main-verse" },
     { title: "Horizontal series", description: 'Show text blocks in order', value:"slide" },
     { title: "Image", description: 'Show a single image',value:"img" },
     { title: "Multiple choice", description: 'Show answers in a list',value:"quiz" },

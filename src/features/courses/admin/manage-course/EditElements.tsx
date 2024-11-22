@@ -146,6 +146,7 @@ function EditElements({
       (newElementType && newElementType === "list") ||
       newElementType === "slide" ||
       newElementType === "verse" ||
+      newElementType === "main-verse" ||
       newElementType === "quiz" ||
       newElementType === "accordion" ||
       newElementType === "sequence" ||
@@ -192,6 +193,8 @@ function EditElements({
         return "Bulleted list";
       case "verse":
         return "Add Verse";
+      case "main-verse":
+        return "Add Main Verse";
       case "slide":
         return "Horizontal series";
       case "quiz":
@@ -277,7 +280,7 @@ function EditElements({
               element={element}
             />
           );
-        } else if (element.type === "verse") {
+        } else if (element.type === "verse" || element.type === "main-verse") {
           elementComponent = (
             <Verse
               key={index}
@@ -426,6 +429,7 @@ function EditElements({
           <option value="quiz">Quiz</option>
           <option value="list">List</option>
           <option value="verse">Verse</option>
+          <option value="main-verse">Main Verse</option>
           <option value="accordion">Accordion</option>
           <option value="sequence">Sequence</option>
           <option value="reveal">Reveal</option>
