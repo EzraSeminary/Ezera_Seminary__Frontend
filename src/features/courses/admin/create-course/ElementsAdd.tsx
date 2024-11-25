@@ -7,6 +7,7 @@ import {
 } from "../../../../redux/courseSlice";
 import { Trash } from "@phosphor-icons/react";
 import List from "../../Elements/List";
+import Verse from "../../Elements/Verse";
 import Slide from "../../Elements/Slide";
 import Quiz from "../../Elements/Quiz";
 import Accordion from "../../Elements/Accordion";
@@ -117,6 +118,10 @@ function ElementsAdd({
         return "Image";
       case "list":
         return "Bulleted list";
+      case "verse":
+        return "Add Verse";
+      case "main-verse":
+        return "Add Main Verse";
       case "slide":
         return "Horizontal series";
       case "quiz":
@@ -203,6 +208,16 @@ function ElementsAdd({
         } else if (element.type === "list") {
           elementComponent = (
             <List
+              key={index}
+              chapterIndex={chapterIndex}
+              slideIndex={slideIndex}
+              setCurrentElement={setCurrentElement}
+              element={element}
+            />
+          );
+        } else if (element.type === "verse" || element.type === "main-verse") {
+          elementComponent = (
+            <Verse
               key={index}
               chapterIndex={chapterIndex}
               slideIndex={slideIndex}

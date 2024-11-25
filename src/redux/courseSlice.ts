@@ -28,6 +28,8 @@ export type CustomElement =
   | TextElement
   | ImgElement
   | ListElement
+  | VerseElement
+  | MainVerseElement
   | SlideElement
   | QuizElement
   | AccordionElement
@@ -61,6 +63,14 @@ export interface ImgElement extends Omit<Element, "value"> {
 
 export interface ListElement extends Omit<Element, "value"> {
   type: "list";
+  value: string[];
+}
+export interface VerseElement extends Omit<Element, "value"> {
+  type: "verse";
+  value: string[];
+}
+export interface MainVerseElement extends Omit<Element, "value"> {
+  type: "main-verse";
   value: string[];
 }
 
@@ -295,6 +305,14 @@ export const courseSlice = createSlice({
           newElement.type = elementType;
           newElement.value = value as string[]; // Cast value to string array for list element
           break;
+        case "verse":
+          newElement.type = elementType;
+          newElement.value = value as string[]; // Cast value to string array for list element
+          break;
+        case "main-verse":
+          newElement.type = elementType;
+          newElement.value = value as string[]; // Cast value to string array for list element
+          break;
         case "slide": // Assuming this type is similar to list
           newElement.type = elementType;
           newElement.value = value as string[]; // Cast value to string array for slide element
@@ -377,6 +395,12 @@ export const courseSlice = createSlice({
             element.value = value as string | File;
             break;
           case "list":
+            element.value = value as string[];
+            break;
+          case "verse":
+            element.value = value as string[];
+            break;
+          case "main-verse":
             element.value = value as string[];
             break;
           case "slide":

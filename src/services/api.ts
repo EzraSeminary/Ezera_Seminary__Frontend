@@ -31,6 +31,8 @@ export type CustomElement =
   | ImgElement
   | ListElement
   | SlideElement
+  | VerseElement
+  | MainVerseElement
   | QuizElement
   | AccordionElement
   | SequenceElement
@@ -67,6 +69,16 @@ export interface ImgElement extends Omit<Element, "value"> {
 
 export interface ListElement extends Omit<Element, "value"> {
   type: "list";
+  value: string[];
+  _id: string;
+}
+export interface VerseElement extends Omit<Element, "value"> {
+  type: "verse";
+  value: string[];
+  _id: string;
+}
+export interface MainVerseElement extends Omit<Element, "value"> {
+  type: "main-verse";
   value: string[];
   _id: string;
 }

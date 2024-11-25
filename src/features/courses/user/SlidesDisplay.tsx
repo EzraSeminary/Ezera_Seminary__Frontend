@@ -13,6 +13,8 @@ import { useProgress } from "./utils/progressUtils";
 import DndComponent from "./elements/DndComponent";
 import VideoSection from "./elements/VideoSection";
 import { sliderMarks } from "@/utils/SliderMarks";
+import VerseSection from "./elements/VerseSection";
+import MainVerseSection from "./elements/MainVerseSection";
 import SliderSection from "./elements/SliderSection";
 import ImageSection from "./elements/ImageSection";
 import RevealSection from "./elements/RevealSection";
@@ -72,6 +74,7 @@ function SlidesDisplay() {
   const userProgress = findUserProgress(courseID);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
+  
 
   useEffect(() => {
     if (userProgress) {
@@ -169,7 +172,7 @@ function SlidesDisplay() {
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
-      return ["title", "sub", "text", "img", "list", "mix"].includes(
+      return ["title", "sub", "text", "img", "list", "mix", "verse", "main-verse"].includes(
         element.type
       );
     });
@@ -280,6 +283,7 @@ function SlidesDisplay() {
                           return (
                             <ImageSection
                               imageUrl={typeof element.value === 'string' ? element.value : URL.createObjectURL(element.value)}
+                              placeholder="Loading image..."
                           />
                           )
                         } else if (element.type === "list") {
@@ -308,6 +312,28 @@ function SlidesDisplay() {
                               setIsSlideComplete={setIsSlideComplete}
                             />
                           )
+                        } else if (element.type === "verse") {
+                          const verses: [string, string][] = [];
+                          for (let i = 0; i < element.value.length; i += 2) {
+                            if (element.value[i + 1]) {
+                              verses.push([element.value[i], element.value[i + 1]]);
+                            } else {
+                              throw new Error("Invalid data structure: Missing text for reference.");
+                            }
+                          }
+        
+                          return  <VerseSection verses={verses} />;
+                        } else if (element.type === "main-verse") {
+                          const verses: [string, string][] = [];
+                          for (let i = 0; i < element.value.length; i += 2) {
+                            if (element.value[i + 1]) {
+                              verses.push([element.value[i], element.value[i + 1]]);
+                            } else {
+                              throw new Error("Invalid data structure: Missing text for reference.");
+                            }
+                          }
+        
+                          return  <MainVerseSection verses={verses} />;
                         } else if (element.type === "quiz") {
                           return(
                             <QuizSection
