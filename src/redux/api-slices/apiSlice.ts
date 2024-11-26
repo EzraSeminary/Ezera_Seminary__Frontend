@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Devotion } from "@/redux/types";
+import { Devotion } from "@/types/devotionTypes";
 
 interface AnalyticsData {
   newUsers: number;

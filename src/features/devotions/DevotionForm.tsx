@@ -14,7 +14,7 @@ import PhotoUploader from "./PhotoUploader";
 import RichTextEditor from "./../courses/Elements/RichTextEditor"; // Import your RichTextEditor component
 import { CircleNotch } from "@phosphor-icons/react";
 import { AppDispatch } from "@/redux/store";
-import { RootState, Devotion } from "@/redux/types";
+import { RootState, Devotion } from "@/types/devotionTypes";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

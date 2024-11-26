@@ -1,5 +1,5 @@
 import React from "react";
-import { Devotion } from "@/redux/types";
+import { Devotion } from "@/types/devotionTypes";
 import { motion } from "framer-motion";
 import { Folder, FolderOpen } from "@phosphor-icons/react";
 

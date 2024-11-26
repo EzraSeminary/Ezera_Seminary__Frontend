@@ -6,7 +6,7 @@ import bible from "../../assets/bible.webp";
 import bibleNew from "../../assets/about-img.webp";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
-import { Devotion } from "@/redux/types";
+import { Devotion } from "@/types/devotionTypes";
 import Footer from "@/components/Footer";
 
 const gridContainerVariants = {

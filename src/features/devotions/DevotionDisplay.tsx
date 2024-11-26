@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { Devotion } from "@/redux/types";
+import { Devotion } from "@/types/devotionTypes";
 import LoadingPage from "@/pages/user/LoadingPage";
 import MonthFolder from "./MonthFolder";
 import {

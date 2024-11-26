@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import createAxiosInstance from "@/api/axiosInstance";
 import { RootState } from "./store";
-import { FormState } from "./types";
+import { FormState } from "../types/devotionTypes";
 
 // Define a type for the slice state
 interface Devotion {

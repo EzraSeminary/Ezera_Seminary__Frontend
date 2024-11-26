@@ -10,7 +10,7 @@ import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { User } from "@/redux/types";
+import { User } from "@/types/devotionTypes";
 import defaultAvatar from "@/assets/avatar.png"; // Import a default avatar image
 
 const ProfileSettings = () => {

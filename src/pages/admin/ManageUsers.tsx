@@ -6,7 +6,7 @@ import {
   useDeleteUserMutation,
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
-import { User } from "@/redux/types";
+import { User } from "@/types/devotionTypes";
 import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
 import { AxiosError } from "axios";
 import LoadingPage from "../user/LoadingPage";
