@@ -1,29 +1,49 @@
-// import { useState } from "react";
+// Devotion.tsx
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
-import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
+import {
+  useGetTodayDevotionQuery,
+  useGetDevotionsByMonthQuery,
+} from "@/redux/api-slices/apiSlice";
 import Footer from "@/components/Footer";
 import LoadingPage from "@/pages/user/LoadingPage";
-// import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
+import {
+  convertToEthiopianDate,
+  ethiopianMonths,
+} from "@/features/devotions/devotionUtils";
 
 const Devotion = () => {
-  // Use the useGetDevotionsQuery hook to fetch devotions
-  // Assuming the hook does not require an argument, remove `undefined`
+  // Fetch today's devotion
   const {
-    data: paginatedDevotions,
-    error,
-    isLoading,
-  } = useGetDevotionsQuery({ page: 1, limit: 10 });
+    data: todayDevotion,
+    error: todayError,
+    isLoading: todayLoading,
+  } = useGetTodayDevotionQuery();
 
-  const devotions = paginatedDevotions?.data;
+  // Utility function to get current Ethiopian month
+  const getCurrentEthiopianMonth = (): string => {
+    const today = new Date();
+    const [year, month, day] = convertToEthiopianDate(today);
+    return ethiopianMonths[month - 1]; // Assuming months are 1-indexed
+  };
 
-  if (isLoading) return <LoadingPage />;
-  if (error) return `Error: ${(error as Error).message}`;
+  const currentMonth = getCurrentEthiopianMonth();
+
+  // Fetch current month's devotions
+  const {
+    data: currentMonthDevotions,
+    error: monthError,
+    isLoading: monthLoading,
+  } = useGetDevotionsByMonthQuery(currentMonth);
+
+  if (todayLoading || monthLoading) return <LoadingPage />;
+  if (todayError) return `Error: ${(todayError as Error).message}`;
+  if (monthError) return `Error: ${(monthError as Error).message}`;
 
   return (
     <div className="absolute top-0 w-full font-nokia-bold">
-      <div className="devotion-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
-        <div className=" z-10 text-primary-1 align-middle font-bold text-center">
-          <div className=" text-2xl md:text-5xl">
+      <div className="devotion-img bg-cover w-full py-14 md:py-20 lg:py-28 flex justify-center items-center pointer-events-none">
+        <div className="z-10 text-primary-1 align-middle font-bold text-center">
+          <div className="text-2xl md:text-5xl">
             Daily <span className="text-accent-6">Devotional</span>
           </div>
 
@@ -33,15 +53,12 @@ const Devotion = () => {
         </div>
       </div>
 
-      <div className=" flex h-full  pt-12  mx-auto flex-1">
+      <div className="flex h-full pt-12 mx-auto flex-1">
         <DevotionDisplay
-          devotions={devotions}
-          // selectedDevotion={selectedDevotion}
-          // setSelectedDevotion={setSelectedDevotion}
+          todayDevotion={todayDevotion}
+          currentMonthDevotions={currentMonthDevotions}
           showControls={false}
-          toggleForm={function (): void {
-            throw new Error("Function not implemented.");
-          }}
+          toggleForm={() => {}}
         />
       </div>
       <Footer />

@@ -23,6 +23,8 @@ export interface DevotionDisplayProps {
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
+  todayDevotion,
+  currentMonthDevotions,
   showControls,
   toggleForm,
 }) => {
