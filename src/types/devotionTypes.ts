@@ -80,3 +80,10 @@ export interface RootState {
   devotions: DevotionsState;
   // other slices of state
 }
+
+export interface PaginatedDevotionsResponse {
+  data: Devotion[];
+  total: number;
+  page: number;
+  limit: number;
+}
