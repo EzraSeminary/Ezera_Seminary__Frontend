@@ -2,7 +2,7 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Course } from "@/types/courseTypes";
-import { PaginatedDevotionsResponse } from "@/types/devotionTypes";
+import { Devotion, PaginatedDevotionsResponse } from "@/types/devotionTypes";
 
 interface PaginatedCoursesResponse {
   data: Course[];
@@ -23,9 +23,9 @@ interface AnalyticsData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online",
+    // baseUrl: "https://ezrabackend.online",
     // Uncomment the following line if testing locally
-    // baseUrl: "http://localhost:5100",
+    baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = user ? user.token : "";
@@ -201,6 +201,28 @@ export const apiSlice = createApi({
             ]
           : [{ type: "Devotions", id: "LIST" }],
     }),
+
+    // New: Get Today's Devotion
+    getTodayDevotion: builder.query<Devotion, void>({
+      query: () => `/devotion/today`,
+      providesTags: (result) =>
+        result ? [{ type: "Devotions", id: result._id }] : [],
+    }),
+
+    // New: Get Devotions by Month
+    getDevotionsByMonth: builder.query<Devotion[], string>({
+      query: (month) => `/devotion/show?month=${month}`,
+      providesTags: (result, error, month) =>
+        result
+          ? [
+              ...result.map(({ _id }) => ({
+                type: "Devotions" as const,
+                id: _id,
+              })),
+              { type: "Devotions", id: `MONTH-${month}` },
+            ]
+          : [{ type: "Devotions", id: `MONTH-${month}` }],
+    }),
     createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
         const formData = new FormData();
@@ -267,6 +289,8 @@ export const {
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,
+  useGetTodayDevotionQuery,
+  useGetDevotionsByMonthQuery,
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
