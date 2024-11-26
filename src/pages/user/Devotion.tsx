@@ -23,7 +23,7 @@ const Devotion = () => {
   const getCurrentEthiopianMonth = (): string => {
     const today = new Date();
     const [year, month, day] = convertToEthiopianDate(today);
-    return ethiopianMonths[month - 1]; // Assuming months are 1-indexed
+    return ethiopianMonths[month - 1]; // Corrected based on updated ethiopianMonths
   };
 
   const currentMonth = getCurrentEthiopianMonth();
@@ -36,8 +36,14 @@ const Devotion = () => {
   } = useGetDevotionsByMonthQuery(currentMonth);
 
   if (todayLoading || monthLoading) return <LoadingPage />;
-  if (todayError) return `Error: ${(todayError as Error).message}`;
-  if (monthError) return `Error: ${(monthError as Error).message}`;
+  if (todayError) {
+    console.error("Error fetching today's devotion:", todayError);
+    return <div>Error: {todayError.message}</div>;
+  }
+  if (monthError) {
+    console.error("Error fetching month's devotions:", monthError);
+    return <div>Error: {monthError.message}</div>;
+  }
 
   return (
     <div className="absolute top-0 w-full font-nokia-bold">

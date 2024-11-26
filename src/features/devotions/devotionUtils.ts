@@ -2,7 +2,6 @@ import { EthDateTime } from "ethiopian-calendar-date-converter";
 import { Devotion } from "@/types/devotionTypes";
 
 export const ethiopianMonths = [
-  "",
   "መስከረም",
   "ጥቅምት",
   "ህዳር",

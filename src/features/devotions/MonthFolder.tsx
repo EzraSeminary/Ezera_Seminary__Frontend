@@ -1,11 +1,14 @@
+// MonthFolder.tsx
 import React from "react";
 import { Devotion } from "@/types/devotionTypes";
 import { motion } from "framer-motion";
 import { Folder, FolderOpen } from "@phosphor-icons/react";
+import { useGetDevotionsByMonthQuery } from "@/redux/api-slices/apiSlice";
+import LoadingPage from "@/pages/user/LoadingPage";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 interface MonthFolderProps {
   month: string;
-  devotions: Devotion[];
   setSelectedDevotion: (devotion: Devotion) => void;
   isSelected: boolean;
   onSelect: () => void;
@@ -29,12 +32,23 @@ const gridSquareVariants = {
 
 const MonthFolder: React.FC<MonthFolderProps> = ({
   month,
-  devotions = [], // Provide a default value for devotions
-  setSelectedDevotion,
+  devotions, // Initial devotions (current month)
   isSelected,
   onSelect,
   isExpanded,
 }) => {
+  // Fetch devotions for the month when expanded
+  const {
+    data: monthDevotions,
+    isLoading,
+    error,
+  } = useGetDevotionsByMonthQuery(isExpanded ? month : skipToken);
+
+  const handleSelect = (devotion: Devotion) => {
+    setSelectedDevotion(devotion);
+    onSelect();
+  };
+
   return (
     <div
       className={`border rounded-lg p-4 ${
@@ -53,58 +67,67 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
         {month}
       </div>
       {isSelected && (
-        <motion.div
-          variants={gridContainerVariants}
-          initial="hidden"
-          animate="show"
-          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 ${
-            isExpanded ? "w-full" : "w-[90%]"
-          } mx-auto pb-4 mt-2`}
-        >
-          {devotions.map((devotion, index: number) => (
+        <>
+          {isLoading && <LoadingPage />}
+          {error && <div>Error loading devotions for {month}</div>}
+          {!isLoading &&
+          !error &&
+          monthDevotions &&
+          monthDevotions.length > 0 ? (
             <motion.div
-              variants={gridSquareVariants}
-              whileHover={{
-                scale: 1.1,
-              }}
-              whileTap={{ scale: 0.9 }}
-              transition={{
-                bounceDamping: 10,
-                bounceStiffness: 600,
-              }}
-              key={index}
-              className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl h-full border-accent-5 border text-center pb-4 font-nokia-bold"
-              onClick={() => {
-                setSelectedDevotion(devotion);
-              }}
+              variants={gridContainerVariants}
+              initial="hidden"
+              animate="show"
+              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 ${
+                isExpanded ? "w-full" : "w-[90%]"
+              } mx-auto pb-4 mt-2`}
             >
-              {/* Devotion Images */}
-              <div className="h-full w-full">
-                <img
-                  src={
-                    typeof devotion.image === "string"
-                      ? devotion.image
-                      : undefined
-                  }
-                  alt="Devotion Image"
-                  className="w-full object-contain rounded-t-xl bg-secondary-1"
-                />
-              </div>
+              {monthDevotions.map((devotion) => (
+                <motion.div
+                  variants={gridSquareVariants}
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{
+                    bounceDamping: 10,
+                    bounceStiffness: 600,
+                  }}
+                  key={devotion._id}
+                  className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl h-full border-accent-5 border text-center pb-4 font-nokia-bold"
+                  onClick={() => handleSelect(devotion)}
+                >
+                  {/* Devotion Images */}
+                  {devotion.image && (
+                    <div className="h-full w-full">
+                      <img
+                        src={devotion.image}
+                        alt="Devotion Image"
+                        className="w-full object-contain rounded-t-xl bg-secondary-1"
+                      />
+                    </div>
+                  )}
 
-              {/* Devotion title */}
-              <div className="w-[90%] mx-auto flex justify-between items-center">
-                <div className="w-[80%] flex flex-col items-start justify-start pt-2">
-                  <h1 className="font-customBold text-lg text-left mt-2">
-                    {devotion.title}
-                  </h1>
-                  <h2 className="font-customBold text-sm text-[#EA9215]">
-                    {devotion.month} {devotion.day}
-                  </h2>
-                </div>
-              </div>
+                  {/* Devotion title */}
+                  <div className="w-[90%] mx-auto flex justify-between items-center">
+                    <div className="w-[80%] flex flex-col items-start justify-start pt-2">
+                      <h1 className="font-customBold text-lg text-left mt-2">
+                        {devotion.title}
+                      </h1>
+                      <h2 className="font-customBold text-sm text-[#EA9215]">
+                        {devotion.month} {devotion.day}
+                      </h2>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          ) : (
+            <div className="mt-2 text-sm text-gray-500">
+              No devotions available for this month.
+            </div>
+          )}
+        </>
       )}
     </div>
   );

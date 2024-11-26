@@ -211,7 +211,9 @@ export const apiSlice = createApi({
 
     // New: Get Devotions by Month
     getDevotionsByMonth: builder.query<Devotion[], string>({
-      query: (month) => `/devotion/show?month=${month}`,
+      query: (month) => `/devotion/show?month=${encodeURIComponent(month)}`,
+      transformResponse: (response: PaginatedDevotionsResponse) =>
+        response.data,
       providesTags: (result, error, month) =>
         result
           ? [

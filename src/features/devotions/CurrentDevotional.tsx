@@ -17,7 +17,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 interface CurrentDevotionalProps {
   devotionToDisplay: Devotion;
   showControls: boolean;
-  toogleForm: () => void;
+  toggleForm: () => void;
 }
 
 Modal.setAppElement("#root");
@@ -25,7 +25,7 @@ Modal.setAppElement("#root");
 const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   devotionToDisplay,
   showControls,
-  toogleForm,
+  toggleForm,
 }) => {
   const { refetch } = useGetDevotionsQuery({ page: 1, limit: 10 });
   const role = useSelector((state: RootState) => state.auth.user?.role);
@@ -47,7 +47,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   const startEditing = (devotion: Devotion) => {
     dispatch(selectDevotion(devotion));
     dispatch(setIsEditing(true));
-    toogleForm();
+    toggleForm();
   };
 
   const handleDownload = () => {

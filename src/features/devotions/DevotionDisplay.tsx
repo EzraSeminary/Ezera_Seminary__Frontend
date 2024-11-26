@@ -1,24 +1,24 @@
+// DevotionDisplay.tsx
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
-import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/types/devotionTypes";
 import LoadingPage from "@/pages/user/LoadingPage";
 import MonthFolder from "./MonthFolder";
 import {
   convertToEthiopianDate,
-  findDevotion,
-  sortMonthsChronologically, // Updated import
+  sortMonthsChronologically,
   ethiopianMonths,
   sortDevotionsByDayDescending,
 } from "./devotionUtils";
 import { RootState } from "@/redux/store";
 
 export interface DevotionDisplayProps {
+  todayDevotion: Devotion | undefined;
+  currentMonthDevotions: Devotion[] | undefined;
   showControls: boolean;
-  devotions: Devotion[] | undefined;
   toggleForm: () => void;
 }
 
@@ -29,17 +29,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   toggleForm,
 }) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
-    null
+    todayDevotion || null
   );
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
-  const {
-    data: devotions,
-    error,
-    isLoading,
-    refetch,
-  } = useGetDevotionsQuery({ page: 1, limit: 10 });
   const user = useSelector((state: RootState) => state.auth.user);
 
   const topRef = useRef<HTMLDivElement>(null);
@@ -47,24 +41,10 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   useEffect(() => {
     if (selectedDevotionFromHome) {
       setSelectedDevotion(selectedDevotionFromHome);
-    } else if (devotions && devotions.data.length > 0) {
-      const today = new Date();
-      const [, month] = convertToEthiopianDate(today);
-      const ethiopianMonth = ethiopianMonths[month];
-
-      const todaysDevotion =
-        findDevotion(devotions.data, 0, today) ||
-        findDevotion(devotions.data, 1, today) ||
-        findDevotion(devotions.data, 2, today) ||
-        devotions.data.find((devotion) => devotion.month === ethiopianMonth);
-
-      setSelectedDevotion(todaysDevotion || devotions.data[0]);
+    } else if (todayDevotion) {
+      setSelectedDevotion(todayDevotion);
     }
-  }, [devotions, selectedDevotionFromHome]);
-
-  useEffect(() => {
-    refetch();
-  }, [devotions, refetch]);
+  }, [todayDevotion, selectedDevotionFromHome]);
 
   useEffect(() => {
     if (selectedDevotion) {
@@ -72,16 +52,13 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     }
   }, [selectedDevotion]);
 
-  if (isLoading) return <LoadingPage />;
-  if (error) return `Error: ${(error as Error).message}`;
-
-  if (!devotions || devotions.length === 0) {
-    return <div>No devotions available</div>;
+  if (!todayDevotion || !currentMonthDevotions) {
+    return <LoadingPage />;
   }
 
-  const devotionToDisplay = selectedDevotion || devotions.data[0];
+  const devotionToDisplay = selectedDevotion || currentMonthDevotions[0];
 
-  const previousDevotions = devotions.data.filter(
+  const previousDevotions = currentMonthDevotions.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
@@ -95,11 +72,13 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   }, {} as Record<string, Devotion[]>);
 
   // Sort devotions within each month by day descending
-  for (const month in devotionsByMonth) {
-    devotionsByMonth[month] = sortDevotionsByDayDescending(
-      devotionsByMonth[month]
-    );
-  }
+  Object.keys(devotionsByMonth).forEach((month) => {
+    if (Array.isArray(devotionsByMonth[month])) {
+      devotionsByMonth[month] = sortDevotionsByDayDescending(
+        devotionsByMonth[month]
+      );
+    }
+  });
 
   // Get months sorted chronologically
   const sortedMonths = sortMonthsChronologically(devotionsByMonth);
@@ -113,17 +92,17 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     user && (user.role === "Admin" || user.role === "Instructor")
       ? sortedMonths
       : sortedMonths.filter((month) => {
-          const monthIndex = ethiopianMonths.indexOf(month);
+          const monthIndex = ethiopianMonths.indexOf(month) + 1;
           return monthIndex > 0 && monthIndex <= currentMonthIndex;
         });
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
-      <div className="w-[100%] h-full font-nokia-bold flex flex-col mx-auto container space-y-6 mb-12 flex-1">
+      <div className="w-full h-full font-nokia-bold flex flex-col mx-auto container space-y-6 mb-12 flex-1">
         <CurrentDevotional
           devotionToDisplay={devotionToDisplay}
           showControls={showControls}
-          toogleForm={toggleForm}
+          toggleForm={toggleForm} // Corrected typo
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {filteredMonths.map((month) => (
