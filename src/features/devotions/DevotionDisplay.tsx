@@ -32,7 +32,12 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
-  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery();
+  const {
+    data: devotions,
+    error,
+    isLoading,
+    refetch,
+  } = useGetDevotionsQuery({ page: 1, limit: 10 });
   const user = useSelector((state: RootState) => state.auth.user);
 
   const topRef = useRef<HTMLDivElement>(null);
@@ -40,18 +45,18 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   useEffect(() => {
     if (selectedDevotionFromHome) {
       setSelectedDevotion(selectedDevotionFromHome);
-    } else if (devotions && devotions.length > 0) {
+    } else if (devotions && devotions.data.length > 0) {
       const today = new Date();
       const [, month] = convertToEthiopianDate(today);
       const ethiopianMonth = ethiopianMonths[month];
 
       const todaysDevotion =
-        findDevotion(devotions, 0, today) ||
-        findDevotion(devotions, 1, today) ||
-        findDevotion(devotions, 2, today) ||
-        devotions.find((devotion) => devotion.month === ethiopianMonth);
+        findDevotion(devotions.data, 0, today) ||
+        findDevotion(devotions.data, 1, today) ||
+        findDevotion(devotions.data, 2, today) ||
+        devotions.data.find((devotion) => devotion.month === ethiopianMonth);
 
-      setSelectedDevotion(todaysDevotion || devotions[0]);
+      setSelectedDevotion(todaysDevotion || devotions.data[0]);
     }
   }, [devotions, selectedDevotionFromHome]);
 
@@ -72,9 +77,9 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return <div>No devotions available</div>;
   }
 
-  const devotionToDisplay = selectedDevotion || devotions[0];
+  const devotionToDisplay = selectedDevotion || devotions.data[0];
 
-  const previousDevotions = devotions.filter(
+  const previousDevotions = devotions.data.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 

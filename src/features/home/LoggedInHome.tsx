@@ -25,7 +25,7 @@ const gridSquareVariants = {
 };
 
 const LoggedInHome = () => {
-  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+  const { data: devotions, error, isLoading } = useGetDevotionsQuery({ page: 1, limit: 10 });
 
   const ethiopianMonths = [
     "", // There is no month 0
@@ -62,13 +62,13 @@ const LoggedInHome = () => {
   );
   const [, month, day] = ethiopianDate;
   const ethiopianMonth = ethiopianMonths[month];
-  const todaysDevotion = devotions.find(
+  const todaysDevotion = devotions.data.find(
     (devotion) =>
       devotion.month === ethiopianMonth && Number(devotion.day) === day
   );
 
   // If there's no devotion for today, use the most recent one
-  const latestDevotion = todaysDevotion || devotions[0];
+  const latestDevotion = todaysDevotion || devotions.data[0];
 
   const handleOpenDevotion = () => {
     navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
@@ -257,7 +257,7 @@ const LoggedInHome = () => {
               </h2>
               <button
                 className="mb-2 "
-                onClick={() => handleViewDevotion(devotions[0])}
+                onClick={() => handleViewDevotion(devotions.data[0])}
               >
                 <span className="border border-accent-6 hover:bg-accent-6 hover:text-primary-1 px-2 rounded-full text-accent-6 text-xs xl:px-3 xl:py-1 xl:mb-1 xl:text-sm">
                   All Devotionals
@@ -270,7 +270,7 @@ const LoggedInHome = () => {
               animate="show"
               className="grid grid-cols-2 justify-between mt-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto w-[90%]"
             >
-              {devotions.slice(0, 4).map((devotion, index) => (
+              {devotions.data.slice(0, 4).map((devotion, index) => (
                 <motion.div
                   variants={gridSquareVariants}
                   whileHover={{

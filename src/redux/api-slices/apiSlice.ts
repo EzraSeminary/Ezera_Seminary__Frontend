@@ -1,5 +1,15 @@
+// src/redux/api-slices/apiSlice.ts
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Devotion } from "@/types/devotionTypes";
+import { Course } from "@/types/courseTypes";
+import { PaginatedDevotionsResponse } from "@/types/devotionTypes";
+
+interface PaginatedCoursesResponse {
+  data: Course[];
+  total: number;
+  page: number;
+  limit: number;
+}
 
 interface AnalyticsData {
   newUsers: number;
@@ -14,6 +24,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://ezrabackend.online",
+    // Uncomment the following line if testing locally
     // baseUrl: "http://localhost:5100",
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -24,8 +35,9 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Devotions"],
+  tagTypes: ["Devotions", "Courses"],
   endpoints: (builder) => ({
+    // Auth Endpoints
     login: builder.mutation({
       query: (credentials) => ({
         url: "/users/login",
@@ -37,7 +49,7 @@ export const apiSlice = createApi({
       }),
     }),
     forgotPassword: builder.mutation({
-      query: (email) => ({
+      query: (email: string) => ({
         url: "/users/forgot-password",
         method: "POST",
         headers: {
@@ -47,7 +59,13 @@ export const apiSlice = createApi({
       }),
     }),
     resetPassword: builder.mutation({
-      query: ({ token, newPassword }) => ({
+      query: ({
+        token,
+        newPassword,
+      }: {
+        token: string;
+        newPassword: string;
+      }) => ({
         url: `/users/reset-password/${token}`,
         method: "POST",
         headers: {
@@ -56,9 +74,18 @@ export const apiSlice = createApi({
         body: JSON.stringify({ password: newPassword }),
       }),
     }),
-
     sendMessage: builder.mutation({
-      query: ({ firstName, lastName, email, message }) => ({
+      query: ({
+        firstName,
+        lastName,
+        email,
+        message,
+      }: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        message: string;
+      }) => ({
         url: "/users/contact",
         method: "POST",
         headers: {
@@ -68,7 +95,17 @@ export const apiSlice = createApi({
       }),
     }),
     signup: builder.mutation({
-      query: ({ firstName, lastName, email, password }) => ({
+      query: ({
+        firstName,
+        lastName,
+        email,
+        password,
+      }: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+      }) => ({
         url: "/users/signup",
         method: "POST",
         headers: {
@@ -97,6 +134,7 @@ export const apiSlice = createApi({
       },
     }),
 
+    // User Endpoints
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Devotions"],
@@ -112,35 +150,62 @@ export const apiSlice = createApi({
       }),
     }),
     getUserById: builder.query({
-      query: (id) => `/users/get/${id}`,
+      query: (id: string) => `/users/get/${id}`,
     }),
     getCurrentUser: builder.query({
       query: () => "/users/current",
     }),
     deleteUser: builder.mutation({
-      query: (userId) => ({
+      query: (userId: string) => ({
         url: `/users/${userId}`,
         method: "DELETE",
       }),
     }),
-    getCourses: builder.query({
-      query: () => "/course/getall",
+
+    // Course Endpoints with Pagination
+    getCourses: builder.query<
+      PaginatedCoursesResponse,
+      { page: number; limit: number }
+    >({
+      query: ({ page, limit }) => `/course/getall?page=${page}&limit=${limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Courses" as const,
+                id: _id,
+              })),
+              { type: "Courses", id: "LIST" },
+            ]
+          : [{ type: "Courses", id: "LIST" }],
     }),
-    getCourseById: builder.query({
-      query: (id) => `/course/get/${id}`,
+    getCourseById: builder.query<Course, string>({
+      query: (id: string) => `/course/get/${id}`,
+      providesTags: (_result, _error, id) => [{ type: "Courses", id }],
     }),
-    getDevotions: builder.query<Devotion[], void>({
-      // Provide types here
-      query: () => ({
-        url: "/devotion/show",
-      }),
-      providesTags: ["Devotions"], // Use tagTypes that you have specified
+
+    // Devotion Endpoints with Pagination
+    getDevotions: builder.query<
+      PaginatedDevotionsResponse,
+      { page: number; limit: number }
+    >({
+      query: ({ page, limit }) => `/devotion/show?page=${page}&limit=${limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Devotions" as const,
+                id: _id,
+              })),
+              { type: "Devotions", id: "LIST" },
+            ]
+          : [{ type: "Devotions", id: "LIST" }],
     }),
     createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
         const formData = new FormData();
         Object.entries(newDevotion).forEach(([key, value]) => {
-          formData.append(key, value);
+          formData.append(key, value as string | Blob);
         });
         return {
           url: "/devotion/create",
@@ -160,7 +225,7 @@ export const apiSlice = createApi({
       query: ({ id, updatedDevotion }) => {
         const formData = new FormData();
         Object.entries(updatedDevotion).forEach(([key, value]) => {
-          formData.append(key, value);
+          formData.append(key, value as string | Blob);
         });
 
         return {
@@ -169,13 +234,20 @@ export const apiSlice = createApi({
           body: formData, // use FormData instead of JSON
         };
       },
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Devotions", id }],
     }),
     deleteDevotion: builder.mutation({
-      query: (id) => ({
+      query: (id: string) => ({
         url: `/devotion/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: "Devotions", id },
+        { type: "Devotions", id: "LIST" },
+      ],
     }),
+
+    // Analytics Endpoint
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
     }),

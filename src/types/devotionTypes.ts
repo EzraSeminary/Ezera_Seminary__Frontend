@@ -82,6 +82,7 @@ export interface RootState {
 }
 
 export interface PaginatedDevotionsResponse {
+  length: number;
   data: Devotion[];
   total: number;
   page: number;

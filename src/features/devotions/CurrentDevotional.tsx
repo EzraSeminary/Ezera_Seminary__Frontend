@@ -27,7 +27,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   showControls,
   toogleForm,
 }) => {
-  const { refetch } = useGetDevotionsQuery();
+  const { refetch } = useGetDevotionsQuery({ page: 1, limit: 10 });
   const role = useSelector((state: RootState) => state.auth.user?.role);
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);

@@ -22,14 +22,22 @@ const ResetPassword = () => {
     }
 
     try {
-      await resetPassword({ token, newPassword }).unwrap();
+      if (token) {
+        await resetPassword({ token, newPassword }).unwrap();
+        toast.success("Password has been reset successfully.");
+        setTimeout(() => {
+          navigate("/login");
+        }, 4000);
+      } else {
+        toast.error("Invalid token.");
+      }
       toast.success("Password has been reset successfully.");
       setTimeout(() => {
         navigate("/login");
       }, 4000);
     } catch (err) {
       console.error(err);
-      if ((err as any).status === 400) {
+      if ((err as { status?: number }).status === 400) {
         toast.error("Invalid token or password.");
       } else {
         toast.error("An error occurred. Please try again later.");

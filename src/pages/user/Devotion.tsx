@@ -6,14 +6,15 @@ import LoadingPage from "@/pages/user/LoadingPage";
 // import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
-  // Explicitly type the useState hook to use Devotion | null
-  // const [selectedDevotion, setSelectedDevotion] = useState<DevotionType | null>(
-  //   null
-  // );
-
   // Use the useGetDevotionsQuery hook to fetch devotions
   // Assuming the hook does not require an argument, remove `undefined`
-  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
+  const {
+    data: paginatedDevotions,
+    error,
+    isLoading,
+  } = useGetDevotionsQuery({ page: 1, limit: 10 });
+
+  const devotions = paginatedDevotions?.data;
 
   if (isLoading) return <LoadingPage />;
   if (error) return `Error: ${(error as Error).message}`;
