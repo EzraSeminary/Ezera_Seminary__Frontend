@@ -53,8 +53,8 @@ function CoursesAvailable() {
     const userProgress = currentUser?.progress?.find(
       (p) => p.courseId === courseId
     );
-    const totalChapter = courses?.find((course) => course._id === courseId)
-      ?.chapters.length;
+    const course = courses?.find((course) => course._id === courseId);
+    const totalChapter = course?.chapterCount;
 
     if (userProgress && totalChapter) {
       const currentChapterCount = (userProgress.currentChapter ?? 0) + 1;
@@ -152,7 +152,7 @@ function CoursesAvailable() {
                 category: course.category,
                 image: course.image,
                 published: course.published,
-                chapters: course.chapters,
+                chapterCount: course.chapterCount,
               }}
               progressValue={getProgressValue(course._id)}
             />
@@ -197,7 +197,7 @@ const CourseCard: React.FC<{
     image: string | File;
     published: boolean;
     category: string;
-    chapters: { _id: string }[];
+    chapterCount: number;
   };
   progressValue: number | undefined;
 }> = ({ course, progressValue }) => {
