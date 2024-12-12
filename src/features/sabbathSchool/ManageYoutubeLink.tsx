@@ -50,6 +50,7 @@ const ManageYouTubeLink = ({
     if (videoLink) {
       setVideoUrl(videoLink.videoUrl);
     } else {
+      setLocalVideoLink(null);
       setVideoUrl("");
     }
   }, [videoLink]);
@@ -88,18 +89,23 @@ const ManageYouTubeLink = ({
   }
 
   if (error) {
-    const apiError = error as ApiError; // Type assertion
+    const apiError = error as ApiError;
     if (apiError.status === 404) {
-      console.warn(
-        "Video link not found for the specified year, quarter, and lesson."
+      return (
+        <div className="text-primary-2 shadow-xl">
+          YouTube link not available.
+        </div>
       );
     } else {
       console.error("Error fetching video link:", apiError);
       return (
-        <div>Error: {apiError.message || "An unknown error occurred"}</div>
+        <div className="text-red-500">
+          Error: {apiError.message || "An unknown error occurred"}
+        </div>
       );
     }
   }
+  
 
   return (
     <div className="p-4">
