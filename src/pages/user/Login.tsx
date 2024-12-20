@@ -181,28 +181,22 @@ const Login: React.FC = () => {
                 </div>
               )}
               <div className="mt-4 flex justify-between gap-7">
-                <div className=" flex gap-2">
+                <div className=" flex gap-2 items-center hover:cursor-pointer hover:text-accent-7 transition-all"
+                  onClick={() => setShowPassword(!showPassword)}>
                   <input
                     type="checkbox"
                     className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
                     checked={showPassword}
                     onChange={(e) => setShowPassword(e.target.checked)} // toggle showPassword state when checkbox is clicked
                   />
-                  <label>Show Password</label>
+                  <label className="hover:cursor-pointer">Show Password</label>
                 </div>
                 <Link
                   to="/forgot-password"
-                  className="self-end text-xs xl:text-xl"
+                  className="self-end text-xs xl:text-xl hover:cursor-pointer hover:text-accent-7 transition-all"
                 >
                   Forgot Password?
                 </Link>
-              </div>
-              <div className="flex mt-4 gap-2">
-                <input
-                  type="checkbox"
-                  className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
-                />
-                <label className="text-xs  xl:text-xl">Remember me</label>
               </div>
             </div>
             <div className="w-full  mt-4 flex justify-center md:justify-between lg:items-start  lg:justify-start gap-2  xl:text-xl">
