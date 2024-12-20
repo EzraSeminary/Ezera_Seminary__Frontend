@@ -91,6 +91,7 @@ export interface ApiState {
   image: string | File;
   chapters: Chapter[];
   published: boolean;
+  chapterCount: number;
 }
 
 export interface Chapter {
