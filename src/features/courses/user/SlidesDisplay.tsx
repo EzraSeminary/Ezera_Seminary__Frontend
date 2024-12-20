@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+import { useMediaQuery } from 'react-responsive';
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery } from "../../../services/api";
@@ -75,6 +76,7 @@ function SlidesDisplay() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
   
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   useEffect(() => {
     if (userProgress) {
@@ -385,17 +387,35 @@ function SlidesDisplay() {
                               setIsRangeChanged={setIsRangeChanged}
                           />
                           );
-                        } else if (element.type === "dnd") {
-                          return(
-                            <DndComponent
-                              element={element}
-                              droppedChoice={droppedChoice}
-                              setDroppedChoice={setDroppedChoice}
-                              isDndAnswerCorrect={isDndAnswerCorrect}
-                              setIsDndAnswerCorrect={setIsDndAnswerCorrect}
-                              setIsDndCompleted={setIsDndCompleted}
-                            />
-                          )
+                        } // Inside the slides.elements.map loop
+                        else if (element.type === 'dnd') {
+                          if (isMobile) {
+                            // Render QuizSection on mobile devices
+                            return (
+                              <QuizSection
+                                question={element.value.question}
+                                choices={element.value.choices}
+                                correctAnswer={element.value.correctDndAnswer}
+                                selectedChoice={selectedChoice}
+                                setSelectedChoice={setSelectedChoice}
+                                setIsQuizAnswered={setIsQuizAnswered}
+                                isQuizAnswered={isQuizAnswered}
+                              />
+                            );
+                          } else {
+                            // Render DndComponent on larger screens
+                            return (
+                              <DndComponent
+                                key={element._id}
+                                element={element}
+                                droppedChoice={droppedChoice}
+                                setDroppedChoice={setDroppedChoice}
+                                isDndAnswerCorrect={isDndAnswerCorrect}
+                                setIsDndAnswerCorrect={setIsDndAnswerCorrect}
+                                setIsDndCompleted={setIsDndCompleted}
+                              />
+                            );
+                          }
                         } else if (element.type === "mix") {
                           return (
                             <MixSection
