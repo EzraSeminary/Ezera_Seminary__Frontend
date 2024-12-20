@@ -62,13 +62,13 @@ function Slide({
 
   return (
     <div id={element.id}>
-      <div className="flex flex-col items-center w-[100%] gap-1 py-4">
+      <div className="flex flex-col items-center w-full gap-1 py-4">
         <CustomTextarea
           value={currentSlideDetails}
           onChange={(e) => setCurrentSlideDetails(e.target.value)}
           placeholder="Enter slide details...."
           className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
-          maxLength={150}
+          maxLength={200}
         />
         <div
           className="flex justify-between items-center gap-2 mt-2 w-[80%] mx-auto"
@@ -104,7 +104,7 @@ function Slide({
                 value={details}
                 onChange={(e) => handleSlideDetailChange(index, e.target.value)}
                 className="border outline-accent-6 border-secondary-3 bg-primary-1 text-secondary-6 rounded-md font-Lato-Regular px-2 py-1 w-full placeholder:text-sm placeholder:text-secondary-3"
-                maxLength={150}
+                maxLength={200}
               />
               <Trash
                 onClick={() => handleDeleteSlideItem(index)}

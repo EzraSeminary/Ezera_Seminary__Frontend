@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
-import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
 
 function DragAndDrop({
@@ -27,7 +26,7 @@ function DragAndDrop({
     dndElement?.correctDndAnswer || ""
   );
 
-  const handleDndQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleDndQuestionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setDndQuestion(event.target.value);
   };
 
@@ -64,11 +63,10 @@ function DragAndDrop({
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-4">
-        <CustomInput
-          type="text"
+        <CustomTextarea
           value={dndQuestion}
           onChange={handleDndQuestionChange}
-          placeholder="Enter quiz question"
+          placeholder="Enter question here..."
           className="font-Lato-Regular border border-secondary-3 outline-accent-6 bg-primary-4 rounded-md p-2 w-full placeholder:text-lg"
           maxLength={150}
         />

@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
-import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
 
 function Quiz({
@@ -27,7 +26,7 @@ function Quiz({
     quizElement?.correctAnswer || ""
   );
 
-  const handleQuizQuestionChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleQuizQuestionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setQuizQuestion(event.target.value);
   };
 
@@ -66,8 +65,7 @@ function Quiz({
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-4">
-        <CustomInput
-          type="text"
+        <CustomTextarea
           value={quizQuestion}
           onChange={handleQuizQuestionChange}
           placeholder="Enter quiz question"

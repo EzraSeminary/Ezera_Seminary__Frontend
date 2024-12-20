@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
-import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
+import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -189,7 +189,7 @@ const Signup = () => {
                 )}
             </div>
           </div>
-          <div className=" flex gap-2">
+          <div className=" flex gap-2 items-center">
             <input
               type="checkbox"
               className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
@@ -198,7 +198,7 @@ const Signup = () => {
             />
             <label>Show Password</label>
           </div>
-          <div className="flex gap-2 mt-2">
+          {/* <div className="flex gap-2 mt-2">
             <input
               type="checkbox"
               className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"
@@ -206,7 +206,7 @@ const Signup = () => {
             <label className="text-xs xl:text-xl">
               I accept the terms and conditions.
             </label>
-          </div>
+          </div> */}
         </div>
         <div className="w-[100%] mt-4 flex flex-col xl:flex-row lg:w-full gap-2 xl:gap-4 xl:text-xl">
           <button
@@ -219,7 +219,7 @@ const Signup = () => {
           <p className="flex item-center gap-2 xl:w-[90%] xl:flex-col xl:gap-0">
             Already have an account?
             <Link
-              className="text-secondary-6 hover:text-secondary-3 transition-all cursor-pointer"
+              className="text-secondary-6 hover:text-accent-5 hover:underline transition-all cursor-pointer"
               to="/login"
             >
               {"  "}
@@ -236,7 +236,7 @@ const Signup = () => {
           <p>Or signup with</p>
           <div className="flex mt-2 text-2xl text-white gap-2 xl:text-3xl">
             <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></GoogleLogo>
-            <FacebookLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></FacebookLogo>
+            {/* <FacebookLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></FacebookLogo> */}
           </div>
         </div>
       </form>

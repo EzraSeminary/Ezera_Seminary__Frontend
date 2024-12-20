@@ -82,25 +82,42 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             contentLabel="Delete Confirmation"
-            style={{ /* Modal styles */ }}
+            style={{
+              overlay: {
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              },
+              content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)',
+                borderRadius: '8px',
+                padding: '20px',
+                border: 'none',
+                width: '90%',
+                maxWidth: '500px',
+              },
+            }}
           >
-            <h2 className="text-2xl font-Lato-black text-secondary-6 mb-2">
+            <h2 className="text-2xl font-bold text-secondary-6 mb-4">
               Are you sure you want to delete this devotion?
             </h2>
-            <div>
+            <div className="flex justify-end space-x-4">
               <button
                 onClick={() => {
                   if (devotionToDelete) {
                     handleDelete(devotionToDelete);
                   }
                 }}
-                style={{ /* Button styles */ }}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
               >
                 Yes
               </button>
               <button
                 onClick={() => setModalIsOpen(false)}
-                style={{ /* Button styles */ }}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
               >
                 No
               </button>

@@ -26,7 +26,6 @@ function EditChapters() {
   const chapters = useSelector(selectChapters) as Chapter[];
   const allSlides = useSelector(selectAllSlides);
 
-
   const [editingSlideIndex, setEditingSlideIndex] =
     useState<EditingSlideIndex | null>(null);
   const [selectedChapterIndex, setSelectedChapterIndex] = useState<
@@ -278,46 +277,70 @@ function EditChapters() {
               </div>
               {isSelected && (
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
-                  {slides.map((slide, slideIndex) => (
-                    <div key={slideIndex} className="flex flex-col">
-                    <div className="flex px-2 items-center gap-2 relative"> {/* Add "relative" class */}
-                      <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
-                        {slideIndex + 1}
-                      </p>
-                      <CustomInput
-                        type="text"
-                        name={`slide-${chapterIndex}-${slideIndex}`}
-                        placeholder="Slide Title"
-                        autoComplete="off"
-                        className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
-                          isSelected ? "text-accent-6" : "text-primary-2"
-                        }`}
-                        value={slide.slide}
-                        onChange={(e) => updateSlideHandler(chapterIndex, slideIndex, e.target.value)}
-                        onClick={() => handleSlideClick(chapterIndex, slideIndex)}
-                        maxLength={75}
-                      />
-                      <Trash
-                        onClick={() => deleteSlideHandler(chapterIndex, slideIndex)}
-                        weight="fill"
-                        className="text-accent-6 cursor-pointer"
-                        size={24}
-                      />
-                      <ArrowCircleUp
-                          onClick={() => moveSlideUpHandler(chapterIndex, slideIndex)}
-                          weight="fill"
-                          className="text-accent-6 cursor-pointer"
-                          size={24}
-                        />
-                        <ArrowCircleDown
-                          onClick={() => moveSlideDownHandler(chapterIndex, slideIndex)}
-                          weight="fill"
-                          className="text-accent-6 cursor-pointer"
-                          size={24}
-                        />
-                    </div>
-                  </div>
-                  ))}
+                  {slides.map((slide, slideIndex) => {
+                    const isSlideSelected =
+                      editingSlideIndex &&
+                      editingSlideIndex.chapter === chapterIndex &&
+                      editingSlideIndex.slide === slideIndex;
+
+                    return (
+                      <div key={slideIndex} className="flex flex-col">
+                        <div className="flex px-2 items-center gap-2 relative">
+                          {/* Add "relative" class */}
+                          <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
+                            {slideIndex + 1}
+                          </p>
+                          <CustomInput
+                            type="text"
+                            name={`slide-${chapterIndex}-${slideIndex}`}
+                            placeholder="Slide Title"
+                            autoComplete="off"
+                            className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 border border-accent-5 rounded-lg px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
+                              isSlideSelected
+                                ? "bg-accent-8 text-white"
+                                : "text-primary-2"
+                            }`}
+                            value={slide.slide}
+                            onChange={(e) =>
+                              updateSlideHandler(
+                                chapterIndex,
+                                slideIndex,
+                                e.target.value
+                              )
+                            }
+                            onClick={() =>
+                              handleSlideClick(chapterIndex, slideIndex)
+                            }
+                            maxLength={75}
+                          />
+                          <Trash
+                            onClick={() =>
+                              deleteSlideHandler(chapterIndex, slideIndex)
+                            }
+                            weight="fill"
+                            className="text-accent-6 cursor-pointer"
+                            size={24}
+                          />
+                          <ArrowCircleUp
+                            onClick={() =>
+                              moveSlideUpHandler(chapterIndex, slideIndex)
+                            }
+                            weight="fill"
+                            className="text-accent-6 cursor-pointer"
+                            size={24}
+                          />
+                          <ArrowCircleDown
+                            onClick={() =>
+                              moveSlideDownHandler(chapterIndex, slideIndex)
+                            }
+                            weight="fill"
+                            className="text-accent-6 cursor-pointer"
+                            size={24}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                   <button
                     onClick={() => {
                       addSlideHandler(chapterIndex); // add slide to redux

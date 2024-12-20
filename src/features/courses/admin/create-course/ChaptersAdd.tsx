@@ -287,7 +287,12 @@ function ChaptersAdd() {
               </div>
               {isSelected && (
                 <div className="ml-7 pl-1 border-l-2 border-secondary-2">
-                  {slides.map((slide, slideIndex) => (
+                  {slides.map((slide, slideIndex) => {
+                    const isSlideSelected =
+                    editingSlideIndex &&
+                    editingSlideIndex.chapter === chapterIndex &&
+                    editingSlideIndex.slide === slideIndex;
+                    return (
                     <div key={slideIndex} className="flex flex-col">
                       <div className="flex px-2 items-center gap-2">
                         <p className="flex items-center font-nokia-bold text-primary-6  lg:text-xl">
@@ -298,7 +303,11 @@ function ChaptersAdd() {
                           name={`slide-${chapterIndex}-${slideIndex}`}
                           placeholder="Slide Title"
                           autoComplete="off"
-                          className="w-full text-sm font-bold py-1 focus:outline-none mb-1 bg-secondary-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4"
+                          className={`w-full text-sm font-bold py-1 focus:outline-none mb-1 border border-accent-5 rounded-lg  px-2 mt-2 text-secondary-6 placeholder:text-xs placeholder:text-secondary-4 ${
+                            isSlideSelected
+                              ? "bg-accent-8 text-white"
+                              : "text-primary-2"
+                          }`}
                           value={slide.slide}
                           onChange={(e) =>
                             updateSlideHandler(
@@ -334,7 +343,7 @@ function ChaptersAdd() {
                         />
                       </div>
                     </div>
-                  ))}
+                  )})}
                   <button
                     onClick={() => {
                       addSlideHandler(chapterIndex); // add slide to redux
