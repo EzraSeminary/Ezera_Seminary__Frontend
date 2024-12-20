@@ -342,6 +342,8 @@ function SlidesDisplay() {
                               correctAnswer={element.value.correctAnswer}
                               selectedChoice={selectedChoice}
                               setSelectedChoice={setSelectedChoice}
+                              setIsQuizAnswered={setIsQuizAnswered}
+                              isQuizAnswered={isQuizAnswered}
                           />)
                         } else if (element.type === "accordion") {
                           const accordionItemsComponent = element.value.map(
