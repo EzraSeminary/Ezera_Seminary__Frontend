@@ -8,7 +8,7 @@ interface QuizSectionProps {
   selectedChoice: number | null;
   setSelectedChoice: React.Dispatch<React.SetStateAction<number | null>>;
   setIsQuizAnswered?: React.Dispatch<React.SetStateAction<boolean>>;
-  isQuizAnswered: boolean;
+  isQuizAnswered?: boolean;
 }
 
 const QuizSection: React.FC<QuizSectionProps> = ({
@@ -48,7 +48,7 @@ const QuizSection: React.FC<QuizSectionProps> = ({
   return (
     <div className="flex flex-col justify-center items-center mb-4">
       {/* Questions */}
-      <p className="text-secondary-2 mx-auto font-nokia-bold text-sm lg:text-lg xl:text-xl">
+      <p className="text-primary-2 mx-auto font-nokia-bold text-sm lg:text-lg xl:text-xl">
         {question}
       </p>
       {/* Choices */}

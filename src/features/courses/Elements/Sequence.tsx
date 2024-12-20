@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { File, PlusCircle, Trash } from "@phosphor-icons/react";
 import { ElementTypeProps } from "./List";
-import CustomInput from "@/components/CustomInput";
 import CustomTextarea from "@/components/CustomTextarea";
 
 function Sequence({
@@ -29,7 +28,7 @@ function Sequence({
   }, [element.value, sequenceItems.length]);
 
   // Sequence Related Functions.
-  const handleSequenceInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSequenceInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentSequenceItem(event.target.value);
   };
 
@@ -70,8 +69,7 @@ function Sequence({
   return (
     <div id={element.id}>
       <div className="flex flex-col items-center w-[100%] gap-1 py-3">
-        <CustomInput
-          type="text"
+        <CustomTextarea
           value={currentSequenceItem}
           onChange={handleSequenceInputChange}
           placeholder="Enter sequence item"
