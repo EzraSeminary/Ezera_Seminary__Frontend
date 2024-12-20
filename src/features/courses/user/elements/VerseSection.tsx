@@ -19,9 +19,9 @@ const VerseSection: React.FC<VerseSectionProps> = ({ verses }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center mt-4">
+    <div className="w-full flex flex-col items-center">
       {verses.map(([reference, ], index) => (
-        <div key={index} className="w-full flex flex-col items-center mt-4">
+        <div key={index} className="w-full flex flex-col items-center mt-2">
           <a
             href="#"
             onClick={(e) => {
@@ -41,7 +41,7 @@ const VerseSection: React.FC<VerseSectionProps> = ({ verses }) => {
           onClick={handleOutsideClick}
         >
           <div
-          className="w-auto max-w-[70%] sm:mx-auto md:max-w-[65%] md:ml-[20%] lg:max-w-[50%] lg:ml-[40%] flex items-start justify-center text-center bg-secondary-6 bg-opacity-85 shadow-2xl px-4 py-6 text-accent-5 text-lg hover:bg-secondary-5 hover:bg-opacity-40 transition-all rounded-lg my-2 border border-accent-6 relative"
+          className="w-auto max-w-[70%] sm:mx-auto md:max-w-[65%] md:ml-[20%] lg:max-w-[50%] lg:ml-[40%] flex items-start justify-center text-center bg-secondary-6 shadow-2xl px-4 py-6 text-accent-5 text-lg rounded-lg my-2 border border-accent-6 relative"
         >
           <span className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-lg text-primary-2 bg-accent-8  px-4 py-1 rounded-md shadow-md">
             {verses[activeIndex][0]}
