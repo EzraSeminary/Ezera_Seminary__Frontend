@@ -54,6 +54,19 @@ function EditCourse() {
     }
   }, [id, dispatch]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = ""; // This shows the confirmation dialog
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   const handleUpdate = (event?: FormEvent) => {
     event?.preventDefault();
     setUpdateLoading(true);
