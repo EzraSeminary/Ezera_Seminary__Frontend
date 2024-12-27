@@ -2,6 +2,7 @@ import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 export interface CourseState {
+  id: string;
   title: string;
   description: string;
   category: string;
@@ -154,6 +155,7 @@ export interface VideoElement extends Omit<Element, "value"> {
 
 // Define the initial state using `CourseState`
 const initialState: CourseState = {
+  id: "",
   title: "",
   description: "",
   category: "",
@@ -492,6 +494,7 @@ export const courseSlice = createSlice({
 
     resetCourse: () => {
       return {
+        id: "",
         title: "",
         description: "",
         category: "",
