@@ -29,6 +29,7 @@ function EditCourse() {
   const [publishLoading, setPublishLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showComponent, setShowComponent] = useState(false);
+  const [shouldConfirmUnload, setShouldConfirmUnload] = useState(true);
 
   useEffect(() => {
     if (id) {
@@ -56,8 +57,10 @@ function EditCourse() {
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = ""; // This shows the confirmation dialog
+      if (shouldConfirmUnload) {
+        event.preventDefault();
+        event.returnValue = ""; // This shows the confirmation dialog
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -65,11 +68,12 @@ function EditCourse() {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []);
+  }, [shouldConfirmUnload]);
 
   const handleUpdate = (event?: FormEvent) => {
     event?.preventDefault();
     setUpdateLoading(true);
+    setShouldConfirmUnload(false); // Disable confirmation dialog
 
     const formData = new FormData();
     formData.append("title", course.title);
@@ -139,12 +143,14 @@ function EditCourse() {
       .finally(() => {
         setUpdateLoading(false);
         setProgress(0);
+        setShouldConfirmUnload(true); // Re-enable confirmation dialog
         window.location.reload();
       });
   };
 
   const handlePublish = () => {
     setPublishLoading(true);
+    setShouldConfirmUnload(false); // Disable confirmation dialog
     dispatch(togglePublished());
 
     const formData = new FormData();
@@ -168,6 +174,7 @@ function EditCourse() {
       .finally(() => {
         setPublishLoading(false);
         setProgress(0);
+        setShouldConfirmUnload(true); // Re-enable confirmation dialog
         window.location.reload();
       });
   };

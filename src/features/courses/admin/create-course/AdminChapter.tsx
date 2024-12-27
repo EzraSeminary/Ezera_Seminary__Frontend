@@ -20,6 +20,7 @@ function AdminChapter() {
   const [isSaveLoading, setIsSaveLoading] = useState(false); // Separate loading state for save button
   const [isPublishLoading, setIsPublishLoading] = useState(false); // Separate loading state for publish button
   const [progress, setProgress] = useState(0); // New progress state
+  const [shouldConfirmUnload, setShouldConfirmUnload] = useState(true); // State to track if confirmation dialog should be shown
   const dispatch = useDispatch();
   const role = useSelector((state: RootState) => state.auth.user?.role);
   const basePath = role;
@@ -36,8 +37,10 @@ function AdminChapter() {
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = ""; // This shows the confirmation dialog
+      if (shouldConfirmUnload) {
+        event.preventDefault();
+        event.returnValue = ""; // This shows the confirmation dialog
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -45,11 +48,12 @@ function AdminChapter() {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []);
+  }, [shouldConfirmUnload]);
 
   const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
     event?.preventDefault();
     setIsSaveLoading(true); // Set save loading state to true
+    setShouldConfirmUnload(false); // Disable confirmation dialog
 
     const { title, description, category, image, chapters, published } = course;
 
@@ -135,11 +139,13 @@ function AdminChapter() {
       .finally(() => {
         setIsSaveLoading(false); // Set save loading state to false
         setProgress(0); // Reset progress
+        setShouldConfirmUnload(true); // Re-enable confirmation dialog
       });
   };
 
   const handlePublish = () => {
     setIsPublishLoading(true); // Set publish loading state to true
+    setShouldConfirmUnload(false); // Disable confirmation dialog
     dispatch(togglePublished());
 
     const formData = new FormData();
@@ -170,6 +176,7 @@ function AdminChapter() {
       .finally(() => {
         setIsPublishLoading(false); // Set publish loading state to false
         setProgress(0); // Reset progress
+        setShouldConfirmUnload(true); // Re-enable confirmation dialog
       });
   };
 
