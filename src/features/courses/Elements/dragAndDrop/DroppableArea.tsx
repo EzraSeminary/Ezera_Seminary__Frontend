@@ -26,7 +26,7 @@ function DroppableArea({ droppedChoice, id }: DroppableAreaProps) {
           </span>
         </div>
       ) : (
-        <span className="text-white font-nokia-bold text-lg">Drop Choice Here</span>
+        <span className="text-white font-nokia-bold text-lg">ምርጫዎን እዚህ ላይ ያስቀምጡ</span>
       )}
     </div>
   );

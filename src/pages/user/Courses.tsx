@@ -18,7 +18,9 @@ const Courses = () => {
       </div>
       <div className="h-auto flex flex-col flex-1 w-[90%]  mx-auto space-y-6 mb-12">
         <CoursesAvailable />
+        <div className="hidden" >
         <Categories title="Categories" />
+        </div>
       </div>
       <Footer />
     </div>

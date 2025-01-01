@@ -2,7 +2,7 @@ import { useState, ChangeEvent, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useGetCoursesQuery } from "@/services/api";
-import { MagnifyingGlass, ArrowRight, ArrowLeft } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { Progress } from "@/components/ui/progress";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -17,7 +17,7 @@ function CoursesAvailable() {
   const { data: courses, error, isLoading } = useGetCoursesQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
-  const [showAllCourses, setShowAllCourses] = useState(false);
+  // const [showAllCourses, setShowAllCourses] = useState(false);
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +45,9 @@ function CoursesAvailable() {
     [courses, searchTerm, currentUser]
   );
 
-  const handleViewAllCoursesClick = () => {
-    setShowAllCourses((prev) => !prev);
-  };
+  // const handleViewAllCoursesClick = () => {
+  //   setShowAllCourses((prev) => !prev);
+  // };
 
   const getProgressValue = (courseId: string): number | undefined => {
     const userProgress = currentUser?.progress?.find(
@@ -159,7 +159,7 @@ function CoursesAvailable() {
           ))}
       </div>
 
-      <div
+      {/* <div
         className="flex items-center justify-between border-accent-5 border w-max rounded-3xl px-3 py-1 gap-2 "
         onClick={handleViewAllCoursesClick}
       >
@@ -184,7 +184,7 @@ function CoursesAvailable() {
             />
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

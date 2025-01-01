@@ -85,10 +85,10 @@ const QuizSection: React.FC<QuizSectionProps> = ({
           className="text-white text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs1 lg:text-lg xl:text-xl lg:py-1 px-2"
           onClick={() => {
             setShowQuizResult(true);
-            setIsQuizAnswered && setIsQuizAnswered(true); //Next button available when the check answer button is clicked
+            setIsQuizAnswered && setIsQuizAnswered(true); //Next button available when the መልሱን ይመልከቱ button is clicked
           }}
         >
-          Check Answer
+          መልሱን ይመልከቱ
         </button>
         {renderQuizResult()}
       </div>

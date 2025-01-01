@@ -1,6 +1,6 @@
 import useAxiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import {
   MixElement,
@@ -17,7 +17,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { RootState } from "@/redux/store";
 
 function EditCourse() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const instance = useAxiosInstance();
   const dispatch = useDispatch();
@@ -26,16 +25,17 @@ function EditCourse() {
   const basePath = role;
 
   const [loading, setLoading] = useState(true);
-  // New state to track when the publish button has been clicked
   const [isPublishClicked, setIsPublishClicked] = useState(false);
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
+  const [isPublishLoading, setIsPublishLoading] = useState(false);
+  const [showComponent, setShowComponent] = useState(false);
+  const [shouldConfirmUnload, setShouldConfirmUnload] = useState(true);
 
-  //get a single course
   useEffect(() => {
     if (id) {
       instance
         .get("/course/get/" + id)
         .then((res) => {
-          console.log(id);
           dispatch(
             setCourse({
               ...course,
@@ -47,29 +47,61 @@ function EditCourse() {
               published: res.data.published,
             })
           );
-          // console.log(res.data);
         })
         .catch((err) => console.log(err))
-        .finally(() => {
-          setLoading(false);
-        });
+        .finally(() => setLoading(false));
     } else {
       console.log("Course ID is undefined");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
-    // When 'published' state changes and the publish button was clicked, handle the submission
     if (isPublishClicked) {
       handleSubmit();
-      setIsPublishClicked(false); // Reset the publish click tracker
+      setIsPublishClicked(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course.published, isPublishClicked]); // Add isPublishClicked to the dependency array if your linter requires it
+  }, [course.published, isPublishClicked]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      const isReload = performance.getEntriesByType("navigation").some((nav) => {
+        return (nav as PerformanceNavigationTiming).type === "reload";
+      });
+  
+      if (!isReload && shouldConfirmUnload) {
+        event.preventDefault();
+        event.returnValue = ""; // Show the confirmation dialog
+      }
+    };
+  
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [shouldConfirmUnload]);
+  
+
+  const handleNavigation = (event: Event) => {
+    if (shouldConfirmUnload) {
+      const confirmationMessage = "You have unsaved changes, do you really want to leave?";
+      if (!window.confirm(confirmationMessage)) {
+        event.preventDefault();
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleNavigation);
+    return () => {
+      window.removeEventListener("beforeunload", handleNavigation);
+    };
+  }, [shouldConfirmUnload]);
 
   const handleSubmit = (event?: FormEvent) => {
     event?.preventDefault();
+    setIsSaveLoading(true);
+    setShouldConfirmUnload(false);
 
     const formData = new FormData();
     formData.append("title", course.title);
@@ -80,16 +112,13 @@ function EditCourse() {
     } else if (course.image instanceof File) {
       formData.append("image", course.image, course.image.name);
     }
-    formData.append("chapters", JSON.stringify(course.chapters)); // Convert chapters to JSON string and append it to formData
+    formData.append("chapters", JSON.stringify(course.chapters));
     formData.append("published", String(course.published));
 
-    // Loop through the chapters and slides to append any image files
     course.chapters.forEach((chapter, chapterIndex) => {
       chapter.slides.forEach((slide, slideIndex) => {
         slide.elements.forEach((element, elementIndex) => {
-          // If it's an img type element
           if (element.type === "img" && element.value instanceof File) {
-            // Append the file using chapter and slide indices to help reference the file on the server-side
             formData.append(
               `chapter_${chapterIndex}_slide_${slideIndex}_img`,
               element.value,
@@ -97,7 +126,6 @@ function EditCourse() {
             );
           }
 
-          // If it's an audio type element
           if (element.type === "audio" && element.value instanceof File) {
             formData.append(
               `chapter_${chapterIndex}_slide_${slideIndex}_audio`,
@@ -106,7 +134,6 @@ function EditCourse() {
             );
           }
 
-          // If it's a mix type element
           if (element.type === "mix") {
             const mixElement = element as MixElement;
             if (mixElement.value.file instanceof File) {
@@ -127,12 +154,6 @@ function EditCourse() {
       });
     });
 
-    // console.log(formData);
-
-    // const payload = Object.fromEntries(formData);
-    // console.log("payload" + payload);
-
-    //update course
     instance
       .put("/course/update/" + id, formData, {
         headers: {
@@ -143,32 +164,32 @@ function EditCourse() {
         console.log(res);
         toast.success(`Updating "${course.title}"!`, {
           onClose: () => {
-            navigate(`/${basePath}/course/edit`);
-            // Delay the reload to allow user to see the message
+            setShouldConfirmUnload(false); // Disable confirmation dialog
             setTimeout(() => {
               window.location.reload();
-            }, 3000); // Adjust the timing as needed
+            });
           },
         });
       })
       .catch((err) => {
-        toast.error(
-          `Error updating course: "${err.message}". Please try again.`
-        );
+        toast.error(`Error updating course: "${err.message}". Please try again.`);
         console.log(err);
+      })
+      .finally(() => {
+        setIsSaveLoading(false);
+        setShouldConfirmUnload(true);
       });
   };
-
-  //show component to edit title, desc & image
-  const [showComponent, setShowComponent] = useState(false);
 
   const handleButtonClick = () => {
     setShowComponent(true);
   };
 
   const handlePublish = () => {
+    setIsPublishLoading(true);
+    setShouldConfirmUnload(false);
     dispatch(togglePublished());
-    setIsPublishClicked(true); // Indicate that publish was clicked
+    setIsPublishClicked(true);
   };
 
   if (loading)
@@ -217,33 +238,42 @@ function EditCourse() {
             )}
           </div>
           <div className="flex">
-            <button
-              onClick={handlePublish}
-              className=" w-max px-2 flex justify-center items-center gap-2 font-semibold text-accent-6 bg-primary-6 rounded-lg  transition-all border border-accent-6"
-            >
-              {!course.published ? (
-                <span>Publish</span>
-              ) : (
-                <span>Unpublish</span>
-              )}
-              <ArrowSquareOut
-                size={22}
-                weight="fill"
-                className="self-centered text-accent-6"
-              />
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="w-max px-2 flex justify-center items-center gap-2 ml-1 font-semibold text-primary-6 bg-accent-6 rounded-lg hover:bg-accent-7 transition-all"
-            >
-              <span>Update</span>
-              <ArrowSquareOut
-                size={22}
-                weight="fill"
-                className="self-centered"
-              />
-            </button>
-          </div>
+      <button
+        onClick={handlePublish}
+        className="w-max px-2 flex justify-center items-center gap-2 font-semibold text-accent-6 bg-primary-6 rounded-lg transition-all border border-accent-6"
+        disabled={isPublishLoading} // Disable publish button when loading
+      >
+        {isPublishLoading ? (
+          <BeatLoader size={8} color={"#EA9215"} />
+        ) : !course.published ? (
+          <span>Publish</span>
+        ) : (
+          <span>Unpublish</span>
+        )}
+        <ArrowSquareOut
+          size={22}
+          weight="fill"
+          className="self-centered text-accent-6"
+        />
+      </button>
+
+      <button
+        onClick={handleSubmit}
+        className="w-max px-2 flex justify-center items-center gap-2 ml-1 font-semibold text-primary-6 bg-accent-6 rounded-lg hover:bg-accent-7 transition-all"
+        disabled={isSaveLoading} // Disable save button when loading
+      >
+        {isSaveLoading ? (
+          <BeatLoader size={8} color={"#FFFFFF"} />
+        ) : (
+          <span>Update</span>
+        )}
+        <ArrowSquareOut
+          size={22}
+          weight="fill"
+          className="self-centered"
+        />
+      </button>
+    </div>
         </div>
         {/* display the edit course or edit chapters */}
         {showComponent ? (

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
-import { GoogleLogo } from "@phosphor-icons/react";
+// import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -232,13 +232,13 @@ const Signup = () => {
             {error.message}
           </div>
         )}
-        <div className="text-xs mt-4 xl:text-xl">
+        {/* <div className="text-xs mt-4 xl:text-xl">
           <p>Or signup with</p>
           <div className="flex mt-2 text-2xl text-white gap-2 xl:text-3xl">
             <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></GoogleLogo>
-            {/* <FacebookLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></FacebookLogo> */}
+            <FacebookLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer transition-all"></FacebookLogo>
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );
