@@ -51,7 +51,7 @@ function SSLDay() {
   if (quarterError && "message" in quarterError)
     return <div>Error: {quarterError.message}</div>;
 
-  if (!quarterDetails || !lessonDetails) return <div>የቀጣዩ ሩብ አመት ትምህርት እስኪለጠፍ ይጠብቁ!</div>;
+  if (!quarterDetails || !lessonDetails) return <div className="text-xl">የቀጣዩ ሩብ አመት ትምህርት እስኪለጠፍ ይጠብቁ!</div>;
 
   return (
     <div className="flex flex-col min-h-screen  w-full">
