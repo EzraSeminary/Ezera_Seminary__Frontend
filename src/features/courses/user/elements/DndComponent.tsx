@@ -129,7 +129,7 @@ const DndComponent: React.FC<DndComponentProps> = ({
           className="text-primary-6 text-center font-nokia-bold bg-accent-6 hover:bg-accent-7 w-max rounded-3xl mx-auto text-xs lg:text-lg xl:text-xl lg:py-1 px-2"
           onClick={handleCheckAnswer}
         >
-          Check Answer
+          መልሱን ይመልከቱ
         </button>
         {isDndAnswerCorrect !== null && (
           <div className="pl-1">
