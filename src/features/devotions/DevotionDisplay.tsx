@@ -73,7 +73,10 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   }
 
   const devotionToDisplay = selectedDevotion || devotions[0];
-  const devotionsByMonth = devotions.reduce((acc, devotion) => {
+  const previousDevotions = devotions.filter(
+    (devotion: Devotion) => devotion._id !== devotionToDisplay._id
+  );
+  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
     const key = devotion.month;
     if (!acc[key]) acc[key] = [];
     acc[key].push(devotion);
