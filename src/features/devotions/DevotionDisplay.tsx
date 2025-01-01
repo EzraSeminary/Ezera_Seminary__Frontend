@@ -10,7 +10,7 @@ import MonthFolder from "./MonthFolder";
 import {
   convertToEthiopianDate,
   findDevotion,
-  sortMonthsChronologically, // Updated import
+  sortMonthsChronologically,
   ethiopianMonths,
   sortDevotionsByDayDescending,
 } from "./devotionUtils";
@@ -73,41 +73,52 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   }
 
   const devotionToDisplay = selectedDevotion || devotions[0];
-
   const previousDevotions = devotions.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
-
-  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
+  const devotionsByMonth = devotions.reduce((acc, devotion) => {
     const key = devotion.month;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
+    if (!acc[key]) acc[key] = [];
     acc[key].push(devotion);
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  // Sort devotions within each month by day descending
+  // Get today's Ethiopian date [year, month, day]
+  const [currentYear, currentMonthIndex, currentDay] = convertToEthiopianDate(
+    new Date()
+  );
+
+  // Filter out future days for non-Admin/Instructor users
+  if (user && user.role !== "Admin" && user.role !== "Instructor") {
+    for (const month in devotionsByMonth) {
+      const monthIndex = ethiopianMonths.indexOf(month);
+      // If it's the current Ethiopian month, filter devotions beyond today's day
+      if (monthIndex === currentMonthIndex) {
+        devotionsByMonth[month] = devotionsByMonth[month].filter(
+          (devotion) => Number(devotion.day) <= currentDay
+        );
+      }
+    }
+  }
+
+  // Sort devotions within each month by descending day
   for (const month in devotionsByMonth) {
     devotionsByMonth[month] = sortDevotionsByDayDescending(
       devotionsByMonth[month]
     );
   }
 
-  // Get months sorted chronologically
+  // Sort months (Meskerem -> Pagume)
   const sortedMonths = sortMonthsChronologically(devotionsByMonth);
 
-  // Get current Ethiopian month index
-  const today = new Date();
-  const [, currentMonthIndex] = convertToEthiopianDate(today);
-
-  // Determine which months to display based on user role
+  // For non-admin/instructor, only show months from Meskerem (index 1) up to currentMonthIndex
   const filteredMonths =
     user && (user.role === "Admin" || user.role === "Instructor")
       ? sortedMonths
       : sortedMonths.filter((month) => {
           const monthIndex = ethiopianMonths.indexOf(month);
-          return monthIndex > 0 && monthIndex <= currentMonthIndex;
+          // Skip the empty "" month (index 0) and show up to current month
+          return monthIndex >= 1 && monthIndex <= currentMonthIndex;
         });
 
   return (
