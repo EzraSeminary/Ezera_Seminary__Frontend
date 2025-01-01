@@ -77,7 +77,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   // const previousDevotions = devotions.filter(
   //   (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   // );
-  
+
   const devotionsByMonth = devotions.reduce((acc, devotion) => {
     const key = devotion.month;
     if (!acc[key]) acc[key] = [];
@@ -87,9 +87,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   // Get today's Ethiopian date [year, month, day]
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentYear, currentMonthIndex, currentDay] = convertToEthiopianDate(
-    new Date()
-  );
+  const [, currentMonthIndex, currentDay] = convertToEthiopianDate(new Date());
 
   // Filter out future days for non-Admin/Instructor users
   if (user && user.role !== "Admin" && user.role !== "Instructor") {
@@ -148,7 +146,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           ))}
         </div>
         <div className="hidden">
-        <Categories title="Lessons Available" />
+          <Categories title="Lessons Available" />
         </div>
       </div>
     </div>
