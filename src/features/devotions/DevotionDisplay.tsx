@@ -73,10 +73,12 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   }
 
   const devotionToDisplay = selectedDevotion || devotions[0];
-  const previousDevotions = devotions.filter(
-    (devotion: Devotion) => devotion._id !== devotionToDisplay._id
-  );
-  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
+
+  // const previousDevotions = devotions.filter(
+  //   (devotion: Devotion) => devotion._id !== devotionToDisplay._id
+  // );
+  
+  const devotionsByMonth = devotions.reduce((acc, devotion) => {
     const key = devotion.month;
     if (!acc[key]) acc[key] = [];
     acc[key].push(devotion);
@@ -84,6 +86,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   }, {} as Record<string, Devotion[]>);
 
   // Get today's Ethiopian date [year, month, day]
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentYear, currentMonthIndex, currentDay] = convertToEthiopianDate(
     new Date()
   );
