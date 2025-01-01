@@ -160,6 +160,7 @@ const Login: React.FC = () => {
                   {formik.errors.email}
                 </div>
               )}
+              <label>Password</label>
               <input
                 type={showPassword ? "text" : "password"} // change type based on showPassword state
                 className={`border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 outline-accent-6 xl:text-sm ${
