@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
+// import { GoogleLogo, FacebookLogo } from "@phosphor-icons/react";
 import { useSendMessageMutation } from "@/redux/api-slices/apiSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
@@ -180,13 +180,13 @@ const ContactUs = () => {
                 {/* Render loading spinner if isLoading is true, otherwise show "Login" */}
               </button>
             </div>
-            <div className="text-xs mt-4  xl:text-xl">
+            {/* <div className="text-xs mt-4  xl:text-xl">
               <p>Or Connect using</p>
               <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
                 <GoogleLogo className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"></GoogleLogo>
                 <FacebookLogo className="bg-accent-6 rounded-full  hover:bg-accent-7  hover:cursor-pointer  transition-all"></FacebookLogo>
               </div>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
