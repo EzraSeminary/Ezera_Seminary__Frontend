@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleLogo } from "@phosphor-icons/react";
+// import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/redux/api-slices/apiSlice";
@@ -160,6 +160,7 @@ const Login: React.FC = () => {
                   {formik.errors.email}
                 </div>
               )}
+              <label>Password</label>
               <input
                 type={showPassword ? "text" : "password"} // change type based on showPassword state
                 className={`border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 outline-accent-6 xl:text-sm ${
@@ -215,7 +216,7 @@ const Login: React.FC = () => {
                 <p>Sign Up</p>
               </Link>
             </div>
-            <div className="text-xs mt-4  xl:text-xl">
+            {/* <div className="text-xs mt-4  xl:text-xl">
               <p>Or signup with</p>
               <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
                 <div
@@ -225,7 +226,7 @@ const Login: React.FC = () => {
                   <GoogleLogo />
                 </div>
               </div>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

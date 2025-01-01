@@ -133,7 +133,9 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
             />
           ))}
         </div>
+        <div className="hidden">
         <Categories title="Lessons Available" />
+        </div>
       </div>
     </div>
   );
