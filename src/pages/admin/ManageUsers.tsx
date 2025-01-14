@@ -25,6 +25,18 @@ const ManageUsers: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(10);
+
+  // Filtering, searching, and sorting state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterRole, setFilterRole] = useState("");
+  const [sortField, setSortField] = useState<keyof User | "">("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  
+
   useEffect(() => {
     if (isError) {
       toast.error("Error fetching users. Please try again.");
@@ -136,6 +148,38 @@ const ManageUsers: React.FC = () => {
     navigate(-1);
   };
 
+// Update the currentUsers calculation to include filtering
+const filteredUsers = users?.filter((user: User) =>
+  user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  user.email.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+const indexOfLastUser = currentPage * usersPerPage;
+const indexOfFirstUser = indexOfLastUser - usersPerPage;
+const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Pagination logic
+  const totalPages = Math.ceil(users?.length / usersPerPage);
+  const pageNumbers = [];
+
+  if (totalPages <= 5) {
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+  } else {
+    if (currentPage <= 3) {
+      pageNumbers.push(1, 2, 3, 4, '...', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pageNumbers.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pageNumbers.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+    }
+  }
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -143,9 +187,20 @@ const ManageUsers: React.FC = () => {
   return (
     <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl">
       <div className="flex justify-between items-center">
+      <div>
         <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
           Manage Users
         </h2>
+        <div className="mb-4 flex justify-between items-center">
+          <input
+            type="text"
+            placeholder="Search by name or email"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/3 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+            />
+        </div>
+      </div>
         <div
           onClick={goBack}
           className="flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
@@ -168,7 +223,7 @@ const ManageUsers: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users
+          {currentUsers
             ?.filter((user: User) => !user.deletedAt)
             ?.map((user: User) => (
               <tr
@@ -227,6 +282,28 @@ const ManageUsers: React.FC = () => {
             ))}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        <ul className="flex list-none">
+          {pageNumbers.map((number, index) => (
+            <li key={index} className="mx-1">
+              {typeof number === 'string' ? (
+                <span className="px-3 py-1 text-primary-2">...</span>
+              ) : (
+                <button
+                  onClick={() => paginate(number)}
+                  className={`px-3 py-1 rounded font-nokia-bold ${
+                    currentPage === number
+                      ? "bg-accent-6 text-white"
+                      : "bg-secondary-4 text-primary-6"
+                  }`}
+                >
+                  {number}
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
       {editingUser && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-50">
           <div className="bg-secondary-6 p-6 rounded-lg shadow-lg w-full max-w-md">
