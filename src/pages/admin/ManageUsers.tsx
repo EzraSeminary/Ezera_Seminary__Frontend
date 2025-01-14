@@ -31,10 +31,6 @@ const ManageUsers: React.FC = () => {
 
   // Filtering, searching, and sorting state
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterRole, setFilterRole] = useState("");
-  const [sortField, setSortField] = useState<keyof User | "">("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
   
 
   useEffect(() => {
@@ -187,17 +183,17 @@ const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
   return (
     <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl">
       <div className="flex justify-between items-center">
-      <div>
+      <div className="flex flex-row gap-8">
         <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
           Manage Users
         </h2>
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-4 flex justify-between items-center ">
           <input
             type="text"
             placeholder="Search by name or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-1/3 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+            className=" border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 "
             />
         </div>
       </div>
