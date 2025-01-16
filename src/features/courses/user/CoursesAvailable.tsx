@@ -204,44 +204,45 @@ const CourseCard: React.FC<{
   return (
     <motion.div
       variants={gridSquareVariants}
-      className="flex flex-col  items-start w-full shadow-2xl rounded-xl  h-full border-accent-5 border pb-4 font-nokia-bold"
+      className="flex flex-col items-start w-full shadow-2xl rounded-xl h-full border-accent-5 border pb-4 font-nokia-bold"
     >
       <div className="w-full p-2 h-full">
-        <img
-          src={
-            typeof course.image === "string"
-              ? course.image
-              : URL.createObjectURL(course.image)
-          }
-          className="w-full max-h-[30vh] min-h-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
-          alt=""
-        />
+        <div className="relative w-full pb-[61.9%]"> {/* Aspect ratio container */}
+          <img
+            src={
+              typeof course.image === "string"
+                ? course.image
+                : URL.createObjectURL(course.image)
+            }
+            className="absolute top-0 left-0 w-full h-full object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
+            alt=""
+          />
+        </div>
       </div>
 
       <Progress value={progressValue || 0} className="w-[90%] mx-auto" />
 
-      <div className=" w-[95%] md:w-[90%] mx-auto h-[100%] flex-col justify-between mt-1">
+      <div className="w-[95%] md:w-[90%] mx-auto h-[100%] flex-col justify-between mt-1">
         <p className="text-accent-6 text-sm">{course.category}</p>
-        <h2 className="text-secondary-6 font-nokia-bold text-lg xl:text-2xl mx-auto  mb-2 line-clamp-2">
+        <h2 className="text-secondary-6 font-nokia-bold text-lg xl:text-2xl mx-auto mb-2 line-clamp-2">
           {course.title}
         </h2>
         <div>
-        <hr className="border-accent-5 border w-[100%] " />
-        <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-sm mt-2 mb-2 line-clamp-3  w-[95%] mx-auto leading-tight">
-          {course.description}
-        </p>
-        <Link
-          to={`/courses/get/` + course._id}
-          className="bg-accent-6 text-primary-1 px-6 py-1.5 rounded-full font-nokia-bold text-xs hover:bg-accent-7 transition-all"
-        >
-          <button className="mt-2" type="button">
-            ኮርሱን ክፈት
-          </button>
-        </Link>
+          <hr className="border-accent-5 border w-[100%]" />
+          <p className="text-secondary-5 text-xs font-nokia-Regular xl:text-sm mt-2 mb-2 line-clamp-3 w-[95%] mx-auto leading-tight">
+            {course.description}
+          </p>
+          <Link
+            to={`/courses/get/` + course._id}
+            className="bg-accent-6 text-primary-1 px-6 py-1.5 rounded-full font-nokia-bold text-xs hover:bg-accent-7 transition-all"
+          >
+            <button className="mt-2" type="button">
+              ኮርሱን ክፈት
+            </button>
+          </Link>
         </div>
       </div>
     </motion.div>
   );
 };
-
 export default CoursesAvailable;
