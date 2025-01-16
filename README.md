@@ -30,7 +30,7 @@
 
 # 📖 Ezra Seminary <a name="about-project"></a>
 
-**Ezra Seminary** is a digital Bible school(LMS APP) founded on the “Yetnbit Kal Ministries” (Engl. Prophetic Word Ministries). The word 'Seminary' comes from the Latin term 'Seminarium,' which means 'seedbed.' Indeed, the seminary is a place where Bible students are nurtured like seeds, growing deep roots, and bearing fruit through their service. Ezra Seminary's vision and mission are to equip many to become owners of this training by utilizing modern technological tools..
+**Ezra Seminary** is a digital Bible school(LMS APP) founded on the “Yetnbit Kal Ministries” (Engl. Prophetic Word Ministries). The word 'Seminary' comes from the Latin term 'Seminarium,' which means 'seedbed.' Indeed, the seminary is a place where Bible students are nurtured like seeds, growing deep roots, and bearing fruit through their service. Ezra Seminary's vision and mission are to equip many to become owners of this training by utilizing modern technological tools.
 
 ## 🛠 Built With <a name="built-with"></a>
 
