@@ -213,7 +213,7 @@ const CourseCard: React.FC<{
               ? course.image
               : URL.createObjectURL(course.image)
           }
-          className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
+          className="w-full max-h-[30vh] min-h-[30vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-tl-xl rounded-tr-xl bg-secondary-1"
           alt=""
         />
       </div>
