@@ -60,7 +60,18 @@ export default {
       },
       fontFamily: {
         "nokia-bold": ["Nokia Pure Headline Bold", "Inter", "sans-serif"],
-        "nokia-light": ["Nokia Pure Headline Light", "Inter", "sans-serif"],
+        "nokia-extraBold": ["Nokia Pure Headline Extra Bold"],
+        "nokia-regular": ["Nokia Pure Headline Regular", "Inter", "sans-serif"],
+        "nokia-normalLight": [
+          "Nokia Pure Headline Light",
+          "Inter",
+          "sans-serif",
+        ],
+        "nokia-light": [
+          "Nokia Pure Headline Ultra Light",
+          "Inter",
+          "sans-serif",
+        ],
         "Lato-Light": ["Lato-Light", "sans-serif"],
         "Lato-Regular": ["Lato-Regular", "sans-serif"],
         "Lato-Black": ["Lato-Black", "sans-serif"],

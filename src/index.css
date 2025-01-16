@@ -79,9 +79,21 @@
   font-family: "Nokia Pure Headline Bold";
   src: url(/fonts/NOKIAPUREHEADLINE_BD.TTF) format("truetype");
 }
-
+@font-face {
+  font-family: "Nokia Pure Headline Extra Bold";
+  src: url(/fonts/NokiaPureHeadline_XBd..TTF) format("truetype");
+}
+@font-face {
+  font-family: "Nokia Pure Headline Regular";
+  src: url(/fonts/NOKIAPUREHEADLINE_RG.TTF) format("truetype");
+}
 @font-face {
   font-family: "Nokia Pure Headline Light";
+  src: url(/fonts/NokiaPureHeadline_Lt.TTF) format("truetype");
+}
+
+@font-face {
+  font-family: "Nokia Pure Headline Ultra Light";
   src: url(/fonts/NokiaPureHeadline_ULt.ttf) format("truetype");
 }
 @font-face {
