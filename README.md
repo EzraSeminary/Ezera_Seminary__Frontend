@@ -3,7 +3,7 @@
 <div align="center">
   <img src="src/assets/MainLogo.png" alt="Ezra Seminary Logo" width="300" height="auto" />
   <br/>
-  <h3><b>Your Project Name</b></h3>
+  <h3><b>Ezra Seminary</b></h3>
 </div>
 
 # 📗 Table of Contents
