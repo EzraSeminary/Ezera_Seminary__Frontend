@@ -34,7 +34,18 @@
 
 ## 🛠 Built With <a name="built-with"></a>
 
+
 ### Tech Stack <a name="tech-stack"></a>
+
+The Ezra Seminary application is a full-stack web application built with the MERN stack:
+
+* **M**ongoDB - NoSQL database for storing application data.
+* **E**xpress.js - Web framework for server-side functionality.
+* **R**eact.js - JavaScript library for building user interfaces.
+* **N**ode.js - JavaScript runtime environment that executes the server-side code.
+
+Additionally, TypeScript is used for type safety and improved code maintainability.
+
 
 <details>
   <summary>Client</summary>
