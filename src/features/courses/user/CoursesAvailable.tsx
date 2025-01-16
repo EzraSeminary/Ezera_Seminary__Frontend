@@ -142,7 +142,7 @@ function CoursesAvailable() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       {filteredData.length > 0 &&
-          filteredData.slice(0, isSmallScreen ? 4 : isMediumScreen ? 6 : 8).map((course, index) => (
+          filteredData.slice(0, isSmallScreen ? 3 : isMediumScreen ? 5 : 7).map((course, index) => (
             <CourseCard
               key={index}
               course={{

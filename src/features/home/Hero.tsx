@@ -33,7 +33,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease:"easeOut", delay: 0.3}} 
-            className="text-xl font-nokia-regular text-white lg:text-2xl xl:text-3xl">
+            className="text-xl font-nokia-bold text-white lg:text-2xl xl:text-3xl">
               መጽሃፍ ቅዱስ ጥናት በስልክዎት
             </motion.p>
             <motion.h1 
