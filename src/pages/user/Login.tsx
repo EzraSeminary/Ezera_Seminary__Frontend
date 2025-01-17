@@ -1,8 +1,7 @@
 import { useState } from "react";
-// import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "@/redux/api-slices/apiSlice";
+import { useLoginMutation, useActivateUserMutation } from "@/redux/api-slices/apiSlice";
 import { login as loginAction } from "@/redux/authSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
@@ -10,7 +9,6 @@ import { useFormik } from "formik";
 import Footer from "@/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { useGoogleLogin } from "@react-oauth/google";
 
 interface APIError extends Error {
   status: number;
@@ -21,9 +19,10 @@ interface APIError extends Error {
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [login, { isLoading, error }] = useLoginMutation(); // use the hook
+  const [login, { isLoading, error }] = useLoginMutation();
+  const [activateUser] = useActivateUserMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // get the dispatch function from Redux
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -42,73 +41,58 @@ const Login: React.FC = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
+        // console.log("Attempting to log in with values:", values);
         const result = await login(values).unwrap();
+        // console.log("Login result:", result);
         if (result) {
-          // save the user to local storage
-          localStorage.setItem("user", JSON.stringify(result));
-          // update the auth context
-          dispatch(loginAction(result)); // dispatch the login action from authSlice
-          if (result.role === "Admin") {
-            navigate("/admin");
+          if (result.status === "inactive") {
+            // console.log("Account is inactive. Prompting user to activate.");
+            const confirmed = window.confirm("Your account is inactive. Do you want to make it active?");
+            if (confirmed) {
+              // console.log("User confirmed activation. Activating account...");
+              await activateUser({ userId: result._id, status: "active" }).unwrap();
+              const updatedResult = { ...result, status: "active" }; // Create a new object with the updated status
+              toast.success("Account activated successfully!");
+              // Save the user to local storage
+              localStorage.setItem("user", JSON.stringify(updatedResult));
+              // Update the auth context
+              dispatch(loginAction(updatedResult));
+              if (updatedResult.role === "Admin") {
+                navigate("/admin");
+              } else {
+                navigate("/");
+              }
+              // Show success toast
+              toast.success("Login successful!");
+            } else {
+              // console.log("User declined activation.");
+              return;
+            }
           } else {
-            navigate("/");
+            // Save the user to local storage
+            localStorage.setItem("user", JSON.stringify(result));
+            // Update the auth context
+            dispatch(loginAction(result));
+            if (result.role === "Admin") {
+              navigate("/admin");
+            } else {
+              navigate("/");
+            }
+            // Show success toast
+            toast.success("Login successful!");
           }
-          // Show success toast
-          toast.success("Login successful!");
         }
       } catch (err) {
-        console.error(err);
+        console.error("Error during login:", err);
         // Show error toast
         if ((err as APIError).status === 400) {
           toast.error("Invalid email or password. Please try again.");
         } else {
-          toast.error(
-            "An error occurred during login. Please try again later."
-          );
+          toast.error("An error occurred during login. Please try again later.");
         }
       }
     },
   });
-
-  // Add the useGoogleLogin hook
-  // const googleLogin = useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     try {
-  //       // This is where you extract the token
-  //       const res = await fetch(
-  //         `http://localhost:5100/users/auth/google/verify`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({ token: tokenResponse.access_token }), // Check the token here
-  //         }
-  //       );
-
-  //       const result = await res.json();
-
-  //       if (result) {
-  //         // Handle successful sign in with the user object returned from your backend
-  //         localStorage.setItem("user", JSON.stringify(result));
-  //         dispatch(loginAction(result));
-
-  //         if (result.role === "Admin") {
-  //           navigate("/admin");
-  //         } else {
-  //           navigate("/"); // Navigate to /google/success
-  //         }
-  //         toast.success("Login successful!");
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       toast.error("Google sign-in failed. Please try again.");
-  //     }
-  //   },
-  //   onError: () => {
-  //     toast.error("Google sign-in failed. Please try again.");
-  //   },
-  // });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -216,17 +200,6 @@ const Login: React.FC = () => {
                 <p>Sign Up</p>
               </Link>
             </div>
-            {/* <div className="text-xs mt-4  xl:text-xl">
-              <p>Or signup with</p>
-              <div className="flex mt-2 text-2xl text-white gap-2  xl:text-3xl ">
-                <div
-                  // onClick={() => googleLogin()}
-                  className="bg-accent-6 rounded-full hover:bg-accent-7 hover:cursor-pointer  transition-all"
-                >
-                  <GoogleLogo />
-                </div>
-              </div>
-            </div> */}
           </form>
         </div>
       </div>

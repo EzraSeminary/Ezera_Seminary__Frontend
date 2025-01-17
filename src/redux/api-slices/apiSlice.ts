@@ -121,10 +121,17 @@ export const apiSlice = createApi({
       }),
     }),
     deactivateUser: builder.mutation({
-      query: (userId) => ({
-        url: `/users/deactivate/${userId}`,
+      query: ({ userId, status }) => ({
+        url: `/users/status/${userId}`,
         method: "PUT",
-        body: { status: "inactive" },
+        body: { status },
+      }),
+    }),
+    activateUser: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/users/status/${userId}`,
+        method: "PUT",
+        body: { status },
       }),
     }),
     getCourses: builder.query({
@@ -193,6 +200,7 @@ export const {
   useGetUserByIdQuery,
   useDeleteUserMutation,
   useDeactivateUserMutation,
+  useActivateUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,

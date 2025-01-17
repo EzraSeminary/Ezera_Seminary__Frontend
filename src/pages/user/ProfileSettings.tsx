@@ -132,17 +132,29 @@ const ProfileSettings = () => {
 
   const handleDeactivateAccount = async () => {
     const confirmed = window.confirm(
-      "Are you sure you want to deactivate your account?"
+      "Are you sure you want to change the status of your account?"
     );
     if (confirmed) {
       try {
-        await deactivateUserMutation(currentUser?._id).unwrap();
-        toast.success("Account deactivated successfully!");
-        dispatch(logout());
-        navigate("/login");
+        const newStatus = currentUser?.status === "active" ? "inactive" : "active";
+        await deactivateUserMutation({ userId: currentUser?._id, status: newStatus }).unwrap();
+        toast.success(`Account ${newStatus} successfully!`);
+        // Manually update the currentUser state
+        dispatch(updateUser({ 
+          ...currentUser, 
+          status: newStatus, 
+          role: currentUser?.role ?? null,
+          firstName: currentUser?.firstName ?? "",
+          lastName: currentUser?.lastName ?? "",
+          email: currentUser?.email ?? "",
+          password: currentUser?.password ?? "",
+          avatar: currentUser?.avatar ?? "",
+          token: currentUser?.token ?? "",
+          progress: currentUser?.progress ?? []
+        }));
       } catch (error) {
-        console.error("Error deactivating account:", error);
-        toast.error("Failed to deactivate account. Please try again.");
+        console.error("Error changing account status:", error);
+        toast.error("Failed to change account status. Please try again.");
       }
     }
   };
