@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
 } from "@/redux/api-slices/apiSlice";
-import { updateUser } from "@/redux/authSlice";
+import { updateUser, logout } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
@@ -26,6 +27,7 @@ const ProfileSettings = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [updateUserMutation] = useUpdateUserMutation();
+  const [deleteUserMutation] = useDeleteUserMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
@@ -123,6 +125,33 @@ const ProfileSettings = () => {
           }
         }
       }
+    }
+  };
+
+  const handleDeactivateAccount = async () => {
+    try {
+      await updateUserMutation({
+        id: currentUser?._id,
+        updatedUser: { active: false },
+      }).unwrap();
+      toast.success("Account deactivated successfully!");
+      dispatch(logout());
+      navigate("/login");
+    } catch (error) {
+      console.error("Error deactivating account:", error);
+      toast.error("Failed to deactivate account. Please try again.");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteUserMutation(currentUser?._id).unwrap();
+      toast.success("Account deleted successfully!");
+      dispatch(logout());
+      navigate("/signup");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      toast.error("Failed to delete account. Please try again.");
     }
   };
 
@@ -235,6 +264,20 @@ const ProfileSettings = () => {
                 </button>
               </div>
             </form>
+            <div className="mt-6 flex justify-between">
+              <button
+                onClick={handleDeactivateAccount}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Deactivate Account
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Delete Account
+              </button>
+            </div>
           </div>
         </div>
       </div>
