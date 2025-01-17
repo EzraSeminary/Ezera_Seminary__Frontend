@@ -12,6 +12,7 @@ export interface User {
   createdAt: string;
   deletedAt: string;
   lastLogin: string;
+  status: string;
 }
 
 export interface Progress {

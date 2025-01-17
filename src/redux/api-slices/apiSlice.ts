@@ -13,8 +13,7 @@ interface AnalyticsData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online",
-    // baseUrl: "http://localhost:5100",
+    baseUrl: "http://localhost:5100", // Ensure this is the correct base URL
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = user ? user.token : "";
@@ -33,7 +32,7 @@ export const apiSlice = createApi({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials), // stringified the credentials
+        body: JSON.stringify(credentials),
       }),
     }),
     forgotPassword: builder.mutation({
@@ -56,7 +55,6 @@ export const apiSlice = createApi({
         body: JSON.stringify({ password: newPassword }),
       }),
     }),
-
     sendMessage: builder.mutation({
       query: ({ firstName, lastName, email, message }) => ({
         url: "/users/contact",
@@ -96,7 +94,6 @@ export const apiSlice = createApi({
         };
       },
     }),
-
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Devotions"],
@@ -127,7 +124,7 @@ export const apiSlice = createApi({
       query: (userId) => ({
         url: `/users/deactivate/${userId}`,
         method: "PUT",
-        body: { active: false },
+        body: { status: "inactive" },
       }),
     }),
     getCourses: builder.query({
@@ -137,11 +134,10 @@ export const apiSlice = createApi({
       query: (id) => `/course/get/${id}`,
     }),
     getDevotions: builder.query<Devotion[], void>({
-      // Provide types here
       query: () => ({
         url: "/devotion/show",
       }),
-      providesTags: ["Devotions"], // Use tagTypes that you have specified
+      providesTags: ["Devotions"],
     }),
     createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
@@ -155,15 +151,12 @@ export const apiSlice = createApi({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          body: formData, // use FormData instead of JSON
+          body: formData,
         };
       },
       invalidatesTags: [{ type: "Devotions", id: "LIST" }],
     }),
-    updateDevotion: builder.mutation<
-      void,
-      { id: string; updatedDevotion: FormData }
-    >({
+    updateDevotion: builder.mutation<void, { id: string; updatedDevotion: FormData }>({
       query: ({ id, updatedDevotion }) => {
         const formData = new FormData();
         Object.entries(updatedDevotion).forEach(([key, value]) => {
@@ -173,7 +166,7 @@ export const apiSlice = createApi({
         return {
           url: `/devotion/${id}`,
           method: "PUT",
-          body: formData, // use FormData instead of JSON
+          body: formData,
         };
       },
     }),

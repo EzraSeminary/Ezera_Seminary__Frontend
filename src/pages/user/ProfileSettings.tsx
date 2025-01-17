@@ -5,6 +5,7 @@ import {
   useGetUsersQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useDeactivateUserMutation,
 } from "@/redux/api-slices/apiSlice";
 import { updateUser, logout } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
@@ -28,6 +29,7 @@ const ProfileSettings = () => {
 
   const [updateUserMutation] = useUpdateUserMutation();
   const [deleteUserMutation] = useDeleteUserMutation();
+  const [deactivateUserMutation] = useDeactivateUserMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
@@ -134,10 +136,7 @@ const ProfileSettings = () => {
     );
     if (confirmed) {
       try {
-        await updateUserMutation({
-          id: currentUser?._id,
-          updatedUser: { active: false },
-        }).unwrap();
+        await deactivateUserMutation(currentUser?._id).unwrap();
         toast.success("Account deactivated successfully!");
         dispatch(logout());
         navigate("/login");

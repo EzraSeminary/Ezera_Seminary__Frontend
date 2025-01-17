@@ -31,7 +31,6 @@ const ManageUsers: React.FC = () => {
 
   // Filtering, searching, and sorting state
   const [searchTerm, setSearchTerm] = useState("");
-  
 
   useEffect(() => {
     if (isError) {
@@ -119,19 +118,24 @@ const ManageUsers: React.FC = () => {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    try {
-      await deleteUserMutation(userId).unwrap();
-      toast.success("User deleted successfully!");
-      await refetch();
-    } catch (error) {
-      if (
-        error instanceof AxiosError &&
-        error.response?.data?.message === "User not found"
-      ) {
-        toast.error("User not found. Unable to delete.");
-      } else {
-        console.error("Error deleting user:", error);
-        toast.error("Error deleting user. Please try again.");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this user? This action cannot be undone."
+    );
+    if (confirmed) {
+      try {
+        await deleteUserMutation(userId).unwrap();
+        toast.success("User deleted successfully!");
+        await refetch();
+      } catch (error) {
+        if (
+          error instanceof AxiosError &&
+          error.response?.data?.message === "User not found"
+        ) {
+          toast.error("User not found. Unable to delete.");
+        } else {
+          console.error("Error deleting user:", error);
+          toast.error("Error deleting user. Please try again.");
+        }
       }
     }
   };
@@ -144,16 +148,16 @@ const ManageUsers: React.FC = () => {
     navigate(-1);
   };
 
-// Update the currentUsers calculation to include filtering
-const filteredUsers = users?.filter((user: User) =>
-  user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  user.email.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  // Update the currentUsers calculation to include filtering
+  const filteredUsers = users?.filter((user: User) =>
+    user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-const indexOfLastUser = currentPage * usersPerPage;
-const indexOfFirstUser = indexOfLastUser - usersPerPage;
-const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
 
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -183,20 +187,20 @@ const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
   return (
     <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl">
       <div className="flex justify-between items-center">
-      <div className="flex flex-row gap-8">
-        <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
-          Manage Users
-        </h2>
-        <div className="mb-4 flex justify-between items-center ">
-          <input
-            type="text"
-            placeholder="Search by name or email"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className=" border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 "
+        <div className="flex flex-row gap-8">
+          <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
+            Manage Users
+          </h2>
+          <div className="mb-4 flex justify-between items-center ">
+            <input
+              type="text"
+              placeholder="Search by name or email"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className=" border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 "
             />
+          </div>
         </div>
-      </div>
         <div
           onClick={goBack}
           className="flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
@@ -215,6 +219,7 @@ const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
             <th className="px-4 py-2">Last Name</th>
             <th className="px-4 py-2">Email</th>
             <th className="px-4 py-2">Role</th>
+            <th className="px-4 py-2">Status</th>
             <th className="px-4 py-2">Actions</th>
           </tr>
         </thead>
@@ -241,6 +246,7 @@ const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
                 <td className="px-4 py-2">{user.lastName}</td>
                 <td className="px-4 py-2">{user.email}</td>
                 <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2">{user.status}</td>
                 <td className="px-4 py-2">
                   {editingUser?._id === user._id ? (
                     <>
