@@ -129,29 +129,39 @@ const ProfileSettings = () => {
   };
 
   const handleDeactivateAccount = async () => {
-    try {
-      await updateUserMutation({
-        id: currentUser?._id,
-        updatedUser: { active: false },
-      }).unwrap();
-      toast.success("Account deactivated successfully!");
-      dispatch(logout());
-      navigate("/login");
-    } catch (error) {
-      console.error("Error deactivating account:", error);
-      toast.error("Failed to deactivate account. Please try again.");
+    const confirmed = window.confirm(
+      "Are you sure you want to deactivate your account?"
+    );
+    if (confirmed) {
+      try {
+        await updateUserMutation({
+          id: currentUser?._id,
+          updatedUser: { active: false },
+        }).unwrap();
+        toast.success("Account deactivated successfully!");
+        dispatch(logout());
+        navigate("/login");
+      } catch (error) {
+        console.error("Error deactivating account:", error);
+        toast.error("Failed to deactivate account. Please try again.");
+      }
     }
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      await deleteUserMutation(currentUser?._id).unwrap();
-      toast.success("Account deleted successfully!");
-      dispatch(logout());
-      navigate("/signup");
-    } catch (error) {
-      console.error("Error deleting account:", error);
-      toast.error("Failed to delete account. Please try again.");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+    if (confirmed) {
+      try {
+        await deleteUserMutation(currentUser?._id).unwrap();
+        toast.success("Account deleted successfully!");
+        dispatch(logout());
+        navigate("/signup");
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        toast.error("Failed to delete account. Please try again.");
+      }
     }
   };
 
