@@ -56,7 +56,7 @@ const Hero = () => {
                   alt="Google Play Logo"
                 />
               </a>
-              <a href="#">
+              <a href="https://apps.apple.com/de/app/ezra-seminary/id6740612880?l=en-GB">
                 <img
                   className="h-6 md:h-8 xl:h-12"
                   src={appLogo}

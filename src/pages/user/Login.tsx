@@ -41,50 +41,38 @@ const Login: React.FC = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        // console.log("Attempting to log in with values:", values);
         const result = await login(values).unwrap();
-        // console.log("Login result:", result);
         if (result) {
           if (result.status === "inactive") {
-            // console.log("Account is inactive. Prompting user to activate.");
             const confirmed = window.confirm("Your account is inactive. Do you want to make it active?");
             if (confirmed) {
-              // console.log("User confirmed activation. Activating account...");
               await activateUser({ userId: result._id, status: "active" }).unwrap();
               const updatedResult = { ...result, status: "active" }; // Create a new object with the updated status
               toast.success("Account activated successfully!");
-              // Save the user to local storage
               localStorage.setItem("user", JSON.stringify(updatedResult));
-              // Update the auth context
               dispatch(loginAction(updatedResult));
               if (updatedResult.role === "Admin") {
                 navigate("/admin");
               } else {
                 navigate("/");
               }
-              // Show success toast
               toast.success("Login successful!");
             } else {
-              // console.log("User declined activation.");
               return;
             }
           } else {
-            // Save the user to local storage
             localStorage.setItem("user", JSON.stringify(result));
-            // Update the auth context
             dispatch(loginAction(result));
             if (result.role === "Admin") {
               navigate("/admin");
             } else {
               navigate("/");
             }
-            // Show success toast
             toast.success("Login successful!");
           }
         }
       } catch (err) {
         console.error("Error during login:", err);
-        // Show error toast
         if ((err as APIError).status === 400) {
           toast.error("Invalid email or password. Please try again.");
         } else {
@@ -191,7 +179,6 @@ const Login: React.FC = () => {
                 className="w-[30%] lg:w-[55%] xl:w-[65%] bg-accent-6 text-primary-1 px-4 py-[1%] lg:py-[1.4%] xl:py-[1%] rounded-sm hover:bg-accent-7 hover:cursor-pointer transition-all"
               >
                 {isLoading ? <LoadingAnimation /> : "Login"}
-                {/* Render loading spinner if isLoading is true, otherwise show "Login" */}
               </button>
               <Link
                 className="w-max border border-accent-6 rounded-sm px-4 lg:px-8 flex justify-center py-1 lg:py-[1%] xl:py-1 items-center hover:bg-secondary-6 hover:text-primary-1 hover:border-secondary-6 transition-all"

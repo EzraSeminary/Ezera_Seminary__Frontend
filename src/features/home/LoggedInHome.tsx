@@ -8,6 +8,7 @@ import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
 import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
 import Footer from "@/components/Footer";
+import CurrentSSL from "../sabbathSchool/CurrentSSL";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -219,32 +220,9 @@ const LoggedInHome = () => {
                 bounceDamping: 10,
                 bounceStiffness: 600,
               }}
-              className="flex flex-row shadow-2xl border border-accent-6 mt-6 rounded-lg p-4 gap-4 lg:gap-6   w-[90%] mx-auto cursor-pointer"
+              className="flex flex-row shadow-2xl mt-6 rounded-lg p-4 gap-4 lg:gap-6   w-[90%] mx-auto cursor-pointer"
             >
-              <div className="h-auto w-32 md:w-[40%] lg:w-[80%] lg:h-52  xl:h-64 ">
-                <img
-                  src={bible}
-                  alt="Background"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
-              <div className="w-[65%] space-y-1 md:space-y-2 lg:pt-12 lg:text-center ">
-                <h3 className=" text-accent-6 text-xs xl:text-xl leading-tight">
-                  መጽሐፈ መዝሙረ ዳዊት
-                </h3>
-                <h2 className=" text-sm xl:text-2xl leading-tight">
-                  መጨረሻ የለሌው አምልኮ
-                </h2>
-                <div className="border-b border-accent-6 lg:w-[70%] lg:mx-auto" />
-                <p className="text-xs xl:text-lg text-secondary-5">
-                  መጋቢት 6 - መጋቢት 12
-                </p>
-                <button className="bg-accent-6 px-3  lg:py-1 rounded-full w-max">
-                  <span className="text-primary-1 text-xs lg:text-sm  text-center">
-                    ትምህርቱን ክፈት
-                  </span>
-                </button>
-              </div>
+              <CurrentSSL/>
             </motion.div>
           </div>
 
