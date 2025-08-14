@@ -10,19 +10,25 @@ import MonthFolder from "./MonthFolder";
 import {
   convertToEthiopianDate,
   findDevotion,
+  findDevotionForCurrentYear,
   sortMonths,
   ethiopianMonths,
+  getCurrentEthiopianYear,
+  getDevotionsForCurrentYear,
+  getDisplayYear,
 } from "./devotionUtils";
 import { RootState } from "@/redux/store";
 
 export interface DevotionDisplayProps {
   showControls: boolean;
   devotions: Devotion[] | undefined;
+  selectedYear?: string;
   toggleForm: () => void;
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   showControls,
+  selectedYear = "all",
   toggleForm,
 }) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
@@ -41,21 +47,46 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       setSelectedDevotion(selectedDevotionFromHome);
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // const [year, month, day] = convertToEthiopianDate(today);
-      const [, month] = convertToEthiopianDate(today);
-      const ethiopianMonth = ethiopianMonths[month];
+      const currentYear = getCurrentEthiopianYear();
+      
+      // Filter devotions to current year first
+      const currentYearDevotions = getDevotionsForCurrentYear(devotions);
+      
+      // Check if we have year-aware devotions or legacy devotions
+      const hasYearFields = devotions.some(d => d.year);
+      
+      if (!hasYearFields) {
+        // Handle legacy devotions without year fields (backward compatibility)
+        const [, month] = convertToEthiopianDate(today);
+        const ethiopianMonth = ethiopianMonths[month];
 
-      // console.log("Ethiopian Date:", [year, month, day]);
-      // console.log("Ethiopian Month:", ethiopianMonth);
+        const todaysDevotion =
+          findDevotion(devotions, 0, today) ||
+          findDevotion(devotions, 1, today) ||
+          findDevotion(devotions, 2, today) ||
+          devotions.find((devotion) => devotion.month === ethiopianMonth);
 
-      const todaysDevotion =
-        findDevotion(devotions, 0, today) ||
-        findDevotion(devotions, 1, today) ||
-        findDevotion(devotions, 2, today) ||
-        devotions.find((devotion) => devotion.month === ethiopianMonth);
+        setSelectedDevotion(todaysDevotion || devotions[0]);
+      } else if (currentYearDevotions.length > 0) {
+        const [, month] = convertToEthiopianDate(today);
+        const ethiopianMonth = ethiopianMonths[month];
 
-      setSelectedDevotion(todaysDevotion || devotions[0]);
+        // Try to find today's devotion for current year
+        const todaysDevotion =
+          findDevotionForCurrentYear(currentYearDevotions, 0, today) ||
+          findDevotionForCurrentYear(currentYearDevotions, 1, today) ||
+          findDevotionForCurrentYear(currentYearDevotions, 2, today) ||
+          currentYearDevotions.find(
+            (devotion) => 
+              devotion.month === ethiopianMonth && 
+              (devotion.year === currentYear || !devotion.year)
+          );
+
+        setSelectedDevotion(todaysDevotion || currentYearDevotions[0]);
+      } else {
+        // Fallback to any available devotion if no current year devotions exist
+        setSelectedDevotion(devotions[0]);
+      }
     }
   }, [devotions, selectedDevotionFromHome]);
 
@@ -76,9 +107,76 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return <div>No devotions available</div>;
   }
 
-  const devotionToDisplay = selectedDevotion || devotions[0];
+  // Filter devotions based on selected year
+  const filterDevotionsBySelectedYear = (devotions: Devotion[]) => {
+    // For non-admin users, always show current year devotions
+    if (!user || (user.role !== "Admin" && user.role !== "Instructor")) {
+      const currentDisplayYear = getDisplayYear();
+      return devotions.filter(devotion => {
+        if (devotion.year) {
+          return devotion.year === currentDisplayYear;
+        } else {
+          // Legacy devotions without year field are treated as 2017
+          return currentDisplayYear === 2017;
+        }
+      });
+    }
 
-  const previousDevotions = devotions.filter(
+    // For admin/instructor users, use selected year
+    if (selectedYear === "all") {
+      return devotions;
+    }
+    
+    const targetYear = parseInt(selectedYear);
+    
+    // For existing devotions without year field, treat as 2017 (current year)
+    return devotions.filter(devotion => {
+      if (devotion.year) {
+        return devotion.year === targetYear;
+      } else {
+        // Legacy devotions without year field are treated as 2017
+        return targetYear === 2017;
+      }
+    });
+  };
+
+  const devotionsToShow = devotions ? filterDevotionsBySelectedYear(devotions) : [];
+  const devotionToDisplay = selectedDevotion || devotionsToShow[0];
+
+  // Show message if no devotions found for selected year
+  if (devotionsToShow.length === 0) {
+    return (
+      <div className="flex flex-col min-h-screen mx-auto">
+        <div className="w-[100%] h-full font-nokia-bold flex flex-col mx-auto container space-y-6 mb-12 flex-1">
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <h2 className="text-xl font-bold text-accent-6 mb-4">
+              ጥቅስ አልተገኘም
+            </h2>
+            <p className="text-gray-600 mb-4">
+              {selectedYear === "all" 
+                ? "በመረጃ ቋቱ ውስጥ ምንም ጥቅስ የለም።"
+                : `ለ${selectedYear} ዓመት ምንም ጥቅስ አልተገኘም።`}
+            </p>
+            {selectedYear === "2018" && (
+              <p className="text-sm text-blue-600">
+                የ2018 ዓመት ጥቅሶች ገና አልተጨመሩም። በፎርሙ በመጠቀም ማከል ይችላሉ።
+              </p>
+            )}
+            {showControls && (
+              <button
+                onClick={toggleForm}
+                className="bg-accent-6 hover:bg-accent-7 text-white px-6 py-2 rounded-md mt-4"
+              >
+                አዲስ ጥቅስ ጨምር
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const previousDevotions = devotionsToShow.filter(
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 

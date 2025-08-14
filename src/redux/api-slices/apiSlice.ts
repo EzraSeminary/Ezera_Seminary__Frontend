@@ -182,6 +182,22 @@ export const apiSlice = createApi({
         url: `/devotion/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getAvailableYears: builder.query<number[], void>({
+      query: () => "/devotion/years",
+    }),
+    getDevotionsByYear: builder.query<Devotion[], number>({
+      query: (year) => `/devotion/year/${year}`,
+      providesTags: ["Devotions"],
+    }),
+    createDevotionsForNewYear: builder.mutation<any, { sourceYear: number; targetYear: number }>({
+      query: ({ sourceYear, targetYear }) => ({
+        url: "/devotion/copy-year",
+        method: "POST",
+        body: { sourceYear, targetYear },
+      }),
+      invalidatesTags: ["Devotions"],
     }),
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
@@ -207,6 +223,9 @@ export const {
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
+  useGetAvailableYearsQuery,
+  useGetDevotionsByYearQuery,
+  useCreateDevotionsForNewYearMutation,
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,

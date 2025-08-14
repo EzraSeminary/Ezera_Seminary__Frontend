@@ -1,18 +1,19 @@
-// import { useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
+import YearSelector from "@/features/devotions/YearSelector";
 import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
 import Footer from "@/components/Footer";
 import LoadingPage from "@/pages/user/LoadingPage";
+import { RootState } from "@/redux/store";
+import { getCurrentEthiopianYear } from "@/features/devotions/devotionUtils";
 // import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
-  // Explicitly type the useState hook to use Devotion | null
-  // const [selectedDevotion, setSelectedDevotion] = useState<DevotionType | null>(
-  //   null
-  // );
-
+  const [selectedYear, setSelectedYear] = useState(getCurrentEthiopianYear().toString()); // Default to current year
+  const user = useSelector((state: RootState) => state.auth.user);
+  
   // Use the useGetDevotionsQuery hook to fetch devotions
-  // Assuming the hook does not require an argument, remove `undefined`
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
   if (isLoading) return <LoadingPage />;
@@ -32,11 +33,18 @@ const Devotion = () => {
         </div>
       </div>
 
-      <div className=" flex h-full  pt-12  mx-auto flex-1">
+      <div className="pt-6">
+        <YearSelector 
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          userRole={user?.role}
+        />
+      </div>
+
+      <div className=" flex h-full  pt-6  mx-auto flex-1">
         <DevotionDisplay
           devotions={devotions}
-          // selectedDevotion={selectedDevotion}
-          // setSelectedDevotion={setSelectedDevotion}
+          selectedYear={selectedYear}
           showControls={false}
           toggleForm={function (): void {
             throw new Error("Function not implemented.");

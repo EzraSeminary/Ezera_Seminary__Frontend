@@ -7,6 +7,7 @@ import { FormState } from "./types";
 interface Devotion {
   month: string;
   day: string;
+  year?: number; // Optional for backward compatibility
   title: string;
   chapter: string;
   verse: string;
@@ -23,6 +24,8 @@ interface DevotionsState {
   devotions: Devotion[];
   selectedDevotion: Devotion | null;
   isEditing: boolean;
+  availableYears: number[];
+  selectedYear: number;
 }
 
 const initialState: DevotionsState = {
@@ -31,6 +34,7 @@ const initialState: DevotionsState = {
   form: {
     month: "",
     day: "",
+    year: 2017, // Default to current Ethiopian year 2017
     title: "",
     chapter: "",
     verse: "",
@@ -43,6 +47,8 @@ const initialState: DevotionsState = {
   devotions: [],
   selectedDevotion: null,
   isEditing: false,
+  availableYears: [],
+  selectedYear: 2017, // Default to current Ethiopian year
 };
 
 // Async thunk for fetching devotions
@@ -96,6 +102,9 @@ export const updateDevotion = createAsyncThunk(
     // Add fields to transformedDevotion
     transformedDevotion.month = devotion.month;
     transformedDevotion.day = devotion.day;
+    if (devotion.year) {
+      transformedDevotion.year = devotion.year.toString();
+    }
     transformedDevotion.title = devotion.title;
     transformedDevotion.chapter = devotion.chapter;
     transformedDevotion.verse = devotion.verse;
@@ -140,6 +149,40 @@ export const deleteDevotion = createAsyncThunk(
     const axiosInstance = createAxiosInstance(token);
     await axiosInstance.delete(`/devotion/${id}`);
     return id;
+  }
+);
+
+// Async thunk for fetching available years
+export const fetchAvailableYears = createAsyncThunk(
+  "devotions/fetchAvailableYears",
+  async () => {
+    const axiosInstance = createAxiosInstance();
+    const response = await axiosInstance.get("/devotion/years");
+    return response.data;
+  }
+);
+
+// Async thunk for fetching devotions by year
+export const fetchDevotionsByYear = createAsyncThunk(
+  "devotions/fetchDevotionsByYear",
+  async (year: number) => {
+    const axiosInstance = createAxiosInstance();
+    const response = await axiosInstance.get(`/devotion/year/${year}`);
+    return response.data;
+  }
+);
+
+// Async thunk for creating devotions for a new year
+export const createDevotionsForNewYear = createAsyncThunk(
+  "devotions/createDevotionsForNewYear",
+  async ({ sourceYear, targetYear }: { sourceYear: number; targetYear: number }, { getState }) => {
+    const token = (getState() as RootState).auth.user?.token || "";
+    const axiosInstance = createAxiosInstance(token);
+    const response = await axiosInstance.post("/devotion/copy-year", {
+      sourceYear,
+      targetYear
+    });
+    return response.data;
   }
 );
 
@@ -193,6 +236,9 @@ const devotionsSlice = createSlice({
       state.form = initialState.form;
       state.selectedDevotion = null;
     },
+    setSelectedYear: (state, action: PayloadAction<number>) => {
+      state.selectedYear = action.payload;
+    },
     // ... additional reducers will need to update their action payloads with types as well
   },
   extraReducers: (builder) => {
@@ -219,6 +265,12 @@ const devotionsSlice = createSlice({
         if (index !== -1) {
           state.devotions.splice(index, 1);
         }
+      })
+      .addCase(fetchAvailableYears.fulfilled, (state, action) => {
+        state.availableYears = action.payload;
+      })
+      .addCase(fetchDevotionsByYear.fulfilled, (state, action) => {
+        state.devotions = action.payload;
       });
   },
 });
@@ -251,6 +303,7 @@ export const {
   updateFile,
   resetForm,
   clearSelectedDevotion,
+  setSelectedYear,
 } = devotionsSlice.actions;
 
 export default devotionsSlice.reducer;

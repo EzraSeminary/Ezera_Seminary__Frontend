@@ -26,6 +26,7 @@ const gridSquareVariants = {
 };
 
 const LoggedInHome = () => {
+  const navigate = useNavigate();
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
   const ethiopianMonths = [
@@ -45,10 +46,10 @@ const LoggedInHome = () => {
     "ጳጉሜ", // 13th month
   ];
 
-  const navigate = useNavigate();
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
 
-  //Skeleton loading
-  if (isLoading) return <LoadingSkeleton />;
   if (error) return `Error: ${(error as Error).message}`;
 
   if (!devotions || devotions.length === 0) {
