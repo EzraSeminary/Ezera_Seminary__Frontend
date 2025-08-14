@@ -8,6 +8,39 @@ interface AnalyticsData {
   totalCourses: number;
   accountsReached: number;
   usersLeft: number;
+  dailyActiveUsers: number;
+  weeklyActiveUsers: number;
+  averageSessionTime: number;
+  courseCompletionRate: number;
+  userEngagementRate: number;
+  totalDevotions: number;
+  newDevotions: number;
+}
+
+interface PerformanceData {
+  topUsers: Array<{
+    name: string;
+    score: number;
+    courses: number;
+    rank: number;
+  }>;
+  topCourses: Array<{
+    title: string;
+    completion: number;
+    students: number;
+    rank: number;
+  }>;
+  weeklyActivity: Array<{
+    date: string;
+    activeUsers: number;
+    percentage: number;
+  }>;
+  systemMetrics: {
+    apiUptime: number;
+    databaseHealth: number;
+    averageResponseTime: number;
+    totalRequests: number;
+  };
 }
 
 export const apiSlice = createApi({
@@ -202,6 +235,9 @@ export const apiSlice = createApi({
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
     }),
+    getPerformanceAnalytics: builder.query<PerformanceData, void>({
+      query: () => "/analytics/performance",
+    }),
   }),
 });
 
@@ -229,4 +265,5 @@ export const {
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,
+  useGetPerformanceAnalyticsQuery,
 } = apiSlice;
