@@ -3,7 +3,7 @@
 <div align="center">
   <img src="src/assets/MainLogo.png" alt="Ezra Seminary Logo" width="300" height="auto" />
   <br/>
-  <h3><b>Your Project Name</b></h3>
+  <h3><b>Ezra Seminary</b></h3>
 </div>
 
 # 📗 Table of Contents
@@ -28,13 +28,24 @@
 - [❓ FAQ](#faq)
 - [📝 License](#license)
 
-# 📖 Your Project Name <a name="about-project"></a>
+# 📖 Ezra Seminary <a name="about-project"></a>
 
-**Your Project Name** is a brief description of your project.
+**Ezra Seminary** is a digital Bible school(LMS APP) founded on the “Yetnbit Kal Ministries” (Engl. Prophetic Word Ministries). The word 'Seminary' comes from the Latin term 'Seminarium,' which means 'seedbed.' Indeed, the seminary is a place where Bible students are nurtured like seeds, growing deep roots, and bearing fruit through their service. Ezra Seminary's vision and mission are to equip many to become owners of this training by utilizing modern technological tools.
 
 ## 🛠 Built With <a name="built-with"></a>
 
+
 ### Tech Stack <a name="tech-stack"></a>
+
+The Ezra Seminary application is a full-stack web application built with the MERN stack:
+
+* **M**ongoDB - NoSQL database for storing application data.
+* **E**xpress.js - Web framework for server-side functionality.
+* **R**eact.js - JavaScript library for building user interfaces.
+* **N**ode.js - JavaScript runtime environment that executes the server-side code.
+
+Additionally, TypeScript is used for type safety and improved code maintainability.
+
 
 <details>
   <summary>Client</summary>

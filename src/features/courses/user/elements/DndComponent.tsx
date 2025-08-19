@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -9,20 +9,17 @@ import {
 } from "@dnd-kit/core";
 import DraggableItem from "../../Elements/dragAndDrop/DraggableItem";
 import DroppableArea from "../../Elements/dragAndDrop/DroppableArea";
-import { DndElement } from "../../../../services/api";
-import {
-    XCircle,
-    CheckFat,
-  } from "@phosphor-icons/react";
+import { DndElement } from "@/redux/types";
+import { XCircle, CheckFat } from "@phosphor-icons/react";
 
-  interface DndComponentProps {
-    element: DndElement;
-    droppedChoice: string | null;
-    setDroppedChoice: (choice: string | null) => void;
-    isDndAnswerCorrect: boolean | null;
-    setIsDndAnswerCorrect: (correct: boolean | null) => void;
-    setIsDndCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
-  }  
+interface DndComponentProps {
+  element: DndElement;
+  droppedChoice: string | null;
+  setDroppedChoice: (choice: string | null) => void;
+  isDndAnswerCorrect: boolean | null;
+  setIsDndAnswerCorrect: (correct: boolean | null) => void;
+  setIsDndCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const DndComponent: React.FC<DndComponentProps> = ({
   element,
@@ -53,11 +50,12 @@ const DndComponent: React.FC<DndComponentProps> = ({
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
-  
+
     // Check if the drag ended over a valid droppable area
     if (over && over.id === "droppable") {
       // Use active.id to find the corresponding choice text
-      const droppedItem = typeof active.id === 'string' ? active.id.slice(0, -2) : '';
+      const droppedItem =
+        typeof active.id === "string" ? active.id.slice(0, -2) : "";
       if (droppedItem) {
         // Set the dropped choice to the text of the dropped item
         setDroppedChoice(droppedItem as string);
@@ -68,22 +66,17 @@ const DndComponent: React.FC<DndComponentProps> = ({
       setDroppedChoice(null);
     }
   };
-  
-  
 
   const handleCheckAnswer = () => {
     if (droppedChoice) {
       const isDndCorrect = droppedChoice === element.value.correctDndAnswer;
       setIsDndAnswerCorrect(isDndCorrect);
-      if (setIsDndCompleted)
-        setIsDndCompleted(true);
+      if (setIsDndCompleted) setIsDndCompleted(true);
     }
   };
 
   return (
-    <div
-      className="flex flex-col justify-center items-center w-[90%] mx-auto"
-    >
+    <div className="flex flex-col justify-center items-center w-[90%] mx-auto">
       {/* Questions */}
       <p className="text-primary-5 text-justify font-nokia-bold text-sm lg:text-lg xl:text-xl ">
         {element.value.question}

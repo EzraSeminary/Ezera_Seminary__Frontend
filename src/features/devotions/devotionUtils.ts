@@ -108,4 +108,5 @@ export const getDevotionsForCurrentYear = (devotions: Devotion[]): Devotion[] =>
     // Return all devotions if none have year fields (backward compatibility)
     return devotions;
   }
+
 };

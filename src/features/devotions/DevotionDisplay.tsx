@@ -180,29 +180,49 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     (devotion: Devotion) => devotion._id !== devotionToDisplay._id
   );
 
-  const devotionsByMonth = previousDevotions.reduce((acc, devotion) => {
+  const devotionsByMonth = devotions.reduce((acc, devotion) => {
     const key = devotion.month;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
+    if (!acc[key]) acc[key] = [];
     acc[key].push(devotion);
     return acc;
   }, {} as Record<string, Devotion[]>);
 
-  // console.log("Before sorting:", Object.keys(devotionsByMonth));
-
-  const sortedMonthsWithCurrentFirst = sortMonths(devotionsByMonth);
-
-  // Filter devotions to only include the current month if the user is not an admin or instructor
-  const today = new Date();
+  // Get today's Ethiopian date [year, month, day]
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, currentMonth] = convertToEthiopianDate(today);
-  const currentMonthName = ethiopianMonths[currentMonth];
+  const [, currentMonthIndex, currentDay] = convertToEthiopianDate(new Date());
 
+  // Filter out future days for non-Admin/Instructor users
+  if (user && user.role !== "Admin" && user.role !== "Instructor") {
+    for (const month in devotionsByMonth) {
+      const monthIndex = ethiopianMonths.indexOf(month);
+      // If it's the current Ethiopian month, filter devotions beyond today's day
+      if (monthIndex === currentMonthIndex) {
+        devotionsByMonth[month] = devotionsByMonth[month].filter(
+          (devotion) => Number(devotion.day) <= currentDay
+        );
+      }
+    }
+  }
+
+  // Sort devotions within each month by descending day
+  for (const month in devotionsByMonth) {
+    devotionsByMonth[month] = sortDevotionsByDayDescending(
+      devotionsByMonth[month]
+    );
+  }
+
+  // Sort months (Meskerem -> Pagume)
+  const sortedMonths = sortMonthsChronologically(devotionsByMonth);
+
+  // For non-admin/instructor, only show months from Meskerem (index 1) up to currentMonthIndex
   const filteredMonths =
     user && (user.role === "Admin" || user.role === "Instructor")
-      ? sortedMonthsWithCurrentFirst
-      : [currentMonthName];
+      ? sortedMonths
+      : sortedMonths.filter((month) => {
+          const monthIndex = ethiopianMonths.indexOf(month);
+          // Skip the empty "" month (index 0) and show up to current month
+          return monthIndex >= 1 && monthIndex <= currentMonthIndex;
+        });
 
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
@@ -228,7 +248,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           ))}
         </div>
         <div className="hidden">
-        <Categories title="Lessons Available" />
+          <Categories title="Lessons Available" />
         </div>
       </div>
     </div>
