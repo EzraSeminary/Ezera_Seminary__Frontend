@@ -5,7 +5,6 @@ import {
   fetchAvailableYears,
   fetchDevotionsByYear,
   createDevotionsForNewYear,
-  setSelectedYear,
 } from '@/redux/devotionsSlice';
 import { getCurrentEthiopianYear } from './devotionUtils';
 import { toast } from 'react-toastify';
@@ -16,9 +15,10 @@ interface YearManagementProps {
 
 const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { availableYears, selectedYear } = useSelector(
-    (state: RootState) => state.devotions
+  const availableYears = useSelector(
+    (state: RootState) => state.devotions.availableYears || []
   );
+  const [selectedYear, setSelectedYear] = useState<number>(getCurrentEthiopianYear());
   const [sourceYear, setSourceYear] = useState<number>(0);
   const [targetYear, setTargetYear] = useState<number>(getCurrentEthiopianYear() + 1);
   const [isCreating, setIsCreating] = useState(false);
@@ -28,7 +28,7 @@ const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
   }, [dispatch]);
 
   const handleYearChange = (year: number) => {
-    dispatch(setSelectedYear(year));
+    setSelectedYear(year);
     dispatch(fetchDevotionsByYear(year));
     if (onYearChange) {
       onYearChange(year);
@@ -88,8 +88,8 @@ const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
             {getCurrentEthiopianYear()} (Current)
           </option>
           {availableYears
-            .filter((year) => year !== getCurrentEthiopianYear())
-            .map((year) => (
+            .filter((year: number) => year !== getCurrentEthiopianYear())
+            .map((year: number) => (
               <option key={year} value={year}>
                 {year}
               </option>
@@ -115,7 +115,7 @@ const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
               disabled={isCreating}
             >
               <option value={0}>Select source year</option>
-              {availableYears.map((year) => (
+              {availableYears.map((year: number) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -163,7 +163,7 @@ const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
             Available Years
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {availableYears.map((year) => (
+            {availableYears.map((year: number) => (
               <div
                 key={year}
                 className={`p-2 text-center rounded border ${

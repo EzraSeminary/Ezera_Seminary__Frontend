@@ -12,8 +12,7 @@ import {
   Calendar,
   BarChart3,
   PieChart,
-  Activity,
-  Clock
+  Activity
 } from "lucide-react";
 
 interface MetricCardProps {

@@ -37,7 +37,7 @@ const Devotion = () => {
         <YearSelector 
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
-          userRole={user?.role}
+          userRole={user?.role || undefined}
         />
       </div>
 

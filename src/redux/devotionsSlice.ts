@@ -19,7 +19,7 @@ interface Devotion {
   _id?: string;
 }
 
-interface DevotionsState {
+export interface DevotionsState {
   form: FormState;
   devotions: Devotion[];
   selectedDevotion: Devotion | null;
@@ -67,7 +67,7 @@ export const createDevotion = createAsyncThunk(
   async function ({ token, devotion }: { token: string; devotion: Devotion }) {
     const axiosInstance = createAxiosInstance(token);
     const transformedDevotion: {
-      [key: string]: string | File | null | string[];
+      [key: string]: string | File | null | string[] | number;
     } = { ...devotion };
     devotion.paragraphs.forEach((paragraph, index) => {
       transformedDevotion[`paragraph${index + 1}`] = paragraph;
@@ -82,7 +82,13 @@ export const createDevotion = createAsyncThunk(
           formData.append(key, item);
         });
       } else {
-        formData.append(key, value || "");
+        if (value !== null && value !== undefined) {
+          if (typeof value === 'number') {
+            formData.append(key, value.toString());
+          } else {
+            formData.append(key, value);
+          }
+        }
       }
     });
     const response = await axiosInstance.post("/devotion/create", formData);
@@ -96,7 +102,7 @@ export const updateDevotion = createAsyncThunk(
   async ({ token, devotion }: { token: string; devotion: Devotion }) => {
     const axiosInstance = createAxiosInstance(token);
     const transformedDevotion: {
-      [key: string]: string | File | null | string[];
+      [key: string]: string | File | null | string[] | number;
     } = {};
 
     // Add fields to transformedDevotion
@@ -129,7 +135,11 @@ export const updateDevotion = createAsyncThunk(
           formData.append(key, item);
         });
       } else if (value !== null && value !== undefined) {
-        formData.append(key, value);
+        if (typeof value === 'number') {
+          formData.append(key, value.toString());
+        } else {
+          formData.append(key, value);
+        }
       }
     });
 

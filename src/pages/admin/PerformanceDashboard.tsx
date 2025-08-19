@@ -12,7 +12,7 @@ import {
   Activity,
   Calendar,
   BarChart3,
-  PieChart,
+
   LineChart
 } from "lucide-react";
 
@@ -83,10 +83,7 @@ const PerformanceDashboard: React.FC = () => {
     );
   }
 
-  const formatNumber = (value: number | null | undefined) => {
-    if (value === null || value === undefined) return "0";
-    return Math.abs(value).toLocaleString();
-  };
+
 
   return (
     <div className="space-y-8 py-6">
@@ -228,7 +225,7 @@ const PerformanceDashboard: React.FC = () => {
         <div className="mt-6 pt-6 border-t border-accent-1">
           <h3 className="text-xl font-semibold text-secondary-8 mb-4">Weekly Performance Summary</h3>
           <div className="grid grid-cols-7 gap-2">
-            {(performanceData?.weeklyActivity || []).slice(-7).map((dayData, index) => {
+            {(performanceData?.weeklyActivity || []).slice(-7).map((dayData) => {
               const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
               const date = new Date(dayData.date);
               const dayName = dayNames[date.getDay()];

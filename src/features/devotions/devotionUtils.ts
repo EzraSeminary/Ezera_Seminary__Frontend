@@ -100,7 +100,7 @@ export const getDevotionsForCurrentYear = (devotions: Devotion[]): Devotion[] =>
   // If we have devotions with years, filter by current year
   // If we only have legacy devotions (no year), return all of them
   const devotionsWithYear = devotions.filter(d => d.year);
-  const devotionsWithoutYear = devotions.filter(d => !d.year);
+
   
   if (devotionsWithYear.length > 0) {
     return filterDevotionsByYear(devotions, currentYear);

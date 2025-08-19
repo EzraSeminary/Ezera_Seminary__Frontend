@@ -32,9 +32,7 @@ const DevotionForm: React.FC = () => {
   const selectedDevotion = useSelector(
     (state: RootState) => state.devotions.selectedDevotion
   );
-  const availableYears = useSelector(
-    (state: RootState) => state.devotions.availableYears
-  );
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -150,11 +148,7 @@ const DevotionForm: React.FC = () => {
               <option value="">
                 ዓመት ይምረጡ (አማራጭ)
               </option>
-              {availableYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
+
               <option value="2017">
                 2017 (የአሁኑ ዓመት)
               </option>

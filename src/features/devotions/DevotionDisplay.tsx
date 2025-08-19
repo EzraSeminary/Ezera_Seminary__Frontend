@@ -11,7 +11,6 @@ import {
   convertToEthiopianDate,
   findDevotion,
   findDevotionForCurrentYear,
-  sortMonths,
   ethiopianMonths,
   getCurrentEthiopianYear,
   getDevotionsForCurrentYear,
@@ -176,9 +175,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     );
   }
 
-  const previousDevotions = devotionsToShow.filter(
-    (devotion: Devotion) => devotion._id !== devotionToDisplay._id
-  );
+
 
   const devotionsByMonth = devotions.reduce((acc, devotion) => {
     const key = devotion.month;
@@ -206,19 +203,23 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   // Sort devotions within each month by descending day
   for (const month in devotionsByMonth) {
-    devotionsByMonth[month] = sortDevotionsByDayDescending(
-      devotionsByMonth[month]
+    devotionsByMonth[month] = devotionsByMonth[month].sort((a, b) => 
+      Number(b.day) - Number(a.day)
     );
   }
 
   // Sort months (Meskerem -> Pagume)
-  const sortedMonths = sortMonthsChronologically(devotionsByMonth);
+  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
+    const aIndex = ethiopianMonths.indexOf(a);
+    const bIndex = ethiopianMonths.indexOf(b);
+    return aIndex - bIndex;
+  });
 
   // For non-admin/instructor, only show months from Meskerem (index 1) up to currentMonthIndex
   const filteredMonths =
     user && (user.role === "Admin" || user.role === "Instructor")
       ? sortedMonths
-      : sortedMonths.filter((month) => {
+      : sortedMonths.filter((month: string) => {
           const monthIndex = ethiopianMonths.indexOf(month);
           // Skip the empty "" month (index 0) and show up to current month
           return monthIndex >= 1 && monthIndex <= currentMonthIndex;
@@ -233,7 +234,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           toogleForm={toggleForm}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredMonths.map((month) => (
+          {filteredMonths.map((month: string) => (
             <MonthFolder
               key={month}
               month={month}
