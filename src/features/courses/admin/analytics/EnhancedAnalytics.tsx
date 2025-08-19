@@ -261,7 +261,7 @@ const EnhancedAnalytics: React.FC = () => {
               </div>
               <div className="text-center p-3 bg-red-50 rounded-lg">
                 <p className="text-2xl font-bold text-red-600">-{formatNumber(analyticsData?.usersLeft)}</p>
-                <p className="text-sm text-red-700">Users Left</p>
+                <p className="text-sm text-red-700">Users Left (Inactive/Deleted)</p>
               </div>
             </div>
           </div>

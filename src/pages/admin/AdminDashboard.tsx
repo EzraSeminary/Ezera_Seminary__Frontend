@@ -14,6 +14,7 @@ import EnhancedAnalytics from "@/features/courses/admin/analytics/EnhancedAnalyt
 import AdminHeader from "./AdminHeader";
 import CreateUser from "./CreateUser";
 import ManageUser from "./ManageUsers";
+import UserProfile from "./UserProfile";
 import PerformanceDashboard from "./PerformanceDashboard";
 import DashboardOverview from "./DashboardOverview";
 
@@ -56,6 +57,7 @@ const AdminDashboard = () => {
           <Route path="devotion/manage" element={<ManageDevotion />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/manage" element={<ManageUser />} />
+          <Route path="users/:id" element={<UserProfile />} />
         </Routes>
       </div>
     </div>

@@ -131,6 +131,9 @@ export const apiSlice = createApi({
       query: () => "/users",
       providesTags: ["Devotions"],
     }),
+    getDeletedUsersCount: builder.query<{ deletedUsersCount: number }, void>({
+      query: () => "/users/deleted-count",
+    }),
     updateUser: builder.mutation({
       query: ({ id, updatedUser }) => ({
         url: `/users/profile/${id}`,
@@ -224,7 +227,7 @@ export const apiSlice = createApi({
       query: (year) => `/devotion/year/${year}`,
       providesTags: ["Devotions"],
     }),
-    createDevotionsForNewYear: builder.mutation<any, { sourceYear: number; targetYear: number }>({
+    createDevotionsForNewYear: builder.mutation<{ message: string }, { sourceYear: number; targetYear: number }>({
       query: ({ sourceYear, targetYear }) => ({
         url: "/devotion/copy-year",
         method: "POST",
@@ -266,4 +269,5 @@ export const {
   useSendMessageMutation,
   useGetAnalyticsQuery,
   useGetPerformanceAnalyticsQuery,
+  useGetDeletedUsersCountQuery,
 } = apiSlice;

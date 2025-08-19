@@ -7,7 +7,7 @@ import {
 } from "@/redux/api-slices/apiSlice";
 import { toast } from "react-toastify";
 import { User } from "@/redux/types";
-import { ArrowLeft, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
+import { ArrowLeft, Eye, EyeSlash, XCircle, PencilSimple, Trash, User as UserIcon, Crown, ChalkboardTeacher, GraduationCap, Calendar } from "@phosphor-icons/react";
 import { AxiosError } from "axios";
 import LoadingPage from "../user/LoadingPage";
 
@@ -27,7 +27,7 @@ const ManageUsers: React.FC = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(10);
+  const [usersPerPage] = useState(12); // Increased for card layout
 
   // Filtering, searching, and sorting state
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,6 +49,19 @@ const ManageUsers: React.FC = () => {
   const handleEditUser = (user: User) => {
     setEditingUser({ ...user });
     setSelectedAvatar(null);
+  };
+
+  const handleUserClick = (user: User) => {
+    navigate(`/admin/users/${user._id}`);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   const handleUpdateUser = async () => {
@@ -148,6 +161,30 @@ const ManageUsers: React.FC = () => {
     navigate(-1);
   };
 
+  const getRoleIcon = (role: string) => {
+    switch (role) {
+      case "Admin":
+        return <Crown size={20} className="text-yellow-500" weight="fill" />;
+      case "Instructor":
+        return <ChalkboardTeacher size={20} className="text-blue-500" weight="fill" />;
+      case "Learner":
+        return <GraduationCap size={20} className="text-green-500" weight="fill" />;
+      default:
+        return <UserIcon size={20} className="text-gray-500" weight="fill" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "inactive":
+        return "bg-red-100 text-red-800 border-red-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
   // Update the currentUsers calculation to include filtering
   const filteredUsers = users?.filter((user: User) =>
     user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -163,7 +200,7 @@ const ManageUsers: React.FC = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Pagination logic
-  const totalPages = Math.ceil(users?.length / usersPerPage);
+  const totalPages = Math.ceil((filteredUsers?.length || 0) / usersPerPage);
   const pageNumbers = [];
 
   if (totalPages <= 5) {
@@ -185,287 +222,321 @@ const ManageUsers: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-secondary-6 rounded-lg shadow-2xl">
-      <div className="flex justify-between items-center">
-        <div className="flex flex-row gap-8">
-          <h2 className="text-3xl font-nokia-bold mb-6 text-primary-6">
-            Manage Users
-          </h2>
-          <div className="mb-4 flex justify-between items-center ">
-            <input
-              type="text"
-              placeholder="Search by name or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className=" border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 "
-            />
+    <div className="min-h-screen bg-gradient-to-br from-secondary-6 to-secondary-7 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-accent-2">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div className="flex-1">
+              <h1 className="text-4xl font-nokia-bold text-primary-6 mb-2">
+                Manage Users
+              </h1>
+              <p className="text-secondary-6 text-lg">
+                Manage user accounts, roles, and permissions
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search users..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-64 pl-10 pr-4 py-3 border border-accent-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-6 focus:border-transparent bg-white text-primary-6 placeholder-secondary-5"
+                />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <UserIcon size={20} className="text-secondary-5" />
+                </div>
+              </div>
+              <button
+                onClick={goBack}
+                className="flex items-center gap-2 bg-accent-6 hover:bg-accent-7 text-white font-nokia-bold px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-105"
+              >
+                <ArrowLeft size={20} weight="fill" />
+                Back
+              </button>
+            </div>
           </div>
         </div>
-        <div
-          onClick={goBack}
-          className="flex items-center w-max justify-start gap-1 bg-accent-6 hover:bg-accent-7 rounded-full font-nokia-bold mb-4  text-white px-2 py-1 cursor-pointer"
-        >
-          <button>
-            <ArrowLeft size={20} weight="fill" />
-          </button>
-          <div>Back</div>
-        </div>
-      </div>
-      <table className="w-full table-auto cursor-pointer font-nokia-bold">
-        <thead>
-          <tr className="bg-secondary-4 text-primary-6 text-xl">
-            <th className="px-4 py-2">Avatar</th>
-            <th className="px-4 py-2">First Name</th>
-            <th className="px-4 py-2">Last Name</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Role</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+
+        {/* Users Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {currentUsers
             ?.filter((user: User) => !user.deletedAt)
             ?.map((user: User) => (
-              <tr
+              <div
                 key={user._id}
-                className={`border-b ${
+                className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-2 ${
                   editingUser?._id === user._id
-                    ? "bg-primary-6 "
-                    : "text-primary-5 hover:bg-secondary-5 transition-all rounded-lg"
+                    ? "border-accent-6 shadow-2xl scale-105"
+                    : "border-accent-2 hover:border-accent-4"
                 }`}
+                onClick={() => handleUserClick(user)}
+                style={{ cursor: 'pointer' }}
               >
-                <td className="px-4 py-2">
-                  <img
-                    src={`${user.avatar}`}
-                    alt={`${user.firstName} ${user.lastName}`}
-                    className="w-12 h-12 rounded-full  "
-                  />
-                </td>
-                <td className="px-4 py-2">{user.firstName}</td>
-                <td className="px-4 py-2">{user.lastName}</td>
-                <td className="px-4 py-2">{user.email}</td>
-                <td className="px-4 py-2">{user.role}</td>
-                <td className="px-4 py-2">{user.status}</td>
-                <td className="px-4 py-2">
+                {/* User Card Header */}
+                <div className="p-6 border-b border-accent-1">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <img
+                        src={`${user.avatar}`}
+                        alt={`${user.firstName} ${user.lastName}`}
+                        className="w-16 h-16 rounded-full border-4 border-accent-2 object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-nokia-bold text-lg text-primary-6 mb-1 truncate">
+                          {user.firstName} {user.lastName}
+                        </h3>
+                        <p className="text-secondary-7 text-sm truncate">{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                      {getRoleIcon(user.role)}
+                      <span className="text-xs font-medium text-secondary-6">
+                        {user.role}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Status Badge and Join Date */}
+                  <div className="flex items-center justify-between">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(user.status)}`}>
+                      {user.status === "active" ? "●" : "○"} {user.status}
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-secondary-6 flex-shrink-0">
+                      <Calendar size={14} weight="fill" />
+                      <span>Joined {formatDate(user.createdAt)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* User Card Actions */}
+                <div className="p-6" onClick={(e) => e.stopPropagation()}>
                   {editingUser?._id === user._id ? (
-                    <>
+                    <div className="flex gap-2">
                       <button
                         onClick={handleUpdateUser}
-                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditingUser(null)}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                        className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
                       >
                         Cancel
                       </button>
-                    </>
+                    </div>
                   ) : (
-                    <>
+                    <div className="flex gap-2">
                       <button
                         onClick={() => handleEditUser(user)}
-                        className="bg-accent-6 hover:bg-accent-7 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
+                        className="flex-1 bg-accent-6 hover:bg-accent-7 text-white font-bold py-2 px-4 rounded-xl transition-all duration-200 hover:shadow-md flex items-center justify-center gap-2"
                       >
+                        <PencilSimple size={16} weight="fill" />
                         Edit
                       </button>
                       <button
                         onClick={() => handleDeleteUser(user._id as string)}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                        className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-xl transition-all duration-200 hover:shadow-md flex items-center justify-center gap-2"
                       >
+                        <Trash size={16} weight="fill" />
                         Delete
                       </button>
-                    </>
+                    </div>
                   )}
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-        </tbody>
-      </table>
-      <div className="flex justify-center mt-4">
-        <ul className="flex list-none">
-          {pageNumbers.map((number, index) => (
-            <li key={index} className="mx-1">
-              {typeof number === 'string' ? (
-                <span className="px-3 py-1 text-primary-2">...</span>
-              ) : (
-                <button
-                  onClick={() => paginate(number)}
-                  className={`px-3 py-1 rounded font-nokia-bold ${
-                    currentPage === number
-                      ? "bg-accent-6 text-white"
-                      : "bg-secondary-4 text-primary-6"
-                  }`}
-                >
-                  {number}
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {editingUser && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="bg-secondary-6 p-6 rounded-lg shadow-lg w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-primary-6">Edit User</h3>
-              <button
-                onClick={() => setEditingUser(null)}
-                className="text-accent-6 hover:scale-110 transition-all"
-              >
-                <XCircle size={24} weight="bold" />
-              </button>
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-accent-2">
+            <div className="flex justify-center">
+              <ul className="flex list-none gap-2">
+                {pageNumbers.map((number, index) => (
+                  <li key={index}>
+                    {typeof number === 'string' ? (
+                      <span className="px-4 py-2 text-secondary-4 font-medium">...</span>
+                    ) : (
+                      <button
+                        onClick={() => paginate(number)}
+                        className={`px-4 py-2 rounded-xl font-nokia-bold transition-all duration-200 ${
+                          currentPage === number
+                            ? "bg-accent-6 text-white shadow-lg scale-105"
+                            : "bg-secondary-5 text-primary-6 hover:bg-accent-2 hover:scale-105"
+                        }`}
+                      >
+                        {number}
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <form>
-              <div className="mb-4 flex items-center">
-                <img
-                  src={
-                    selectedAvatar
-                      ? URL.createObjectURL(selectedAvatar)
-                      : `${editingUser.avatar}`
-                  }
-                  alt={`${editingUser.firstName} ${editingUser.lastName}`}
-                  className="w-20 h-20 rounded-full mr-4  border-2 border-accent-6 p-1 "
-                />
+          </div>
+        )}
+
+        {/* Edit User Modal */}
+        {editingUser && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+            <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-primary-6">Edit User</h3>
+                <button
+                  onClick={() => setEditingUser(null)}
+                  className="text-accent-6 hover:text-accent-7 hover:scale-110 transition-all"
+                >
+                  <XCircle size={28} weight="bold" />
+                </button>
+              </div>
+              
+              <form className="space-y-6">
+                {/* Avatar Section */}
+                <div className="flex items-center gap-6">
+                  <img
+                    src={
+                      selectedAvatar
+                        ? URL.createObjectURL(selectedAvatar)
+                        : `${editingUser.avatar}`
+                    }
+                    alt={`${editingUser.firstName} ${editingUser.lastName}`}
+                    className="w-24 h-24 rounded-full border-4 border-accent-6 p-1 object-cover"
+                  />
+                  <div className="flex-1">
+                    <label
+                      htmlFor="avatar"
+                      className="block font-medium mb-2 text-primary-6"
+                    >
+                      Avatar
+                    </label>
+                    <input
+                      type="file"
+                      id="avatar"
+                      onChange={handleAvatarUpload}
+                      className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6"
+                    />
+                  </div>
+                </div>
+
+                {/* Form Fields */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="firstName" className="block font-medium mb-2 text-accent-6">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      value={editingUser.firstName || ""}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          firstName: e.target.value,
+                        })
+                      }
+                      className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block font-medium mb-2 text-accent-6">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      value={editingUser.lastName || ""}
+                      onChange={(e) =>
+                        setEditingUser({ ...editingUser, lastName: e.target.value })
+                      }
+                      className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label
-                    htmlFor="avatar"
-                    className="block font-medium mb-1 text-primary-6 "
-                  >
-                    Avatar
+                  <label htmlFor="email" className="block font-medium mb-2 text-accent-6">
+                    Email
                   </label>
                   <input
-                    type="file"
-                    id="avatar"
-                    onChange={handleAvatarUpload}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
+                    type="email"
+                    id="email"
+                    value={editingUser.email || ""}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, email: e.target.value })
+                    }
+                    className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6"
                   />
                 </div>
-              </div>
-              <div className="mb-4 ">
-                <label
-                  htmlFor="firstName"
-                  className="block font-medium mb-1 text-accent-6"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={editingUser.firstName || ""}
-                  onChange={(e) =>
-                    setEditingUser({
-                      ...editingUser,
-                      firstName: e.target.value,
-                    })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="lastName"
-                  className="block font-medium mb-1 text-accent-6"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={editingUser.lastName || ""}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, lastName: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block font-medium mb-1 text-accent-6"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={editingUser.email || ""}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, email: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-                />
-              </div>
-              <div className="mb-4 relative">
-                <label
-                  htmlFor="password"
-                  className="block font-medium mb-1 text-accent-6"
-                >
-                  Password
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  value={editingUser.password || ""}
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, password: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 pr-10"
-                />
-                <div
-                  className="absolute inset-y-0 right-0 pt-8 pr-3 flex items-center cursor-pointer text-accent-8"
-                  onClick={toggleShowPassword}
-                >
-                  {showPassword ? (
-                    <EyeSlash size={18} weight="fill" />
-                  ) : (
-                    <Eye size={18} weight="fill" />
-                  )}
+
+                <div className="relative">
+                  <label htmlFor="password" className="block font-medium mb-2 text-accent-6">
+                    Password
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={editingUser.password || ""}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, password: e.target.value })
+                    }
+                    className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6 pr-12"
+                    placeholder="Leave blank to keep current"
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-accent-6 hover:text-accent-7"
+                    onClick={toggleShowPassword}
+                  >
+                    {showPassword ? (
+                      <EyeSlash size={20} weight="fill" />
+                    ) : (
+                      <Eye size={20} weight="fill" />
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="mb-5">
-                <label
-                  htmlFor="role"
-                  className="block font-medium mb-1 text-accent-6"
-                >
-                  Role
-                </label>
-                <select
-                  id="role"
-                  value={editingUser.role || "Learner"} // Use editingUser.role
-                  onChange={(e) =>
-                    setEditingUser({ ...editingUser, role: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6"
-                  required
-                >
-                  <option value="Admin">Admin</option>
-                  <option value="Instructor">Instructor</option>
-                  <option value="Learner">Learner</option>
-                </select>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setEditingUser(null)}
-                  className="bg-red-500 hover:bg-red-600 text-primary-6 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mr-2"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleUpdateUser}
-                  className="bg-accent-6 hover:bg-accent-7 text-primary-6 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+
+                <div>
+                  <label htmlFor="role" className="block font-medium mb-2 text-accent-6">
+                    Role
+                  </label>
+                  <select
+                    id="role"
+                    value={editingUser.role || "Learner"}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, role: e.target.value })
+                    }
+                    className="w-full border border-accent-2 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-6 bg-white text-primary-6"
+                    required
+                  >
+                    <option value="Admin">Admin</option>
+                    <option value="Instructor">Instructor</option>
+                    <option value="Learner">Learner</option>
+                  </select>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setEditingUser(null)}
+                    className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleUpdateUser}
+                    className="flex-1 bg-accent-6 hover:bg-accent-7 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

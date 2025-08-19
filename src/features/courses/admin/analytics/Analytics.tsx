@@ -36,7 +36,7 @@ const Analytics: React.FC = () => {
           <p className="text-sm">New users</p>
           <hr className="border-accent-5 my-4" />
           <p className="text-accent-6 text-sm">
-            {analyticsData?.totalUsers} Total user accounts
+            {analyticsData?.totalUsers} Active user accounts
           </p>
         </div>
         <div className="col-span-1 mt-4 gap-12 w-10% p-6 border border-accent-6 rounded-lg text-center">
@@ -55,7 +55,7 @@ const Analytics: React.FC = () => {
           </p>
           <p className="text-sm">Accounts reached</p>
           <hr className="border-accent-5 my-4" />
-          <p className="text-accent-6 text-sm">In the past 1 month</p>
+          <p className="text-accent-6 text-sm">Active users in the past 1 month</p>
         </div>
         <div className="col-span-1 mt-4 gap-12 w-10% p-6 border border-red-600 rounded-lg text-center">
           <p className="text-6xl">
@@ -63,7 +63,34 @@ const Analytics: React.FC = () => {
           </p>
           <p className="text-sm">Users left</p>
           <hr className="border-red-500 my-4" />
-          <p className="text-red-500 text-sm">In the past 2 months</p>
+          <p className="text-red-500 text-sm">
+            Inactive for 2+ months or deleted
+          </p>
+        </div>
+      </div>
+      
+      {/* Additional Analytics Info */}
+      <div className="mt-8 p-6 border border-accent-6 rounded-lg text-center">
+        <h2 className="text-xl font-bold mb-4">User Engagement Metrics</h2>
+        <div className="grid grid-cols-3 gap-8">
+          <div>
+            <p className="text-2xl font-bold text-blue-600">
+              {analyticsData?.dailyActiveUsers ?? 0}
+            </p>
+            <p className="text-sm text-accent-6">Daily Active Users</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-green-600">
+              {analyticsData?.weeklyActiveUsers ?? 0}
+            </p>
+            <p className="text-sm text-accent-6">Weekly Active Users</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-purple-600">
+              {analyticsData?.userEngagementRate?.toFixed(1) ?? 0}%
+            </p>
+            <p className="text-sm text-accent-6">Engagement Rate</p>
+          </div>
         </div>
       </div>
     </div>

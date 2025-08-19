@@ -186,3 +186,4 @@ const YearManagement: React.FC<YearManagementProps> = ({ onYearChange }) => {
 };
 
 export default YearManagement;
+

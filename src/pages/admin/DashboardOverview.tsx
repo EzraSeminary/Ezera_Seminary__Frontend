@@ -209,7 +209,7 @@ const DashboardOverview: React.FC = () => {
         <StatCard
           title="የወጡ ተጠቃሚዎች"
           value={formatNumber(analyticsData?.usersLeft)}
-          subtitle="In the past 2 months"
+          subtitle="Inactive for 2+ months or deleted"
           icon={TrendingDown}
           trend={analyticsData?.usersLeft && analyticsData?.usersLeft > 0 ? "down" : "neutral"}
           trendValue={analyticsData?.usersLeft && analyticsData?.totalUsers ? 
