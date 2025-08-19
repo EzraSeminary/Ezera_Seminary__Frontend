@@ -12,6 +12,7 @@ export interface User {
   createdAt: string;
   deletedAt: string;
   lastLogin: string;
+  status: string;
 }
 
 export interface Progress {
@@ -34,6 +35,7 @@ export interface Devotion {
   body: string[];
   month: string;
   day: string;
+  year?: number; // Optional for backward compatibility
   title: string;
   chapter: string;
   verse: string;
@@ -51,6 +53,7 @@ export interface FormState {
   body: string[] | undefined;
   month: string;
   day: string;
+  year?: number; // Optional for backward compatibility
   title: string;
   chapter: string;
   verse: string;

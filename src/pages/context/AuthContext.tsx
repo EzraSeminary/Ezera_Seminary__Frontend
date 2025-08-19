@@ -10,6 +10,7 @@ interface User {
   role: string;
   avatar: string;
   achievement: number;
+  status: string; // Ensure status field is included
 }
 
 interface AuthContextType {

@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
+  useDeactivateUserMutation,
 } from "@/redux/api-slices/apiSlice";
-import { updateUser } from "@/redux/authSlice";
+import { updateUser, logout } from "@/redux/authSlice";
 import { ArrowLeft, Eye, EyeSlash } from "@phosphor-icons/react";
 import { RootState } from "@/redux/store";
 import { toast, ToastContainer } from "react-toastify";
@@ -24,8 +26,11 @@ const ProfileSettings = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isDeactivating, setIsDeactivating] = useState(false); // Loading state for deactivation
 
   const [updateUserMutation] = useUpdateUserMutation();
+  const [deleteUserMutation] = useDeleteUserMutation();
+  const [deactivateUserMutation] = useDeactivateUserMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
@@ -122,6 +127,75 @@ const ProfileSettings = () => {
             toast.error("An unknown error occurred. Please try again.");
           }
         }
+      }
+    }
+  };
+
+  const handleDeactivateAccount = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to change the status of your account?"
+    );
+    if (confirmed) {
+      setIsDeactivating(true); // Set loading state to true
+      try {
+        if (!currentUser) {
+          throw new Error("Current user is not defined");
+        }
+        console.log("account status: " + currentUser.status);
+        const newStatus = currentUser.status === "active" ? "inactive" : "active";
+        console.log("New status:", newStatus);
+        await deactivateUserMutation({ userId: currentUser._id, status: newStatus }).unwrap();
+        console.log("Account deactivated successfully");
+
+        // Manually update the currentUser state
+        const updatedUser = { 
+          ...currentUser, 
+          status: newStatus, 
+          role: currentUser.role ?? null,
+          firstName: currentUser.firstName ?? "",
+          lastName: currentUser.lastName ?? "",
+          email: currentUser.email ?? "",
+          password: currentUser.password ?? "",
+          avatar: currentUser.avatar ?? "",
+          token: currentUser.token ?? "",
+          progress: currentUser.progress ?? []
+        };
+
+        dispatch(updateUser(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+        toast.success(`Account ${newStatus} successfully!`, {
+          autoClose: 2000, // Toast notification lasts for 2 seconds
+        });
+
+        // Wait for 2 seconds before logging out
+        setTimeout(() => {
+          console.log("Logging out...");
+          dispatch(logout());
+          navigate("/login");
+        }, 2000);
+      } catch (error) {
+        console.error("Error changing account status:", error);
+        toast.error("Failed to change account status. Please try again.");
+      } finally {
+        setIsDeactivating(false); // Set loading state to false
+      }
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+    if (confirmed) {
+      try {
+        await deleteUserMutation(currentUser?._id).unwrap();
+        toast.success("Account deleted successfully!");
+        dispatch(logout());
+        navigate("/signup");
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        toast.error("Failed to delete account. Please try again.");
       }
     }
   };
@@ -235,6 +309,44 @@ const ProfileSettings = () => {
                 </button>
               </div>
             </form>
+            <div className="mt-6 flex justify-between">
+              <button
+                onClick={handleDeactivateAccount}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+                disabled={isDeactivating} // Disable button while deactivating
+              >
+                {isDeactivating ? (
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zM2 12a10 10 0 0010 10v-4a6 6 0 01-6-6H2z"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Deactivate Account"
+                )}
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Delete Account
+              </button>
+            </div>
           </div>
         </div>
       </div>

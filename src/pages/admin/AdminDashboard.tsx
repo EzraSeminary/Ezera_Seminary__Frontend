@@ -9,11 +9,14 @@ import EditCourseFirst from "@/features/courses/admin/manage-course/EditCourseFi
 import CreateDevotion from "@/pages/admin/CreateDevotion";
 import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
-import Analytics from "@/features/courses/admin/analytics/Analytics";
+
+import EnhancedAnalytics from "@/features/courses/admin/analytics/EnhancedAnalytics";
 import AdminHeader from "./AdminHeader";
 import CreateUser from "./CreateUser";
 import ManageUser from "./ManageUsers";
+import UserProfile from "./UserProfile";
 import PerformanceDashboard from "./PerformanceDashboard";
+import DashboardOverview from "./DashboardOverview";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -34,8 +37,8 @@ const AdminDashboard = () => {
       >
         <AdminHeader />
         <Routes>
-          <Route path="/" element={<Analytics />} />
-          <Route path="analytics/usage" element={<Analytics />} />
+          <Route path="/" element={<DashboardOverview />} />
+          <Route path="analytics/usage" element={<EnhancedAnalytics />} />
           <Route
             path="analytics/dashboard"
             element={<PerformanceDashboard />}
@@ -54,6 +57,7 @@ const AdminDashboard = () => {
           <Route path="devotion/manage" element={<ManageDevotion />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/manage" element={<ManageUser />} />
+          <Route path="users/:id" element={<UserProfile />} />
         </Routes>
       </div>
     </div>

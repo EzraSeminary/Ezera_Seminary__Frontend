@@ -10,8 +10,8 @@ const Footer = () => {
               <img src={LogoImage} alt="Logo Icon" className="w-7 lg:w-9 xl:w-11" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-[#fff] xl:text-xl">
-                <strong className="text-lg lg:text-2xl xl:text-3xl">
+              <h1 className="text-[#fff] font-nokia-regular xl:text-2xl">
+                <strong className="font-nokia-extraBold">
                   Ezra
                 </strong>{" "}
                 Seminary
@@ -43,7 +43,7 @@ const Footer = () => {
         <div className=" bg-[#293239] w-[100%]">
           <div className="flex flex-col justify-center items-center py-6 space-y-6 md:flex-row md:justify-between md:w-[80%] mx-auto">
             <p className="font-nokia-light text-sm lg:text-md xl:text-xl text-[#fff] w-[70%] text-center md:w-[45%] md:text-left">
-              Copyright 2024 @ YetinbitKal Ministry Website by{" "}
+              Copyright 2025 @ YetinbitKal Ministry Website by{" "}
               <span className="text-accent-5  font-nokia-bold"> AmenDevs </span>
             </p>
             <ul className="flex flex-row justify-center items-center space-x-4 ">

@@ -124,14 +124,32 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
   }) => {
     return (
       <div
-        className={`px-4 py-5 cursor-pointer hover:bg-accent-6 justify-center items-center border-b border-accent-5 ${
-          active ? "bg-accent-6" : ""
+        className={`mx-3 my-1 rounded-xl cursor-pointer transition-all duration-300 ${
+          active 
+            ? "bg-gradient-to-r from-accent-6 to-accent-7 shadow-lg" 
+            : "hover:bg-accent-7/20 hover:shadow-md"
         }`}
         onClick={onClick}
       >
-        <div className={`flex my-2 ${!isCollapsed ? "gap-2" : ""}`}>
-          <Icon className="text-primary-1" size={24} weight="fill" />
-          {!isCollapsed && <span>{label}</span>}
+        <div className={`flex items-center py-4 px-4 ${!isCollapsed ? "gap-3" : "justify-center"}`}>
+          <div className={`p-2 rounded-lg transition-all duration-300 ${
+            active ? "bg-white/20" : "hover:bg-white/10"
+          }`}>
+            <Icon 
+              className={`transition-colors duration-300 ${
+                active ? "text-primary-1" : "text-accent-1 hover:text-primary-1"
+              }`} 
+              size={20} 
+              weight="fill" 
+            />
+          </div>
+          {!isCollapsed && (
+            <span className={`font-medium text-base transition-colors duration-300 ${
+              active ? "text-primary-1" : "text-accent-1 hover:text-primary-1"
+            }`}>
+              {label}
+            </span>
+          )}
         </div>
         {children}
       </div>
@@ -181,36 +199,45 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
 
   return (
     <div
-      className={`flex flex-col text-white bg-accent-8 h-full pt-12 font-Lato-Bold ${
-        isCollapsed ? "w-16" : "w-64"
+      className={`flex flex-col text-white bg-gradient-to-b from-accent-8 to-accent-9 h-full pt-8 font-Lato-Bold shadow-2xl ${
+        isCollapsed ? "w-16" : "w-72"
       }`}
       style={{
         height: "100vh",
-        transition: "width 0.3s",
+        transition: "width 0.3s ease-in-out",
       }}
     >
       <div className="relative">
-        <div className="flex px-4 text-xl pb-6">
-          <BookBookmark className="text-primary-1" size={24} weight="fill" />
-          {!isCollapsed && <h1 className="ml-2">Dashboard</h1>}
+        <div className="flex items-center px-6 text-xl pb-8 border-b border-accent-7/30">
+          <div className="p-2 bg-primary-1/10 rounded-lg">
+            <BookBookmark className="text-primary-1" size={28} weight="fill" />
+          </div>
+          {!isCollapsed && (
+            <div className="ml-3">
+              <h1 className="text-xl font-bold">Dashboard</h1>
+              <p className="text-sm text-accent-2 opacity-75">Admin Portal</p>
+            </div>
+          )}
         </div>
         <div
-          className="absolute top-2 right-4 transform translate-x-full"
+          className="absolute -top-2 right-4 transform translate-x-full z-20"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          {isCollapsed ? (
-            <ArrowRight
-              size={20}
-              weight="bold"
-              className="h-8 w-8 text-accent-8 border border-accent-8 bg-primary-1 rounded-full p-2"
-            />
-          ) : (
-            <ArrowLeft
-              size={20}
-              weight="bold"
-              className="h-8 w-8 text-accent-8 border border-accent-8 bg-primary-1 rounded-full p-2"
-            />
-          )}
+          <button className="group h-10 w-10 bg-gradient-to-r from-primary-1 to-accent-1 hover:from-accent-1 hover:to-accent-2 border-2 border-accent-6 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:shadow-xl">
+            {isCollapsed ? (
+              <ArrowRight
+                size={18}
+                weight="bold"
+                className="text-accent-8 group-hover:text-accent-9 transition-colors"
+              />
+            ) : (
+              <ArrowLeft
+                size={18}
+                weight="bold"
+                className="text-accent-8 group-hover:text-accent-9 transition-colors"
+              />
+            )}
+          </button>
         </div>
         {menuItems.map((item) => (
           <SidebarItem
@@ -226,7 +253,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
                 item.subItems.map((subItem) => (
                   <div
                     key={subItem.path}
-                    className="pl-8 menu-item py-1 hover:bg-accent-8 rounded-lg transition-all"
+                    className="mx-6 my-1 pl-6 py-3 text-sm menu-item hover:bg-accent-6/30 rounded-lg transition-all duration-300 text-accent-1 hover:text-primary-1 border-l-2 border-accent-5 hover:border-accent-3"
                     onClick={(e) => handleSubItemClick(subItem.path, e)}
                   >
                     {subItem.label}
@@ -239,16 +266,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
       <div
         ref={ref}
         onClick={toggleModal}
-        className="absolute bottom-8 left-1 hover:bg-accent-6 rounded-full transition-all px-3 py-1 cursor-pointer hover:shadow-lg"
+        className="absolute bottom-4 left-3 right-3 p-4 rounded-xl bg-accent-7/20 hover:bg-accent-6/30 border border-accent-7/30 hover:border-accent-6/50 cursor-pointer transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
       >
         {isCollapsed ? (
-          <div className="flex items-center gap-1">
-            <UserCircle size={26} className="text-primary-1 cursor-pointer" />
+          <div className="flex justify-center">
+            <div className="p-2 bg-white/10 rounded-full">
+              <UserCircle size={24} className="text-primary-1" />
+            </div>
           </div>
         ) : (
-          <div className="flex items-center gap-1">
-            <UserCircle size={22} className="text-primary-1 cursor-pointer" />
-            {user && user.firstName}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/10 rounded-full">
+              <UserCircle size={20} className="text-primary-1" />
+            </div>
+            <div className="flex-1">
+              <p className="text-primary-1 font-medium text-base">
+                {user ? `${user.firstName} ${user.lastName}` : 'User'}
+              </p>
+              <p className="text-accent-2 text-sm opacity-75">
+                {user?.role || 'Admin'}
+              </p>
+            </div>
           </div>
         )}
         {isModalOpen && <ProfileModal />}

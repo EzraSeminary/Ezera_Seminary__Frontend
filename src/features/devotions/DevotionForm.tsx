@@ -9,6 +9,7 @@ import {
   resetForm,
   setIsEditing,
   fetchDevotions,
+  fetchAvailableYears,
 } from "../../redux/devotionsSlice";
 import PhotoUploader from "./PhotoUploader";
 import RichTextEditor from "./../courses/Elements/RichTextEditor"; // Import your RichTextEditor component
@@ -31,7 +32,13 @@ const DevotionForm: React.FC = () => {
   const selectedDevotion = useSelector(
     (state: RootState) => state.devotions.selectedDevotion
   );
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Fetch available years when component mounts
+    dispatch(fetchAvailableYears());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
@@ -131,9 +138,26 @@ const DevotionForm: React.FC = () => {
           onSubmit={handleSubmit}
           className="w-[90%] mx-auto py-6 space-y-3"
         >
-          <div>
+          <div className="flex flex-wrap gap-2">
             <select
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs mr-6"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs"
+              name="year"
+              value={form.year || ""}
+              onChange={handleChange}
+            >
+              <option value="">
+                ዓመት ይምረጡ (አማራጭ)
+              </option>
+
+              <option value="2017">
+                2017 (የአሁኑ ዓመት)
+              </option>
+              <option value="2018">
+                2018 (የሚመጣው ዓመት)
+              </option>
+            </select>
+            <select
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs"
               name="month"
               value={form.month}
               onChange={handleChange}
@@ -162,7 +186,7 @@ const DevotionForm: React.FC = () => {
               min="1"
               max="30"
               placeholder="Day"
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs font-nokia-bold w-[27%]"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs font-nokia-bold"
               value={form.day}
               onChange={handleChange}
               required

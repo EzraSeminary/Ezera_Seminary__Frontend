@@ -28,19 +28,48 @@ export const getMonthIndex = (monthName: string): number => {
   return reversedMonths.indexOf(monthName);
 };
 
+export const getCurrentEthiopianYear = (): number => {
+  const today = new Date();
+  const [year] = convertToEthiopianDate(today);
+  return year;
+};
+
+export const getDisplayYear = (): number => {
+  // This function returns which year should be displayed by default
+  // When new year comes (2018), it will automatically return 2018
+  const currentYear = getCurrentEthiopianYear();
+  
+  // For now, we're in 2017, but this will automatically switch to 2018 when the time comes
+  return currentYear;
+};
+
 export const findDevotion = (
+  devotions: Devotion[],
+  offset: number,
+  today: Date,
+  targetYear?: number
+): Devotion | undefined => {
+  const date = new Date(today);
+  date.setDate(today.getDate() - offset);
+  const [year, m, d] = convertToEthiopianDate(date);
+  const monthName = ethiopianMonths[m];
+  const searchYear = targetYear || year;
+  
+  console.log(`Checking for devotion on: ${monthName} ${d}, ${searchYear}`);
+  return devotions.find(
+    (devotion) => 
+      devotion.month === monthName && 
+      Number(devotion.day) === d &&
+      (devotion.year === searchYear || !devotion.year) // Handle legacy devotions without year
+  );
+};
+
+export const findDevotionForCurrentYear = (
   devotions: Devotion[],
   offset: number,
   today: Date
 ): Devotion | undefined => {
-  const date = new Date(today);
-  date.setDate(today.getDate() - offset);
-  const [, m, d] = convertToEthiopianDate(date);
-  const monthName = ethiopianMonths[m];
-  // console.log(`Checking for devotion on: ${monthName} ${d}`);
-  return devotions.find(
-    (devotion) => devotion.month === monthName && Number(devotion.day) === d
-  );
+  return findDevotion(devotions, offset, today, getCurrentEthiopianYear());
 };
 
 export const sortMonths = (devotionsByMonth: Record<string, Devotion[]>) => {
@@ -59,21 +88,25 @@ export const sortMonths = (devotionsByMonth: Record<string, Devotion[]>) => {
   ];
 };
 
-export const sortDevotionsByDayDescending = (devotions: Devotion[]) => {
-  return devotions.sort((a, b) => {
-    const dayA = Number(a.day);
-    const dayB = Number(b.day);
-    return dayB - dayA; // Descending order
-  });
+export const filterDevotionsByYear = (
+  devotions: Devotion[],
+  year: number
+): Devotion[] => {
+  return devotions.filter((devotion) => devotion.year === year || !devotion.year); // Include legacy devotions
 };
 
-export const sortMonthsChronologically = (
-  devotionsByMonth: Record<string, Devotion[]>
-) => {
-  const sortedMonths = Object.keys(devotionsByMonth).sort((a, b) => {
-    const monthIndexA = ethiopianMonths.indexOf(a);
-    const monthIndexB = ethiopianMonths.indexOf(b);
-    return monthIndexA - monthIndexB;
-  });
-  return sortedMonths;
+export const getDevotionsForCurrentYear = (devotions: Devotion[]): Devotion[] => {
+  const currentYear = getCurrentEthiopianYear();
+  // If we have devotions with years, filter by current year
+  // If we only have legacy devotions (no year), return all of them
+  const devotionsWithYear = devotions.filter(d => d.year);
+
+  
+  if (devotionsWithYear.length > 0) {
+    return filterDevotionsByYear(devotions, currentYear);
+  } else {
+    // Return all devotions if none have year fields (backward compatibility)
+    return devotions;
+  }
+
 };

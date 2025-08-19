@@ -8,13 +8,45 @@ interface AnalyticsData {
   totalCourses: number;
   accountsReached: number;
   usersLeft: number;
+  dailyActiveUsers: number;
+  weeklyActiveUsers: number;
+  averageSessionTime: number;
+  courseCompletionRate: number;
+  userEngagementRate: number;
+  totalDevotions: number;
+  newDevotions: number;
+}
+
+interface PerformanceData {
+  topUsers: Array<{
+    name: string;
+    score: number;
+    courses: number;
+    rank: number;
+  }>;
+  topCourses: Array<{
+    title: string;
+    completion: number;
+    students: number;
+    rank: number;
+  }>;
+  weeklyActivity: Array<{
+    date: string;
+    activeUsers: number;
+    percentage: number;
+  }>;
+  systemMetrics: {
+    apiUptime: number;
+    databaseHealth: number;
+    averageResponseTime: number;
+    totalRequests: number;
+  };
 }
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online",
-    // baseUrl: "http://localhost:5100",
+    baseUrl: "https://ezrabackend.online/", // Ensure this is the correct base URL
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = user ? user.token : "";
@@ -33,7 +65,7 @@ export const apiSlice = createApi({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials), // stringified the credentials
+        body: JSON.stringify(credentials),
       }),
     }),
     forgotPassword: builder.mutation({
@@ -56,7 +88,6 @@ export const apiSlice = createApi({
         body: JSON.stringify({ password: newPassword }),
       }),
     }),
-
     sendMessage: builder.mutation({
       query: ({ firstName, lastName, email, message }) => ({
         url: "/users/contact",
@@ -96,10 +127,12 @@ export const apiSlice = createApi({
         };
       },
     }),
-
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Devotions"],
+    }),
+    getDeletedUsersCount: builder.query<{ deletedUsersCount: number }, void>({
+      query: () => "/users/deleted-count",
     }),
     updateUser: builder.mutation({
       query: ({ id, updatedUser }) => ({
@@ -123,6 +156,20 @@ export const apiSlice = createApi({
         method: "DELETE",
       }),
     }),
+    deactivateUser: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/users/status/${userId}`,
+        method: "PUT",
+        body: { status },
+      }),
+    }),
+    activateUser: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/users/status/${userId}`,
+        method: "PUT",
+        body: { status },
+      }),
+    }),
     getCourses: builder.query({
       query: () => "/course/getall",
     }),
@@ -130,11 +177,10 @@ export const apiSlice = createApi({
       query: (id) => `/course/get/${id}`,
     }),
     getDevotions: builder.query<Devotion[], void>({
-      // Provide types here
       query: () => ({
         url: "/devotion/show",
       }),
-      providesTags: ["Devotions"], // Use tagTypes that you have specified
+      providesTags: ["Devotions"],
     }),
     createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
@@ -148,15 +194,12 @@ export const apiSlice = createApi({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          body: formData, // use FormData instead of JSON
+          body: formData,
         };
       },
       invalidatesTags: [{ type: "Devotions", id: "LIST" }],
     }),
-    updateDevotion: builder.mutation<
-      void,
-      { id: string; updatedDevotion: FormData }
-    >({
+    updateDevotion: builder.mutation<void, { id: string; updatedDevotion: FormData }>({
       query: ({ id, updatedDevotion }) => {
         const formData = new FormData();
         Object.entries(updatedDevotion).forEach(([key, value]) => {
@@ -166,7 +209,7 @@ export const apiSlice = createApi({
         return {
           url: `/devotion/${id}`,
           method: "PUT",
-          body: formData, // use FormData instead of JSON
+          body: formData,
         };
       },
     }),
@@ -175,9 +218,28 @@ export const apiSlice = createApi({
         url: `/devotion/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getAvailableYears: builder.query<number[], void>({
+      query: () => "/devotion/years",
+    }),
+    getDevotionsByYear: builder.query<Devotion[], number>({
+      query: (year) => `/devotion/year/${year}`,
+      providesTags: ["Devotions"],
+    }),
+    createDevotionsForNewYear: builder.mutation<{ message: string }, { sourceYear: number; targetYear: number }>({
+      query: ({ sourceYear, targetYear }) => ({
+        url: "/devotion/copy-year",
+        method: "POST",
+        body: { sourceYear, targetYear },
+      }),
+      invalidatesTags: ["Devotions"],
     }),
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
+    }),
+    getPerformanceAnalytics: builder.query<PerformanceData, void>({
+      query: () => "/analytics/performance",
     }),
   }),
 });
@@ -192,13 +254,20 @@ export const {
   useUpdateUserMutation,
   useGetUserByIdQuery,
   useDeleteUserMutation,
+  useDeactivateUserMutation,
+  useActivateUserMutation,
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,
+  useGetAvailableYearsQuery,
+  useGetDevotionsByYearQuery,
+  useCreateDevotionsForNewYearMutation,
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,
+  useGetPerformanceAnalyticsQuery,
+  useGetDeletedUsersCountQuery,
 } = apiSlice;
