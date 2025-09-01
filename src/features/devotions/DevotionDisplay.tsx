@@ -10,11 +10,8 @@ import MonthFolder from "./MonthFolder";
 import {
   convertToEthiopianDate,
   findDevotion,
-  findDevotionForCurrentYear,
   ethiopianMonths,
   getCurrentEthiopianYear,
-  getDevotionsForCurrentYear,
-  getDisplayYear,
 } from "./devotionUtils";
 import { RootState } from "@/redux/store";
 
@@ -81,7 +78,6 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       setSelectedDevotion(selectedDevotionFromHome);
     } else if (devotions && devotions.length > 0) {
       const today = new Date();
-      const currentYear = getCurrentEthiopianYear();
       
       // Apply year filtering first
       const filteredDevotions = filterDevotionsBySelectedYear(devotions);

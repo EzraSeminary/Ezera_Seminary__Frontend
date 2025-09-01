@@ -29,7 +29,7 @@ const ManageDevotion = () => {
         <YearSelector 
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
-          userRole={user?.role}
+          userRole={user?.role || undefined}
         />
         <div className="flex">
           <DevotionDisplay
