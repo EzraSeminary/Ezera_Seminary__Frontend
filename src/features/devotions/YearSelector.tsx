@@ -17,15 +17,24 @@ const YearSelector: React.FC<YearSelectorProps> = ({
   const currentYear = getCurrentEthiopianYear(); // Current Ethiopian year (dynamic)
   const nextYear = currentYear + 1; // Coming Ethiopian year
 
-  // Create list of years to display
-  const yearOptions = [
-    { value: 'all', label: 'ሁሉም ዓመታት' },
-    { value: currentYear.toString(), label: `${currentYear} (የአሁኑ ዓመት)` },
-    { value: nextYear.toString(), label: `${nextYear} (የሚመጣው ዓመት)` },
-    ...availableYears
-      .filter(year => year !== currentYear && year !== nextYear)
-      .map(year => ({ value: year.toString(), label: year.toString() }))
-  ];
+  // Create list of years to display - start with available years if any exist
+  const yearOptions = [];
+  
+  // Add "All Years" option first
+  yearOptions.push({ value: 'all', label: 'ሁሉም ዓመታት' });
+  
+  // Add current year
+  yearOptions.push({ value: currentYear.toString(), label: `${currentYear} (የአሁኑ ዓመት)` });
+  
+  // Add next year (for admin/instructor preparation)
+  yearOptions.push({ value: nextYear.toString(), label: `${nextYear} (የሚመጣው ዓመት)` });
+  
+  // Add other available years from the backend
+  availableYears
+    .filter(year => year !== currentYear && year !== nextYear)
+    .forEach(year => {
+      yearOptions.push({ value: year.toString(), label: year.toString() });
+    });
 
   // Only show for Admin and Instructor roles
   if (!userRole || (userRole !== "Admin" && userRole !== "Instructor")) {
@@ -34,7 +43,7 @@ const YearSelector: React.FC<YearSelectorProps> = ({
 
   return (
     <div className="mb-6 bg-white rounded-lg shadow-md p-4">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 font-nokia-bold">
         <label className="text-sm font-medium text-accent-6 whitespace-nowrap">
           በዓመት ማየት:
         </label>
