@@ -312,40 +312,51 @@ const DevotionForm: React.FC = () => {
             <input
               type="text"
               name="title"
-              placeholder="Title"
-              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg text-accent-6 px-2 py-1"
+              placeholder="የጥቅሱ ርዕስ..."
+              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg text-accent-6 px-3 py-2 font-nokia-bold focus:ring-2 focus:ring-accent-6 focus:border-transparent"
               value={form.title}
               onChange={handleChange}
               required
               maxLength={35}
             />
+            <div className="text-xs text-gray-500 text-right">
+              {form.title.length}/35 characters
+            </div>
           </div>
           <div className="space-y-1 text-sm text-accent-6">
             <label>Chapter to be read</label>
-            <p> </p>
             <input
               type="text"
               name="chapter"
-              placeholder="Chapter"
-              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
+              placeholder="ለምሳሌ: ዮሐንስ 3፡16-21"
+              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg px-3 py-2 text-accent-6 font-nokia-bold focus:ring-2 focus:ring-accent-6 focus:border-transparent"
               value={form.chapter}
               onChange={handleChange}
               required
               maxLength={35}
             />
+            <div className="text-xs text-gray-500 text-right">
+              {form.chapter.length}/35 characters
+            </div>
           </div>
           <div className="space-y-1 text-sm text-accent-6">
             <label>Main Verse</label>
-            <input
-              type="text"
+            <textarea
               name="verse"
-              placeholder="Verse"
-              className="w-full border-2 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
+              placeholder="ዋናው ክፍል (ቁልፍ ጥቅስ) እዚህ ይጻፉ..."
+              className="w-full h-20 border-2 border-accent-6 outline-accent-7 rounded-lg px-3 py-2 text-accent-6 font-nokia-bold resize-y focus:ring-2 focus:ring-accent-6 focus:border-transparent"
               value={form.verse}
               onChange={handleChange}
               required
               maxLength={300}
+              style={{
+                lineHeight: '1.6',
+                fontSize: '14px'
+              }}
             />
+            <div className="text-xs text-gray-500 text-right">
+              {form.verse.length}/300 characters
+            </div>
           </div>
           <div className="space-y-1 text-sm text-accent-6">
             <label>Body</label>
@@ -358,13 +369,20 @@ const DevotionForm: React.FC = () => {
             <label>Prayer</label>
             <textarea
               name="prayer"
-              placeholder="Prayer"
-              className="w-full border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-2 py-1"
+              placeholder="የጸሎት ጥያቄ እዚህ ይጻፉ..."
+              className="w-full h-24 border-2 text-accent-6 border-accent-6 outline-accent-7 rounded-lg px-3 py-2 font-nokia-bold resize-y focus:ring-2 focus:ring-accent-6 focus:border-transparent"
               value={form.prayer}
               onChange={handleChange}
               required
               maxLength={480}
+              style={{
+                lineHeight: '1.6',
+                fontSize: '14px'
+              }}
             />
+            <div className="text-xs text-gray-500 text-right">
+              {form.prayer.length}/480 characters
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <PhotoUploader
