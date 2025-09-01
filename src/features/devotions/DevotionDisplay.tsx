@@ -41,6 +41,41 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
   const topRef = useRef<HTMLDivElement>(null);
 
+  // Filter devotions based on selected year and user role
+  const filterDevotionsBySelectedYear = (devotions: Devotion[]) => {
+    const currentYear = getCurrentEthiopianYear();
+    
+    // For non-admin users, ONLY show current year devotions (never future years)
+    if (!user || (user.role !== "Admin" && user.role !== "Instructor")) {
+      return devotions.filter(devotion => {
+        if (devotion.year) {
+          // Only show devotions for current year or past years, never future
+          return devotion.year <= currentYear;
+        } else {
+          // Legacy devotions without year field are treated as current year (2017)
+          return true;
+        }
+      });
+    }
+
+    // For admin/instructor users, use selected year
+    if (selectedYear === "all") {
+      return devotions;
+    }
+    
+    const targetYear = parseInt(selectedYear);
+    
+    // Filter by specific year for admin/instructor
+    return devotions.filter(devotion => {
+      if (devotion.year) {
+        return devotion.year === targetYear;
+      } else {
+        // Legacy devotions without year field are treated as 2017
+        return targetYear === 2017;
+      }
+    });
+  };
+
   useEffect(() => {
     if (selectedDevotionFromHome) {
       setSelectedDevotion(selectedDevotionFromHome);
@@ -48,46 +83,27 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
       const today = new Date();
       const currentYear = getCurrentEthiopianYear();
       
-      // Filter devotions to current year first
-      const currentYearDevotions = getDevotionsForCurrentYear(devotions);
+      // Apply year filtering first
+      const filteredDevotions = filterDevotionsBySelectedYear(devotions);
       
-      // Check if we have year-aware devotions or legacy devotions
-      const hasYearFields = devotions.some(d => d.year);
-      
-      if (!hasYearFields) {
-        // Handle legacy devotions without year fields (backward compatibility)
-        const [, month] = convertToEthiopianDate(today);
-        const ethiopianMonth = ethiopianMonths[month];
-
-        const todaysDevotion =
-          findDevotion(devotions, 0, today) ||
-          findDevotion(devotions, 1, today) ||
-          findDevotion(devotions, 2, today) ||
-          devotions.find((devotion) => devotion.month === ethiopianMonth);
-
-        setSelectedDevotion(todaysDevotion || devotions[0]);
-      } else if (currentYearDevotions.length > 0) {
-        const [, month] = convertToEthiopianDate(today);
-        const ethiopianMonth = ethiopianMonths[month];
-
-        // Try to find today's devotion for current year
-        const todaysDevotion =
-          findDevotionForCurrentYear(currentYearDevotions, 0, today) ||
-          findDevotionForCurrentYear(currentYearDevotions, 1, today) ||
-          findDevotionForCurrentYear(currentYearDevotions, 2, today) ||
-          currentYearDevotions.find(
-            (devotion) => 
-              devotion.month === ethiopianMonth && 
-              (devotion.year === currentYear || !devotion.year)
-          );
-
-        setSelectedDevotion(todaysDevotion || currentYearDevotions[0]);
-      } else {
-        // Fallback to any available devotion if no current year devotions exist
-        setSelectedDevotion(devotions[0]);
+      if (filteredDevotions.length === 0) {
+        setSelectedDevotion(null);
+        return;
       }
+      
+      const [, month] = convertToEthiopianDate(today);
+      const ethiopianMonth = ethiopianMonths[month];
+
+      // Try to find today's devotion from filtered devotions
+      const todaysDevotion =
+        findDevotion(filteredDevotions, 0, today) ||
+        findDevotion(filteredDevotions, 1, today) ||
+        findDevotion(filteredDevotions, 2, today) ||
+        filteredDevotions.find((devotion) => devotion.month === ethiopianMonth);
+
+      setSelectedDevotion(todaysDevotion || filteredDevotions[0]);
     }
-  }, [devotions, selectedDevotionFromHome]);
+  }, [devotions, selectedDevotionFromHome, selectedYear, user]);
 
   useEffect(() => {
     refetch();
@@ -105,39 +121,6 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   if (!devotions || devotions.length === 0) {
     return <div>No devotions available</div>;
   }
-
-  // Filter devotions based on selected year
-  const filterDevotionsBySelectedYear = (devotions: Devotion[]) => {
-    // For non-admin users, always show current year devotions
-    if (!user || (user.role !== "Admin" && user.role !== "Instructor")) {
-      const currentDisplayYear = getDisplayYear();
-      return devotions.filter(devotion => {
-        if (devotion.year) {
-          return devotion.year === currentDisplayYear;
-        } else {
-          // Legacy devotions without year field are treated as 2017
-          return currentDisplayYear === 2017;
-        }
-      });
-    }
-
-    // For admin/instructor users, use selected year
-    if (selectedYear === "all") {
-      return devotions;
-    }
-    
-    const targetYear = parseInt(selectedYear);
-    
-    // For existing devotions without year field, treat as 2017 (current year)
-    return devotions.filter(devotion => {
-      if (devotion.year) {
-        return devotion.year === targetYear;
-      } else {
-        // Legacy devotions without year field are treated as 2017
-        return targetYear === 2017;
-      }
-    });
-  };
 
   const devotionsToShow = devotions ? filterDevotionsBySelectedYear(devotions) : [];
   const devotionToDisplay = selectedDevotion || devotionsToShow[0];
@@ -177,7 +160,8 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
 
 
-  const devotionsByMonth = devotions.reduce((acc, devotion) => {
+  // Use filtered devotions instead of all devotions for month grouping
+  const devotionsByMonth = devotionsToShow.reduce((acc, devotion) => {
     const key = devotion.month;
     if (!acc[key]) acc[key] = [];
     acc[key].push(devotion);
