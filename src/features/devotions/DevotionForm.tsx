@@ -11,6 +11,7 @@ import {
   fetchDevotions,
   fetchAvailableYears,
 } from "../../redux/devotionsSlice";
+import { ethiopianMonths } from "./devotionUtils";
 import PhotoUploader from "./PhotoUploader";
 import RichTextEditor from "./../courses/Elements/RichTextEditor"; // Import your RichTextEditor component
 import { CircleNotch } from "@phosphor-icons/react";
@@ -21,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const DevotionForm: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.user?.token);
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const form = useSelector(selectForm);
@@ -34,11 +36,80 @@ const DevotionForm: React.FC = () => {
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Helper function to clear stored date (useful for debugging or manual reset)
+  const clearStoredDate = () => {
+    localStorage.removeItem('lastDevotionDate');
+    toast.info('Stored devotion date cleared. Form will start from defaults on next reload.');
+  };
+  
+  // Helper function to get next day/month
+  const getNextDayAndMonth = (currentMonth: string, currentDay: number) => {
+    const monthIndex = ethiopianMonths.indexOf(currentMonth);
+    
+    // If day is 30 or we're at the end of Pagume (13th month with 5-6 days)
+    if (currentDay >= 30 || (currentMonth === "ጳጉሜ" && currentDay >= 5)) {
+      // Move to next month, day 1
+      const nextMonthIndex = monthIndex === 13 ? 1 : monthIndex + 1; // Reset to መስከረም after ጳጉሜ
+      return {
+        month: ethiopianMonths[nextMonthIndex],
+        day: 1
+      };
+    } else {
+      // Same month, next day
+      return {
+        month: currentMonth,
+        day: currentDay + 1
+      };
+    }
+  };
 
   useEffect(() => {
     // Fetch available years when component mounts
     dispatch(fetchAvailableYears());
   }, [dispatch]);
+
+  useEffect(() => {
+    // Initialize form for creating new devotion
+    if (!isEditing && !form.year) {
+      // Check if there's a stored last devotion date in localStorage
+      const storedLastDevotionDate = localStorage.getItem('lastDevotionDate');
+      
+      if (storedLastDevotionDate && (user?.role === "Admin" || user?.role === "Instructor")) {
+        try {
+          const lastDate = JSON.parse(storedLastDevotionDate);
+          const nextDayAndMonth = getNextDayAndMonth(lastDate.month, parseInt(lastDate.day));
+          
+          dispatch(updateForm({ 
+            year: lastDate.year,
+            month: nextDayAndMonth.month,
+            day: nextDayAndMonth.day.toString()
+          }));
+        } catch (error) {
+          console.error('Error parsing stored devotion date:', error);
+          // Fallback to default values
+          dispatch(updateForm({ year: 2018 }));
+          if (!form.month) {
+            dispatch(updateForm({ month: "መስከረም" }));
+          }
+          if (!form.day) {
+            dispatch(updateForm({ day: "1" }));
+          }
+        }
+      } else {
+        // Default initialization for new users or when no stored date
+        dispatch(updateForm({ year: 2018 }));
+        
+        // Set default month and day if not set
+        if (!form.month) {
+          dispatch(updateForm({ month: "መስከረም" }));
+        }
+        if (!form.day) {
+          dispatch(updateForm({ day: "1" }));
+        }
+      }
+    }
+  }, [dispatch, isEditing, user?.role, form.year, form.month, form.day]);
 
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
@@ -117,16 +188,49 @@ const DevotionForm: React.FC = () => {
       if (!response.payload) {
         throw new Error();
       }
+      
+      // Store current devotion date in localStorage for next devotion
+      if (!isEditing && (user?.role === "Admin" || user?.role === "Instructor")) {
+        const currentDevotionDate = {
+          year: form.year,
+          month: form.month,
+          day: form.day
+        };
+        localStorage.setItem('lastDevotionDate', JSON.stringify(currentDevotionDate));
+      }
+      
+      // Store current values for auto-increment
+      const currentMonth = form.month;
+      const currentDay = Number(form.day);
+      const currentYear = form.year;
+      
+      // Reset form but keep some values for next devotion
       setFile(null);
       await dispatch(fetchDevotions());
-      dispatch(resetForm());
       setBodyContent(""); // Reset the rich text content
       dispatch(setIsEditing(false));
+      
+      // For admins and instructors creating new devotions, auto-increment to next day
+      if (!isEditing && (user?.role === "Admin" || user?.role === "Instructor")) {
+        const nextDayAndMonth = getNextDayAndMonth(currentMonth, currentDay);
+        dispatch(resetForm());
+        
+        // Set the next day/month and keep the same year
+        setTimeout(() => {
+          dispatch(updateForm({ 
+            year: currentYear,
+            month: nextDayAndMonth.month,
+            day: nextDayAndMonth.day.toString()
+          }));
+        }, 100); // Small delay to ensure reset completes first
+      } else {
+        dispatch(resetForm());
+      }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
-      window.location.reload();
+      // Removed window.location.reload() to prevent page reload
     }
   };
 
@@ -139,8 +243,20 @@ const DevotionForm: React.FC = () => {
           className="w-[90%] mx-auto py-6 space-y-3"
         >
           <div className="flex flex-wrap gap-2">
+            {localStorage.getItem('lastDevotionDate') && !isEditing && (
+              <div className="w-full mb-2 p-2 bg-green-100 border border-green-300 rounded-md text-xs text-green-700">
+                📅 Auto-incremented from last devotion. 
+                <button 
+                  type="button" 
+                  onClick={clearStoredDate}
+                  className="ml-2 text-red-600 underline hover:text-red-800"
+                >
+                  Reset
+                </button>
+              </div>
+            )}
             <select
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs cursor-pointer"
               name="year"
               value={form.year || ""}
               onChange={handleChange}
@@ -148,7 +264,6 @@ const DevotionForm: React.FC = () => {
               <option value="">
                 ዓመት ይምረጡ (አማራጭ)
               </option>
-
               <option value="2017">
                 2017 (የአሁኑ ዓመት)
               </option>
@@ -157,7 +272,7 @@ const DevotionForm: React.FC = () => {
               </option>
             </select>
             <select
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs cursor-pointer"
               name="month"
               value={form.month}
               onChange={handleChange}
@@ -186,7 +301,7 @@ const DevotionForm: React.FC = () => {
               min="1"
               max="30"
               placeholder="Day"
-              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 cursor-pointer text-xs font-nokia-bold"
+              className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs font-nokia-bold cursor-pointer"
               value={form.day}
               onChange={handleChange}
               required
