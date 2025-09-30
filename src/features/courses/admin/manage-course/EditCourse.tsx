@@ -107,11 +107,17 @@ function EditCourse() {
     formData.append("title", course.title);
     formData.append("description", course.description);
     formData.append("category", course.category);
-    if (typeof course.image === "string") {
-      formData.append("image", course.image);
-    } else if (course.image instanceof File) {
+    
+    // CRITICAL FIX: Only append image to formData if it's a new File upload
+    // Do NOT send the existing URL string - let backend keep the existing image
+    if (course.image instanceof File) {
+      console.log(`[FRONTEND] Uploading new image file for course ${id}`);
       formData.append("image", course.image, course.image.name);
+    } else {
+      console.log(`[FRONTEND] No new image file, keeping existing image for course ${id}`);
+      // Don't append anything - backend will keep existing image
     }
+    
     formData.append("chapters", JSON.stringify(course.chapters));
     formData.append("published", String(course.published));
 

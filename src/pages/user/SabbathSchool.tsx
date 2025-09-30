@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 const SabbathSchool = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<"all" | "sabbath" | "inverse">("all");
 
   const handleSearch = (e: { target: { value: SetStateAction<string> } }) => {
     setSearchTerm(e.target.value);
@@ -32,7 +33,7 @@ const SabbathSchool = () => {
       <div className="container mt-12 mx-auto px-4 w-[90%] md:w-[80%]  font-nokia-bold text-secondary-6 flex-1">
         <CurrentSSL />
         <div className="my-8">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-4">
             <div className="flex flex-col w-full">
               <p>Explore quarterly lessons</p>
               <p className="text-lg md:text-2xl text-accent-6 leading-7 mb-2">
@@ -80,9 +81,44 @@ const SabbathSchool = () => {
               </div>
             </div>
           </div>
+          
+          {/* Category Filter Buttons */}
+          <div className="flex gap-3 mb-6 flex-wrap">
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                selectedCategory === "all"
+                  ? "bg-accent-6 text-primary-1 shadow-lg"
+                  : "bg-secondary-1 text-secondary-6 border border-accent-6 hover:bg-accent-6 hover:text-primary-1"
+              }`}
+            >
+              ሁሉም (All)
+            </button>
+            <button
+              onClick={() => setSelectedCategory("sabbath")}
+              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                selectedCategory === "sabbath"
+                  ? "bg-accent-6 text-primary-1 shadow-lg"
+                  : "bg-secondary-1 text-secondary-6 border border-accent-6 hover:bg-accent-6 hover:text-primary-1"
+              }`}
+            >
+              የሰንበት ትምህርት (Sabbath School)
+            </button>
+            <button
+              onClick={() => setSelectedCategory("inverse")}
+              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                selectedCategory === "inverse"
+                  ? "bg-accent-6 text-primary-1 shadow-lg"
+                  : "bg-secondary-1 text-secondary-6 border border-accent-6 hover:bg-accent-6 hover:text-primary-1"
+              }`}
+            >
+              ጠሊቅ (InVerse)
+            </button>
+          </div>
+          
           <div className="border border-b-accent-6 " />
         </div>
-        <SSLHome />
+        <SSLHome searchTerm={searchTerm} selectedCategory={selectedCategory} />
       </div>
       <Footer />
     </div>

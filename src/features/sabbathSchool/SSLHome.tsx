@@ -18,10 +18,40 @@ const gridSquareVariants = {
   show: { opacity: 1 },
 };
 
-const SSLHome = () => {
+interface SSLHomeProps {
+  searchTerm: string;
+  selectedCategory: "all" | "sabbath" | "inverse";
+}
+
+const SSLHome = ({ searchTerm, selectedCategory }: SSLHomeProps) => {
   const { data: ssl, error, isLoading } = useGetSSLsQuery({});
 
-  const sabbathSchoolLessons = ssl ?? [];
+  // Filter lessons based on category and search term
+  const filteredLessons = (ssl ?? []).filter((item: any) => {
+    const itemId = item.id || "";
+    const itemTitle = item.title || "";
+    const itemDescription = item.description || "";
+    
+    // Check if the quarter ends with -cq (InVerse) or not (Sabbath School)
+    const isInVerse = itemId.endsWith("-cq");
+    
+    // Category filter
+    let categoryMatch = true;
+    if (selectedCategory === "sabbath") {
+      categoryMatch = !isInVerse;
+    } else if (selectedCategory === "inverse") {
+      categoryMatch = isInVerse;
+    }
+    
+    // Search filter
+    const searchMatch = searchTerm === "" || 
+      itemTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      itemDescription.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return categoryMatch && searchMatch;
+  });
+
+  const sabbathSchoolLessons = filteredLessons;
 
   if (error && "message" in error) return <div>Error: {error.message}</div>;
 

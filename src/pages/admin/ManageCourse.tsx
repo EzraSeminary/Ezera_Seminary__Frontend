@@ -101,92 +101,129 @@ function ManageCourse() {
   return (
     <>
       {confirmationModal}
-      <div className="h-auto flex flex-col border border-gray-300 p-11 rounded-3xl mt-12 space-y-12 mb-12 shadow-2xl">
-        <div className="space-y-3">
-          <div className="flex justify-between items-end">
+      <div className="h-auto flex flex-col p-6 md:p-11 rounded-3xl mt-12 mb-12">
+        <div className="space-y-6">
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-accent-6 text-xl font-nokia-bold md:text-2xl tracking-wide">
+              <h1 className="text-accent-6 text-3xl md:text-4xl font-nokia-bold tracking-wide">
                 Manage Courses
               </h1>
+              <p className="text-secondary-5 text-sm mt-2">
+                Edit, publish, or delete your courses
+              </p>
             </div>
-            <div className="flex  ">
+            <div className="flex gap-2 w-full md:w-auto">
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search courses..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="text-xs text-secondary-6 border border-accent-6 w-auto outline-1 outline-accent-5 rounded-l-lg  px-2 py-1"
+                className="flex-1 md:flex-none text-sm text-secondary-6 border-2 border-accent-6 w-full md:w-64 outline-none focus:ring-2 focus:ring-accent-6 rounded-lg px-4 py-2.5 transition-all"
               />
-              <span className=" self-center cursor-pointer border  rounded-r-lg px-1 py-[0.54rem] -ml-1 bg-accent-6 text-white">
-                <MagnifyingGlass size={20} />
-              </span>
+              <button className="self-center cursor-pointer rounded-lg px-3 py-2.5 bg-accent-6 text-white hover:bg-accent-7 transition-all">
+                <MagnifyingGlass size={22} weight="bold" />
+              </button>
             </div>
           </div>
-          <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
-          <div className="flex flex-col md:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 justify-center items-center md:items-start w-[90%] mx-auto md:w-[98%] md:flex-row md:justify-start md:flex-wrap space-y-6 md:space-y-0 md:gap-4 ">
+          {/* Course Count */}
+          <div className="flex items-center gap-2 text-secondary-6">
+            <span className="text-lg font-semibold">{filteredData?.length || 0}</span>
+            <span className="text-sm">course{(filteredData?.length || 0) !== 1 ? 's' : ''} found</span>
+          </div>
+
+          <hr className="border-accent-6 border-t-2" />
+
+          {/* Courses Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4">
             {filteredData?.map((course, index: number) => {
               return (
                 <motion.div
                   variants={gridSquareVariants}
+                  initial="hidden"
+                  animate="show"
                   whileHover={{
-                    scale: 1.03,
-                  }}
-                  transition={{
-                    bounceDamping: 10,
-                    bounceStiffness: 600,
+                    scale: 1.05,
+                    transition: { duration: 0.2 }
                   }}
                   key={index}
-                  className="flex flex-col justify-center items-start  border-accent-5 border-2 w-[100%] shadow-2xl rounded-3xl md:rounded-xl h-full pb-6 cursor-pointer"
+                  className="group relative flex flex-col bg-white border-2 border-accent-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
-                  <div className="w-full p-2 ">
+                  {/* Image Container with Overlay */}
+                  <div className="relative w-full h-56 overflow-hidden bg-secondary-1">
                     <img
                       src={
                         typeof course.image === "string"
                           ? course.image
                           : URL.createObjectURL(course.image)
                       }
-                      // src={`https://ezrabackend.online/images/` + course.image}
-                      className="w-full max-h-[40vh] min-h-[40vh] md:min-h-[30vh] md:max-h-[30vh] object-cover rounded-lg  bg-secondary-1"
-                      alt=""
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      alt={course.title}
                     />
-                  </div>
-                  <div className="space-y-2 w-[95%] md:w-[90%] mx-auto h-full">
-                    <h2 className="text-secondary-6 text-xl font-nokia-bold w-[90%] truncate">
-                      {course.title}
-                    </h2>
-                    <p className="text-secondary-5 text-xs font-nokia-bold w-[100%] line-clamp-3 text-justify">
-                      {course.description}
-                    </p>
-                    <div className="flex justify-between ">
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Status Badge */}
+                    <div className="absolute top-3 right-3">
                       {course.published ? (
-                        <p className="text-green-700 font-nokia-bold text-xs bg-secondary-1 rounded-3xl px-2">
+                        <span className="flex items-center gap-1 bg-green-500 text-white font-nokia-bold text-xs px-3 py-1.5 rounded-full shadow-lg">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
                           Published
-                        </p>
+                        </span>
                       ) : (
-                        <p className="text-secondary-6 font-nokia-bold text-xs bg-secondary-2 rounded-3xl px-2">
+                        <span className="flex items-center gap-1 bg-yellow-500 text-white font-nokia-bold text-xs px-3 py-1.5 rounded-full shadow-lg">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                          </svg>
                           Draft
-                        </p>
+                        </span>
                       )}
                     </div>
-                    <hr className="border-accent-5 border-1 w-[100%] " />
-                    <div className="flex justify-between ">
+                  </div>
+
+                  {/* Content Container */}
+                  <div className="flex flex-col flex-1 p-5">
+                    {/* Title */}
+                    <h2 className="text-secondary-6 text-xl font-nokia-bold line-clamp-2 mb-2">
+                      {course.title}
+                    </h2>
+
+                    {/* Category Badge */}
+                    <div className="flex items-center">
+                      <span className="text-accent-6 text-xs font-nokia-bold bg-accent-6/10 px-3 mb-3 rounded-full">
+                        {course.category}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-secondary-5 font-nokia-bold text-sm line-clamp-3 flex-1 leading-relaxed">
+                      {course.description}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 pt-3 border-t border-accent-6/20">
                       <Link
-                        to={
-                          `/${basePath}/edit/course/` + course._id + `/chapters`
-                        }
-                        className="inline-block bg-accent-6 text-primary-6 px-3 py-1 rounded transition duration-300 focus:outline-none font-nokia-bold text-xs hover:bg-accent-7"
+                        to={`/${basePath}/edit/course/${course._id}/chapters`}
+                        className="flex-1 flex items-center justify-center gap-2 bg-accent-6 text-white font-nokia-bold text-sm px-4 py-2.5 rounded-lg hover:bg-accent-7 transition-all duration-200 shadow-md hover:shadow-lg"
                       >
-                        edit
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit
                       </Link>
                       <button
                         onClick={() => {
-                          setCourseToDelete(course._id); // Set the course to delete
-                          setModalIsOpen(true); // Open the modal
+                          setCourseToDelete(course._id);
+                          setModalIsOpen(true);
                         }}
-                        className="inline-block bg-red-500 hover:bg-red-600 text-white font-nokia-bold text-xs py-1 px-3 rounded transition duration-300 focus:outline-none"
+                        className="flex items-center justify-center gap-2 bg-red-500 text-white font-nokia-bold text-sm px-4 py-2.5 rounded-lg hover:bg-red-600 transition-all duration-200 shadow-md hover:shadow-lg"
                       >
-                        delete
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
                     </div>
                   </div>
@@ -194,6 +231,17 @@ function ManageCourse() {
               );
             })}
           </div>
+
+          {/* Empty State */}
+          {(!filteredData || filteredData.length === 0) && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <svg className="w-24 h-24 text-secondary-3 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <h3 className="text-xl font-nokia-bold text-secondary-6 mb-2">No courses found</h3>
+              <p className="text-secondary-5">Try adjusting your search or create a new course</p>
+            </div>
+          )}
         </div>
       </div>
     </>
