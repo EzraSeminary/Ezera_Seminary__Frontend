@@ -9,11 +9,9 @@ export default defineConfig({
   },
 
   e2e: {
+    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:5173",
     setupNodeEvents(on, config) {
-      config.baseUrl =
-        process.env.CYPRESS_BASE_URL ||
-        config.env.baseUrl ||
-        "http://localhost:5173";
+      // You can add node event handlers here if needed
     },
 
     defaultCommandTimeout: 20000,
