@@ -451,7 +451,10 @@ const Header: React.FC = () => {
                       </div>
                     </div>
                     {showAccountModal && (
-                      <div className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10 text-primary-1">
+                      <div
+                        className="absolute top-[40px] right-0 bg-accent-6 shadow-lg rounded-md z-10 text-primary-1"
+                        data-testid="account-modal"
+                      >
                         <div className="px-4 py-2 border-b tracking-wide">
                           {user.role}
                         </div>
