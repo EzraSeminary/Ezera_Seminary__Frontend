@@ -156,6 +156,7 @@ const Header: React.FC = () => {
                           isActive && "text-accent-6 font-nokia-bold"
                         }`
                       }
+                      data-testid="courses-link"
                     >
                       Courses
                     </NavLink>
@@ -363,6 +364,7 @@ const Header: React.FC = () => {
                         isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
+                    data-testid="courses-link"
                   >
                     Courses
                   </NavLink>

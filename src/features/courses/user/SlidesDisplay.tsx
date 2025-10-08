@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import "@splidejs/react-splide/css";
 import { useGetCourseByIdQuery } from "../../../services/api";
@@ -8,8 +8,8 @@ import "@/index.css";
 import AccordionItemDisplay from "../Elements/AccordionItemDisplay";
 import LoadingPage from "@/pages/user/LoadingPage";
 import { ToastContainer } from "react-toastify";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useProgress } from "./utils/progressUtils";
 import DndComponent from "./elements/DndComponent";
 import VideoSection from "./elements/VideoSection";
@@ -30,7 +30,7 @@ import AudioSection from "./elements/AudioSection";
 function SlidesDisplay() {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  
+
   // Slider stat
   const [sliderValue, setSliderValue] = useState(2.5);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
@@ -75,8 +75,8 @@ function SlidesDisplay() {
   const userProgress = findUserProgress(courseID);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [unlockedIndex, setUnlockedIndex] = useState<number>(0); // New state variable to track the unlocked index
-  
-  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+
+  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
   useEffect(() => {
     if (userProgress) {
@@ -174,9 +174,16 @@ function SlidesDisplay() {
   const isNonInteractiveType = () => {
     if (!selectedSlide || !selectedSlide.elements) return false;
     return selectedSlide.elements.every((element) => {
-      return ["title", "sub", "text", "img", "list", "mix", "verse", "main-verse"].includes(
-        element.type
-      );
+      return [
+        "title",
+        "sub",
+        "text",
+        "img",
+        "list",
+        "mix",
+        "verse",
+        "main-verse",
+      ].includes(element.type);
     });
   };
 
@@ -201,35 +208,38 @@ function SlidesDisplay() {
   return (
     <>
       <ToastContainer />
-      <div className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden">
-      <CourseDetails
-        open={open}
-        handleArrowClick={handleArrowClick}
-        courseData={courseData}
-        data={data}
-        activeIndex={activeIndex}
-        totalDataNumber={totalDataNumber}
-        currentSlideNumber={currentSlideNumber}
-        isSlideUnlocked={isSlideUnlocked}
-        updateIndex={updateIndex}
-        courseId={courseId as string}
-        chapterIndex={chapterIndex}
-        updateProgress={updateProgress}
-    />
+      <div
+        className="flex md:flex-row font-nokia-bold justify-center items-center w-full absolute top-0 bottom-0 z-50 h-full overflow-y-hidden"
+        data-testid="course-slides-page"
+      >
+        <CourseDetails
+          open={open}
+          handleArrowClick={handleArrowClick}
+          courseData={courseData}
+          data={data}
+          activeIndex={activeIndex}
+          totalDataNumber={totalDataNumber}
+          currentSlideNumber={currentSlideNumber}
+          isSlideUnlocked={isSlideUnlocked}
+          updateIndex={updateIndex}
+          courseId={courseId as string}
+          chapterIndex={chapterIndex}
+          updateProgress={updateProgress}
+        />
         {/* slides display window*/}
         <div className="lg:w-[73%]  w-full h-full chapter-img-1 bg-no-repeat bg-cover bg-center  relative">
           {/* Chapter display container */}
           <div className="flex flex-col justify-between h-full">
             {/* Header */}
             {
-               <HeaderSection
+              <HeaderSection
                 currentSlideNumber={currentSlideNumber}
                 totalDataNumber={totalDataNumber}
                 handleArrowClick={handleArrowClick}
                 courseId={courseId as string}
                 chapterIndex={chapterIndex}
                 updateProgress={updateProgress}
-             />
+              />
             }
             {/* Slide content */}
             {data.map((slides, index) => {
@@ -273,21 +283,25 @@ function SlidesDisplay() {
                         } else if (element.type === "text") {
                           return (
                             <div className="my-3 rich-text-container rich-course">
-                            <ReactQuill
-                              key={element.type}
-                              value={element.value || ''}
-                              readOnly={true}
-                              theme="snow"
-                            />
-                          </div>
+                              <ReactQuill
+                                key={element.type}
+                                value={element.value || ""}
+                                readOnly={true}
+                                theme="snow"
+                              />
+                            </div>
                           );
                         } else if (element.type === "img") {
                           return (
                             <ImageSection
-                              imageUrl={typeof element.value === 'string' ? element.value : URL.createObjectURL(element.value)}
+                              imageUrl={
+                                typeof element.value === "string"
+                                  ? element.value
+                                  : URL.createObjectURL(element.value)
+                              }
                               placeholder="Loading image..."
-                          />
-                          )
+                            />
+                          );
                         } else if (element.type === "list") {
                           const listItemsComponent = element.value.map(
                             (listItem: string, index: number) => (
@@ -308,36 +322,46 @@ function SlidesDisplay() {
                             </div>
                           );
                         } else if (element.type === "slide") {
-                          return(
+                          return (
                             <SlideSection
                               slideItems={element.value}
                               setIsSlideComplete={setIsSlideComplete}
                             />
-                          )
+                          );
                         } else if (element.type === "verse") {
                           const verses: [string, string][] = [];
                           for (let i = 0; i < element.value.length; i += 2) {
                             if (element.value[i + 1]) {
-                              verses.push([element.value[i], element.value[i + 1]]);
+                              verses.push([
+                                element.value[i],
+                                element.value[i + 1],
+                              ]);
                             } else {
-                              throw new Error("Invalid data structure: Missing text for reference.");
+                              throw new Error(
+                                "Invalid data structure: Missing text for reference."
+                              );
                             }
                           }
-        
-                          return  <VerseSection verses={verses} />;
+
+                          return <VerseSection verses={verses} />;
                         } else if (element.type === "main-verse") {
                           const verses: [string, string][] = [];
                           for (let i = 0; i < element.value.length; i += 2) {
                             if (element.value[i + 1]) {
-                              verses.push([element.value[i], element.value[i + 1]]);
+                              verses.push([
+                                element.value[i],
+                                element.value[i + 1],
+                              ]);
                             } else {
-                              throw new Error("Invalid data structure: Missing text for reference.");
+                              throw new Error(
+                                "Invalid data structure: Missing text for reference."
+                              );
                             }
                           }
-        
-                          return  <MainVerseSection verses={verses} />;
+
+                          return <MainVerseSection verses={verses} />;
                         } else if (element.type === "quiz") {
-                          return(
+                          return (
                             <QuizSection
                               question={element.value.question}
                               choices={element.value.choices}
@@ -346,7 +370,8 @@ function SlidesDisplay() {
                               setSelectedChoice={setSelectedChoice}
                               setIsQuizAnswered={setIsQuizAnswered}
                               isQuizAnswered={isQuizAnswered}
-                          />)
+                            />
+                          );
                         } else if (element.type === "accordion") {
                           const accordionItemsComponent = element.value.map(
                             (accordionItem, index: number) => (
@@ -369,7 +394,7 @@ function SlidesDisplay() {
                               sequenceItems={element.value}
                               setIsSequenceCompleted={setIsSequenceCompleted}
                               isSequenceCompleted={isSequenceCompleted}
-                              />
+                            />
                           );
                         } else if (element.type === "reveal") {
                           return (
@@ -385,10 +410,10 @@ function SlidesDisplay() {
                               sliderValue={sliderValue}
                               setSliderValue={setSliderValue}
                               setIsRangeChanged={setIsRangeChanged}
-                          />
+                            />
                           );
                         } // Inside the slides.elements.map loop
-                        else if (element.type === 'dnd') {
+                        else if (element.type === "dnd") {
                           if (isMobile) {
                             // Render QuizSection on mobile devices
                             return (
@@ -422,7 +447,7 @@ function SlidesDisplay() {
                               text1={element.value.text1}
                               text2={element.value.text2}
                               file={element.value.file}
-                          />
+                            />
                           );
                         } else if (element.type === "audio") {
                           return (
@@ -438,7 +463,8 @@ function SlidesDisplay() {
                               videoUrl={element.value}
                               isVideoVisible={isVideoVisible}
                               handleImageClick={handleImageClick}
-                        />)
+                            />
+                          );
                         }
                       })}
                     </div>
