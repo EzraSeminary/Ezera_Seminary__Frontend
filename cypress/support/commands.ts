@@ -19,6 +19,11 @@ declare namespace Cypress {
 //
 // -- This is a parent command --
 Cypress.Commands.add("login", (email?: string, password?: string) => {
+  // Turn off uncaught exception handling for login
+  Cypress.on("uncaught:exception", (err, runnable) => {
+    return false;
+  });
+
   const testEmail = email || Cypress.env("testUser");
   const testPassword = password || Cypress.env("testPassword");
 

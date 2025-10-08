@@ -183,6 +183,7 @@ const Header: React.FC = () => {
                           isActive && "text-accent-6 font-nokia-bold"
                         }`
                       }
+                      data-testid="devotion-link"
                     >
                       Devotion
                     </NavLink>
@@ -397,6 +398,7 @@ const Header: React.FC = () => {
                         isActive && "text-accent-6 font-nokia-bold"
                       }`
                     }
+                    data-testid="devotion-link"
                   >
                     Devotion
                   </NavLink>

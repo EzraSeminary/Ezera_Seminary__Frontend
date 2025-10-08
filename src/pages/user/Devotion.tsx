@@ -10,9 +10,11 @@ import { getCurrentEthiopianYear } from "@/features/devotions/devotionUtils";
 // import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
-  const [selectedYear, setSelectedYear] = useState(getCurrentEthiopianYear().toString()); // Default to current year
+  const [selectedYear, setSelectedYear] = useState(
+    getCurrentEthiopianYear().toString()
+  ); // Default to current year
   const user = useSelector((state: RootState) => state.auth.user);
-  
+
   // Use the useGetDevotionsQuery hook to fetch devotions
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
@@ -20,7 +22,10 @@ const Devotion = () => {
   if (error) return `Error: ${(error as Error).message}`;
 
   return (
-    <div className="absolute top-0 w-full font-nokia-bold">
+    <div
+      className="absolute top-0 w-full font-nokia-bold"
+      data-testid="devotion-page"
+    >
       <div className="devotion-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">
@@ -34,7 +39,7 @@ const Devotion = () => {
       </div>
 
       <div className="pt-6">
-        <YearSelector 
+        <YearSelector
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
           userRole={user?.role || undefined}

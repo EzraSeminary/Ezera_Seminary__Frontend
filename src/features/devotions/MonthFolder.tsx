@@ -40,6 +40,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
       className={`border rounded-lg p-4 ${
         isExpanded ? "col-span-full" : "col-span-1"
       }`}
+      data-testid="devotion-month-folder"
     >
       <div
         className="cursor-pointer text-lg font-bold flex items-center"
@@ -60,6 +61,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
           className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 ${
             isExpanded ? "w-full" : "w-[90%]"
           } mx-auto pb-4 mt-2`}
+          data-testid="devotion-month-folder-content"
         >
           {devotions.map((devotion, index: number) => (
             <motion.div

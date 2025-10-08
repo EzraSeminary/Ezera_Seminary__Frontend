@@ -1,11 +1,6 @@
 describe("Sabbath School Functionality", () => {
-  // Turn off uncaught exception handling for this test suite
-  Cypress.on("uncaught:exception", (err, runnable) => {
-    return false;
-  });
-
   before(() => {
-    // Login before each test to ensure user is authenticated
+    // Login before test suite to ensure user is authenticated
     cy.login();
   });
 
