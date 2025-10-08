@@ -1,4 +1,11 @@
 /// <reference types="cypress" />
+
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    login(email?: string, password?: string): Chainable<void>;
+  }
+}
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -11,7 +18,24 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add("login", (email?: string, password?: string) => {
+  const testEmail = email || Cypress.env("testUser");
+  const testPassword = password || Cypress.env("testPassword");
+
+  cy.visit("/login");
+  cy.wait(2000);
+  cy.get('input[name="email"]').type(testEmail);
+  cy.get('input[name="password"]').type(testPassword);
+  cy.get('button[type="submit"]').click();
+  cy.wait(3000);
+
+  // Verify successful login by checking URL
+  cy.url().should((url) => {
+    const normalizedUrl = url.replace(/\/$/, "");
+    const baseUrl = (Cypress.config("baseUrl") as string).replace(/\/$/, "");
+    expect(normalizedUrl).to.equal(baseUrl);
+  });
+});
 //
 //
 // -- This is a child command --
@@ -25,13 +49,3 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
