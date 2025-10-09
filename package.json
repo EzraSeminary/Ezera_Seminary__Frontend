@@ -61,6 +61,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/cypress": "^0.1.6",
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
