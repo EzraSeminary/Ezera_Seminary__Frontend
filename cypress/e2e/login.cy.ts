@@ -5,25 +5,25 @@ describe("Login Functionality", () => {
   });
 
   it("should display an error for invalid login credentials", () => {
-    cy.log("Visiting login page");
+    cy.task("log", "Visiting login page");
     cy.visit("/login");
 
-    cy.log("Waiting for page transition");
+    cy.task("log", "Waiting for page transition");
     cy.wait(2000);
 
-    cy.log("Typing invalid email");
+    cy.task("log", "Typing invalid email");
     cy.get('input[name="email"]').type("invalidEmail@gmail.com");
 
-    cy.log("Typing invalid password");
+    cy.task("log", "Typing invalid password");
     cy.get('input[name="password"]').type("invalidPassword");
 
-    cy.log("Clicking submit button");
+    cy.task("log", "Clicking submit button");
     cy.get('button[type="submit"]').click();
 
-    cy.log("Checking that error toast is visible");
+    cy.task("log", "Checking that error toast is visible");
     cy.get(".Toastify__toast--error").should("be.visible");
 
-    cy.log("Verifying the error message content");
+    cy.task("log", "Verifying the error message content");
     cy.get(".Toastify__toast--error").should(
       "contain",
       "Invalid email or password"
@@ -31,25 +31,25 @@ describe("Login Functionality", () => {
   });
 
   it("should successfully login with valid credentials", () => {
-    cy.log("Visiting login page");
+    cy.task("log", "Visiting login page");
     cy.visit("/login");
 
-    cy.log("Waiting for page transition");
+    cy.task("log", "Waiting for page transition");
     cy.wait(2000);
 
-    cy.log("Typing valid email");
+    cy.task("log", "Typing valid email");
     cy.get('input[name="email"]').type(Cypress.env("testUser"));
 
-    cy.log("Typing valid password");
+    cy.task("log", "Typing valid password");
     cy.get('input[name="password"]').type(Cypress.env("testPassword"));
 
-    cy.log("Clicking submit button");
+    cy.task("log", "Clicking submit button");
     cy.get('button[type="submit"]').click();
 
-    cy.log("Waiting for navigation after login");
+    cy.task("log", "Waiting for navigation after login");
     cy.wait(3000);
 
-    cy.log("Verifying the URL is the base URL");
+    cy.task("log", "Verifying the URL is the base URL");
     cy.url().should((url) => {
       const normalizedUrl = url.replace(/\/$/, "");
       const baseUrl = (Cypress.config("baseUrl") as string).replace(/\/$/, "");

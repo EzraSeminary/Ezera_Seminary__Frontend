@@ -6,15 +6,15 @@ describe("Devotions Functionality", () => {
 
   it("should open today's devotion and display all of the selected month's devotions", () => {
     // Step 1: Click on Devotion link
-    cy.log("Clicking on Devotion link");
+    cy.task("log", "Clicking on Devotion link");
     cy.get('[data-testid="devotion-link"]').should("be.visible").click();
 
     // Step 2: Verify Devotion page is visible
-    cy.log("Verifying Devotion page is visible");
+    cy.task("log", "Verifying Devotion page is visible");
     cy.get('[data-testid="devotion-page"]').should("be.visible");
 
     // Step 3: Click on the first devotion month folder
-    cy.log("Clicking on the first devotion month folder");
+    cy.task("log", "Clicking on the first devotion month folder");
     cy.get('[data-testid="devotion-month-folder"]')
       .first()
       .scrollIntoView()
@@ -22,7 +22,7 @@ describe("Devotions Functionality", () => {
       .click();
 
     // Step 4: Verify devotion month folder content is visible
-    cy.log("Verifying devotion month folder content is visible");
+    cy.task("log", "Verifying devotion month folder content is visible");
     cy.get('[data-testid="devotion-month-folder-content"]')
       .scrollIntoView()
       .should("be.visible");
