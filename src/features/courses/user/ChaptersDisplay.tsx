@@ -184,7 +184,10 @@ function ChaptersDisplay() {
     // Chapters Section
     <>
       {/* Chapters container */}
-      <div className="flex justify-between items-center   w-full absolute top-0 bottom-0 z-50 h-full ">
+      <div
+        className="flex justify-between items-center w-full absolute top-0 bottom-0 z-50 h-full"
+        data-testid="course-chapters-page"
+      >
         {/* Back button */}
         {/* <div className="absolute top-3 -left-28  pl-24 flex justify-start w-full mb-2 lg:hidden">
           <NavLink
@@ -470,6 +473,7 @@ function ChaptersDisplay() {
                       <button className="text-white text-center font-nokia-bold  py-1 px-2 bg-accent-6 hover:bg-accent-7 w-auto lg:px-4 lg:py-2  rounded-3xl mx-auto lg:mt-2 text-xs1 lg:text-sm ">
                         <NavLink
                           to={`/courses/get/${courseId}/chapter/${chapter._id}`}
+                          data-testid="open-chapter-button"
                         >
                           {buttonText}
                         </NavLink>
