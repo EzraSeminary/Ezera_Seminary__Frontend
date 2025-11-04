@@ -46,10 +46,16 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online/", // Ensure this is the correct base URL
+    baseUrl: (import.meta as any)?.env?.VITE_API_BASE_URL || "http://localhost:5100/",
     prepareHeaders: (headers) => {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const token = user ? user.token : "";
+      const raw = localStorage.getItem("user");
+      let token = "";
+      try {
+        const user = raw ? JSON.parse(raw) : null;
+        token = user?.token || "";
+      } catch (_) {
+        token = "";
+      }
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -97,6 +103,9 @@ export const apiSlice = createApi({
         },
         body: JSON.stringify({ firstName, lastName, email, message }),
       }),
+    }),
+    getContacts: builder.query<any[], void>({
+      query: () => "/users/contacts",
     }),
     signup: builder.mutation({
       query: ({ firstName, lastName, email, password }) => ({
@@ -270,4 +279,5 @@ export const {
   useGetAnalyticsQuery,
   useGetPerformanceAnalyticsQuery,
   useGetDeletedUsersCountQuery,
+  useGetContactsQuery,
 } = apiSlice;
