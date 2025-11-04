@@ -46,10 +46,16 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online/", // Ensure this is the correct base URL
+    baseUrl: (import.meta as unknown as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || "https://ezrabackend.online",
     prepareHeaders: (headers) => {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const token = user ? user.token : "";
+      const raw = localStorage.getItem("user");
+      let token = "";
+      try {
+        const user = raw ? JSON.parse(raw) : null;
+        token = user?.token || "";
+      } catch (_) {
+        token = "";
+      }
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -96,6 +102,16 @@ export const apiSlice = createApi({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ firstName, lastName, email, message }),
+      }),
+    }),
+    getContacts: builder.query<Array<{ _id: string; firstName: string; lastName: string; email: string; message: string; createdAt: string; repliedAt?: string }>, void>({
+      query: () => "/users/contacts",
+    }),
+    sendContactReply: builder.mutation<{ message: string }, { id: string; subject: string; message: string }>({
+      query: ({ id, subject, message }) => ({
+        url: `/users/contacts/${id}/reply`,
+        method: "POST",
+        body: { subject, message },
       }),
     }),
     signup: builder.mutation({
@@ -270,4 +286,6 @@ export const {
   useGetAnalyticsQuery,
   useGetPerformanceAnalyticsQuery,
   useGetDeletedUsersCountQuery,
+  useGetContactsQuery,
+  useSendContactReplyMutation,
 } = apiSlice;

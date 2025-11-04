@@ -54,8 +54,16 @@ function App() {
   const user = useSelector((state: RootState) => state.auth.user);
   const isAuthReady = useSelector((state: RootState) => state.auth.isAuthReady);
 
-  //fetch user data
-  const { data: userData, error: userError } = useGetCurrentUserQuery({});
+  //fetch user data (skip if no token yet)
+  const stored = (typeof window !== 'undefined') ? localStorage.getItem("user") : null;
+  let hasToken = false;
+  try {
+    const parsed = stored ? JSON.parse(stored) : null;
+    hasToken = !!parsed?.token;
+  } catch (_) {
+    hasToken = false;
+  }
+  const { data: userData, error: userError } = useGetCurrentUserQuery({}, { skip: !hasToken });
 
   //save user data to redux
   useEffect(() => {

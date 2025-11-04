@@ -27,7 +27,7 @@ const ManageUsers: React.FC = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(12); // Increased for card layout
+  const [usersPerPage] = useState(20); // show 20 users per page
 
   // Filtering, searching, and sorting state
   const [searchTerm, setSearchTerm] = useState("");
@@ -228,10 +228,10 @@ const ManageUsers: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-accent-2">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div className="flex-1">
-              <h1 className="text-4xl font-nokia-bold text-primary-6 mb-2">
+              <h1 className="text-4xl font-nokia-bold text-secondary-9 mb-2">
                 Manage Users
               </h1>
-              <p className="text-secondary-6 text-lg">
+              <p className="text-secondary-7 text-lg">
                 Manage user accounts, roles, and permissions
               </p>
             </div>
@@ -278,13 +278,24 @@ const ManageUsers: React.FC = () => {
                 <div className="p-6 border-b border-accent-1">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <img
-                        src={`${user.avatar}`}
-                        alt={`${user.firstName} ${user.lastName}`}
-                        className="w-16 h-16 rounded-full border-4 border-accent-2 object-cover flex-shrink-0"
-                      />
+                      {user.avatar ? (
+                        <img
+                          src={`${user.avatar}`}
+                          alt="User avatar"
+                          className="w-16 h-16 rounded-full border-4 border-accent-2 object-cover flex-shrink-0"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full border-4 border-accent-2 bg-secondary-5 text-secondary-9 flex items-center justify-center flex-shrink-0">
+                          <span className="font-bold text-lg">
+                            {`${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase()}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-nokia-bold text-lg text-primary-6 mb-1 truncate">
+                        <h3 className="font-nokia-bold text-lg text-secondary-9 mb-1 truncate">
                           {user.firstName} {user.lastName}
                         </h3>
                         <p className="text-secondary-7 text-sm truncate">{user.email}</p>

@@ -17,6 +17,7 @@ import ManageUser from "./ManageUsers";
 import UserProfile from "./UserProfile";
 import PerformanceDashboard from "./PerformanceDashboard";
 import DashboardOverview from "./DashboardOverview";
+import FeedbackCenter from "./FeedbackCenter";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -58,6 +59,7 @@ const AdminDashboard = () => {
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/manage" element={<ManageUser />} />
           <Route path="users/:id" element={<UserProfile />} />
+          <Route path="feedback" element={<FeedbackCenter />} />
         </Routes>
       </div>
     </div>
