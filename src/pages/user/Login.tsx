@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useLoginMutation, useActivateUserMutation } from "@/redux/api-slices/apiSlice";
+import {
+  useLoginMutation,
+  useActivateUserMutation,
+} from "@/redux/api-slices/apiSlice";
 import { login as loginAction } from "@/redux/authSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
@@ -44,9 +47,14 @@ const Login: React.FC = () => {
         const result = await login(values).unwrap();
         if (result) {
           if (result.status === "inactive") {
-            const confirmed = window.confirm("Your account is inactive. Do you want to make it active?");
+            const confirmed = window.confirm(
+              "Your account is inactive. Do you want to make it active?"
+            );
             if (confirmed) {
-              await activateUser({ userId: result._id, status: "active" }).unwrap();
+              await activateUser({
+                userId: result._id,
+                status: "active",
+              }).unwrap();
               const updatedResult = { ...result, status: "active" }; // Create a new object with the updated status
               toast.success("Account activated successfully!");
               localStorage.setItem("user", JSON.stringify(updatedResult));
@@ -76,7 +84,9 @@ const Login: React.FC = () => {
         if ((err as APIError).status === 400) {
           toast.error("Invalid email or password. Please try again.");
         } else {
-          toast.error("An error occurred during login. Please try again later.");
+          toast.error(
+            "An error occurred during login. Please try again later."
+          );
         }
       }
     },
@@ -149,13 +159,18 @@ const Login: React.FC = () => {
                 </div>
               )}
               {error && "data" in error && (
-                <div className="text-red-500 text-xl xl:text-sm">
+                <div
+                  className="text-red-500 text-xl xl:text-sm"
+                  data-testid="error-message"
+                >
                   {(error as APIError).data.error}
                 </div>
               )}
               <div className="mt-4 flex justify-between gap-7">
-                <div className=" flex gap-2 items-center hover:cursor-pointer hover:text-accent-7 transition-all"
-                  onClick={() => setShowPassword(!showPassword)}>
+                <div
+                  className=" flex gap-2 items-center hover:cursor-pointer hover:text-accent-7 transition-all"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   <input
                     type="checkbox"
                     className="appearance-none border-2 border-accent-6 rounded-md w-5 h-5 checked:bg-accent-6 checked:border-transparent text-white"

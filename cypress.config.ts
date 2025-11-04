@@ -1,9 +1,27 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
-  e2e: {
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
+  component: {
+    devServer: {
+      framework: "react",
+      bundler: "vite",
     },
+  },
+
+  e2e: {
+    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:5173",
+    setupNodeEvents(on, config) {
+      // You can add node event handlers here if needed
+      on("task", {
+        log(message) {
+          console.log(message);
+          return null;
+        },
+      });
+    },
+
+    defaultCommandTimeout: 20000,
+    pageLoadTimeout: 20000,
+    requestTimeout: 20000,
   },
 });

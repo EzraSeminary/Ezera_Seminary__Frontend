@@ -1,4 +1,11 @@
 /// <reference types="cypress" />
+
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    login(email?: string, password?: string): Chainable<void>;
+  }
+}
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -11,7 +18,41 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add("login", (email?: string, password?: string) => {
+  cy.task("log", "Turning off uncaught exception handling for login command");
+  Cypress.on("uncaught:exception", (_err, _runnable) => {
+    return false;
+  });
+
+  cy.task("log", "Selecting email and password for login");
+  const testEmail = email || Cypress.env("testUser");
+  const testPassword = password || Cypress.env("testPassword");
+
+  cy.task("log", "Visiting login page");
+  cy.visit("/login");
+
+  cy.task("log", "Waiting for page transition");
+  cy.wait(2000);
+
+  cy.task("log", `Typing email: ${testEmail}`);
+  cy.get('input[name="email"]').type(testEmail);
+
+  cy.task("log", `Typing password`);
+  cy.get('input[name="password"]').type(testPassword);
+
+  cy.task("log", "Clicking submit button");
+  cy.get('button[type="submit"]').click();
+
+  cy.task("log", "Waiting for navigation after login");
+  cy.wait(3000);
+
+  cy.task("log", "Verifying successful login by checking URL");
+  cy.url().should((url) => {
+    const normalizedUrl = url.replace(/\/$/, "");
+    const baseUrl = (Cypress.config("baseUrl") as string).replace(/\/$/, "");
+    expect(normalizedUrl).to.equal(baseUrl);
+  });
+});
 //
 //
 // -- This is a child command --
@@ -25,13 +66,3 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }

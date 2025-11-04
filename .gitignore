@@ -25,3 +25,6 @@ dist-ssr
 *.sw?
 
 .codegpt
+
+# Cypress environment variables
+cypress.env.json

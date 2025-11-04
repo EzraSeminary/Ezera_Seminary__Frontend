@@ -141,22 +141,24 @@ function CoursesAvailable() {
       <hr className="border-accent-5 border-1 w-[100%] pb-3 md:w-[30%]" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-      {filteredData.length > 0 &&
-          filteredData.slice(0, isSmallScreen ? 3 : isMediumScreen ? 5 : 7).map((course, index) => (
-            <CourseCard
-              key={index}
-              course={{
-                _id: course._id,
-                title: course.title,
-                description: course.description,
-                category: course.category,
-                image: course.image,
-                published: course.published,
-                chapterCount: course.chapterCount,
-              }}
-              progressValue={getProgressValue(course._id)}
-            />
-          ))}
+        {filteredData.length > 0 &&
+          filteredData
+            .slice(0, isSmallScreen ? 3 : isMediumScreen ? 5 : 7)
+            .map((course, index) => (
+              <CourseCard
+                key={index}
+                course={{
+                  _id: course._id,
+                  title: course.title,
+                  description: course.description,
+                  category: course.category,
+                  image: course.image,
+                  published: course.published,
+                  chapterCount: course.chapterCount,
+                }}
+                progressValue={getProgressValue(course._id)}
+              />
+            ))}
       </div>
 
       {/* <div
@@ -207,7 +209,9 @@ const CourseCard: React.FC<{
       className="flex flex-col items-start w-full shadow-2xl rounded-xl h-full border-accent-5 border pb-4 font-nokia-bold"
     >
       <div className="w-full p-2 h-full">
-        <div className="relative w-full pb-[61.9%]"> {/* Aspect ratio container */}
+        <div className="relative w-full pb-[61.9%]">
+          {" "}
+          {/* Aspect ratio container */}
           <img
             src={
               typeof course.image === "string"
@@ -236,7 +240,11 @@ const CourseCard: React.FC<{
             to={`/courses/get/` + course._id}
             className="bg-accent-6 text-primary-1 px-6 py-1.5 rounded-full font-nokia-bold text-xs hover:bg-accent-7 transition-all"
           >
-            <button className="mt-2" type="button">
+            <button
+              className="mt-2"
+              type="button"
+              data-testid="open-course-button"
+            >
               ኮርሱን ክፈት
             </button>
           </Link>

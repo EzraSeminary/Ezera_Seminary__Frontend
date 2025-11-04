@@ -7,7 +7,9 @@ import Footer from "@/components/Footer";
 const SabbathSchool = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInput, setShowInput] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<"all" | "sabbath" | "inverse">("all");
+  const [selectedCategory, setSelectedCategory] = useState<
+    "all" | "sabbath" | "inverse"
+  >("all");
 
   const handleSearch = (e: { target: { value: SetStateAction<string> } }) => {
     setSearchTerm(e.target.value);
@@ -18,7 +20,10 @@ const SabbathSchool = () => {
   };
   const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
   return (
-    <div className="flex flex-col min-h-screen absolute top-0 w-full font-nokia-bold">
+    <div
+      className="flex flex-col min-h-screen absolute top-0 w-full font-nokia-bold"
+      data-testid="sabbath-school-page"
+    >
       <div className="sabbath-img bg-cover  w-full py-14  md:py-20 lg:py-28  flex  justify-center items-center pointer-events-none">
         <div className=" z-10 text-primary-1 align-middle font-bold text-center">
           <div className=" text-2xl md:text-5xl">
@@ -81,7 +86,7 @@ const SabbathSchool = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Category Filter Buttons */}
           <div className="flex gap-3 mb-6 flex-wrap">
             <button
@@ -115,7 +120,7 @@ const SabbathSchool = () => {
               ጠሊቅ (InVerse)
             </button>
           </div>
-          
+
           <div className="border border-b-accent-6 " />
         </div>
         <SSLHome searchTerm={searchTerm} selectedCategory={selectedCategory} />

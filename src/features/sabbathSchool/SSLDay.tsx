@@ -51,10 +51,14 @@ function SSLDay() {
   if (quarterError && "message" in quarterError)
     return <div>Error: {quarterError.message}</div>;
 
-  if (!quarterDetails || !lessonDetails) return <div className="text-xl">የቀጣዩ ሩብ አመት ትምህርት እስኪለጠፍ ይጠብቁ!</div>;
+  if (!quarterDetails || !lessonDetails)
+    return <div className="text-xl">የቀጣዩ ሩብ አመት ትምህርት እስኪለጠፍ ይጠብቁ!</div>;
 
   return (
-    <div className="flex flex-col min-h-screen  w-full">
+    <div
+      className="flex flex-col min-h-screen  w-full"
+      data-testid="sabbath-school-day-page"
+    >
       <div className="container mx-auto px-4 w-[95%] md:w-[90%] py-12 font-nokia-bold text-secondary-6 flex-1 ">
         <div className=" flex w-full gap-3 md:gap-6 lg:gap-8 justify-between items-start">
           <div className="sticky top-[10%] bottom-0  flex flex-col w-[20%] space-y-2">
