@@ -46,7 +46,7 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: (import.meta as any)?.env?.VITE_API_BASE_URL || "http://localhost:5100/",
+    baseUrl: (import.meta as unknown as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || "http://localhost:5100/",
     prepareHeaders: (headers) => {
       const raw = localStorage.getItem("user");
       let token = "";
@@ -104,8 +104,15 @@ export const apiSlice = createApi({
         body: JSON.stringify({ firstName, lastName, email, message }),
       }),
     }),
-    getContacts: builder.query<any[], void>({
+    getContacts: builder.query<Array<{ _id: string; firstName: string; lastName: string; email: string; message: string; createdAt: string; repliedAt?: string }>, void>({
       query: () => "/users/contacts",
+    }),
+    sendContactReply: builder.mutation<{ message: string }, { id: string; subject: string; message: string }>({
+      query: ({ id, subject, message }) => ({
+        url: `/users/contacts/${id}/reply`,
+        method: "POST",
+        body: { subject, message },
+      }),
     }),
     signup: builder.mutation({
       query: ({ firstName, lastName, email, password }) => ({
@@ -280,4 +287,5 @@ export const {
   useGetPerformanceAnalyticsQuery,
   useGetDeletedUsersCountQuery,
   useGetContactsQuery,
+  useSendContactReplyMutation,
 } = apiSlice;
