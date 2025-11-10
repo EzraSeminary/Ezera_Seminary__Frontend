@@ -16,7 +16,7 @@ export const videoLinksApi = createApi({
         url: "sslLinks",
         method: "POST",
         body: newLink,
-      }),
+      }), 
     }),
     updateVideoLink: builder.mutation({
       query: ({ year, quarter, lesson, ...updatedLink }) => ({
