@@ -2,24 +2,15 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 import YearSelector from "@/features/devotions/YearSelector";
-import { useGetDevotionsQuery } from "@/redux/api-slices/apiSlice";
 import Footer from "@/components/Footer";
-import LoadingPage from "@/pages/user/LoadingPage";
 import { RootState } from "@/redux/store";
 import { getCurrentEthiopianYear } from "@/features/devotions/devotionUtils";
-// import { Devotion as DevotionType } from "@/redux/types"; // Import the Devotion type
 
 const Devotion = () => {
   const [selectedYear, setSelectedYear] = useState(
     getCurrentEthiopianYear().toString()
   ); // Default to current year
   const user = useSelector((state: RootState) => state.auth.user);
-
-  // Use the useGetDevotionsQuery hook to fetch devotions
-  const { data: devotions, error, isLoading } = useGetDevotionsQuery();
-
-  if (isLoading) return <LoadingPage />;
-  if (error) return `Error: ${(error as Error).message}`;
 
   return (
     <div
@@ -48,7 +39,6 @@ const Devotion = () => {
 
       <div className=" flex h-full  pt-6  mx-auto flex-1">
         <DevotionDisplay
-          devotions={devotions}
           selectedYear={selectedYear}
           showControls={false}
           toggleForm={function (): void {
