@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
-import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { useGetDevotionsByYearQuery } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import LoadingPage from "@/pages/user/LoadingPage";
 import MonthFolder from "./MonthFolder";
@@ -17,7 +17,6 @@ import { RootState } from "@/redux/store";
 
 export interface DevotionDisplayProps {
   showControls: boolean;
-  devotions: Devotion[] | undefined;
   selectedYear?: string;
   toggleForm: () => void;
 }
@@ -33,8 +32,14 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const location = useLocation();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
-  const { data: devotions, error, isLoading, refetch } = useGetDevotionsQuery();
   const user = useSelector((state: RootState) => state.auth.user);
+
+  // Determine which year to load
+  const yearToLoad =
+    selectedYear === "all" ? getCurrentEthiopianYear() : parseInt(selectedYear);
+  const { data: devotions, error, isLoading, refetch } = useGetDevotionsByYearQuery(
+    yearToLoad
+  );
 
   const topRef = useRef<HTMLDivElement>(null);
 
