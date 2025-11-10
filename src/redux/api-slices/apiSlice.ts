@@ -194,7 +194,7 @@ export const apiSlice = createApi({
     }),
     getDevotions: builder.query<Devotion[], void>({
       query: () => ({
-        url: "/devotion/show",
+        url: "/devotion/show?limit=100&sort=desc",
       }),
       providesTags: ["Devotions"],
     }),
