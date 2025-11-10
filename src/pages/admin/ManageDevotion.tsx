@@ -34,7 +34,6 @@ const ManageDevotion = () => {
         <div className="flex">
           <DevotionDisplay
             showControls={true}
-            devotions={undefined}
             selectedYear={selectedYear}
             toggleForm={toggleForm} // pass the toggleForm function as a prop
           />

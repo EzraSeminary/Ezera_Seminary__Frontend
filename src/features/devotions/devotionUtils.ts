@@ -55,7 +55,7 @@ export const findDevotion = (
   const monthName = ethiopianMonths[m];
   const searchYear = targetYear || year;
   
-  console.log(`Checking for devotion on: ${monthName} ${d}, ${searchYear}`);
+  // console.log(`Checking for devotion on: ${monthName} ${d}, ${searchYear}`);
   return devotions.find(
     (devotion) => 
       devotion.month === monthName && 
