@@ -12,9 +12,6 @@ interface Props {
 const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneEditing }) => {
   const [createDev, { isLoading }] = useCreatePlanDevotionMutation();
   const [updateDev, { isLoading: isUpdating }] = useUpdatePlanDevotionMutation();
-  const [year, setYear] = useState<string>("2018");
-  const [month, setMonth] = useState<string>("መስከረም");
-  const [day, setDay] = useState<string>("1");
   const [title, setTitle] = useState<string>("");
   const [chapter, setChapter] = useState<string>("");
   const [verse, setVerse] = useState<string>("");
@@ -26,9 +23,6 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
   React.useEffect(() => {
     if (editing?.data) {
       const d = editing.data;
-      if (d.year) setYear(String(d.year));
-      if (d.month) setMonth(d.month);
-      if (d.day) setDay(String(d.day));
       if (d.title) setTitle(d.title);
       if (d.chapter) setChapter(d.chapter);
       if (d.verse) setVerse(d.verse);
@@ -40,9 +34,6 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = new FormData();
-    form.append("year", year);
-    form.append("month", month);
-    form.append("day", day);
     form.append("title", title);
     form.append("chapter", chapter);
     form.append("verse", verse);
@@ -69,36 +60,6 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
 
   return (
     <form onSubmit={submit} className="w-full space-y-3">
-      <div className="flex gap-2">
-        <select
-          className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs cursor-pointer"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        >
-          <option value="2017">2017</option>
-          <option value="2018">2018</option>
-        </select>
-        <select
-          className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs cursor-pointer"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-        >
-          {ethiopianMonths.slice(1).map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          min={1}
-          max={30}
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
-          className="border-2 border-accent-6 bg-[#fff] outline-accent-7 rounded-md px-2 py-1 text-secondary-6 text-xs cursor-pointer"
-          placeholder="Day"
-        />
-      </div>
       <div className="space-y-1 text-sm text-accent-6">
         <label>Title</label>
         <input

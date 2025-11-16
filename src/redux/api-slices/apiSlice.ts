@@ -356,6 +356,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["DevotionPlans"],
     }),
+    reorderPlanDevotion: builder.mutation<{ message: string }, { id: string; devotionId: string; direction: "up" | "down" }>({
+      query: ({ id, devotionId, direction }) => ({
+        url: `/devotion-plan/${id}/devotions/${devotionId}/reorder`,
+        method: "POST",
+        body: { direction },
+      }),
+      invalidatesTags: ["DevotionPlans"],
+    }),
   }),
 });
 
@@ -399,4 +407,5 @@ export const {
   useCreatePlanDevotionMutation,
   useUpdatePlanDevotionMutation,
   useDeletePlanDevotionMutation,
+  useReorderPlanDevotionMutation,
 } = apiSlice;

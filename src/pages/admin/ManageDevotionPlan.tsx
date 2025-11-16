@@ -5,8 +5,10 @@ import {
   useGetPlanDevotionsQuery,
   useCreatePlanDevotionMutation,
   useDeletePlanDevotionMutation,
+  useReorderPlanDevotionMutation,
 } from "@/redux/api-slices/apiSlice";
 import PlanDevotionForm from "@/features/devotionPlans/PlanDevotionForm";
+import { CaretUp, CaretDown } from "@phosphor-icons/react";
 
 const ManageDevotionPlan: React.FC = () => {
   const { id = "" } = useParams<{ id: string }>();
@@ -14,8 +16,14 @@ const ManageDevotionPlan: React.FC = () => {
   const { data: plan } = useGetDevotionPlanByIdQuery(id);
   const { data, refetch } = useGetPlanDevotionsQuery({ id });
   const [deletePlanDevotion] = useDeletePlanDevotionMutation();
+  const [reorderDevotion] = useReorderPlanDevotionMutation();
   const items = data?.items || [];
   const [editing, setEditing] = useState<{ devotionId: string; data: any } | null>(null);
+  
+  const handleReorder = async (devotionId: string, direction: "up" | "down") => {
+    await reorderDevotion({ id, devotionId, direction }).unwrap();
+    await refetch();
+  };
 
   return (
     <div className="flex flex-col gap-6 mt-6">
@@ -58,17 +66,38 @@ const ManageDevotionPlan: React.FC = () => {
             <div className="text-sm opacity-70">No devotions yet.</div>
           ) : (
             <div className="space-y-3 max-h-[680px] overflow-auto pr-2">
-              {items.map((d: any) => (
+              {items.map((d: any, index: number) => (
                 <div key={d._id} className="border rounded p-3 bg-white flex gap-3 items-center">
+                  <div className="flex flex-col gap-1">
+                    <button
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
+                      disabled={index === 0}
+                      onClick={() => handleReorder(d._id, "up")}
+                      title="Move up"
+                    >
+                      <CaretUp size={16} weight="bold" />
+                    </button>
+                    <button
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
+                      disabled={index === items.length - 1}
+                      onClick={() => handleReorder(d._id, "down")}
+                      title="Move down"
+                    >
+                      <CaretDown size={16} weight="bold" />
+                    </button>
+                  </div>
+                  <div className="text-sm font-bold text-accent-6 w-12 text-center">
+                    Day {index + 1}
+                  </div>
                   <div className="w-20 h-16 bg-gray-100 rounded overflow-hidden">
                     {d.image ? (
-                      <img className="w-full h-full object-cover" src={d.image} />
+                      <img className="w-full h-full object-cover" src={d.image} alt={d.title} />
                     ) : null}
                   </div>
                   <div className="flex-1">
                     <div className="font-bold">{d.title}</div>
                     <div className="text-xs opacity-70">
-                      {d.month} {d.day} {d.year || ""}
+                      {d.chapter}
                     </div>
                   </div>
                   <div className="flex gap-2">

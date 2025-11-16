@@ -48,10 +48,8 @@ const Devotion = () => {
                 key={plan._id}
                 className="border-2 border-accent-6 rounded-xl p-4 bg-primary-5 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => {
-                  // If logged in, navigate to plans page, else show login prompt
                   if (user) {
-                    // Navigate to devotion plans component (to be created)
-                    window.alert("Plan viewing coming soon!");
+                    navigate(`/devotion/plan/${plan._id}`);
                   } else {
                     navigate("/login");
                   }
