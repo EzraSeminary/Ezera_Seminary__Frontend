@@ -1,0 +1,103 @@
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  useGetDevotionPlanByIdQuery,
+  useGetPlanDevotionsQuery,
+  useCreatePlanDevotionMutation,
+  useDeletePlanDevotionMutation,
+} from "@/redux/api-slices/apiSlice";
+import PlanDevotionForm from "@/features/devotionPlans/PlanDevotionForm";
+
+const ManageDevotionPlan: React.FC = () => {
+  const { id = "" } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { data: plan } = useGetDevotionPlanByIdQuery(id);
+  const { data, refetch } = useGetPlanDevotionsQuery({ id });
+  const [deletePlanDevotion] = useDeletePlanDevotionMutation();
+  const items = data?.items || [];
+  const [editing, setEditing] = useState<{ devotionId: string; data: any } | null>(null);
+
+  return (
+    <div className="flex flex-col gap-6 mt-6">
+      <div className="flex items-center justify-between">
+        <button
+          className="px-3 py-1 rounded border border-accent-6 text-accent-6 font-bold"
+          onClick={() => navigate("/admin/devotion-plans/manage")}
+        >
+          Back
+        </button>
+        <h2 className="font-bold text-xl">{plan?.title || "Devotion Plan"}</h2>
+        <div />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="border rounded-2xl p-4 bg-primary-5">
+          <h3 className="font-bold text-lg mb-2 text-secondary-8">
+            {editing ? "Edit Devotion" : "Add Devotion to Plan"}
+          </h3>
+          <PlanDevotionForm
+            planId={id}
+            onCreated={() => refetch()}
+            editing={editing}
+            onDoneEditing={() => {
+              setEditing(null);
+              refetch();
+            }}
+          />
+        </div>
+        <div className="border rounded-2xl p-4 bg-primary-5">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-bold text-lg text-secondary-8">Devotions in Plan</h3>
+            <button
+              className="px-3 py-1 rounded border border-accent-6 text-accent-6 font-bold"
+              onClick={() => refetch()}
+            >
+              Refresh
+            </button>
+          </div>
+          {items.length === 0 ? (
+            <div className="text-sm opacity-70">No devotions yet.</div>
+          ) : (
+            <div className="space-y-3 max-h-[680px] overflow-auto pr-2">
+              {items.map((d: any) => (
+                <div key={d._id} className="border rounded p-3 bg-white flex gap-3 items-center">
+                  <div className="w-20 h-16 bg-gray-100 rounded overflow-hidden">
+                    {d.image ? (
+                      <img className="w-full h-full object-cover" src={d.image} />
+                    ) : null}
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-bold">{d.title}</div>
+                    <div className="text-xs opacity-70">
+                      {d.month} {d.day} {d.year || ""}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      className="px-3 py-1 rounded border border-accent-6 text-accent-6 font-bold"
+                      onClick={() => setEditing({ devotionId: d._id, data: d })}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="px-3 py-1 rounded bg-red-600 text-white font-bold"
+                      onClick={async () => {
+                        await deletePlanDevotion({ id, devotionId: d._id }).unwrap();
+                        await refetch();
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ManageDevotionPlan;
+
+

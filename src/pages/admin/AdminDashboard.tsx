@@ -9,6 +9,8 @@ import EditCourseFirst from "@/features/courses/admin/manage-course/EditCourseFi
 import CreateDevotion from "@/pages/admin/CreateDevotion";
 import ManageDevotion from "@/pages/admin/ManageDevotion";
 import Devotion from "@/pages/user/Devotion";
+import ManageDevotionPlan from "./ManageDevotionPlan";
+import ManageDevotionPlans from "./ManageDevotionPlans";
 
 import EnhancedAnalytics from "@/features/courses/admin/analytics/EnhancedAnalytics";
 import AdminHeader from "./AdminHeader";
@@ -56,6 +58,8 @@ const AdminDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="devotion/plans/:id" element={<ManageDevotionPlan />} />
+          <Route path="devotion-plans/manage" element={<ManageDevotionPlans />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/manage" element={<ManageUser />} />
           <Route path="users/:id" element={<UserProfile />} />

@@ -70,6 +70,44 @@ export interface DevotionsState {
   isEditing: boolean;
 }
 
+// Devotion Plans
+export interface DevotionPlan {
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
+  items: string[]; // devotion ids
+  numItems?: number;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface MyDevotionPlanProgress {
+  _id: string;
+  userId: string;
+  planId: string;
+  itemsCompleted: string[];
+  status: "in_progress" | "completed";
+  startedAt?: string;
+  completedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  // denormalized plan & progress summary
+  plan?: {
+    _id: string;
+    title: string;
+    description: string;
+    image: string;
+    numItems: number;
+  };
+  progress?: {
+    completed: number;
+    percent: number;
+    status: "in_progress" | "completed";
+  };
+}
+
 export interface LinkType {
   quarter: string;
   lesson: string;

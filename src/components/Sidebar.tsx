@@ -74,6 +74,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
         { label: "Manage Devotion", path: `${basePath}/devotion/manage` },
       ],
     },
+    {
+      label: "Devotion Plans",
+      icon: BookBookmark,
+      subItems: [
+        { label: "Manage Plans", path: `${basePath}/devotion-plans/manage` },
+      ],
+    },
   ];
 
   const fullMenuItems: MenuItemType[] = [

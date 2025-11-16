@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import DevotionDisplay from "@/features/devotions/DevotionDisplay";
 import YearSelector from "@/features/devotions/YearSelector";
 import Footer from "@/components/Footer";
 import { RootState } from "@/redux/store";
 import { getCurrentEthiopianYear } from "@/features/devotions/devotionUtils";
+import { useGetDevotionPlansQuery } from "@/redux/api-slices/apiSlice";
+import { BookBookmark } from "@phosphor-icons/react";
 
 const Devotion = () => {
   const [selectedYear, setSelectedYear] = useState(
     getCurrentEthiopianYear().toString()
-  ); // Default to current year
+  );
   const user = useSelector((state: RootState) => state.auth.user);
+  const navigate = useNavigate();
+  const { data: plansData } = useGetDevotionPlansQuery();
+  const plans = plansData?.items || [];
 
   return (
     <div
@@ -28,6 +34,53 @@ const Devotion = () => {
           </div>
         </div>
       </div>
+
+      {/* Devotion Plans Section */}
+      {plans.length > 0 && (
+        <div className="w-11/12 mx-auto mt-8">
+          <div className="flex items-center gap-2 mb-4">
+            <BookBookmark size={24} className="text-accent-6" weight="bold" />
+            <h2 className="text-2xl font-bold text-secondary-8">Devotion Plans</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {plans.slice(0, 6).map((plan: any) => (
+              <div
+                key={plan._id}
+                className="border-2 border-accent-6 rounded-xl p-4 bg-primary-5 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => {
+                  // If logged in, navigate to plans page, else show login prompt
+                  if (user) {
+                    // Navigate to devotion plans component (to be created)
+                    window.alert("Plan viewing coming soon!");
+                  } else {
+                    navigate("/login");
+                  }
+                }}
+              >
+                {plan.image && (
+                  <img
+                    src={plan.image}
+                    alt={plan.title}
+                    className="w-full h-32 object-cover rounded-lg mb-3"
+                  />
+                )}
+                <h3 className="text-lg font-bold text-secondary-8 mb-2">{plan.title}</h3>
+                <p className="text-sm text-secondary-6 mb-2 line-clamp-2">
+                  {plan.description}
+                </p>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-accent-6 font-bold">
+                    {plan.numItems || 0} days
+                  </span>
+                  <button className="px-3 py-1 rounded-full bg-accent-6 text-white font-bold hover:bg-accent-7">
+                    Start Plan
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="pt-6">
         <YearSelector
