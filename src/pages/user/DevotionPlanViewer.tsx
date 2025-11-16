@@ -9,7 +9,7 @@ import {
   useRecordDevotionPlanProgressMutation,
   useGetMyDevotionPlansQuery,
 } from "@/redux/api-slices/apiSlice";
-import { ArrowLeft, ArrowRight, CheckCircle, BookBookmark } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, CheckCircle, BookBookmark, HandsPraying } from "@phosphor-icons/react";
 import Footer from "@/components/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -186,101 +186,117 @@ const DevotionPlanViewer = () => {
   const progress = Math.round(((currentIndex + 1) / devotions.length) * 100);
 
   return (
-    <div className="absolute top-0 w-full font-nokia-bold">
+    <div className="absolute top-0 w-full font-nokia-bold min-h-screen bg-primary-3">
       <ToastContainer />
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-2">
+      <div className="w-full bg-gray-200 h-2 fixed top-0 z-50">
         <div
           className="bg-accent-6 h-2 transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
-      <div className="w-11/12 mx-auto py-8">
+      <div className="w-11/12 max-w-5xl mx-auto py-8 mt-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate("/devotion")}
-            className="flex items-center gap-2 text-accent-6 font-bold hover:text-accent-7"
+            className="flex items-center gap-2 text-accent-6 font-bold hover:text-accent-7 transition-colors"
           >
-            <ArrowLeft size={20} weight="bold" />
+            <ArrowLeft size={24} weight="bold" />
             Back
           </button>
           <div className="text-center">
-            <h2 className="text-xl font-bold text-secondary-8">{plan.title}</h2>
-            <p className="text-sm text-secondary-6">
+            <h2 className="text-xl md:text-2xl font-bold text-secondary-8">{plan.title}</h2>
+            <p className="text-sm text-secondary-6 mt-1">
               Day {currentIndex + 1} of {devotions.length}
             </p>
           </div>
           <div className="w-20" />
         </div>
 
-        {/* Devotion Content */}
-        <div className="max-w-4xl mx-auto">
+        {/* Devotion Content Card */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
           {currentDevotion.image && (
             <img
               src={currentDevotion.image}
               alt={currentDevotion.title}
-              className="w-full h-64 object-cover rounded-xl mb-6"
+              className="w-full h-72 object-cover"
             />
           )}
 
-          <h1 className="text-3xl md:text-4xl font-bold text-secondary-8 mb-4">
-            {currentDevotion.title}
-          </h1>
+          <div className="p-6 md:p-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-secondary-8 mb-6">
+              {currentDevotion.title}
+            </h1>
 
-          <div className="mb-4">
-            <span className="text-sm text-secondary-6">Scripture Reading:</span>
-            <p className="text-lg text-accent-6 font-bold">{currentDevotion.chapter}</p>
-          </div>
+            {/* Scripture Reference */}
+            {currentDevotion.chapter && (
+              <div className="mb-6 pb-4 border-b border-gray-200">
+                <span className="text-sm text-secondary-6 uppercase tracking-wide">Scripture Reading</span>
+                <p className="text-xl text-accent-6 font-bold mt-1">{currentDevotion.chapter}</p>
+              </div>
+            )}
 
-          {currentDevotion.verse && (
-            <div className="border-2 border-accent-6 rounded-xl p-6 bg-primary-5 mb-6">
-              <p className="text-lg text-secondary-8 italic">{currentDevotion.verse}</p>
+            {/* Verse */}
+            {currentDevotion.verse && (
+              <div className="border-l-4 border-accent-6 bg-primary-4 rounded-r-xl p-6 mb-8">
+                <p className="text-lg text-secondary-8 leading-relaxed">{currentDevotion.verse}</p>
+              </div>
+            )}
+
+            {/* Body - Display each paragraph with line breaks preserved */}
+            {currentDevotion.body && currentDevotion.body.length > 0 && (
+              <div className="space-y-4 mb-8 text-secondary-8 leading-relaxed">
+                {currentDevotion.body.map((paragraph, idx) => (
+                  <p key={idx} className="text-lg whitespace-pre-wrap">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Prayer */}
+            {currentDevotion.prayer && (
+              <div className="bg-gradient-to-br from-accent-3 to-accent-4 rounded-2xl p-6 md:p-8 mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <HandsPraying size={28} weight="fill" className="text-accent-6" />
+                  <h3 className="text-xl font-bold text-accent-8">Prayer</h3>
+                </div>
+                <p className="text-secondary-8 text-lg leading-relaxed whitespace-pre-wrap">
+                  {currentDevotion.prayer}
+                </p>
+              </div>
+            )}
+
+            {/* Navigation */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t-2 border-gray-200">
+              <button
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="flex items-center gap-2 px-8 py-3 border-2 border-accent-6 text-accent-6 rounded-full font-bold hover:bg-accent-6 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <ArrowLeft size={20} weight="bold" />
+                Previous
+              </button>
+
+              <div className="text-sm text-secondary-6">
+                {completedIds.includes(currentDevotion._id) && (
+                  <span className="flex items-center gap-2 text-green-600 font-bold">
+                    <CheckCircle size={20} weight="fill" />
+                    Completed
+                  </span>
+                )}
+              </div>
+
+              <button
+                onClick={handleNext}
+                className="flex items-center gap-2 px-8 py-3 bg-accent-6 text-white rounded-full font-bold hover:bg-accent-7 transition-all shadow-md"
+              >
+                {currentIndex === devotions.length - 1 ? "Complete" : "Next"}
+                <ArrowRight size={20} weight="bold" />
+              </button>
             </div>
-          )}
-
-          {currentDevotion.body && currentDevotion.body[0] && (
-            <div
-              className="prose prose-lg max-w-none mb-6 text-secondary-8"
-              dangerouslySetInnerHTML={{ __html: currentDevotion.body[0] }}
-            />
-          )}
-
-          {currentDevotion.prayer && (
-            <div className="border-2 border-accent-6 rounded-xl p-6 bg-primary-4 mb-6">
-              <h3 className="text-lg font-bold text-accent-6 mb-2">Prayer</h3>
-              <p className="text-secondary-8">{currentDevotion.prayer}</p>
-            </div>
-          )}
-
-          {/* Navigation */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t-2 border-gray-200">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="flex items-center gap-2 px-6 py-3 border-2 border-accent-6 text-accent-6 rounded-full font-bold hover:bg-accent-6 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ArrowLeft size={20} weight="bold" />
-              Previous
-            </button>
-
-            <div className="text-sm text-secondary-6">
-              {completedIds.includes(currentDevotion._id) && (
-                <span className="flex items-center gap-1 text-green-600">
-                  <CheckCircle size={16} weight="fill" />
-                  Completed
-                </span>
-              )}
-            </div>
-
-            <button
-              onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-accent-6 text-white rounded-full font-bold hover:bg-accent-7"
-            >
-              {currentIndex === devotions.length - 1 ? "Complete" : "Next"}
-              <ArrowRight size={20} weight="bold" />
-            </button>
           </div>
         </div>
       </div>

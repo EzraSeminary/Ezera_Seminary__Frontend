@@ -37,16 +37,19 @@ const Devotion = () => {
 
       {/* Devotion Plans Section */}
       {plans.length > 0 && (
-        <div className="w-11/12 mx-auto mt-8">
-          <div className="flex items-center gap-2 mb-4">
-            <BookBookmark size={24} className="text-accent-6" weight="bold" />
-            <h2 className="text-2xl font-bold text-secondary-8">Devotion Plans</h2>
+        <div className="w-11/12 max-w-7xl mx-auto mt-12 mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <BookBookmark size={32} className="text-accent-6" weight="fill" />
+            <div>
+              <h2 className="text-3xl font-bold text-secondary-8">Devotion Plans</h2>
+              <p className="text-sm text-secondary-6">Start your spiritual journey today</p>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans.slice(0, 6).map((plan: any) => (
               <div
                 key={plan._id}
-                className="border-2 border-accent-6 rounded-xl p-4 bg-primary-5 hover:shadow-lg transition-all cursor-pointer"
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100"
                 onClick={() => {
                   if (user) {
                     navigate(`/devotion/plan/${plan._id}`);
@@ -56,22 +59,26 @@ const Devotion = () => {
                 }}
               >
                 {plan.image && (
-                  <img
-                    src={plan.image}
-                    alt={plan.title}
-                    className="w-full h-32 object-cover rounded-lg mb-3"
-                  />
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={plan.image}
+                      alt={plan.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 right-3 bg-accent-6 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                      {plan.numItems || 0} days
+                    </div>
+                  </div>
                 )}
-                <h3 className="text-lg font-bold text-secondary-8 mb-2">{plan.title}</h3>
-                <p className="text-sm text-secondary-6 mb-2 line-clamp-2">
-                  {plan.description}
-                </p>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-accent-6 font-bold">
-                    {plan.numItems || 0} days
-                  </span>
-                  <button className="px-3 py-1 rounded-full bg-accent-6 text-white font-bold hover:bg-accent-7">
-                    Start Plan
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-secondary-8 mb-3 group-hover:text-accent-6 transition-colors">
+                    {plan.title}
+                  </h3>
+                  <p className="text-sm text-secondary-6 mb-4 line-clamp-3 leading-relaxed">
+                    {plan.description || "Embark on a transformative devotional journey"}
+                  </p>
+                  <button className="w-full px-6 py-3 rounded-full bg-accent-6 text-white font-bold hover:bg-accent-7 transition-all shadow-md group-hover:shadow-lg">
+                    Start Plan →
                   </button>
                 </div>
               </div>
