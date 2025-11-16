@@ -11,6 +11,8 @@ import {
 } from "@/redux/api-slices/apiSlice";
 import { ArrowLeft, ArrowRight, CheckCircle, BookBookmark } from "@phosphor-icons/react";
 import Footer from "@/components/Footer";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DevotionPlanViewer = () => {
   const { id = "" } = useParams<{ id: string }>();
@@ -43,15 +45,35 @@ const DevotionPlanViewer = () => {
   }, [myPlan, devotions, completedIds]);
 
   const handleStart = async () => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error("Please log in to start a devotion plan");
+      navigate("/login");
+      return;
+    }
+
     try {
-      await startPlan(id).unwrap();
+      console.log("[DevotionPlanViewer] Starting plan:", id);
+      console.log("[DevotionPlanViewer] User token exists:", !!user?.token);
+      const result = await startPlan(id).unwrap();
+      console.log("[DevotionPlanViewer] Plan started:", result);
       setHasStarted(true);
       // Mark first as viewed
       if (devotions[0]) {
+        console.log("[DevotionPlanViewer] Recording progress for first devotion:", devotions[0]._id);
         await recordProgress({ id, devotionId: devotions[0]._id }).unwrap();
       }
-    } catch (error) {
-      console.error("Error starting plan:", error);
+    } catch (error: any) {
+      console.error("[DevotionPlanViewer] Error starting plan:", error);
+      console.error("[DevotionPlanViewer] Error details:", error.data || error.message);
+      
+      // If 403, likely auth issue
+      if (error.status === 403) {
+        toast.error("Please log in to start a devotion plan");
+        navigate("/login");
+      } else {
+        toast.error(error.data?.error || error.message || 'Failed to start plan. Please try again.');
+      }
     }
   };
 
@@ -165,6 +187,7 @@ const DevotionPlanViewer = () => {
 
   return (
     <div className="absolute top-0 w-full font-nokia-bold">
+      <ToastContainer />
       {/* Progress Bar */}
       <div className="w-full bg-gray-200 h-2">
         <div
