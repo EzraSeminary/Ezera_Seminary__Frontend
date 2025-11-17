@@ -41,7 +41,7 @@ const DevotionPlanForm: React.FC<Props> = ({ onCreated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-4 border rounded-2xl p-6 bg-primary-5">
+    <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-4 border rounded-2xl p-6 bg-primary-5 font-nokia-bold">
       <div className="border-b border-accent-6 pb-2 mb-2">
         <h3 className="text-xl font-bold text-secondary-8">Create Devotion Plan</h3>
       </div>

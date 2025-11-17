@@ -32,7 +32,7 @@ const ManageDevotionPlans = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex flex-col h-auto mt-12 pt-12 w-[100%] mx-auto space-y-6 px-4">
+      <div className="flex flex-col h-auto mt-12 pt-12 w-[100%] mx-auto space-y-6 px-4 font-nokia-bold">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-secondary-8">Manage Devotion Plans</h2>
           <button

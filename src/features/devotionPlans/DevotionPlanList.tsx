@@ -21,7 +21,7 @@ const DevotionPlanList: React.FC<Props> = ({ onRefresh }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full font-nokia-bold">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-bold text-lg">Devotion Plans</h3>
         <button

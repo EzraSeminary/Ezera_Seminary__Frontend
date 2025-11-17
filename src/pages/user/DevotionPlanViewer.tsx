@@ -36,6 +36,11 @@ const DevotionPlanViewer = () => {
   useEffect(() => {
     if (myPlan) {
       setHasStarted(true);
+      // If plan is completed, show completion screen
+      if (myPlan.status === 'completed') {
+        setShowCompletion(true);
+        return;
+      }
       // Find first incomplete devotion or stay at 0
       const firstIncomplete = devotions.findIndex((d: any) => !completedIds.includes(d._id));
       if (firstIncomplete >= 0) {
@@ -127,23 +132,34 @@ const DevotionPlanViewer = () => {
 
   if (!hasStarted) {
     return (
-      <div className="absolute top-0 w-full font-nokia-bold">
-        <div className="devotion-img bg-cover w-full py-14 md:py-20 lg:py-28 flex justify-center items-center">
-          <div className="z-10 text-primary-1 align-middle font-bold text-center">
-            <BookBookmark size={64} className="mx-auto mb-4 text-accent-6" weight="fill" />
-            <div className="text-2xl md:text-5xl mb-4">{plan.title}</div>
-            <p className="text-lg md:text-xl text-primary-3 max-w-2xl mx-auto mb-6">
-              {plan.description}
-            </p>
-            <div className="text-accent-6 text-xl mb-8">
-              {devotions.length} Days
+      <div className="absolute top-0 w-full font-nokia-bold min-h-screen bg-gradient-to-br from-primary-3 to-accent-2">
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <div className="text-center max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+            {plan.image && (
+              <img
+                src={plan.image}
+                alt={plan.title}
+                className="w-full h-96 object-cover"
+              />
+            )}
+            <div className="p-12">
+              <BookBookmark size={64} className="mx-auto mb-6 text-accent-6" weight="fill" />
+              <h1 className="text-3xl md:text-5xl font-bold text-secondary-8 mb-6">{plan.title}</h1>
+              <p className="text-lg md:text-xl text-secondary-6 max-w-2xl mx-auto mb-6 leading-relaxed">
+                {plan.description}
+              </p>
+              <div className="inline-block bg-accent-4 text-accent-8 px-6 py-2 rounded-full text-lg font-bold mb-8">
+                {devotions.length} Days Journey
+              </div>
+              <div>
+                <button
+                  onClick={handleStart}
+                  className="px-12 py-4 bg-accent-6 hover:bg-accent-7 text-white text-xl rounded-full font-bold shadow-lg hover:shadow-xl transition-all"
+                >
+                  Start Plan →
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleStart}
-              className="px-8 py-3 bg-accent-6 hover:bg-accent-7 text-white text-lg rounded-full font-bold"
-            >
-              Start Plan
-            </button>
           </div>
         </div>
         <Footer />
@@ -153,24 +169,42 @@ const DevotionPlanViewer = () => {
 
   if (showCompletion) {
     return (
-      <div className="absolute top-0 w-full font-nokia-bold">
-        <div className="devotion-img bg-cover w-full py-14 md:py-20 lg:py-28 flex justify-center items-center">
-          <div className="z-10 text-primary-1 align-middle font-bold text-center">
-            <CheckCircle size={80} className="mx-auto mb-4 text-green-500" weight="fill" />
-            <div className="text-2xl md:text-5xl mb-4">Congratulations!</div>
-            <p className="text-lg md:text-xl text-primary-3 max-w-2xl mx-auto mb-6">
-              You've completed the {plan.title} devotion plan
+      <div className="absolute top-0 w-full font-nokia-bold min-h-screen bg-gradient-to-br from-primary-3 to-accent-2">
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <div className="text-center max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl p-12">
+            {plan?.image && (
+              <img
+                src={plan.image}
+                alt={plan.title}
+                className="w-48 h-48 object-cover rounded-full mx-auto mb-6 border-4 border-accent-6 shadow-lg"
+              />
+            )}
+            <CheckCircle size={80} weight="fill" className="text-green-600 mx-auto mb-6" />
+            <h2 className="text-4xl font-bold text-secondary-8 mb-4">
+              Congratulations! 🎉
+            </h2>
+            <p className="text-xl text-secondary-6 mb-3">
+              You have completed the
             </p>
-            <div className="flex gap-4 justify-center">
+            <p className="text-2xl font-bold text-accent-6 mb-6">
+              {plan?.title}
+            </p>
+            <p className="text-lg text-secondary-6 mb-8">
+              devotion plan with {devotions.length} days of spiritual growth!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => setCurrentIndex(0)}
-                className="px-6 py-2 border-2 border-accent-6 text-accent-6 rounded-full font-bold hover:bg-accent-6 hover:text-white"
+                onClick={() => {
+                  setShowCompletion(false);
+                  setCurrentIndex(0);
+                }}
+                className="px-8 py-3 border-2 border-accent-6 text-accent-6 rounded-full font-bold hover:bg-accent-6 hover:text-white transition-all"
               >
-                Review
+                Review Plan
               </button>
               <button
                 onClick={() => navigate("/devotion")}
-                className="px-6 py-2 bg-accent-6 hover:bg-accent-7 text-white rounded-full font-bold"
+                className="px-8 py-3 bg-accent-6 hover:bg-accent-7 text-white rounded-full font-bold transition-all shadow-lg"
               >
                 Back to Devotions
               </button>

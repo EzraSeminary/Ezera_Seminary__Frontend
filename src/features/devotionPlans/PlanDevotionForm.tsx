@@ -59,7 +59,7 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
   };
 
   return (
-    <form onSubmit={submit} className="w-full space-y-3">
+    <form onSubmit={submit} className="w-full space-y-3 font-nokia-bold">
       <div className="space-y-1 text-sm text-accent-6">
         <label>Title</label>
         <input

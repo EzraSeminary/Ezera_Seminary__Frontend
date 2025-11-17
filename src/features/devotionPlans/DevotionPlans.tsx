@@ -13,7 +13,7 @@ const PlanCard: React.FC<{
   progressPercent?: number;
 }> = ({ plan, onStart, progressPercent }) => {
   return (
-    <div className="border rounded p-3 bg-white">
+    <div className="border rounded p-3 bg-white font-nokia-bold">
       <div className="mb-2">
         {plan.image ? (
           <img
