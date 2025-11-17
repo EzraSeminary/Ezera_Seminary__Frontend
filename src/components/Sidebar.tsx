@@ -49,9 +49,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, isModalOpen, () => setIsModalOpen(false));
 
-  const isActive = (path: string): boolean => {
-    return location.pathname.includes(path);
-  };
 
   // Define base path based on the role
   const basePath = isInstructor ? "/instructor" : "/admin";
@@ -246,14 +243,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
             )}
           </button>
         </div>
-        {menuItems.map((item) => (
-          <SidebarItem
-            key={item.label}
-            icon={item.icon}
-            label={item.label}
-            active={isActive(item.label.toLowerCase())}
-            onClick={(event) => handleItemClick(item, event)}
-          >
+        {menuItems.map((item) => {
+          // Check if any subItem path matches current location
+          const isItemActive = item.subItems.some(subItem => 
+            location.pathname === subItem.path || location.pathname.startsWith(subItem.path + "/")
+          );
+          
+          return (
+            <SidebarItem
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              active={isItemActive}
+              onClick={(event) => handleItemClick(item, event)}
+            >
             <div className="mt-2">
               {!isCollapsed &&
                 activeMenu === item.label &&
@@ -268,7 +271,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
                 ))}
             </div>
           </SidebarItem>
-        ))}
+        );
+        })}
       </div>
       <div
         ref={ref}
