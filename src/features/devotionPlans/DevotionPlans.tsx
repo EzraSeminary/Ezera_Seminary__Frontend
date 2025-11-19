@@ -229,12 +229,9 @@ const DevotionPlans: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pb-8 space-y-8">
+    <div className="w-full max-w-7xl mx-auto px-4 space-y-8 pb-20">
       {/* Header Section */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-secondary-8">
-          Devotion <span className="text-accent-6">Plans</span>
-        </h1>
+      <div className="text-center">
         <p className="text-lg text-secondary-6 max-w-2xl mx-auto">
           Embark on a structured journey of spiritual growth with our curated devotion plans
         </p>

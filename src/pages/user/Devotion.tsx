@@ -78,7 +78,7 @@ const Devotion = () => {
       )}
 
       {activeTab === "plans" && (
-        <div className="pt-6 px-4 max-w-7xl mx-auto  lg:mt-20 xl:mt-24">
+        <div className="pt-6 px-4 max-w-7xl mx-auto  lg:mt-8 xl:mt-8">
           <DevotionPlans />
         </div>
       )}
