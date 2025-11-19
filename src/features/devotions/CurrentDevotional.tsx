@@ -76,8 +76,8 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   return (
     <>
       <ToastContainer />
-      <div className="h-auto border shadow-2xl rounded-2xl px-6 pb-6  lg:p-6 md:w-[90%] mx-auto border-accent-6">
-        <div className="flex flex-col justify-center lg:flex-row  lg:space-x-8">
+      <div className="h-auto border-2 shadow-2xl rounded-2xl px-4 md:px-6 pb-6 lg:p-8 md:w-[90%] mx-auto border-accent-6 bg-gradient-to-br from-white to-primary-2">
+        <div className="flex flex-col justify-center lg:flex-row lg:space-x-8">
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
@@ -124,15 +124,15 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             </div>
           </Modal>
 
-          {/* Months and days */}
+          {/* Months and days - Enhanced Design */}
           <div className="flex items-center justify-between w-full gap-5 md:gap-8 lg:gap-0 lg:block lg:w-[15%]">
             <div className="w-[35%] md:w-[25%] lg:w-full">
               {devotionToDisplay &&
               (devotionToDisplay.month !== "" || devotionToDisplay.day !== "") ? (
-                <div className="rounded-xl lg:w-full h-full border-2 bg-[#fff] border-accent-5 mt-8 text-secondary-6">
-                  <div className="w-[95%] h-[95%] mx-auto flex flex-col justify-center items-center border-2 bg-secondary-6 rounded-xl my-1 lg:leading-none py-4">
-                    <p className="font-nokia-bold md:text-2xl text-[#fff]">{devotionToDisplay.month}</p>
-                    <p className="font-nokia-bold md:text-5xl text-[#fff] md:-mt-3">{devotionToDisplay.day}</p>
+                <div className="rounded-xl lg:w-full h-full border-2 bg-gradient-to-br from-white to-primary-1 border-accent-6 shadow-lg mt-8 text-secondary-6 transform hover:scale-105 transition-transform duration-300">
+                  <div className="w-[95%] h-[95%] mx-auto flex flex-col justify-center items-center border-2 bg-gradient-to-br from-secondary-6 to-secondary-7 rounded-xl my-1 lg:leading-none py-6 shadow-inner">
+                    <p className="font-nokia-bold md:text-2xl lg:text-xl xl:text-2xl text-white drop-shadow-lg">{devotionToDisplay.month}</p>
+                    <p className="font-nokia-bold md:text-5xl lg:text-6xl xl:text-7xl text-white md:-mt-3 drop-shadow-lg">{devotionToDisplay.day}</p>
                   </div>
                 </div>
               ) : (
@@ -145,24 +145,24 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               )}
             </div>
             <div className="w-[60%] self-end flex-grow lg:hidden">
-              <h1 className="text-2xl md:text-4xl text-secondary-6">{devotionToDisplay?.title}</h1>
-              <h4 className="flex gap-2 text-sm md:text-xl text-secondary-6 w-full">
+              <h1 className="text-2xl md:text-4xl text-secondary-6 font-bold">{devotionToDisplay?.title}</h1>
+              <h4 className="flex gap-2 text-sm md:text-xl text-secondary-6 w-full mt-2">
                 የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል -
               </h4>
-              <h2 className="text-sm md:text-xl text-accent-6">{devotionToDisplay?.chapter}</h2>
+              <h2 className="text-sm md:text-xl text-accent-6 font-bold">{devotionToDisplay?.chapter}</h2>
             </div>
           </div>
 
-          {/* Devotion contents */}
-          <div className="font-nokia-bold flex flex-col lg:w-[50%] space-y-2 mt-3 lg:mt-8 mx-auto">
+          {/* Devotion contents - Enhanced Design */}
+          <div className="font-nokia-bold flex flex-col lg:w-[50%] space-y-4 mt-3 lg:mt-8 mx-auto">
             {/* Devotion title and controls */}
-            <div className="flex w-[100%] gap-x-[1vw]">
-              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-secondary-6">{devotionToDisplay.title}</h1>
+            <div className="flex w-[100%] gap-x-[1vw] items-start">
+              <h1 className="hidden lg:block lg:text-4xl xl:text-5xl text-secondary-8 font-bold leading-tight">{devotionToDisplay.title}</h1>
               {(role === "Admin" || "Instructor") && showControls && (
-                <>
+                <div className="flex gap-2 ml-auto">
                   <Trash
                     size={28}
-                    className="text-red-700 text-xl cursor-pointer self-center"
+                    className="text-red-600 hover:text-red-700 text-xl cursor-pointer self-center transition-colors"
                     onClick={() => {
                       setDevotionToDelete(devotionToDisplay?._id || "");
                       setModalIsOpen(true);
@@ -170,43 +170,50 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                   />
                   <PencilSimpleLine
                     size={28}
-                    className="text-gray-700 text-xl cursor-pointer self-center "
+                    className="text-gray-600 hover:text-gray-800 text-xl cursor-pointer self-center transition-colors"
                     onClick={() => startEditing(devotionToDisplay)}
                   />
-                </>
+                </div>
               )}
             </div>
 
-            {/* Devotion chapter */}
-            <h4 className="hidden lg:flex gap-2 text-2xl xl:text-3x items-center text-secondary-6 w-full">
-              የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል - <span className="text-lg xl:text-2xl text-accent-6">{devotionToDisplay.chapter}</span>
-            </h4>
+            {/* Devotion chapter - Enhanced */}
+            <div className="hidden lg:flex flex-col gap-2">
+              <h4 className="text-xl xl:text-2xl text-secondary-7 font-semibold">
+                የዕለቱ የመጽሐፍ ቅዱስ ንባብ ክፍል
+              </h4>
+              <p className="text-2xl xl:text-3xl text-accent-6 font-bold">{devotionToDisplay.chapter}</p>
+            </div>
 
-            {/* Devotion verse */}
-            <p className=" text-sm md:text-lg xl:text-2xl text-accent-6">{devotionToDisplay.verse}</p>
+            {/* Devotion verse - Enhanced */}
+            <div className="bg-gradient-to-r from-accent-6/10 to-accent-7/10 rounded-lg p-4 border-l-4 border-accent-6">
+              <p className="text-base md:text-lg xl:text-2xl text-accent-7 font-bold leading-relaxed">{devotionToDisplay.verse}</p>
+            </div>
 
-            {devotionToDisplay.chapter !== "" && <hr className="border-accent-6" />}
+            {devotionToDisplay.chapter !== "" && <hr className="border-2 border-accent-6/30 my-2" />}
 
-            {/* Devotion paragraphs */}
-            {devotionToDisplay.body.map((paragraph, paragraphIndex) => (
-              <div
-                key={paragraphIndex}
-                className="font-nokia-bold text-justify text-secondary-6 space-y-3 rich-text-container"
-                dangerouslySetInnerHTML={{ __html: paragraph }}
-              />
-            ))}
+            {/* Devotion paragraphs - Enhanced */}
+            <div className="space-y-4">
+              {devotionToDisplay.body.map((paragraph, paragraphIndex) => (
+                <div
+                  key={paragraphIndex}
+                  className="font-nokia-bold text-justify text-secondary-7 text-base md:text-lg xl:text-xl leading-relaxed rich-text-container"
+                  dangerouslySetInnerHTML={{ __html: paragraph }}
+                />
+              ))}
+            </div>
 
-            {/* Devotion prayer */}
-            <div className="relative border-2 border-accent-5 rounded text-accent-5">
-              <p className="font-nokia-bold text-1xl text-center px-8 py-2">{devotionToDisplay.prayer}</p>
-              <div className="absolute top-[30%] md:top-[25%] lg:top-[30%] xl:top-[20%] -left-5 bg-accent-6 rounded-full w-max p-2">
-                <img src={prayerImage} alt="" className="w-6" />
+            {/* Devotion prayer - Enhanced Design */}
+            <div className="relative border-2 border-accent-6 rounded-xl bg-gradient-to-br from-accent-6/5 to-accent-7/5 text-accent-7 shadow-lg mt-6">
+              <div className="absolute -top-4 -left-4 bg-gradient-to-br from-accent-6 to-accent-7 rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+                <img src={prayerImage} alt="Prayer" className="w-7 h-7" />
               </div>
+              <p className="font-nokia-bold text-lg md:text-xl xl:text-2xl text-center px-8 py-6 leading-relaxed">{devotionToDisplay.prayer}</p>
             </div>
           </div>
 
-          {/* Devotion image */}
-          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12 border border-accent-5 rounded-xl">
+          {/* Devotion image - Enhanced Design */}
+          <div className="w-full md:w-[60%] mx-auto lg:w-[30%] h-full mt-6 lg:mt-12 border-2 border-accent-6 rounded-xl overflow-hidden shadow-xl bg-gradient-to-br from-primary-1 to-primary-2">
           {isImageLoading && (
               <div className="flex items-center justify-center h-full my-8">
                 <LoadingSpinner />
@@ -215,7 +222,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
             <img
               src={typeof devotionToDisplay?.image === "string" ? devotionToDisplay.image : undefined}
               alt="Devotion Image"
-              className={`h-full rounded-xl p-1 object-cover ${isImageLoading ? 'hidden' : ''}`}
+              className={`h-full rounded-xl p-2 object-cover transition-transform duration-300 hover:scale-105 ${isImageLoading ? 'hidden' : ''}`}
               style={{
                 width: "100%",
                 height: "auto",
@@ -228,15 +235,15 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               <img src={devotionToDisplay.previewUrl} alt="Preview" />
             )}
 
-            <div className="flex gap-2 justify-center my-2 w-[90%] mx-auto">
+            <div className="flex gap-2 justify-center my-3 w-[90%] mx-auto">
               <button
-                className="flex text-xs xl:text-lg w-max items-center gap-2 xl:gap-3 px-2 py-1 border border-accent-6 bg-secondary-6 rounded-xl font-nokia-bold text-primary-1"
+                className="flex text-sm xl:text-base w-max items-center gap-2 xl:gap-3 px-4 py-2 border-2 border-accent-6 bg-gradient-to-r from-accent-6 to-accent-7 rounded-xl font-nokia-bold text-white hover:from-accent-7 hover:to-accent-6 transition-all shadow-md hover:shadow-lg"
                 onClick={handleDownload}
               >
                 ምስሉን አውርድ
                 <DownloadSimple
                   weight="bold"
-                  className="text-primary-1 animate-pulse text-sm md:text-lg lg:text-xl xl:text-2xl"
+                  className="text-white text-sm md:text-base lg:text-lg xl:text-xl"
                 />
               </button>
             </div>

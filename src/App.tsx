@@ -25,7 +25,7 @@ const SabbathSchool = lazy(() => import("@/pages/user/SabbathSchool"));
 const UserProfile = lazy(() => import("@/pages/user/UserProfile"));
 const ProfileSettings = lazy(() => import("@/pages/user/ProfileSettings"));
 const Devotion = lazy(() => import("@/pages/user/Devotion"));
-const DevotionPlanViewer = lazy(() => import("@/pages/user/DevotionPlanViewer"));
+const PlanDevotionViewer = lazy(() => import("@/pages/user/PlanDevotionViewer"));
 const AboutUs = lazy(() => import("@/pages/user/AboutUs"));
 const ContactUs = lazy(() => import("@/pages/user/ContactUs"));
 const Login = lazy(() => import("@/pages/user/Login"));
@@ -157,7 +157,7 @@ function App() {
             <Route path="days/:day/read" element={<DisplaySSLLesson />} />
           </Route>
           <Route path="/devotion" element={<Devotion />} />
-          <Route path="/devotion/plan/:id" element={<DevotionPlanViewer />} />
+          <Route path="/devotion/plan/:planId" element={<PlanDevotionViewer />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/courses" element={<Courses />} />

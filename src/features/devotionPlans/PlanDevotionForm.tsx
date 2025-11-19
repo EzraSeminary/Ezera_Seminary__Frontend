@@ -41,9 +41,9 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
     form.append("prayer", prayer);
     if (image) form.append("image", image);
     if (editing?.devotionId) {
-      await updateDev({ id: planId, devotionId: editing.devotionId, data: form }).unwrap();
+      await updateDev({ id: planId, devotionId: editing.devotionId, formData: form }).unwrap();
     } else {
-      await createDev({ id: planId, data: form }).unwrap();
+      await createDev({ id: planId, formData: form }).unwrap();
     }
     setTitle("");
     setChapter("");
@@ -57,6 +57,8 @@ const PlanDevotionForm: React.FC<Props> = ({ planId, onCreated, editing, onDoneE
       onCreated?.();
     }
   };
+
+  
 
   return (
     <form onSubmit={submit} className="w-full space-y-3 font-nokia-bold">

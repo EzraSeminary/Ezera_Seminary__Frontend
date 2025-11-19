@@ -62,7 +62,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Devotions", "DevotionPlans"],
+  tagTypes: ["Devotions"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -257,112 +257,108 @@ export const apiSlice = createApi({
     getPerformanceAnalytics: builder.query<PerformanceData, void>({
       query: () => "/analytics/performance",
     }),
-    // Devotion Plans
-    getDevotionPlans: builder.query<any, { page?: number; limit?: number } | void>({
-      query: (params) => ({
-        url: "/devotion-plan",
-        params: params || {},
-      }),
-      providesTags: ["DevotionPlans"],
+    // Devotion Plan endpoints
+    getDevotionPlans: builder.query<{ items: any[]; total: number }, void | {}>({
+      query: () => "/devotionPlan",
     }),
     getDevotionPlanById: builder.query<any, string>({
-      query: (id) => `/devotion-plan/${id}`,
-      providesTags: ["DevotionPlans"],
+      query: (id) => `/devotionPlan/${id}`,
+    }),
+    getMyDevotionPlans: builder.query<any[], { status?: string } | void>({
+      query: (params) => {
+        const queryParams = params?.status ? `?status=${params.status}` : "";
+        return `/devotionPlan/user${queryParams}`;
+      },
+    }),
+    startDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/start`,
+        method: "POST",
+      }),
+    }),
+    getDevotionPlanProgress: builder.query<any, string>({
+      query: (id) => `/devotionPlan/${id}/progress`,
+    }),
+    updateDevotionPlanProgress: builder.mutation<
+      { message: string; userPlan: any },
+      { id: string; devotionId: string; completed: boolean }
+    >({
+      query: ({ id, devotionId, completed }) => ({
+        url: `/devotionPlan/${id}/progress`,
+        method: "PUT",
+        body: { devotionId, completed },
+      }),
+    }),
+    completeDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/complete`,
+        method: "POST",
+      }),
+    }),
+    restartDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/restart`,
+        method: "POST",
+      }),
     }),
     createDevotionPlan: builder.mutation<any, FormData>({
       query: (formData) => ({
-        url: "/devotion-plan",
+        url: "/devotionPlan",
         method: "POST",
         body: formData,
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
-    updateDevotionPlan: builder.mutation<any, { id: string; data: FormData }>({
-      query: ({ id, data }) => ({
-        url: `/devotion-plan/${id}`,
+    updateDevotionPlan: builder.mutation<any, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/devotionPlan/${id}`,
         method: "PUT",
-        body: data,
+        body: formData,
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
     deleteDevotionPlan: builder.mutation<{ message: string }, string>({
       query: (id) => ({
-        url: `/devotion-plan/${id}`,
+        url: `/devotionPlan/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
-    startDevotionPlan: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `/devotion-plan/${id}/start`,
+    getPlanDevotions: builder.query<{ items: any[]; total: number }, { id: string }>({
+      query: ({ id }) => `/devotionPlan/${id}/devotions`,
+    }),
+    createPlanDevotion: builder.mutation<any, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/devotionPlan/${id}/devotions`,
         method: "POST",
+        body: formData,
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
-    recordDevotionPlanProgress: builder.mutation<any, { id: string; devotionId: string }>({
+    updatePlanDevotion: builder.mutation<
+      any,
+      { id: string; devotionId: string; formData: FormData }
+    >({
+      query: ({ id, devotionId, formData }) => ({
+        url: `/devotionPlan/${id}/devotions/${devotionId}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+    deletePlanDevotion: builder.mutation<
+      { message: string },
+      { id: string; devotionId: string }
+    >({
       query: ({ id, devotionId }) => ({
-        url: `/devotion-plan/${id}/progress`,
-        method: "POST",
-        body: { devotionId },
-      }),
-    }),
-    getMyDevotionPlans: builder.query<any, { status?: string } | void>({
-      query: (params) => ({
-        url: "/devotion-plan/me/my",
-        params: params || {},
-      }),
-      providesTags: ["DevotionPlans"],
-    }),
-    // Plan-specific devotions (admin)
-    getPlanDevotions: builder.query<any, { id: string; page?: number; limit?: number; sort?: string }>({
-      query: ({ id, ...params }) => ({
-        url: `/devotion-plan/${id}/devotions`,
-        params,
-      }),
-      providesTags: ["DevotionPlans"],
-    }),
-    createPlanDevotion: builder.mutation<any, { id: string; data: FormData }>({
-      query: ({ id, data }) => {
-        const formData = new FormData();
-        (Array.from(data.entries()) as [string, any][]).forEach(([k, v]) => {
-          formData.append(k, v);
-        });
-        return {
-          url: `/devotion-plan/${id}/devotions`,
-          method: "POST",
-          body: formData,
-        };
-      },
-      invalidatesTags: ["DevotionPlans"],
-    }),
-    updatePlanDevotion: builder.mutation<any, { id: string; devotionId: string; data: FormData }>({
-      query: ({ id, devotionId, data }) => {
-        const formData = new FormData();
-        (Array.from(data.entries()) as [string, any][]).forEach(([k, v]) => {
-          formData.append(k, v);
-        });
-        return {
-          url: `/devotion-plan/${id}/devotions/${devotionId}`,
-          method: "PUT",
-          body: formData,
-        };
-      },
-      invalidatesTags: ["DevotionPlans"],
-    }),
-    deletePlanDevotion: builder.mutation<{ message: string }, { id: string; devotionId: string }>({
-      query: ({ id, devotionId }) => ({
-        url: `/devotion-plan/${id}/devotions/${devotionId}`,
+        url: `/devotionPlan/${id}/devotions/${devotionId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
-    reorderPlanDevotion: builder.mutation<{ message: string }, { id: string; devotionId: string; direction: "up" | "down" }>({
+    reorderPlanDevotion: builder.mutation<
+      { message: string },
+      { id: string; devotionId: string; direction: "up" | "down" }
+    >({
       query: ({ id, devotionId, direction }) => ({
-        url: `/devotion-plan/${id}/devotions/${devotionId}/reorder`,
+        url: `/devotionPlan/${id}/devotions/${devotionId}/reorder`,
         method: "POST",
         body: { direction },
       }),
-      invalidatesTags: ["DevotionPlans"],
     }),
   }),
 });
@@ -397,12 +393,15 @@ export const {
   useSendContactReplyMutation,
   useGetDevotionPlansQuery,
   useGetDevotionPlanByIdQuery,
+  useGetMyDevotionPlansQuery,
+  useStartDevotionPlanMutation,
+  useGetDevotionPlanProgressQuery,
+  useUpdateDevotionPlanProgressMutation,
+  useCompleteDevotionPlanMutation,
+  useRestartDevotionPlanMutation,
   useCreateDevotionPlanMutation,
   useUpdateDevotionPlanMutation,
   useDeleteDevotionPlanMutation,
-  useStartDevotionPlanMutation,
-  useRecordDevotionPlanProgressMutation,
-  useGetMyDevotionPlansQuery,
   useGetPlanDevotionsQuery,
   useCreatePlanDevotionMutation,
   useUpdatePlanDevotionMutation,

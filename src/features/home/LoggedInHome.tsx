@@ -5,10 +5,10 @@ import LoadingSkeleton from "@/skeletons/LoggedInHomeSkeleton";
 import bible from "../../assets/bible.webp";
 import bibleNew from "../../assets/about-img.webp";
 import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
-import { toEthiopian } from "ethiopian-date";
 import { Devotion } from "@/redux/types";
 import Footer from "@/components/Footer";
 import CurrentSSL from "../sabbathSchool/CurrentSSL";
+import { findDevotion, getCurrentEthiopianYear, filterDevotionsByYear, convertToEthiopianDate, ethiopianMonths } from "../devotions/devotionUtils";
 
 const gridContainerVariants = {
   hidden: { opacity: 0 },
@@ -29,23 +29,6 @@ const LoggedInHome = () => {
   const navigate = useNavigate();
   const { data: devotions, error, isLoading } = useGetDevotionsQuery();
 
-  const ethiopianMonths = [
-    "", // There is no month 0
-    "መስከረም",
-    "ጥቅምት",
-    "ህዳር",
-    "ታህሳስ",
-    "ጥር",
-    "የካቲት",
-    "መጋቢት",
-    "ሚያዝያ",
-    "ግንቦት",
-    "ሰኔ",
-    "ሐምሌ",
-    "ነሐሴ",
-    "ጳጉሜ", // 13th month
-  ];
-
   if (isLoading) {
     return <LoadingSkeleton />;
   }
@@ -57,20 +40,59 @@ const LoggedInHome = () => {
   }
 
   const today = new Date();
-  const ethiopianDate = toEthiopian(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    today.getDate()
-  );
-  const [, month, day] = ethiopianDate;
+  
+  // Use the EXACT same date calculation as DevotionDisplay
+  const currentYear = getCurrentEthiopianYear();
+  const filteredDevotions = filterDevotionsByYear(devotions, currentYear);
+  
+  // Get current month using the same method as DevotionDisplay
+  const [, month] = convertToEthiopianDate(today);
   const ethiopianMonth = ethiopianMonths[month];
-  const todaysDevotion = devotions.find(
-    (devotion) =>
-      devotion.month === ethiopianMonth && Number(devotion.day) === day
-  );
-
-  // If there's no devotion for today, use the most recent one
-  const latestDevotion = todaysDevotion || devotions[0];
+  
+  // Try to find today's devotion using the EXACT same logic as DevotionDisplay
+  const todaysDevotion =
+    findDevotion(filteredDevotions, 0, today, currentYear) ||
+    findDevotion(filteredDevotions, 1, today, currentYear) ||
+    findDevotion(filteredDevotions, 2, today, currentYear) ||
+    filteredDevotions.find((devotion) => devotion.month === ethiopianMonth);
+  
+  // If no devotion found, get the most recent one from filtered devotions
+  const latestDevotion = todaysDevotion || filteredDevotions[0];
+  
+  // Get previous 4 devotions before today
+  // First, sort devotions chronologically (by month and day)
+  const sortedDevotions = [...filteredDevotions].sort((a, b) => {
+    const monthIndexA = ethiopianMonths.indexOf(a.month);
+    const monthIndexB = ethiopianMonths.indexOf(b.month);
+    
+    if (monthIndexA !== monthIndexB) {
+      return monthIndexA - monthIndexB;
+    }
+    
+    return Number(a.day) - Number(b.day);
+  });
+  
+  // Find today's devotion index in the sorted array
+  let todayIndex = -1;
+  if (todaysDevotion) {
+    todayIndex = sortedDevotions.findIndex(
+      (d) => d._id === todaysDevotion._id
+    );
+  }
+  
+  // Get the 4 devotions before today (or last 4 if today's not found)
+  let recentDevotions: Devotion[] = [];
+  if (todayIndex > 0) {
+    // Get 4 devotions before today
+    const startIndex = Math.max(0, todayIndex - 4);
+    recentDevotions = sortedDevotions.slice(startIndex, todayIndex);
+  } else if (sortedDevotions.length > 0) {
+    // If today's devotion not found or it's the first, get last 4
+    recentDevotions = sortedDevotions.slice(-4);
+  }
+  
+  // Reverse to show most recent first
+  recentDevotions = recentDevotions.reverse();
 
   const handleOpenDevotion = () => {
     navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
@@ -249,7 +271,7 @@ const LoggedInHome = () => {
               animate="show"
               className="grid grid-cols-2 justify-between mt-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto w-[90%]"
             >
-              {devotions.slice(0, 4).map((devotion, index) => (
+              {recentDevotions.map((devotion, index) => (
                 <motion.div
                   variants={gridSquareVariants}
                   whileHover={{

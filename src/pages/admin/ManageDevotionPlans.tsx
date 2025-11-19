@@ -89,7 +89,7 @@ const ManageDevotionPlans = () => {
                 <p className="text-secondary-6 text-sm mb-3 line-clamp-2">{plan.description}</p>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-accent-6 font-bold">
-                    {plan.numItems || 0} devotions
+                    {plan.numItems || 0} {plan.numItems === 1 ? "day" : "days"}
                   </span>
                   <span className="text-xs text-secondary-4">
                     {plan.published ? "Published" : "Draft"}

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const DevotionPlanList: React.FC<Props> = ({ onRefresh }) => {
-  const { data, refetch, isLoading } = useGetDevotionPlansQuery({});
+  const { data, refetch, isLoading } = useGetDevotionPlansQuery();
   const [deletePlan] = useDeleteDevotionPlanMutation();
   const items = data?.items || [];
 
