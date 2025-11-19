@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { BookBookmark, Play, CheckCircle, Clock, ArrowClockwise } from "@phosphor-icons/react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const PlanCard: React.FC<{
   plan: any;
@@ -228,7 +229,7 @@ const DevotionPlans: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <div className="w-full max-w-7xl mx-auto px-4 pb-8 space-y-8">
       {/* Header Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-secondary-8">
@@ -291,8 +292,7 @@ const DevotionPlans: React.FC = () => {
       {/* Loading State */}
       {(loadingFind || loadingMy || loadingCompleted) && (
         <div className="flex flex-col justify-center items-center py-20 min-h-[400px]">
-          <div className="w-12 h-12 border-4 border-accent-6 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-secondary-6 font-nokia-bold text-sm animate-pulse">Loading devotion plans...</p>
+          <LoadingSpinner text="Loading devotion plans..." size="md" />
         </div>
       )}
 

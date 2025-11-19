@@ -11,7 +11,7 @@ import {
 import { ArrowCircleLeft, ArrowSquareOut, Pen } from "@phosphor-icons/react";
 import EditChapters from "./EditChapters";
 import EditCourseFirst from "./EditCourseFirst";
-import BeatLoader from "react-spinners/BeatLoader";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RootState } from "@/redux/store";
@@ -201,13 +201,7 @@ function EditCourse() {
   if (loading)
     return (
       <div className="flex justify-center items-center h-full">
-        <BeatLoader
-          color={"#EA9215"}
-          loading
-          size={15}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+        <LoadingSpinner text="Loading..." size="md" />
       </div>
     );
 
@@ -250,7 +244,7 @@ function EditCourse() {
         disabled={isPublishLoading} // Disable publish button when loading
       >
         {isPublishLoading ? (
-          <BeatLoader size={8} color={"#EA9215"} />
+          <LoadingSpinner text="" size="sm" className="mr-2" />
         ) : !course.published ? (
           <span>Publish</span>
         ) : (
@@ -269,7 +263,7 @@ function EditCourse() {
         disabled={isSaveLoading} // Disable save button when loading
       >
         {isSaveLoading ? (
-          <BeatLoader size={8} color={"#FFFFFF"} />
+          <LoadingSpinner text="" size="sm" className="mr-2" />
         ) : (
           <span>Update</span>
         )}

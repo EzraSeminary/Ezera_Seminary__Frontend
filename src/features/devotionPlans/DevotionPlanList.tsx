@@ -3,6 +3,7 @@ import {
   useDeleteDevotionPlanMutation,
   useGetDevotionPlansQuery,
 } from "@/redux/api-slices/apiSlice";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Props {
   onRefresh?: () => void;
@@ -32,7 +33,9 @@ const DevotionPlanList: React.FC<Props> = ({ onRefresh }) => {
         </button>
       </div>
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="flex justify-center items-center py-12">
+          <LoadingSpinner text="Loading plans..." size="md" />
+        </div>
       ) : items.length === 0 ? (
         <div className="text-sm opacity-70">No plans yet.</div>
       ) : (

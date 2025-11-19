@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { login as loginAction } from "@/redux/authSlice";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const OAuthRedirectHandler = () => {
   const location = useLocation();
@@ -52,7 +53,11 @@ const OAuthRedirectHandler = () => {
     }
   }, [location, dispatch, navigate]);
 
-  return <div>Loading...</div>;
+  return (
+    <div className="flex flex-col justify-center items-center min-h-screen">
+      <LoadingSpinner text="Loading..." size="md" />
+    </div>
+  );
 };
 
 export default OAuthRedirectHandler;

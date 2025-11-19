@@ -5,6 +5,7 @@ import { useGetDevotionPlansQuery, useDeleteDevotionPlanMutation } from "@/redux
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trash, PencilSimple, Plus } from "@phosphor-icons/react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const ManageDevotionPlans = () => {
   const navigate = useNavigate();
@@ -57,9 +58,8 @@ const ManageDevotionPlans = () => {
         )}
 
         {isLoading ? (
-          <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-6 mx-auto"></div>
-            <p className="mt-4 text-secondary-6">Loading plans...</p>
+          <div className="flex flex-col justify-center items-center py-20 min-h-[400px]">
+            <LoadingSpinner text="Loading plans..." size="md" />
           </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-12 border-2 border-dashed border-accent-6 rounded-xl">
