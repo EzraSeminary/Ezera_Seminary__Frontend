@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { DownloadSimple, PencilSimpleLine, Trash } from "@phosphor-icons/react";
-import { useGetDevotionsQuery } from "../../redux/api-slices/apiSlice";
+import { DownloadSimple, PencilSimpleLine, Trash, Heart, Share, ChatCircle, X } from "@phosphor-icons/react";
+import { 
+  useGetDevotionsQuery,
+  useToggleLikeDevotionMutation,
+  useGetDevotionLikesQuery,
+  useAddDevotionCommentMutation,
+  useGetDevotionCommentsQuery,
+  useDeleteDevotionCommentMutation,
+} from "../../redux/api-slices/apiSlice";
 import { selectDevotion, deleteDevotion, setIsEditing } from "../../redux/devotionsSlice";
 import { RootState, Devotion } from "@/redux/types";
 import Modal from "react-modal";
@@ -24,11 +31,26 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   toogleForm,
 }) => {
   const { refetch } = useGetDevotionsQuery();
+  const user = useSelector((state: RootState) => state.auth.user);
   const role = useSelector((state: RootState) => state.auth.user?.role);
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [devotionToDelete, setDevotionToDelete] = useState<string | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [showComments, setShowComments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  
+  // Like and comment hooks
+  const devotionId = devotionToDisplay?._id || "";
+  const [toggleLike] = useToggleLikeDevotionMutation();
+  const { data: likesData, refetch: refetchLikes } = useGetDevotionLikesQuery(devotionId, { skip: !devotionId });
+  const [addComment] = useAddDevotionCommentMutation();
+  const { data: commentsData, refetch: refetchComments } = useGetDevotionCommentsQuery(devotionId, { skip: !devotionId });
+  const [deleteComment] = useDeleteDevotionCommentMutation();
+  
+  // Get likes count and isLiked status
+  const likesCount = likesData?.likesCount || devotionToDisplay?.likesCount || 0;
+  const isLiked = likesData?.isLiked || devotionToDisplay?.isLiked || false;
 
   const handleDelete = async (id: string) => {
     // One typescript error below to fix ❗❗❗
@@ -71,6 +93,107 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
 
   const handleImageLoad = () => {
     setIsImageLoading(false);
+  };
+
+  const handleLike = async () => {
+    if (!user) {
+      toast.info("Please log in to like devotions");
+      return;
+    }
+    if (!devotionId) return;
+    
+    try {
+      await toggleLike(devotionId).unwrap();
+      refetchLikes();
+      // Also refetch devotions to update the count in the list
+      refetch();
+    } catch (error) {
+      toast.error("Failed to like devotion");
+      console.error("Error liking devotion:", error);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!user) {
+      toast.info("Please log in to share devotions");
+      return;
+    }
+
+    const shareUrl = window.location.href;
+    const shareText = `Check out this daily devotional: ${devotionToDisplay.title}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: devotionToDisplay.title,
+          text: shareText,
+          url: shareUrl,
+        });
+        toast.success("Shared successfully!");
+      } catch (error: unknown) {
+        // User cancelled or error occurred
+        if (error instanceof Error && error.name !== "AbortError") {
+          // Copy to clipboard as fallback
+          copyToClipboard(shareUrl);
+        }
+      }
+    } else {
+      // Fallback: copy to clipboard
+      copyToClipboard(shareUrl);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => toast.success("Link copied to clipboard!"),
+      () => toast.error("Failed to copy link")
+    );
+  };
+
+  const handleAddComment = async () => {
+    if (!user) {
+      toast.info("Please log in to comment");
+      return;
+    }
+    if (!commentText.trim()) {
+      toast.error("Please enter a comment");
+      return;
+    }
+    if (!devotionId) return;
+
+    try {
+      await addComment({ id: devotionId, text: commentText }).unwrap();
+      setCommentText("");
+      refetchComments();
+      toast.success("Comment added successfully!");
+    } catch (error) {
+      toast.error("Failed to add comment");
+      console.error("Error adding comment:", error);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!devotionId) return;
+    
+    try {
+      await deleteComment({ id: devotionId, commentId }).unwrap();
+      refetchComments();
+      toast.success("Comment deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete comment");
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
@@ -210,6 +333,110 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
               </div>
               <p className="font-nokia-bold text-lg md:text-xl xl:text-2xl text-center px-8 py-6 leading-relaxed">{devotionToDisplay.prayer}</p>
             </div>
+
+            {/* Like, Share, Comment Section - Only visible when logged in */}
+            {user && (
+              <div className="mt-6 pt-6 border-t-2 border-accent-6/30">
+                <div className="flex flex-wrap gap-4 items-center">
+                  {/* Like Button */}
+                  <button
+                    onClick={handleLike}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-nokia-bold transition-all ${
+                      isLiked
+                        ? "bg-red-500 text-white hover:bg-red-600"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    <Heart weight={isLiked ? "fill" : "regular"} size={20} />
+                    <span>{likesCount}</span>
+                  </button>
+
+                  {/* Share Button */}
+                  <button
+                    onClick={handleShare}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg font-nokia-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                  >
+                    <Share size={20} />
+                    <span>Share</span>
+                  </button>
+
+                  {/* Comment Button */}
+                  <button
+                    onClick={() => setShowComments(!showComments)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg font-nokia-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                  >
+                    <ChatCircle size={20} />
+                    <span>Comment ({commentsData?.count || 0})</span>
+                  </button>
+                </div>
+
+                {/* Comments Section */}
+                {showComments && (
+                  <div className="mt-6 space-y-4">
+                    {/* Add Comment Form */}
+                    <div className="border-2 border-accent-6/30 rounded-lg p-4 bg-white">
+                      <textarea
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="Write a comment..."
+                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-accent-6 font-nokia-bold resize-none"
+                        rows={3}
+                      />
+                      <button
+                        onClick={handleAddComment}
+                        className="mt-3 px-6 py-2 bg-gradient-to-r from-accent-6 to-accent-7 text-white rounded-lg font-nokia-bold hover:from-accent-7 hover:to-accent-6 transition-all"
+                      >
+                        Post Comment
+                      </button>
+                    </div>
+
+                    {/* Comments List */}
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {commentsData?.comments && commentsData.comments.length > 0 ? (
+                        commentsData.comments.map((comment) => (
+                          <div
+                            key={comment._id}
+                            className="border-2 border-accent-6/30 rounded-lg p-4 bg-white"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-6 to-accent-7 flex items-center justify-center text-white font-bold">
+                                    {comment.user?.firstName?.[0] || "U"}
+                                  </div>
+                                  <div>
+                                    <p className="font-nokia-bold text-sm text-gray-700">
+                                      {comment.user?.firstName} {comment.user?.lastName}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                      {formatDate(comment.createdAt)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <p className="text-gray-800 font-nokia-bold">{comment.text}</p>
+                              </div>
+                              {(user._id === comment.user?._id || role === "Admin" || role === "Instructor") && (
+                                <button
+                                  onClick={() => handleDeleteComment(comment._id)}
+                                  className="ml-2 text-red-500 hover:text-red-700 transition-colors"
+                                  title="Delete comment"
+                                >
+                                  <X size={20} />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-center text-gray-500 font-nokia-bold py-4">
+                          No comments yet. Be the first to comment!
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Devotion image - Enhanced Design */}

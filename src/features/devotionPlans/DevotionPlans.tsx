@@ -18,7 +18,10 @@ const PlanCard: React.FC<{
   progressPercent?: number;
   isStarted?: boolean;
   navigate: (path: string) => void;
-}> = ({ plan, onStart, progressPercent, isStarted, navigate }) => {
+  restartPlan?: (id: string) => any;
+  refetchMy?: () => void;
+  refetchCompleted?: () => void;
+}> = ({ plan, onStart, progressPercent, isStarted, navigate, restartPlan, refetchMy, refetchCompleted }) => {
   const hasProgress = typeof progressPercent === "number";
   const isCompleted = hasProgress && progressPercent === 100;
 
@@ -99,18 +102,20 @@ const PlanCard: React.FC<{
               navigate(`/devotion/plan/${plan._id}`);
             } else if (isCompleted) {
               // Restart completed plan
-              try {
-                await restartPlan(plan._id).unwrap();
-                await refetchMy();
-                await refetchCompleted();
-                toast.success("Plan restarted! It's now in your active plans.", {
-                  position: "top-center",
-                });
-                // Navigate to the plan
-                navigate(`/devotion/plan/${plan._id}`);
-              } catch (error) {
-                console.error("Error restarting plan:", error);
-                toast.error("Failed to restart plan. Please try again.");
+              if (restartPlan && refetchMy && refetchCompleted) {
+                try {
+                  await restartPlan(plan._id).unwrap();
+                  await refetchMy();
+                  await refetchCompleted();
+                  toast.success("Plan restarted! It's now in your active plans.", {
+                    position: "top-center",
+                  });
+                  // Navigate to the plan
+                  navigate(`/devotion/plan/${plan._id}`);
+                } catch (error) {
+                  console.error("Error restarting plan:", error);
+                  toast.error("Failed to restart plan. Please try again.");
+                }
               }
             } else {
               onStart(plan._id);
@@ -221,6 +226,9 @@ const DevotionPlans: React.FC = () => {
               progressPercent={withProgress ? p.progress?.percent : undefined}
               isStarted={isStarted}
               navigate={navigate}
+              restartPlan={restartPlan}
+              refetchMy={refetchMy}
+              refetchCompleted={refetchCompleted}
             />
           );
         })}

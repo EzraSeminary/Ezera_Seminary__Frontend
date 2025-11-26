@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ethiopianMonths } from "@/features/devotions/devotionUtils";
 import { useCreatePlanDevotionMutation, useUpdatePlanDevotionMutation } from "@/redux/api-slices/apiSlice";
 
 interface Props {

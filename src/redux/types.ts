@@ -30,8 +30,8 @@ export interface AuthState {
 }
 
 export interface Devotion {
-  image: Devotion;
-  previewUrl: Devotion;
+  image: string | File | null;
+  previewUrl?: string;
   body: string[];
   month: string;
   day: string;
@@ -44,11 +44,15 @@ export interface Devotion {
   subTitles: string[];
   photo: File | string | null; // Assuming 'photo' can be a File object or a string URL to the photo
   _id?: string;
+  // Likes and comments fields
+  likesCount?: number;
+  commentsCount?: number;
+  isLiked?: boolean;
 }
 
 export interface FormState {
-  image: Devotion;
-  previewUrl: Devotion;
+  image: string | File | null;
+  previewUrl?: string;
   _id: string;
   body: string[] | undefined;
   month: string;

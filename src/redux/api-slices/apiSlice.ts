@@ -62,7 +62,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Devotions"],
+  tagTypes: ["Devotions", "DevotionComments"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -251,6 +251,60 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Devotions"],
     }),
+    // Devotion likes and comments endpoints
+    toggleLikeDevotion: builder.mutation<
+      { message: string; likesCount: number; isLiked: boolean },
+      string
+    >({
+      query: (id) => ({
+        url: `/devotion/${id}/like`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getDevotionLikes: builder.query<
+      { likesCount: number; isLiked: boolean },
+      string
+    >({
+      query: (id) => `/devotion/${id}/likes`,
+      providesTags: (_result, _error, id) => [{ type: "Devotions", id }],
+    }),
+    addDevotionComment: builder.mutation<
+      { message: string; comment: any },
+      { id: string; text: string }
+    >({
+      query: ({ id, text }) => ({
+        url: `/devotion/${id}/comments`,
+        method: "POST",
+        body: { text },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Devotions", id },
+        { type: "DevotionComments", id },
+      ],
+    }),
+    getDevotionComments: builder.query<
+      { comments: any[]; count: number },
+      string
+    >({
+      query: (id) => `/devotion/${id}/comments`,
+      providesTags: (_result, _error, id) => [
+        { type: "DevotionComments", id },
+      ],
+    }),
+    deleteDevotionComment: builder.mutation<
+      { message: string },
+      { id: string; commentId: string }
+    >({
+      query: ({ id, commentId }) => ({
+        url: `/devotion/${id}/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Devotions", id },
+        { type: "DevotionComments", id },
+      ],
+    }),
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
     }),
@@ -384,6 +438,11 @@ export const {
   useGetAvailableYearsQuery,
   useGetDevotionsByYearQuery,
   useCreateDevotionsForNewYearMutation,
+  useToggleLikeDevotionMutation,
+  useGetDevotionLikesQuery,
+  useAddDevotionCommentMutation,
+  useGetDevotionCommentsQuery,
+  useDeleteDevotionCommentMutation,
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,

@@ -113,7 +113,11 @@ const DevotionForm: React.FC = () => {
 
   useEffect(() => {
     if (isEditing && selectedDevotion && selectedDevotion._id) {
-      dispatch(updateForm(selectedDevotion));
+      dispatch(updateForm({
+        ...selectedDevotion,
+        image: typeof selectedDevotion.image === 'string' ? selectedDevotion.image : null,
+        previewUrl: selectedDevotion.previewUrl,
+      }));
 
       if (
         Array.isArray(selectedDevotion.body) &&

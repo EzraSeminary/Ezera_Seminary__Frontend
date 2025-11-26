@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetDevotionPlanByIdQuery,
   useGetPlanDevotionsQuery,
-  useCreatePlanDevotionMutation,
   useDeletePlanDevotionMutation,
   useReorderPlanDevotionMutation,
 } from "@/redux/api-slices/apiSlice";
