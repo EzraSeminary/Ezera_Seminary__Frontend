@@ -15,6 +15,8 @@ import EnhancedAnalytics from "@/features/courses/admin/analytics/EnhancedAnalyt
 import AdminHeader from "../admin/AdminHeader";
 import PerformanceDashboard from "../admin/PerformanceDashboard";
 import DashboardOverview from "../admin/DashboardOverview";
+import ManageDevotionPlans from "../admin/ManageDevotionPlans";
+import ManageDevotionPlan from "../admin/ManageDevotionPlan";
 
 const InstructorDashboard = () => {
   // eslint-disable-next-line
@@ -50,6 +52,8 @@ const InstructorDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="devotion-plans/manage" element={<ManageDevotionPlans />} />
+          <Route path="devotion/plans/:id" element={<ManageDevotionPlan />} />
         </Routes>
       </div>
     </div>

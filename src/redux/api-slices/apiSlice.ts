@@ -62,7 +62,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Devotions"],
+  tagTypes: ["Devotions", "DevotionComments"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -251,11 +251,186 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Devotions"],
     }),
+    // Devotion likes and comments endpoints
+    toggleLikeDevotion: builder.mutation<
+      { message: string; likesCount: number; isLiked: boolean },
+      string
+    >({
+      query: (id) => ({
+        url: `/devotion/${id}/like`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getDevotionLikes: builder.query<
+      { likesCount: number; isLiked: boolean },
+      string
+    >({
+      query: (id) => `/devotion/${id}/likes`,
+      providesTags: (_result, _error, id) => [{ type: "Devotions", id }],
+    }),
+    addDevotionComment: builder.mutation<
+      { message: string; comment: any },
+      { id: string; text: string }
+    >({
+      query: ({ id, text }) => ({
+        url: `/devotion/${id}/comments`,
+        method: "POST",
+        body: { text },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Devotions", id },
+        { type: "DevotionComments", id },
+      ],
+    }),
+    getDevotionComments: builder.query<
+      { comments: any[]; count: number },
+      string
+    >({
+      query: (id) => `/devotion/${id}/comments`,
+      providesTags: (_result, _error, id) => [
+        { type: "DevotionComments", id },
+      ],
+    }),
+    deleteDevotionComment: builder.mutation<
+      { message: string },
+      { id: string; commentId: string }
+    >({
+      query: ({ id, commentId }) => ({
+        url: `/devotion/${id}/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Devotions", id },
+        { type: "DevotionComments", id },
+      ],
+    }),
+    // Share tracking endpoints
+    trackDevotionShare: builder.mutation<
+      { message: string; sharesCount: number },
+      string
+    >({
+      query: (id) => ({
+        url: `/devotion/${id}/share`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getDevotionShares: builder.query<
+      { sharesCount: number },
+      string
+    >({
+      query: (id) => `/devotion/${id}/shares`,
+      providesTags: (_result, _error, id) => [{ type: "Devotions", id }],
+    }),
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
     }),
     getPerformanceAnalytics: builder.query<PerformanceData, void>({
       query: () => "/analytics/performance",
+    }),
+    // Devotion Plan endpoints
+    getDevotionPlans: builder.query<{ items: any[]; total: number }, void | {}>({
+      query: () => "/devotionPlan",
+    }),
+    getDevotionPlanById: builder.query<any, string>({
+      query: (id) => `/devotionPlan/${id}`,
+    }),
+    getMyDevotionPlans: builder.query<any[], { status?: string } | void>({
+      query: (params) => {
+        const queryParams = params?.status ? `?status=${params.status}` : "";
+        return `/devotionPlan/user${queryParams}`;
+      },
+    }),
+    startDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/start`,
+        method: "POST",
+      }),
+    }),
+    getDevotionPlanProgress: builder.query<any, string>({
+      query: (id) => `/devotionPlan/${id}/progress`,
+    }),
+    updateDevotionPlanProgress: builder.mutation<
+      { message: string; userPlan: any },
+      { id: string; devotionId: string; completed: boolean }
+    >({
+      query: ({ id, devotionId, completed }) => ({
+        url: `/devotionPlan/${id}/progress`,
+        method: "PUT",
+        body: { devotionId, completed },
+      }),
+    }),
+    completeDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/complete`,
+        method: "POST",
+      }),
+    }),
+    restartDevotionPlan: builder.mutation<{ message: string; userPlan: any }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}/restart`,
+        method: "POST",
+      }),
+    }),
+    createDevotionPlan: builder.mutation<any, FormData>({
+      query: (formData) => ({
+        url: "/devotionPlan",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+    updateDevotionPlan: builder.mutation<any, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/devotionPlan/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+    deleteDevotionPlan: builder.mutation<{ message: string }, string>({
+      query: (id) => ({
+        url: `/devotionPlan/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getPlanDevotions: builder.query<{ items: any[]; total: number }, { id: string }>({
+      query: ({ id }) => `/devotionPlan/${id}/devotions`,
+    }),
+    createPlanDevotion: builder.mutation<any, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/devotionPlan/${id}/devotions`,
+        method: "POST",
+        body: formData,
+      }),
+    }),
+    updatePlanDevotion: builder.mutation<
+      any,
+      { id: string; devotionId: string; formData: FormData }
+    >({
+      query: ({ id, devotionId, formData }) => ({
+        url: `/devotionPlan/${id}/devotions/${devotionId}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+    deletePlanDevotion: builder.mutation<
+      { message: string },
+      { id: string; devotionId: string }
+    >({
+      query: ({ id, devotionId }) => ({
+        url: `/devotionPlan/${id}/devotions/${devotionId}`,
+        method: "DELETE",
+      }),
+    }),
+    reorderPlanDevotion: builder.mutation<
+      { message: string },
+      { id: string; devotionId: string; direction: "up" | "down" }
+    >({
+      query: ({ id, devotionId, direction }) => ({
+        url: `/devotionPlan/${id}/devotions/${devotionId}/reorder`,
+        method: "POST",
+        body: { direction },
+      }),
     }),
   }),
 });
@@ -281,6 +456,13 @@ export const {
   useGetAvailableYearsQuery,
   useGetDevotionsByYearQuery,
   useCreateDevotionsForNewYearMutation,
+  useToggleLikeDevotionMutation,
+  useGetDevotionLikesQuery,
+  useAddDevotionCommentMutation,
+  useGetDevotionCommentsQuery,
+  useDeleteDevotionCommentMutation,
+  useTrackDevotionShareMutation,
+  useGetDevotionSharesQuery,
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,
@@ -288,4 +470,20 @@ export const {
   useGetDeletedUsersCountQuery,
   useGetContactsQuery,
   useSendContactReplyMutation,
+  useGetDevotionPlansQuery,
+  useGetDevotionPlanByIdQuery,
+  useGetMyDevotionPlansQuery,
+  useStartDevotionPlanMutation,
+  useGetDevotionPlanProgressQuery,
+  useUpdateDevotionPlanProgressMutation,
+  useCompleteDevotionPlanMutation,
+  useRestartDevotionPlanMutation,
+  useCreateDevotionPlanMutation,
+  useUpdateDevotionPlanMutation,
+  useDeleteDevotionPlanMutation,
+  useGetPlanDevotionsQuery,
+  useCreatePlanDevotionMutation,
+  useUpdatePlanDevotionMutation,
+  useDeletePlanDevotionMutation,
+  useReorderPlanDevotionMutation,
 } = apiSlice;

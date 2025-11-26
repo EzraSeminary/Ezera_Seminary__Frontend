@@ -4,7 +4,7 @@ import { RootState } from '@/redux/store';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { PuffLoader } from 'react-spinners';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface ProgressSubmitProps {
   courseId: string;
@@ -76,16 +76,7 @@ const ProgressSubmit = forwardRef<{ submitProgress: () => void }, ProgressSubmit
     <>
       {progressLoading ? (
         <div className="fixed inset-0 flex flex-col justify-center items-center bg-secondary-6 bg-opacity-85 z-50">
-          <PuffLoader
-            color={"#EA9215"}
-            loading
-            size={56}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-          <h1 className="text-accent-6 font-nokia-bold text-2xl mt-4">
-            Saving your progress
-          </h1>
+          <LoadingSpinner text="Saving your progress..." size="lg" />
         </div>
       ) : null}
     </>

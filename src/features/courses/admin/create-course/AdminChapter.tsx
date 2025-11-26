@@ -12,7 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
-import BeatLoader from "react-spinners/BeatLoader";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 function AdminChapter() {
   // New state to track when the publish button has been clicked
@@ -219,7 +219,7 @@ function AdminChapter() {
               disabled={isPublishLoading} // Disable publish button when loading
             >
               {isPublishLoading ? (
-                <BeatLoader size={8} color={"#EA9215"} />
+                <LoadingSpinner text="" size="sm" className="mr-2" />
               ) : !course.published ? (
                 <span>Publish</span>
               ) : (
@@ -237,7 +237,7 @@ function AdminChapter() {
               disabled={isSaveLoading} // Disable save button when loading
             >
               {isSaveLoading ? (
-                <BeatLoader size={8} color={"#FFFFFF"} />
+                <LoadingSpinner text="" size="sm" className="mr-2" />
               ) : (
                 <span>Save</span>
               )}

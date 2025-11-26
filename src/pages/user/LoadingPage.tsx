@@ -1,15 +1,9 @@
-import BeatLoader from "react-spinners/BeatLoader";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 function LoadingPage() {
   return (
     <div className="h-full flex justify-center items-center min-h-screen">
-      <BeatLoader
-        color={"#EA9215"}
-        loading
-        size={15}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+      <LoadingSpinner text="Loading..." size="md" />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import Modal from "react-modal";
 import { YoutubeLogo } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 type ManageYouTubeLinkProps = {
   year: number;
@@ -86,7 +87,11 @@ const ManageYouTubeLink = ({
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center py-20 min-h-[400px]">
+        <LoadingSpinner text="Loading..." size="md" />
+      </div>
+    );
   }
 
     if (error) {

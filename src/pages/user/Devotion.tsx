@@ -5,11 +5,13 @@ import YearSelector from "@/features/devotions/YearSelector";
 import Footer from "@/components/Footer";
 import { RootState } from "@/redux/store";
 import { getCurrentEthiopianYear } from "@/features/devotions/devotionUtils";
+import DevotionPlans from "@/features/devotionPlans/DevotionPlans";
 
 const Devotion = () => {
   const [selectedYear, setSelectedYear] = useState(
     getCurrentEthiopianYear().toString()
   ); // Default to current year
+  const [activeTab, setActiveTab] = useState<"daily" | "plans">("daily");
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
@@ -29,23 +31,58 @@ const Devotion = () => {
         </div>
       </div>
 
-      <div className="pt-6">
-        <YearSelector
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          userRole={user?.role || undefined}
-        />
+      {/* Tab Navigation */}
+      <div className="flex justify-center gap-4 pt-6 px-4">
+        <button
+          onClick={() => setActiveTab("daily")}
+          className={`px-6 py-2 rounded-full font-bold transition-colors ${
+            activeTab === "daily"
+              ? "bg-accent-6 text-white"
+              : "bg-white text-accent-6 border-2 border-accent-6"
+          }`}
+        >
+          Daily Devotion
+        </button>
+        <button
+          onClick={() => setActiveTab("plans")}
+          className={`px-6 py-2 rounded-full font-bold transition-colors ${
+            activeTab === "plans"
+              ? "bg-accent-6 text-white"
+              : "bg-white text-accent-6 border-2 border-accent-6"
+          }`}
+        >
+          Devotion Plans
+        </button>
       </div>
 
-      <div className=" flex h-full  pt-6  mx-auto flex-1">
-        <DevotionDisplay
-          selectedYear={selectedYear}
-          showControls={false}
-          toggleForm={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      </div>
+      {activeTab === "daily" && (
+        <>
+          <div className="pt-6">
+            <YearSelector
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              userRole={user?.role || undefined}
+            />
+          </div>
+
+          <div className=" flex h-full  pt-6  mx-auto flex-1">
+            <DevotionDisplay
+              selectedYear={selectedYear}
+              showControls={false}
+              toggleForm={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {activeTab === "plans" && (
+        <div className="pt-6 px-4 max-w-7xl mx-auto  lg:mt-8 xl:mt-8">
+          <DevotionPlans />
+        </div>
+      )}
+
       <Footer />
     </div>
   );

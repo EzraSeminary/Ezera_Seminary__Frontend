@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useGetContactsQuery, useSendContactReplyMutation } from "@/redux/api-slices/apiSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const defaultReplyTemplate = (firstName: string) => `Dear ${firstName},
 
@@ -59,7 +60,11 @@ const FeedbackCenter = () => {
   };
 
   if (isLoading) {
-    return <div className="p-6 font-nokia-bold">Loading feedback...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center py-20 min-h-[400px]">
+        <LoadingSpinner text="Loading feedback..." size="md" />
+      </div>
+    );
   }
   if (isError) {
     return (
