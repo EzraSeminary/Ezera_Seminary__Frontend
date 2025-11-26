@@ -9,6 +9,8 @@ import {
   useAddDevotionCommentMutation,
   useGetDevotionCommentsQuery,
   useDeleteDevotionCommentMutation,
+  useTrackDevotionShareMutation,
+  useGetDevotionSharesQuery,
 } from "../../redux/api-slices/apiSlice";
 import { selectDevotion, deleteDevotion, setIsEditing } from "../../redux/devotionsSlice";
 import { RootState, Devotion } from "@/redux/types";
@@ -40,16 +42,19 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   
-  // Like and comment hooks
+  // Like, comment, and share hooks
   const devotionId = devotionToDisplay?._id || "";
   const [toggleLike] = useToggleLikeDevotionMutation();
   const { data: likesData, refetch: refetchLikes } = useGetDevotionLikesQuery(devotionId, { skip: !devotionId });
   const [addComment] = useAddDevotionCommentMutation();
   const { data: commentsData, refetch: refetchComments } = useGetDevotionCommentsQuery(devotionId, { skip: !devotionId });
   const [deleteComment] = useDeleteDevotionCommentMutation();
+  const [trackShare] = useTrackDevotionShareMutation();
+  const { data: sharesData, refetch: refetchShares } = useGetDevotionSharesQuery(devotionId, { skip: !devotionId });
   
-  // Get likes count and isLiked status
+  // Get likes, shares, and isLiked status
   const likesCount = likesData?.likesCount || devotionToDisplay?.likesCount || 0;
+  const sharesCount = sharesData?.sharesCount || devotionToDisplay?.sharesCount || 0;
   const isLiked = likesData?.isLiked || devotionToDisplay?.isLiked || false;
 
   const handleDelete = async (id: string) => {
@@ -129,17 +134,52 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
           text: shareText,
           url: shareUrl,
         });
+        
+        // Track the share in the backend
+        if (devotionId) {
+          try {
+            await trackShare(devotionId).unwrap();
+            refetchShares();
+            refetch(); // Also refetch devotions to update the count in the list
+          } catch (error) {
+            console.error("Error tracking share:", error);
+            // Don't show error to user, share was successful
+          }
+        }
+        
         toast.success("Shared successfully!");
       } catch (error: unknown) {
         // User cancelled or error occurred
         if (error instanceof Error && error.name !== "AbortError") {
           // Copy to clipboard as fallback
           copyToClipboard(shareUrl);
+          
+          // Track the share even when copying to clipboard
+          if (devotionId) {
+            try {
+              await trackShare(devotionId).unwrap();
+              refetchShares();
+              refetch();
+            } catch (err) {
+              console.error("Error tracking share:", err);
+            }
+          }
         }
       }
     } else {
       // Fallback: copy to clipboard
       copyToClipboard(shareUrl);
+      
+      // Track the share when copying to clipboard
+      if (devotionId) {
+        try {
+          await trackShare(devotionId).unwrap();
+          refetchShares();
+          refetch();
+        } catch (error) {
+          console.error("Error tracking share:", error);
+        }
+      }
     }
   };
 
@@ -357,7 +397,7 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
                     className="flex items-center gap-2 px-4 py-2 rounded-lg font-nokia-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
                   >
                     <Share size={20} />
-                    <span>Share</span>
+                    <span>Share ({sharesCount})</span>
                   </button>
 
                   {/* Comment Button */}

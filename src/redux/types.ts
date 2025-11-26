@@ -44,9 +44,10 @@ export interface Devotion {
   subTitles: string[];
   photo: File | string | null; // Assuming 'photo' can be a File object or a string URL to the photo
   _id?: string;
-  // Likes and comments fields
+  // Likes, comments, and shares fields
   likesCount?: number;
   commentsCount?: number;
+  sharesCount?: number;
   isLiked?: boolean;
 }
 

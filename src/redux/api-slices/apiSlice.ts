@@ -305,6 +305,24 @@ export const apiSlice = createApi({
         { type: "DevotionComments", id },
       ],
     }),
+    // Share tracking endpoints
+    trackDevotionShare: builder.mutation<
+      { message: string; sharesCount: number },
+      string
+    >({
+      query: (id) => ({
+        url: `/devotion/${id}/share`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Devotions"],
+    }),
+    getDevotionShares: builder.query<
+      { sharesCount: number },
+      string
+    >({
+      query: (id) => `/devotion/${id}/shares`,
+      providesTags: (_result, _error, id) => [{ type: "Devotions", id }],
+    }),
     getAnalytics: builder.query<AnalyticsData, void>({
       query: () => "/analytics",
     }),
@@ -443,6 +461,8 @@ export const {
   useAddDevotionCommentMutation,
   useGetDevotionCommentsQuery,
   useDeleteDevotionCommentMutation,
+  useTrackDevotionShareMutation,
+  useGetDevotionSharesQuery,
   useGetCurrentUserQuery,
   useSendMessageMutation,
   useGetAnalyticsQuery,
