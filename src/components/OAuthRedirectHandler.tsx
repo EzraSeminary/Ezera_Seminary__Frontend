@@ -19,7 +19,7 @@ const OAuthRedirectHandler = () => {
     if (token) {
       const fetchUser = async () => {
         try {
-          const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5100";
+          const baseURL = "https://ezrabackend.online/";
           const response = await fetch(
             `${baseURL}/users/current`,
             {

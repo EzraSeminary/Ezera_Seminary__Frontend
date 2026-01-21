@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 function createAxiosInstance(token?: string): AxiosInstance {
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5100",
+    baseURL: "https://ezrabackend.online/",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
