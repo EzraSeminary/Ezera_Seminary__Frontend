@@ -61,6 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isInstructor }) => {
       subItems: [
         { label: "Create Course", path: `${basePath}/courses/create` },
         { label: "Manage Courses", path: `${basePath}/course/edit` },
+        { label: "Manage Explore", path: `${basePath}/explore/manage` },
       ],
     },
     {

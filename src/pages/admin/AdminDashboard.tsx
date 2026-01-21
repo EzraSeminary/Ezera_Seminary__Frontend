@@ -21,6 +21,7 @@ import FeedbackCenter from "./FeedbackCenter";
 import ManageDevotionPlans from "./ManageDevotionPlans";
 import ManageDevotionPlan from "./ManageDevotionPlan";
 import FixDevotionYears from "./FixDevotionYears";
+import ManageExplore from "./ManageExplore";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -66,6 +67,7 @@ const AdminDashboard = () => {
           <Route path="users/manage" element={<ManageUser />} />
           <Route path="users/:id" element={<UserProfile />} />
           <Route path="feedback" element={<FeedbackCenter />} />
+          <Route path="explore/manage" element={<ManageExplore />} />
         </Routes>
       </div>
     </div>
