@@ -1,8 +1,12 @@
+import { useState } from "react";
 import CoursesAvailable from "../../features/courses/user/CoursesAvailable";
 import Categories from "../../features/courses/user/Categories";
 import Footer from "@/components/Footer";
+import ExploreHome from "@/features/explore/ExploreHome";
 
 const Courses = () => {
+  const [activeTab, setActiveTab] = useState<"courses" | "explore">("courses");
+
   return (
     <div
       className="flex flex-col min-h-screen absolute top-0 w-full font-nokia-bold"
@@ -19,11 +23,41 @@ const Courses = () => {
           </div>
         </div>
       </div>
-      <div className="h-auto flex flex-col flex-1 w-[90%]  mx-auto space-y-6 mb-12">
-        <CoursesAvailable />
-        <div className="hidden">
-          <Categories title="Categories" />
-        </div>
+      {/* Tab Navigation (Courses / Explore) */}
+      <div className="flex justify-center gap-4 pt-6 px-4">
+        <button
+          onClick={() => setActiveTab("courses")}
+          className={`px-6 py-2 rounded-full font-bold transition-colors ${
+            activeTab === "courses"
+              ? "bg-accent-6 text-white"
+              : "bg-white text-accent-6 border-2 border-accent-6"
+          }`}
+        >
+          Courses
+        </button>
+        <button
+          onClick={() => setActiveTab("explore")}
+          className={`px-6 py-2 rounded-full font-bold transition-colors ${
+            activeTab === "explore"
+              ? "bg-accent-6 text-white"
+              : "bg-white text-accent-6 border-2 border-accent-6"
+          }`}
+        >
+          Explore
+        </button>
+      </div>
+
+      <div className="h-auto flex flex-col flex-1 w-[90%] mx-auto space-y-6 mb-12 pt-6">
+        {activeTab === "courses" && (
+          <>
+            <CoursesAvailable />
+            <div className="hidden">
+              <Categories title="Categories" />
+            </div>
+          </>
+        )}
+
+        {activeTab === "explore" && <ExploreHome />}
       </div>
       <Footer />
     </div>

@@ -10,6 +10,7 @@ interface MonthFolderProps {
   isSelected: boolean;
   onSelect: () => void;
   isExpanded: boolean;
+  isLoading?: boolean;
 }
 
 const gridContainerVariants = {
@@ -34,6 +35,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
   isSelected,
   onSelect,
   isExpanded,
+  isLoading = false,
 }) => {
   return (
     <div
@@ -63,7 +65,17 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
           } mx-auto pb-4 mt-2`}
           data-testid="devotion-month-folder-content"
         >
-          {devotions.map((devotion, index: number) => (
+          {isLoading ? (
+            <div className="col-span-full text-center py-8">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-6"></div>
+              <p className="mt-2 text-gray-600">Loading devotions...</p>
+            </div>
+          ) : devotions.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-600">No devotions available for this month</p>
+            </div>
+          ) : (
+            devotions.map((devotion, index: number) => (
             <motion.div
               variants={gridSquareVariants}
               whileHover={{
@@ -74,7 +86,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
                 bounceDamping: 10,
                 bounceStiffness: 600,
               }}
-              key={index}
+              key={devotion._id || `${devotion.month}-${devotion.day}-${index}`}
               className="flex flex-col justify-center items-start w-full shadow-2xl rounded-xl h-full border-accent-5 border text-center pb-4 font-nokia-bold"
               onClick={() => {
                 setSelectedDevotion(devotion);
@@ -105,7 +117,8 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
                 </div>
               </div>
             </motion.div>
-          ))}
+          ))
+          )}
         </motion.div>
       )}
     </div>

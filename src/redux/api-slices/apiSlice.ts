@@ -46,7 +46,7 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: (import.meta as unknown as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || "https://ezrabackend.online",
+    baseUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:5100",
     prepareHeaders: (headers) => {
       const raw = localStorage.getItem("user");
       let token = "";
@@ -111,7 +111,108 @@ export const apiSlice = createApi({
       query: ({ id, subject, message }) => ({
         url: `/users/contacts/${id}/reply`,
         method: "POST",
-        body: { subject, message },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subject, message }),
+      }),
+    }),
+    // Explore (Supplements)
+    getExploreCategories: builder.query<any[], void>({
+      query: () => "/explore/categories",
+    }),
+    getExploreItems: builder.query<any[], { categoryId: string }>({
+      query: ({ categoryId }) =>
+        `/explore/items?categoryId=${encodeURIComponent(categoryId)}`,
+    }),
+    getExploreItem: builder.query<any, { id: string }>({
+      query: ({ id }) => `/explore/items/${id}`,
+    }),
+    // Explore (Admin)
+    adminGetExploreCategories: builder.query<any[], void>({
+      query: () => "/explore/admin/categories",
+    }),
+    adminCreateExploreCategory: builder.mutation<
+      any,
+      { title: string; description?: string; order?: number; isPublished?: boolean }
+    >({
+      query: (body) => ({
+        url: "/explore/admin/categories",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }),
+    }),
+    adminUpdateExploreCategory: builder.mutation<
+      any,
+      { id: string; title?: string; description?: string; order?: number; isPublished?: boolean }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/explore/admin/categories/${id}`,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }),
+    }),
+    adminDeleteExploreCategory: builder.mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/explore/admin/categories/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    adminGetExploreItems: builder.query<any[], { categoryId?: string } | void>({
+      query: (arg) => {
+        const categoryId = arg && "categoryId" in arg ? arg.categoryId : undefined;
+        return categoryId
+          ? `/explore/admin/items?categoryId=${encodeURIComponent(categoryId)}`
+          : "/explore/admin/items";
+      },
+    }),
+    adminCreateExploreItem: builder.mutation<any, { categoryId: string; formData: FormData }>({
+      query: ({ categoryId, formData }) => {
+        formData.append("categoryId", categoryId);
+        return {
+          url: "/explore/admin/items",
+          method: "POST",
+          body: formData,
+        };
+      },
+    }),
+    adminUpdateExploreItem: builder.mutation<
+      any,
+      { id: string; title?: string; description?: string; order?: number; isPublished?: boolean; formData?: FormData }
+    >({
+      query: ({ id, formData, ...body }) => {
+        if (formData) {
+          // Append text fields to formData if they exist
+          if (body.title !== undefined) formData.append("title", body.title);
+          if (body.description !== undefined) formData.append("description", body.description);
+          if (body.order !== undefined) formData.append("order", String(body.order));
+          if (body.isPublished !== undefined) formData.append("isPublished", String(body.isPublished));
+          return {
+            url: `/explore/admin/items/${id}`,
+            method: "PUT",
+            body: formData,
+          };
+        }
+        return {
+          url: `/explore/admin/items/${id}`,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        };
+      },
+    }),
+    adminDeleteExploreItem: builder.mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/explore/admin/items/${id}`,
+        method: "DELETE",
       }),
     }),
     signup: builder.mutation({
@@ -242,6 +343,24 @@ export const apiSlice = createApi({
     getDevotionsByYear: builder.query<Devotion[], number>({
       query: (year) => `/devotion/year/${year}`,
       providesTags: ["Devotions"],
+    }),
+    getMonthsByYear: builder.query<string[], number>({
+      query: (year) => `/devotion/year/${year}/months`,
+    }),
+    getDevotionsByYearAndMonth: builder.query<Devotion[], { year: number; month: string }>({
+      query: ({ year, month }) => `/devotion/year/${year}/month/${encodeURIComponent(month)}`,
+      providesTags: ["Devotions"],
+    }),
+    batchUpdateDevotionYears: builder.mutation<
+      { message: string; results: any[]; errors?: any[] },
+      { updates: Array<{ id: string; year: number }> }
+    >({
+      query: (body) => ({
+        url: "/devotion/batch-update-years",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Devotions"],
     }),
     createDevotionsForNewYear: builder.mutation<{ message: string }, { sourceYear: number; targetYear: number }>({
       query: ({ sourceYear, targetYear }) => ({
@@ -455,6 +574,9 @@ export const {
   useDeleteDevotionMutation,
   useGetAvailableYearsQuery,
   useGetDevotionsByYearQuery,
+  useGetMonthsByYearQuery,
+  useGetDevotionsByYearAndMonthQuery,
+  useBatchUpdateDevotionYearsMutation,
   useCreateDevotionsForNewYearMutation,
   useToggleLikeDevotionMutation,
   useGetDevotionLikesQuery,
@@ -470,6 +592,17 @@ export const {
   useGetDeletedUsersCountQuery,
   useGetContactsQuery,
   useSendContactReplyMutation,
+  useGetExploreCategoriesQuery,
+  useGetExploreItemsQuery,
+  useGetExploreItemQuery,
+  useAdminGetExploreCategoriesQuery,
+  useAdminCreateExploreCategoryMutation,
+  useAdminUpdateExploreCategoryMutation,
+  useAdminDeleteExploreCategoryMutation,
+  useAdminGetExploreItemsQuery,
+  useAdminCreateExploreItemMutation,
+  useAdminUpdateExploreItemMutation,
+  useAdminDeleteExploreItemMutation,
   useGetDevotionPlansQuery,
   useGetDevotionPlanByIdQuery,
   useGetMyDevotionPlansQuery,
