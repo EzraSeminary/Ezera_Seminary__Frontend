@@ -46,7 +46,7 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: (import.meta as unknown as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || "https://ezrabackend.online",
+    baseUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:5100",
     prepareHeaders: (headers) => {
       const raw = localStorage.getItem("user");
       let token = "";
@@ -111,7 +111,10 @@ export const apiSlice = createApi({
       query: ({ id, subject, message }) => ({
         url: `/users/contacts/${id}/reply`,
         method: "POST",
-        body: { subject, message },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subject, message }),
       }),
     }),
     signup: builder.mutation({
@@ -242,6 +245,24 @@ export const apiSlice = createApi({
     getDevotionsByYear: builder.query<Devotion[], number>({
       query: (year) => `/devotion/year/${year}`,
       providesTags: ["Devotions"],
+    }),
+    getMonthsByYear: builder.query<string[], number>({
+      query: (year) => `/devotion/year/${year}/months`,
+    }),
+    getDevotionsByYearAndMonth: builder.query<Devotion[], { year: number; month: string }>({
+      query: ({ year, month }) => `/devotion/year/${year}/month/${encodeURIComponent(month)}`,
+      providesTags: ["Devotions"],
+    }),
+    batchUpdateDevotionYears: builder.mutation<
+      { message: string; results: any[]; errors?: any[] },
+      { updates: Array<{ id: string; year: number }> }
+    >({
+      query: (body) => ({
+        url: "/devotion/batch-update-years",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Devotions"],
     }),
     createDevotionsForNewYear: builder.mutation<{ message: string }, { sourceYear: number; targetYear: number }>({
       query: ({ sourceYear, targetYear }) => ({
@@ -455,6 +476,9 @@ export const {
   useDeleteDevotionMutation,
   useGetAvailableYearsQuery,
   useGetDevotionsByYearQuery,
+  useGetMonthsByYearQuery,
+  useGetDevotionsByYearAndMonthQuery,
+  useBatchUpdateDevotionYearsMutation,
   useCreateDevotionsForNewYearMutation,
   useToggleLikeDevotionMutation,
   useGetDevotionLikesQuery,

@@ -3,8 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const videoLinksApi = createApi({
   reducerPath: "videoLinksApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online/",
-    // baseUrl: "http://localhost:5100/",
+    baseUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:5100",
   }),
   endpoints: (builder) => ({
     getVideoLink: builder.query({

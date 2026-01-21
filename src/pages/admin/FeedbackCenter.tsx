@@ -54,8 +54,27 @@ const FeedbackCenter = () => {
       await sendReply({ id: selected._id, subject: subject.trim(), message: replyBody }).unwrap();
       toast.success("Reply sent successfully.");
       refetch();
-    } catch (e) {
-      toast.error("Failed to send reply.");
+    } catch (e: any) {
+      console.error("Error sending reply:", e);
+      const errorMessage = e?.data?.error || e?.message || "Failed to send reply.";
+      const errorDetails = e?.data?.details;
+      
+      // Check if it's an email service error (503) vs authentication error (401)
+      if (e?.status === 503) {
+        let message = errorMessage;
+        if (errorDetails) {
+          if (typeof errorDetails === 'object') {
+            message += ` Details: ${JSON.stringify(errorDetails)}`;
+          } else {
+            message += ` Details: ${errorDetails}`;
+          }
+        }
+        toast.error(message || "Email service is not configured. Please check EMAIL_USER and EMAIL_PASS in backend environment variables.");
+      } else if (e?.status === 401) {
+        toast.error("Authentication failed. Please log out and log back in.");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

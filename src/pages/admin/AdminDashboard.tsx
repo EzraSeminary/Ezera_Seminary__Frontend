@@ -20,6 +20,7 @@ import DashboardOverview from "./DashboardOverview";
 import FeedbackCenter from "./FeedbackCenter";
 import ManageDevotionPlans from "./ManageDevotionPlans";
 import ManageDevotionPlan from "./ManageDevotionPlan";
+import FixDevotionYears from "./FixDevotionYears";
 
 const AdminDashboard = () => {
   // eslint-disable-next-line
@@ -58,6 +59,7 @@ const AdminDashboard = () => {
           <Route path="devotion" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="devotion/fix-years" element={<FixDevotionYears />} />
           <Route path="devotion-plans/manage" element={<ManageDevotionPlans />} />
           <Route path="devotion/plans/:id" element={<ManageDevotionPlan />} />
           <Route path="users/create" element={<CreateUser />} />
