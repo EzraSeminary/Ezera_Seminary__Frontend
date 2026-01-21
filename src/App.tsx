@@ -49,7 +49,7 @@ const DisplaySSLLesson = lazy(
   () => import("@/features/sabbathSchool/DisplaySSLLesson")
 );
 const Courses = lazy(() => import("./pages/user/Courses"));
-const ExploreItemViewer = lazy(() => import("./features/explore/ExploreItemViewer"));
+const ExploreItemViewerWrapper = lazy(() => import("./features/explore/ExploreItemViewerWrapper"));
 
 function App() {
   const dispatch = useDispatch();
@@ -162,7 +162,7 @@ function App() {
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/explore/item/:itemId" element={<ExploreItemViewer />} />
+          <Route path="/explore/item/:itemId" element={<ExploreItemViewerWrapper />} />
           <Route
             path="/profile"
             element={

@@ -3,7 +3,7 @@ import { useAdminGetExploreCategoriesQuery, useAdminCreateExploreCategoryMutatio
 import { useAdminGetExploreItemsQuery, useAdminCreateExploreItemMutation, useAdminUpdateExploreItemMutation, useAdminDeleteExploreItemMutation } from "@/redux/api-slices/apiSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Trash, PencilSimple, Plus, X, FilePdf, FilePpt, FolderOpen } from "@phosphor-icons/react";
+import { Trash, PencilSimple, Plus, FilePdf, FilePpt, FolderOpen } from "@phosphor-icons/react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const ManageExplore = () => {
@@ -73,7 +73,7 @@ const ManageExplore = () => {
   const handleDeleteCategory = async (id: string) => {
     if (!confirm("Are you sure you want to delete this category? All items in it will also be deleted.")) return;
     try {
-      await deleteCategory(id).unwrap();
+      await deleteCategory({ id }).unwrap();
       toast.success("Category deleted successfully");
       if (selectedCategory === id) setSelectedCategory(null);
       refetchCategories();
@@ -142,7 +142,7 @@ const ManageExplore = () => {
   const handleDeleteItem = async (id: string) => {
     if (!confirm("Are you sure you want to delete this item?")) return;
     try {
-      await deleteItem(id).unwrap();
+      await deleteItem({ id }).unwrap();
       toast.success("Item deleted successfully");
       refetchItems();
     } catch (error: any) {

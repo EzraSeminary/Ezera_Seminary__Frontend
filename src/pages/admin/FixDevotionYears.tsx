@@ -18,7 +18,7 @@ const FixDevotionYears = () => {
   const [batchUpdateDevotionYears] = useBatchUpdateDevotionYearsMutation();
 
   // Get all months for year 2018
-  const { data: months, isLoading: isLoadingMonths, error: monthsError } = useGetMonthsByYearQuery(TARGET_YEAR);
+  const { isLoading: isLoadingMonths, error: monthsError } = useGetMonthsByYearQuery(TARGET_YEAR);
 
   // Load devotions for selected month
   const { data: monthDevotions, isLoading: isLoadingMonth } = useGetDevotionsByYearAndMonthQuery(
@@ -70,9 +70,9 @@ const FixDevotionYears = () => {
 
     const devotions = loadedMonths[selectedMonth];
     const updates = devotions
-      .filter((devotion) => devotion.selectedYear !== devotion.year)
+      .filter((devotion) => devotion.selectedYear !== devotion.year && devotion._id)
       .map((devotion) => ({
-        id: devotion._id,
+        id: devotion._id!,
         year: devotion.selectedYear || TARGET_YEAR,
       }));
 
@@ -250,7 +250,7 @@ const FixDevotionYears = () => {
               >
                 {/* Square Image */}
                 <div className="w-full aspect-square mb-2 flex-shrink-0">
-                  {devotion.image ? (
+                  {devotion.image && typeof devotion.image === "string" ? (
                     <img
                       src={getSmallImageUrl(devotion.image)}
                       alt={devotion.title}
@@ -294,7 +294,7 @@ const FixDevotionYears = () => {
                   <select
                     value={devotion.selectedYear || TARGET_YEAR}
                     onChange={(e) =>
-                      handleYearChange(devotion._id, parseInt(e.target.value))
+                      devotion._id && handleYearChange(devotion._id, parseInt(e.target.value))
                     }
                     className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent-6"
                     onClick={(e) => e.stopPropagation()}
