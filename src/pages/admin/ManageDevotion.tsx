@@ -35,6 +35,7 @@ const ManageDevotion = () => {
           <DevotionDisplay
             showControls={true}
             selectedYear={selectedYear}
+            onSelectedYearResolve={setSelectedYear}
             toggleForm={toggleForm} // pass the toggleForm function as a prop
           />
           {showForm && <DevotionForm />}

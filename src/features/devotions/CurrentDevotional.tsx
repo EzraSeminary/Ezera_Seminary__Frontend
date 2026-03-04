@@ -124,7 +124,9 @@ const CurrentDevotional: React.FC<CurrentDevotionalProps> = ({
       return;
     }
 
-    const shareUrl = window.location.href;
+    const shareUrl = devotionId
+      ? `${window.location.origin}/devotion/${devotionId}`
+      : window.location.href;
     const shareText = `Check out this daily devotional: ${devotionToDisplay.title}`;
 
     if (navigator.share) {

@@ -69,7 +69,7 @@ const FeedbackCenter = () => {
             message += ` Details: ${errorDetails}`;
           }
         }
-        toast.error(message || "Email service is not configured. Please check EMAIL_USER and EMAIL_PASS in backend environment variables.");
+        toast.error(message || "Email service is not configured. Please check the backend mail provider settings.");
       } else if (e?.status === 401) {
         toast.error("Authentication failed. Please log out and log back in.");
       } else {
@@ -218,5 +218,4 @@ const FeedbackCenter = () => {
 };
 
 export default FeedbackCenter;
-
 

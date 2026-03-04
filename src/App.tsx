@@ -158,6 +158,7 @@ function App() {
             <Route path="days/:day/read" element={<DisplaySSLLesson />} />
           </Route>
           <Route path="/devotion" element={<Devotion />} />
+          <Route path="/devotion/:devotionId" element={<Devotion />} />
           <Route path="/devotion/plan/:planId" element={<PlanDevotionViewer />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />

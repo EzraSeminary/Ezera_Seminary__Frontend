@@ -46,7 +46,7 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ezrabackend.online/",
+    baseUrl: "http://localhost:5100/",
     prepareHeaders: (headers) => {
       const raw = localStorage.getItem("user");
       let token = "";
@@ -298,6 +298,9 @@ export const apiSlice = createApi({
         url: "/devotion/show?limit=100&sort=desc",
       }),
       providesTags: ["Devotions"],
+    }),
+    getDevotionById: builder.query<Devotion, string>({
+      query: (id) => `/devotion/${id}`,
     }),
     createDevotion: builder.mutation<void, FormData>({
       query: (newDevotion) => {
@@ -569,6 +572,7 @@ export const {
   useGetCoursesQuery,
   useGetCourseByIdQuery,
   useGetDevotionsQuery,
+  useGetDevotionByIdQuery,
   useCreateDevotionMutation,
   useUpdateDevotionMutation,
   useDeleteDevotionMutation,

@@ -58,8 +58,10 @@ const AdminDashboard = () => {
           <Route path="edit/course/:id/chapters" element={<EditCourse />} />
 
           <Route path="devotion" element={<Devotion />} />
+          <Route path="devotion/:devotionId" element={<Devotion />} />
           <Route path="devotion/create" element={<CreateDevotion />} />
           <Route path="devotion/manage" element={<ManageDevotion />} />
+          <Route path="devotion/manage/:devotionId" element={<ManageDevotion />} />
           <Route path="devotion/fix-years" element={<FixDevotionYears />} />
           <Route path="devotion-plans/manage" element={<ManageDevotionPlans />} />
           <Route path="devotion/plans/:id" element={<ManageDevotionPlan />} />

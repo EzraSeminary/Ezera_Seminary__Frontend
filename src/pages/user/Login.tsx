@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
+      .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
 
@@ -42,6 +42,8 @@ const Login: React.FC = () => {
       password: "",
     },
     validationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (values) => {
       try {
         const result = await login(values).unwrap();
@@ -92,13 +94,30 @@ const Login: React.FC = () => {
     },
   });
 
+  const isFieldValid = (field: keyof typeof formik.values) =>
+    Boolean(formik.values[field]) && !formik.errors[field];
+
+  const getInputClassName = (field: keyof typeof formik.values, baseClass: string) => {
+    if (formik.errors[field] && (formik.touched[field] || formik.values[field])) {
+      return `${baseClass} border-red-500 focus:border-red-500 focus:ring-red-200`;
+    }
+    if (isFieldValid(field)) {
+      return `${baseClass} border-green-600 focus:border-green-600 focus:ring-green-200`;
+    }
+    return `${baseClass} border-accent-6 focus:border-accent-6 focus:ring-accent-2`;
+  };
+
+  const handleFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
+    formik.handleBlur(event);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <ToastContainer />
       <div className="flex h-[80%] py-16 xl:pt-20 items-center justify-center flex-1">
-        <div className="flex w-[90%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-[80%]  rounded-xl md:border-2 md:border-accent-6 mx-auto   md:shadow-xl ">
+        <div className="flex w-[90%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-[80%] rounded-xl md:border-2 md:border-accent-6 mx-auto md:shadow-xl md:min-h-[680px] overflow-hidden">
           <div
-            className="md:flex flex-col coming-soon bg-cover hidden lg:w-[58%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
+            className="md:flex flex-col coming-soon bg-cover hidden lg:w-[58%] md:min-h-[680px] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
             style={{ backgroundPositionX: "-80px" }}
           >
             <div className="flex space-x-3 cursor-pointer text-white ">
@@ -129,35 +148,39 @@ const Login: React.FC = () => {
               <label>Email</label>
               <input
                 type="email"
-                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1  p-2 mb-2  outline-accent-6 xl:text-sm ${
-                  formik.touched.email && formik.errors.email
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "email",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 mb-2 outline-none xl:text-sm focus:ring-2"
+                )}
                 placeholder="abc@gmail.com"
                 {...formik.getFieldProps("email")}
+                onBlur={handleFieldBlur}
               />
-              {formik.touched.email && formik.errors.email && (
-                <div className="text-red-500 text-xs xl:text-sm">
-                  {formik.errors.email}
-                </div>
-              )}
+              <div className="min-h-5">
+                {(formik.touched.email || formik.values.email) && formik.errors.email && (
+                  <div className="text-red-500 text-xs xl:text-sm">
+                    {formik.errors.email}
+                  </div>
+                )}
+              </div>
               <label>Password</label>
               <input
                 type={showPassword ? "text" : "password"} // change type based on showPassword state
-                className={`border rounded-lg border-accent-6  placeholder:text-accent-3 text-xs1 p-2 outline-accent-6 xl:text-sm ${
-                  formik.touched.password && formik.errors.password
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "password",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 outline-none xl:text-sm focus:ring-2"
+                )}
                 placeholder="********"
                 {...formik.getFieldProps("password")}
+                onBlur={handleFieldBlur}
               />
-              {formik.touched.password && formik.errors.password && (
-                <div className="text-red-500 text-xs xl:text-sm">
-                  {formik.errors.password}
-                </div>
-              )}
+              <div className="min-h-5">
+                {(formik.touched.password || formik.values.password) && formik.errors.password && (
+                  <div className="text-red-500 text-xs xl:text-sm">
+                    {formik.errors.password}
+                  </div>
+                )}
+              </div>
               {error && "data" in error && (
                 <div
                   className="text-red-500 text-xl xl:text-sm"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
 import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
@@ -18,13 +18,12 @@ const validationSchema = Yup.object().shape({
     .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
+    .min(6, "Password must be at least 6 characters")
     .matches(/[a-z]/, "Password must contain at least one lowercase letter")
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/\d/, "Password must contain at least one number")
     .matches(
-      /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character"
+      /[^A-Za-z0-9]/,
+      "Password must contain at least one symbol"
     )
     .required("Password is required"),
   confirmPassword: Yup.string()
@@ -36,6 +35,7 @@ const validationSchema = Yup.object().shape({
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [signupMutation, { isLoading, error }] = useSignupMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,6 +49,8 @@ const Signup = () => {
       confirmPassword: "",
     },
     validationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (values) => {
       try {
         const result = await signupMutation(values).unwrap();
@@ -61,10 +63,30 @@ const Signup = () => {
     },
   });
 
+  const isFieldValid = (field: keyof typeof formik.values) =>
+    Boolean(formik.values[field]) && !formik.errors[field];
+
+  const getInputClassName = (field: keyof typeof formik.values, baseClass: string) => {
+    if (formik.errors[field] && (formik.touched[field] || formik.values[field])) {
+      return `${baseClass} border-red-500 focus:border-red-500 focus:ring-red-200`;
+    }
+    if (isFieldValid(field)) {
+      return `${baseClass} border-green-600 focus:border-green-600 focus:ring-green-200`;
+    }
+    return `${baseClass} border-accent-6 focus:border-accent-6 focus:ring-accent-2`;
+  };
+
+  const handleFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
+    formik.handleBlur(event);
+    setFocusedField((current) =>
+      current === event.target.name ? null : current
+    );
+  };
+
   return (
-    <div className="flex w-[95%] md:w-[80%] rounded-xl border-2 border-accent-6 mx-auto mt-20 mb-12 xl:mt-28 xl:mb-16">
+    <div className="flex w-[95%] md:w-[80%] rounded-xl border-2 border-accent-6 mx-auto mt-20 mb-12 xl:mt-28 xl:mb-16 md:min-h-[720px] overflow-hidden">
       <div
-        className="md:flex flex-col coming-soon bg-cover hidden md:w-[50%] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
+        className="md:flex flex-col coming-soon bg-cover hidden md:w-[50%] md:min-h-[720px] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
         style={{ backgroundPositionX: "-80px" }}
       >
         <div className="flex space-x-3 cursor-pointer text-white">
@@ -85,7 +107,7 @@ const Signup = () => {
         </p>
       </div>
       <form
-        className="flex flex-col font-nokia-bold px-7 py-8 text-accent-6 w-[100%] md:w-[70%] lg:w-[40%]"
+        className="flex flex-col justify-center font-nokia-bold px-7 py-8 text-accent-6 w-[100%] md:w-[70%] lg:w-[40%]"
         onSubmit={formik.handleSubmit}
       >
         <h3 className="text-3xl xl:text-4xl">
@@ -98,95 +120,127 @@ const Signup = () => {
               <input
                 type="text"
                 maxLength={30}
-                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm ${
-                  formik.touched.firstName && formik.errors.firstName
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "firstName",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm focus:outline-none focus:ring-2"
+                )}
                 placeholder="Abebe"
                 {...formik.getFieldProps("firstName")}
+                onBlur={handleFieldBlur}
+                onFocus={() => setFocusedField("firstName")}
               />
-              {formik.touched.firstName && formik.errors.firstName && (
-                <div className="text-red-500 text-xs xl:text-sm">
-                  {formik.errors.firstName}
-                </div>
-              )}
+              <div className="min-h-5">
+                {(formik.touched.firstName || formik.values.firstName) && formik.errors.firstName && (
+                  <div className="text-red-500 text-xs xl:text-sm">
+                    {formik.errors.firstName}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex flex-col flex-auto gap-2">
               <label>Last Name</label>
               <input
                 type="text"
                 maxLength={30}
-                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm ${
-                  formik.touched.lastName && formik.errors.lastName
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "lastName",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 mb-2 w-full xl:text-sm focus:outline-none focus:ring-2"
+                )}
                 placeholder="Kebede"
                 {...formik.getFieldProps("lastName")}
+                onBlur={handleFieldBlur}
+                onFocus={() => setFocusedField("lastName")}
               />
-              {formik.touched.lastName && formik.errors.lastName && (
-                <div className="text-red-500 text-xs xl:text-sm">
-                  {formik.errors.lastName}
-                </div>
-              )}
+              <div className="min-h-5">
+                {(formik.touched.lastName || formik.values.lastName) && formik.errors.lastName && (
+                  <div className="text-red-500 text-xs xl:text-sm">
+                    {formik.errors.lastName}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <label>Email</label>
           <input
             type="email"
             maxLength={35}
-            className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full lg:w-[50%] xl:text-sm ${
-              formik.touched.email && formik.errors.email
-                ? "border-red-500"
-                : ""
-            }`}
+            className={getInputClassName(
+              "email",
+              "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 w-full lg:w-[50%] xl:text-sm focus:outline-none focus:ring-2"
+            )}
             placeholder="AbebeKebede@gmail.com"
             {...formik.getFieldProps("email")}
+            onBlur={handleFieldBlur}
+            onFocus={() => setFocusedField("email")}
           />
-          {formik.touched.email && formik.errors.email && (
-            <div className="text-red-500 text-xs xl:text-sm">
-              {formik.errors.email}
-            </div>
-          )}
+          <div className="min-h-5">
+            {(formik.touched.email || formik.values.email) && formik.errors.email && (
+              <div className="text-red-500 text-xs xl:text-sm">
+                {formik.errors.email}
+              </div>
+            )}
+          </div>
           <div className="flex flex-row gap-4">
             <div className="flex flex-col flex-auto gap-2">
               <label>Password</label>
               <input
                 type={showPassword ? "text" : "password"}
-                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm ${
-                  formik.touched.password && formik.errors.password
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "password",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm focus:outline-none focus:ring-2"
+                )}
                 placeholder="********"
                 {...formik.getFieldProps("password")}
+                onBlur={handleFieldBlur}
+                onFocus={() => setFocusedField("password")}
               />
-              {formik.touched.password && formik.errors.password && (
-                <div className="text-red-500 text-xs xl:text-sm">
-                  {formik.errors.password}
-                </div>
-              )}
+              <div className="min-h-5">
+                {(formik.touched.password || formik.values.password) && formik.errors.password && (
+                  <div className="text-red-500 text-xs xl:text-sm">
+                    {formik.errors.password}
+                  </div>
+                )}
+              </div>
+              <div className="min-h-[88px]">
+                {focusedField === "password" && (
+                  <div className="text-xs xl:text-sm space-y-1">
+                    <div className={formik.values.password.length >= 6 ? "text-green-600" : "text-gray-500"}>
+                      Minimum 6 characters
+                    </div>
+                    <div className={/[A-Z]/.test(formik.values.password) ? "text-green-600" : "text-gray-500"}>
+                      At least 1 capital letter
+                    </div>
+                    <div className={/[a-z]/.test(formik.values.password) ? "text-green-600" : "text-gray-500"}>
+                      At least 1 small letter
+                    </div>
+                    <div className={/[^A-Za-z0-9]/.test(formik.values.password) ? "text-green-600" : "text-gray-500"}>
+                      At least 1 symbol
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex flex-col flex-auto gap-2">
               <label>Confirm Password</label>
               <input
                 type={showPassword ? "text" : "password"}
-                className={`border rounded-lg border-accent-6 placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm ${
-                  formik.touched.confirmPassword &&
-                  formik.errors.confirmPassword
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className={getInputClassName(
+                  "confirmPassword",
+                  "border rounded-lg placeholder:text-accent-3 text-xs1 p-2 w-full xl:text-sm focus:outline-none focus:ring-2"
+                )}
                 placeholder="********"
                 {...formik.getFieldProps("confirmPassword")}
+                onBlur={handleFieldBlur}
+                onFocus={() => setFocusedField("confirmPassword")}
               />
-              {formik.touched.confirmPassword &&
+              <div className="min-h-5">
+                {(formik.touched.confirmPassword || formik.values.confirmPassword) &&
                 formik.errors.confirmPassword && (
                   <div className="text-red-500 text-xs xl:text-sm">
                     {formik.errors.confirmPassword}
                   </div>
                 )}
+              </div>
             </div>
           </div>
           <div className=" flex gap-2 items-center">
@@ -227,9 +281,11 @@ const Signup = () => {
             </Link>
           </p>
         </div>
-        {error && "message" in error && (
+        {error && "data" in error && (
           <div className="error text-red-500 text-xs xl:text-sm">
-            {error.message}
+            {(error as { data?: { error?: string }; message?: string }).data?.error ||
+              (error as { message?: string }).message ||
+              "Failed to sign up. Please try again."}
           </div>
         )}
         {/* <div className="text-xs mt-4 xl:text-xl">
