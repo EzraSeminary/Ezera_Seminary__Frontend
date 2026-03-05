@@ -4,7 +4,7 @@ import { ApiState } from "@/redux/types";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://ezrabackend.online/",
+    baseUrl: "https://ezrabackend.online/",
   }),
   endpoints: (builder) => ({
     getCourses: builder.query<ApiState[], void>({
