@@ -12,7 +12,10 @@ import {
   Calendar,
   BarChart3,
   PieChart,
-  Activity
+  Activity,
+  Heart,
+  MessageCircle,
+  Bell
 } from "lucide-react";
 
 interface MetricCardProps {
@@ -142,6 +145,7 @@ const EnhancedAnalytics: React.FC = () => {
   const retentionRate = analyticsData?.usersLeft && analyticsData?.totalUsers
     ? (100 - (analyticsData.usersLeft / analyticsData.totalUsers) * 100).toFixed(1)
     : "100";
+  const latestEngagement = analyticsData?.latestDevotionEngagement;
 
   return (
     <div className="space-y-8 py-6">
@@ -304,6 +308,75 @@ const EnhancedAnalytics: React.FC = () => {
       </div>
 
       {/* Performance Indicators */}
+      <div className="bg-white rounded-xl border border-accent-2 p-6 shadow-lg font-nokia-bold">
+        <div className="flex items-center mb-6">
+          <Bell size={24} className="text-accent-6 mr-3" />
+          <h2 className="text-2xl font-bold text-secondary-8">Latest Devotion Engagement</h2>
+        </div>
+
+        {!latestEngagement ? (
+          <div className="text-secondary-6">No engagement data available yet.</div>
+        ) : (
+          <div className="space-y-5">
+            <div className="rounded-lg border border-accent-2 bg-accent-1/40 p-4">
+              <p className="text-sm text-secondary-6">Latest devotion</p>
+              <p className="text-lg font-bold text-secondary-8">
+                {latestEngagement.devotion.title || "Untitled"} ({latestEngagement.devotion.month} {latestEngagement.devotion.day})
+              </p>
+              <div className="mt-2 flex gap-4 text-sm">
+                <span className="flex items-center gap-1 text-red-600">
+                  <Heart size={14} /> {latestEngagement.likesCount} likes
+                </span>
+                <span className="flex items-center gap-1 text-blue-600">
+                  <MessageCircle size={14} /> {latestEngagement.commentsCount} comments
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="rounded-lg border border-accent-2 p-4">
+                <h3 className="font-bold text-secondary-8 mb-3 flex items-center gap-2">
+                  <Heart size={16} className="text-red-600" /> Who liked
+                </h3>
+                {latestEngagement.likeEvents.length === 0 ? (
+                  <p className="text-sm text-secondary-6">No likes yet.</p>
+                ) : (
+                  <div className="space-y-2 max-h-56 overflow-auto pr-1">
+                    {latestEngagement.likeEvents.map((like, idx) => (
+                      <div key={`${like.email}-${idx}`} className="text-sm border-b border-gray-100 pb-2">
+                        <p className="font-semibold text-secondary-8">{like.userName || like.email}</p>
+                        {like.email && <p className="text-secondary-6 text-xs">{like.email}</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-lg border border-accent-2 p-4">
+                <h3 className="font-bold text-secondary-8 mb-3 flex items-center gap-2">
+                  <MessageCircle size={16} className="text-blue-600" /> Who commented
+                </h3>
+                {latestEngagement.commentEvents.length === 0 ? (
+                  <p className="text-sm text-secondary-6">No comments yet.</p>
+                ) : (
+                  <div className="space-y-2 max-h-56 overflow-auto pr-1">
+                    {latestEngagement.commentEvents.map((comment, idx) => (
+                      <div key={`${comment.email}-${comment.createdAt}-${idx}`} className="text-sm border-b border-gray-100 pb-2">
+                        <p className="font-semibold text-secondary-8">{comment.userName || comment.email}</p>
+                        <p className="text-secondary-7 line-clamp-2">{comment.text}</p>
+                        <p className="text-secondary-6 text-xs">
+                          {new Date(comment.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="bg-white rounded-xl border border-accent-2 p-6 shadow-lg font-nokia-bold">
         <div className="flex items-center mb-6">
           <PieChart size={24} className="text-accent-6 mr-3" />

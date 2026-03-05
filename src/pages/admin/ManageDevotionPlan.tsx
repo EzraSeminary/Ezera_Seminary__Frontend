@@ -20,10 +20,16 @@ const ManageDevotionPlan: React.FC = () => {
   const items = data?.items || [];
   const [editing, setEditing] = useState<{ devotionId: string; data: any } | null>(null);
   const [showEditPlan, setShowEditPlan] = useState(false);
+  const [reorderingDevotionId, setReorderingDevotionId] = useState<string | null>(null);
   
   const handleReorder = async (devotionId: string, direction: "up" | "down") => {
-    await reorderDevotion({ id, devotionId, direction }).unwrap();
-    await refetch();
+    try {
+      setReorderingDevotionId(devotionId);
+      await reorderDevotion({ id, devotionId, direction }).unwrap();
+      await refetch();
+    } finally {
+      setReorderingDevotionId(null);
+    }
   };
 
   return (
@@ -93,19 +99,27 @@ const ManageDevotionPlan: React.FC = () => {
                   <div className="flex flex-col gap-1">
                     <button
                       className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
-                      disabled={index === 0}
+                      disabled={index === 0 || reorderingDevotionId !== null}
                       onClick={() => handleReorder(d._id, "up")}
                       title="Move up"
                     >
-                      <CaretUp size={16} weight="bold" />
+                      {reorderingDevotionId === d._id ? (
+                        <div className="w-4 h-4 border-2 border-accent-6 border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <CaretUp size={16} weight="bold" />
+                      )}
                     </button>
                     <button
                       className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
-                      disabled={index === items.length - 1}
+                      disabled={index === items.length - 1 || reorderingDevotionId !== null}
                       onClick={() => handleReorder(d._id, "down")}
                       title="Move down"
                     >
-                      <CaretDown size={16} weight="bold" />
+                      {reorderingDevotionId === d._id ? (
+                        <div className="w-4 h-4 border-2 border-accent-6 border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <CaretDown size={16} weight="bold" />
+                      )}
                     </button>
                   </div>
                   <div className="text-sm font-bold text-accent-6 w-12 text-center">

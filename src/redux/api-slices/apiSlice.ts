@@ -15,6 +15,27 @@ interface AnalyticsData {
   userEngagementRate: number;
   totalDevotions: number;
   newDevotions: number;
+  latestDevotionEngagement?: {
+    devotion: {
+      id: string;
+      title: string;
+      month: string;
+      day: string;
+      year: number | null;
+    };
+    likesCount: number;
+    commentsCount: number;
+    likeEvents: Array<{
+      userName: string;
+      email: string;
+    }>;
+    commentEvents: Array<{
+      userName: string;
+      email: string;
+      text: string;
+      createdAt: string;
+    }>;
+  } | null;
 }
 
 interface PerformanceData {
@@ -455,6 +476,9 @@ export const apiSlice = createApi({
     getDevotionPlans: builder.query<{ items: any[]; total: number }, void | {}>({
       query: () => "/devotionPlan",
     }),
+    adminGetDevotionPlans: builder.query<{ items: any[]; total: number }, void>({
+      query: () => "/devotionPlan/admin/all",
+    }),
     getDevotionPlanById: builder.query<any, string>({
       query: (id) => `/devotionPlan/${id}`,
     }),
@@ -516,7 +540,7 @@ export const apiSlice = createApi({
       }),
     }),
     getPlanDevotions: builder.query<{ items: any[]; total: number }, { id: string }>({
-      query: ({ id }) => `/devotionPlan/${id}/devotions`,
+      query: ({ id }) => `/devotionPlan/${id}/devotions?sort=asc`,
     }),
     createPlanDevotion: builder.mutation<any, { id: string; formData: FormData }>({
       query: ({ id, formData }) => ({
@@ -608,6 +632,7 @@ export const {
   useAdminUpdateExploreItemMutation,
   useAdminDeleteExploreItemMutation,
   useGetDevotionPlansQuery,
+  useAdminGetDevotionPlansQuery,
   useGetDevotionPlanByIdQuery,
   useGetMyDevotionPlansQuery,
   useStartDevotionPlanMutation,

@@ -118,7 +118,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   );
 
   // Load selected month's devotions when clicked
-  const { data: selectedMonthDevotions, isLoading: isLoadingSelectedMonth } = useGetDevotionsByYearAndMonthQuery(
+  const { currentData: selectedMonthDevotions, isLoading: isLoadingSelectedMonth, isFetching: isFetchingSelectedMonth } = useGetDevotionsByYearAndMonthQuery(
     { year: yearToLoad, month: selectedMonth || "" },
     { skip: !selectedMonth || !!loadedMonths[selectedMonth || ""] }
   );
@@ -133,7 +133,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   // We'll only cache months when they're explicitly clicked
 
   useEffect(() => {
-    if (selectedMonthDevotions && selectedMonth) {
+    if (selectedMonth && selectedMonthDevotions) {
       setLoadedMonths(prev => ({
         ...prev,
         [selectedMonth]: selectedMonthDevotions
@@ -211,14 +211,18 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     }
   }, [devotionFromUrl, onSelectedYearResolve]);
 
-  // Clear loaded months when year changes, but keep today's devotion
+  // Clear month cache only when year changes (avoid wiping selected month while browsing)
+  const prevYearRef = useRef(yearToLoad);
   useEffect(() => {
-    setLoadedMonths({});
-    if (!devotionIdFromUrl) {
-      setSelectedMonth(null);
-      setSelectedDevotion(todaysDevotion || null);
+    if (prevYearRef.current !== yearToLoad) {
+      prevYearRef.current = yearToLoad;
+      setLoadedMonths({});
+      if (!devotionIdFromUrl) {
+        setSelectedMonth(null);
+        setSelectedDevotion(null);
+      }
     }
-  }, [yearToLoad, devotionIdFromUrl, todaysDevotion]);
+  }, [yearToLoad, devotionIdFromUrl]);
 
   useEffect(() => {
     if (selectedDevotion) {
@@ -333,7 +337,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     }
     
     // If this is the selected month and it's loading, return empty array (will show loading)
-    if (isLoadingSelectedMonth) {
+    if (isLoadingSelectedMonth || isFetchingSelectedMonth) {
       return [];
     }
     
@@ -363,7 +367,11 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           {filteredMonths.map((month: string) => {
             const monthDevotions = getSortedMonthDevotions(month);
             const isExpanded = selectedMonth === month;
-            const isLoading = isExpanded && isLoadingSelectedMonth && !loadedMonths[month];
+            const hasLoaded = Object.prototype.hasOwnProperty.call(loadedMonths, month);
+            const isLoading =
+              isExpanded &&
+              (isLoadingSelectedMonth || isFetchingSelectedMonth) &&
+              !hasLoaded;
             
             return (
               <MonthFolder
@@ -375,6 +383,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
                 onSelect={() => handleMonthClick(month)}
                 isExpanded={isExpanded}
                 isLoading={isLoading}
+                hasLoaded={hasLoaded}
               />
             );
           })}
