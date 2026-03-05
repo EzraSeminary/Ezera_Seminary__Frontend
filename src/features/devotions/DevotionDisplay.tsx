@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CurrentDevotional from "./CurrentDevotional";
 import Categories from "../../features/courses/user/Categories";
 import { 
   useGetMonthsByYearQuery,
-  useGetDevotionsByYearAndMonthQuery 
+  useGetDevotionsByYearAndMonthQuery,
+  useGetDevotionByIdQuery,
 } from "../../redux/api-slices/apiSlice";
 import { Devotion } from "@/redux/types";
 import LoadingPage from "@/pages/user/LoadingPage";
@@ -22,12 +23,14 @@ export interface DevotionDisplayProps {
   showControls: boolean;
   selectedYear?: string;
   toggleForm: () => void;
+  onSelectedYearResolve?: (year: string) => void;
 }
 
 const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   showControls,
   selectedYear = "all",
   toggleForm,
+  onSelectedYearResolve,
 }) => {
   const [selectedDevotion, setSelectedDevotion] = useState<Devotion | null>(
     null
@@ -35,8 +38,31 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [loadedMonths, setLoadedMonths] = useState<Record<string, Devotion[]>>({});
   const location = useLocation();
+  const navigate = useNavigate();
+  const { devotionId: devotionIdFromParams } = useParams<{ devotionId?: string }>();
   const { selectedDevotion: selectedDevotionFromHome } = location.state || {};
   const user = useSelector((state: RootState) => state.auth.user);
+  const devotionIdFromQuery = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("devotionId");
+  }, [location.search]);
+  const devotionIdFromUrl = devotionIdFromParams || devotionIdFromQuery;
+  const syncedRouteDevotionIdRef = useRef<string | null>(null);
+  const devotionBasePath = useMemo(() => {
+    if (location.pathname.startsWith("/admin/devotion/manage")) {
+      return "/admin/devotion/manage";
+    }
+    if (location.pathname.startsWith("/instructor/devotion/manage")) {
+      return "/instructor/devotion/manage";
+    }
+    if (location.pathname.startsWith("/admin/devotion")) {
+      return "/admin/devotion";
+    }
+    if (location.pathname.startsWith("/instructor/devotion")) {
+      return "/instructor/devotion";
+    }
+    return "/devotion";
+  }, [location.pathname]);
 
   // Determine which year to load
   const yearToLoad =
@@ -92,10 +118,14 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   );
 
   // Load selected month's devotions when clicked
-  const { data: selectedMonthDevotions, isLoading: isLoadingSelectedMonth } = useGetDevotionsByYearAndMonthQuery(
+  const { currentData: selectedMonthDevotions, isLoading: isLoadingSelectedMonth, isFetching: isFetchingSelectedMonth } = useGetDevotionsByYearAndMonthQuery(
     { year: yearToLoad, month: selectedMonth || "" },
     { skip: !selectedMonth || !!loadedMonths[selectedMonth || ""] }
   );
+
+  const { data: devotionFromUrl } = useGetDevotionByIdQuery(devotionIdFromUrl || "", {
+    skip: !devotionIdFromUrl,
+  });
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +133,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   // We'll only cache months when they're explicitly clicked
 
   useEffect(() => {
-    if (selectedMonthDevotions && selectedMonth) {
+    if (selectedMonth && selectedMonthDevotions) {
       setLoadedMonths(prev => ({
         ...prev,
         [selectedMonth]: selectedMonthDevotions
@@ -114,12 +144,24 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
   // Store today's devotion separately - this should ALWAYS be shown
   const [todaysDevotion, setTodaysDevotion] = useState<Devotion | null>(null);
 
+  const updateDevotionInUrl = useCallback((devotionId: string | null) => {
+    const nextPath = devotionId ? `${devotionBasePath}/${devotionId}` : devotionBasePath;
+    navigate(nextPath, { replace: true, state: location.state });
+  }, [devotionBasePath, location.state, navigate]);
+
+  useEffect(() => {
+    if (devotionIdFromQuery && !devotionIdFromParams) {
+      updateDevotionInUrl(devotionIdFromQuery);
+    }
+  }, [devotionIdFromParams, devotionIdFromQuery, updateDevotionInUrl]);
+
   // Set today's devotion from current month (for verse of the day) - ALWAYS show this
   useEffect(() => {
-    if (selectedDevotionFromHome) {
+    if (selectedDevotionFromHome && !devotionIdFromUrl) {
       setSelectedDevotion(selectedDevotionFromHome);
-      setTodaysDevotion(selectedDevotionFromHome);
-      return;
+      if (selectedDevotionFromHome?._id) {
+        updateDevotionInUrl(selectedDevotionFromHome._id);
+      }
     }
 
     // Wait for current month to load to show today's devotion
@@ -144,23 +186,43 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
 
         setTodaysDevotion(todayDevotion);
         // Set as selected devotion if no other devotion is selected
-        if (!selectedDevotion) {
+        if (!selectedDevotion && !devotionIdFromUrl) {
           setSelectedDevotion(todayDevotion);
         }
       }
     }
-  }, [currentMonthDevotions, selectedDevotionFromHome, yearToLoad, selectedDevotion, filterDevotionsByUserRole, today]);
+  }, [currentMonthDevotions, selectedDevotionFromHome, devotionIdFromUrl, yearToLoad, selectedDevotion, filterDevotionsByUserRole, today, updateDevotionInUrl]);
 
-  // Clear loaded months when year changes, but keep today's devotion
   useEffect(() => {
-    setLoadedMonths({});
-    setSelectedMonth(null);
-    // Don't clear selectedDevotion - keep showing today's devotion
-    // Only clear if it's not today's devotion
-    if (selectedDevotion && todaysDevotion && selectedDevotion._id !== todaysDevotion._id) {
-      setSelectedDevotion(todaysDevotion);
+    if (devotionFromUrl) {
+      setSelectedDevotion(devotionFromUrl);
+      if (devotionFromUrl.month) {
+        setSelectedMonth(devotionFromUrl.month);
+      }
+      if (
+        devotionFromUrl._id &&
+        syncedRouteDevotionIdRef.current !== devotionFromUrl._id
+      ) {
+        syncedRouteDevotionIdRef.current = devotionFromUrl._id;
+        if (devotionFromUrl.year && onSelectedYearResolve) {
+          onSelectedYearResolve(devotionFromUrl.year.toString());
+        }
+      }
     }
-  }, [yearToLoad, selectedDevotion, todaysDevotion]);
+  }, [devotionFromUrl, onSelectedYearResolve]);
+
+  // Clear month cache only when year changes (avoid wiping selected month while browsing)
+  const prevYearRef = useRef(yearToLoad);
+  useEffect(() => {
+    if (prevYearRef.current !== yearToLoad) {
+      prevYearRef.current = yearToLoad;
+      setLoadedMonths({});
+      if (!devotionIdFromUrl) {
+        setSelectedMonth(null);
+        setSelectedDevotion(null);
+      }
+    }
+  }, [yearToLoad, devotionIdFromUrl]);
 
   useEffect(() => {
     if (selectedDevotion) {
@@ -175,14 +237,28 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     if (user && (user.role === "Admin" || user.role === "Instructor")) {
       return months;
     }
+
+    if (yearToLoad < getCurrentEthiopianYear()) {
+      return months;
+    }
     
     // For non-admin users, only show months up to current month
     return months.filter((month: string) => {
       const monthIndex = ethiopianMonths.indexOf(month);
       return monthIndex >= 1 && monthIndex <= currentMonthIndex;
     });
-  }, [months, user, currentMonthIndex]);
+  }, [months, user, currentMonthIndex, yearToLoad]);
 
+
+  const handleDevotionSelect = useCallback((devotion: Devotion) => {
+    setSelectedDevotion(devotion);
+    if (devotion.month) {
+      setSelectedMonth(devotion.month);
+    }
+    if (devotion?._id) {
+      updateDevotionInUrl(devotion._id);
+    }
+  }, [updateDevotionInUrl]);
 
   // Handle month click - load month data if not already loaded
   const handleMonthClick = (month: string) => {
@@ -261,7 +337,7 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     }
     
     // If this is the selected month and it's loading, return empty array (will show loading)
-    if (isLoadingSelectedMonth) {
+    if (isLoadingSelectedMonth || isFetchingSelectedMonth) {
       return [];
     }
     
@@ -274,13 +350,15 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
     return devotions.sort((a, b) => Number(b.day) - Number(a.day));
   };
 
+  const currentDevotionToDisplay = selectedDevotion || todaysDevotion;
+
   return (
     <div className="flex flex-col min-h-screen mx-auto" ref={topRef}>
       <div className="w-[100%] h-full font-nokia-bold flex flex-col mx-auto container space-y-6 mb-12 flex-1">
         {/* Always show today's devotion (verse of the day) */}
-        {todaysDevotion && (
+        {currentDevotionToDisplay && (
           <CurrentDevotional
-            devotionToDisplay={todaysDevotion}
+            devotionToDisplay={currentDevotionToDisplay}
             showControls={showControls}
             toogleForm={toggleForm}
           />
@@ -289,18 +367,23 @@ const DevotionDisplay: React.FC<DevotionDisplayProps> = ({
           {filteredMonths.map((month: string) => {
             const monthDevotions = getSortedMonthDevotions(month);
             const isExpanded = selectedMonth === month;
-            const isLoading = isExpanded && isLoadingSelectedMonth && !loadedMonths[month];
+            const hasLoaded = Object.prototype.hasOwnProperty.call(loadedMonths, month);
+            const isLoading =
+              isExpanded &&
+              (isLoadingSelectedMonth || isFetchingSelectedMonth) &&
+              !hasLoaded;
             
             return (
               <MonthFolder
                 key={month}
                 month={month}
                 devotions={monthDevotions}
-                setSelectedDevotion={setSelectedDevotion}
+                setSelectedDevotion={handleDevotionSelect}
                 isSelected={isExpanded}
                 onSelect={() => handleMonthClick(month)}
                 isExpanded={isExpanded}
                 isLoading={isLoading}
+                hasLoaded={hasLoaded}
               />
             );
           })}

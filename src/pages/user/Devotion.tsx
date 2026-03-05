@@ -69,6 +69,7 @@ const Devotion = () => {
             <DevotionDisplay
               selectedYear={selectedYear}
               showControls={false}
+              onSelectedYearResolve={setSelectedYear}
               toggleForm={function (): void {
                 throw new Error("Function not implemented.");
               }}

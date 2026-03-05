@@ -11,6 +11,7 @@ interface MonthFolderProps {
   onSelect: () => void;
   isExpanded: boolean;
   isLoading?: boolean;
+  hasLoaded?: boolean;
 }
 
 const gridContainerVariants = {
@@ -36,6 +37,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
   onSelect,
   isExpanded,
   isLoading = false,
+  hasLoaded = false,
 }) => {
   return (
     <div
@@ -65,7 +67,7 @@ const MonthFolder: React.FC<MonthFolderProps> = ({
           } mx-auto pb-4 mt-2`}
           data-testid="devotion-month-folder-content"
         >
-          {isLoading ? (
+          {isLoading || !hasLoaded ? (
             <div className="col-span-full text-center py-8">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-6"></div>
               <p className="mt-2 text-gray-600">Loading devotions...</p>

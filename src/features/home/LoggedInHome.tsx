@@ -95,11 +95,15 @@ const LoggedInHome = () => {
   recentDevotions = recentDevotions.reverse();
 
   const handleOpenDevotion = () => {
-    navigate("/devotion", { state: { selectedDevotion: latestDevotion } });
+    navigate(`/devotion/${latestDevotion._id}`, {
+      state: { selectedDevotion: latestDevotion },
+    });
   };
 
   const handleViewDevotion = (devotion: Devotion) => {
-    navigate("/devotion", { state: { selectedDevotion: devotion } });
+    navigate(`/devotion/${devotion._id}`, {
+      state: { selectedDevotion: devotion },
+    });
   };
 
   return (

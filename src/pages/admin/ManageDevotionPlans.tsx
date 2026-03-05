@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DevotionPlanForm from "@/features/devotionPlans/DevotionPlanForm";
-import { useGetDevotionPlansQuery, useDeleteDevotionPlanMutation } from "@/redux/api-slices/apiSlice";
+import {
+  useAdminGetDevotionPlansQuery,
+  useDeleteDevotionPlanMutation,
+  useUpdateDevotionPlanMutation,
+} from "@/redux/api-slices/apiSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trash, PencilSimple, Plus } from "@phosphor-icons/react";
@@ -10,8 +14,10 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 const ManageDevotionPlans = () => {
   const navigate = useNavigate();
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const { data: plansData, isLoading, refetch } = useGetDevotionPlansQuery();
+  const { data: plansData, isLoading, refetch } = useAdminGetDevotionPlansQuery();
   const [deletePlan] = useDeleteDevotionPlanMutation();
+  const [updatePlan] = useUpdateDevotionPlanMutation();
+  const [togglingPlanId, setTogglingPlanId] = useState<string | null>(null);
 
   const plans = plansData?.items || [];
 
@@ -28,6 +34,21 @@ const ManageDevotionPlans = () => {
 
   const handleEdit = (id: string) => {
     navigate(`/admin/devotion/plans/${id}`);
+  };
+
+  const handleTogglePublished = async (plan: any) => {
+    try {
+      setTogglingPlanId(plan._id);
+      const formData = new FormData();
+      formData.append("published", String(!plan.published));
+      await updatePlan({ id: plan._id, formData }).unwrap();
+      await refetch();
+      toast.success(`Plan ${plan.published ? "unpublished" : "published"} successfully`);
+    } catch (_error) {
+      toast.error("Failed to update publish status");
+    } finally {
+      setTogglingPlanId(null);
+    }
   };
 
   return (
@@ -72,7 +93,7 @@ const ManageDevotionPlans = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {plans.map((plan: any) => (
               <div
                 key={plan._id}
@@ -96,6 +117,19 @@ const ManageDevotionPlans = () => {
                   </span>
                 </div>
                 <div className="flex gap-2">
+                  <button
+                    onClick={() => handleTogglePublished(plan)}
+                    disabled={togglingPlanId === plan._id}
+                    className={`px-3 py-2 rounded-lg font-bold text-white ${
+                      plan.published ? "bg-yellow-600 hover:bg-yellow-700" : "bg-green-600 hover:bg-green-700"
+                    } disabled:opacity-60 disabled:cursor-not-allowed`}
+                  >
+                    {togglingPlanId === plan._id
+                      ? "Updating..."
+                      : plan.published
+                        ? "Unpublish"
+                        : "Publish"}
+                  </button>
                   <button
                     onClick={() => handleEdit(plan._id)}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-accent-6 hover:bg-accent-7 text-white font-bold"
