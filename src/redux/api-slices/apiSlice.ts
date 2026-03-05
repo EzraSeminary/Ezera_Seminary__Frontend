@@ -67,7 +67,7 @@ interface PerformanceData {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5100/",
+    baseUrl: "http://ezrabackend.online/",
     prepareHeaders: (headers) => {
       const raw = localStorage.getItem("user");
       let token = "";
