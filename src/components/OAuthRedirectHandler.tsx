@@ -19,7 +19,7 @@ const OAuthRedirectHandler = () => {
     if (token) {
       const fetchUser = async () => {
         try {
-          const baseURL = "http://ezrabackend.online/";
+          const baseURL = "https://ezrabackend.online/";
           const response = await fetch(
             `${baseURL}/users/current`,
             {
