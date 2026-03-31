@@ -7,9 +7,13 @@ import svgr from "@svgr/rollup";
 export default defineConfig({
   plugins: [react(), svgr()],
   resolve: {
+    dedupe: ["react", "react-dom", "@react-oauth/google"],
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    include: ["@react-oauth/google"],
   },
   build: {
     sourcemap: true,

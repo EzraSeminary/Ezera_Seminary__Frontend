@@ -1,11 +1,18 @@
 import { FocusEvent, useState } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch
-import { useSignupMutation } from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
-import { signup as signupAction } from "@/redux/authSlice"; // Import the signup action
+import {
+  useGetAuthProvidersQuery,
+  useSignupMutation,
+  useSocialAuthMutation,
+} from "@/redux/api-slices/apiSlice"; // Import the useSignupMutation hook
+import { login as loginAction, signup as signupAction } from "@/redux/authSlice"; // Import the signup action
 // import { GoogleLogo } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import GoogleAuthButton from "@/components/GoogleAuthButton";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -37,8 +44,37 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [signupMutation, { isLoading, error }] = useSignupMutation();
+  const [socialAuth] = useSocialAuthMutation();
+  const { data: authProviders, isLoading: isAuthProvidersLoading, isFetching: isAuthProvidersFetching } =
+    useGetAuthProvidersQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const persistAuthenticatedUser = (result: any) => {
+    dispatch(loginAction(result));
+    navigate("/");
+  };
+
+  const handleGoogleSignup = async (credential: string) => {
+    if (isAuthProvidersLoading || isAuthProvidersFetching) {
+      toast.info("Google sign-in is still loading. Please try again.");
+      return;
+    }
+
+    if (!authProviders?.google?.webClientId) {
+      toast.error("Google sign-in is not configured yet.");
+      return;
+    }
+
+    try {
+      const result = await socialAuth({ token: credential }).unwrap();
+      persistAuthenticatedUser(result);
+      toast.success("Account ready!");
+    } catch (err) {
+      console.error("Error during Google signup:", err);
+      toast.error("Google sign-in failed. Please try again.");
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -54,8 +90,8 @@ const Signup = () => {
     onSubmit: async (values) => {
       try {
         const result = await signupMutation(values).unwrap();
-        localStorage.setItem("user", JSON.stringify(result));
         dispatch(signupAction(result));
+        localStorage.setItem("user", JSON.stringify(result));
         navigate("/");
       } catch (err) {
         console.error(err);
@@ -85,6 +121,7 @@ const Signup = () => {
 
   return (
     <div className="flex w-[95%] md:w-[80%] rounded-xl border-2 border-accent-6 mx-auto mt-20 mb-12 xl:mt-28 xl:mb-16 md:min-h-[720px] overflow-hidden">
+      <ToastContainer />
       <div
         className="md:flex flex-col coming-soon bg-cover hidden md:w-[50%] md:min-h-[720px] font-nokia-bold p-7 justify-between text-white rounded-xl gap-64"
         style={{ backgroundPositionX: "-80px" }}
@@ -113,6 +150,16 @@ const Signup = () => {
         <h3 className="text-3xl xl:text-4xl">
           <span className="text-secondary-6">Create </span>Account
         </h3>
+        <div className="mt-6 w-full max-w-[24rem]">
+          <GoogleAuthButton
+            onCredential={handleGoogleSignup}
+            text="signup_with"
+            disabled={isLoading}
+          />
+          <p className="mt-3 text-center text-xs text-accent-4 xl:text-sm">
+            or sign up with email and password
+          </p>
+        </div>
         <div className="mt-10 flex flex-col gap-2 text-xs xl:text-xl">
           <div className="flex flex-row gap-4">
             <div className="flex flex-col flex-auto gap-2">

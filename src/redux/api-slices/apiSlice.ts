@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Devotion } from "@/redux/types";
+import { WEB_AUTH_PROVIDERS } from "@/config/authProviders";
 
 interface AnalyticsData {
   newUsers: number;
@@ -64,6 +65,17 @@ interface PerformanceData {
   };
 }
 
+interface AuthProvidersResponse {
+  google: {
+    webClientId: string;
+  };
+}
+
+interface SocialAuthBody {
+  idToken?: string;
+  token?: string;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -93,6 +105,21 @@ export const apiSlice = createApi({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
+      }),
+    }),
+    getAuthProviders: builder.query<AuthProvidersResponse, void>({
+      queryFn: async () => ({ data: WEB_AUTH_PROVIDERS }),
+    }),
+    socialAuth: builder.mutation({
+      query: (body: SocialAuthBody) => ({
+        url: "/users/auth/google/verify",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          token: body?.idToken || body?.token,
+        },
       }),
     }),
     forgotPassword: builder.mutation({
@@ -585,7 +612,10 @@ export const {
   useSignupMutation,
   useCreateUserMutation,
   useGetUsersQuery,
+  useLazyGetUsersQuery,
   useLoginMutation,
+  useGetAuthProvidersQuery,
+  useSocialAuthMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useUpdateUserMutation,

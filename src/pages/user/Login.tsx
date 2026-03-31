@@ -4,12 +4,15 @@ import { useDispatch } from "react-redux";
 import {
   useLoginMutation,
   useActivateUserMutation,
+  useGetAuthProvidersQuery,
+  useSocialAuthMutation,
 } from "@/redux/api-slices/apiSlice";
 import { login as loginAction } from "@/redux/authSlice";
 import LoadingAnimation from "../../features/login/LoadingAnimation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Footer from "@/components/Footer";
+import GoogleAuthButton from "@/components/GoogleAuthButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,9 +26,44 @@ interface APIError extends Error {
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation();
+  const [socialAuth] = useSocialAuthMutation();
   const [activateUser] = useActivateUserMutation();
+  const { data: authProviders, isLoading: isAuthProvidersLoading, isFetching: isAuthProvidersFetching } =
+    useGetAuthProvidersQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const persistAuthenticatedUser = (result: any) => {
+    dispatch(loginAction(result));
+
+    if (result.role === "Admin") {
+      navigate("/admin");
+      return;
+    }
+
+    navigate("/");
+  };
+
+  const handleGoogleLogin = async (credential: string) => {
+    if (isAuthProvidersLoading || isAuthProvidersFetching) {
+      toast.info("Google sign-in is still loading. Please try again.");
+      return;
+    }
+
+    if (!authProviders?.google?.webClientId) {
+      toast.error("Google sign-in is not configured yet.");
+      return;
+    }
+
+    try {
+      const result = await socialAuth({ token: credential }).unwrap();
+      persistAuthenticatedUser(result);
+      toast.success("Signed in successfully!");
+    } catch (err) {
+      console.error("Error during Google login:", err);
+      toast.error("Google sign-in failed. Please try again.");
+    }
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -59,25 +97,13 @@ const Login: React.FC = () => {
               }).unwrap();
               const updatedResult = { ...result, status: "active" }; // Create a new object with the updated status
               toast.success("Account activated successfully!");
-              localStorage.setItem("user", JSON.stringify(updatedResult));
-              dispatch(loginAction(updatedResult));
-              if (updatedResult.role === "Admin") {
-                navigate("/admin");
-              } else {
-                navigate("/");
-              }
+              persistAuthenticatedUser(updatedResult);
               toast.success("Login successful!");
             } else {
               return;
             }
           } else {
-            localStorage.setItem("user", JSON.stringify(result));
-            dispatch(loginAction(result));
-            if (result.role === "Admin") {
-              navigate("/admin");
-            } else {
-              navigate("/");
-            }
+            persistAuthenticatedUser(result);
             toast.success("Login successful!");
           }
         }
@@ -144,6 +170,16 @@ const Login: React.FC = () => {
             <h3 className="text-3xl xl:text-4xl">
               <span className="text-secondary-6">Log</span>in
             </h3>
+            <div className="mt-6 w-full">
+              <GoogleAuthButton
+                onCredential={handleGoogleLogin}
+                text="signin_with"
+                disabled={isLoading}
+              />
+              <p className="mt-3 text-center text-xs text-accent-4 xl:text-sm">
+                or sign in with email and password
+              </p>
+            </div>
             <div className="mt-4 flex flex-col gap-2 text-xs  w-max lg:w-full xl:text-xl ">
               <label>Email</label>
               <input
